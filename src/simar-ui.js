@@ -826,8 +826,8 @@ const enhanceMenus = (claim) => {
   }
 };
 
-// Autocomplete: an <input data-autocomplete list="id"> keeps its datalist as the no-script fallback;
-// the script reads the options, takes the list attribute off (so the browser's own popup doesn't
+// Autocomplete: an <input data-autocomplete list="id"> keeps its datalist as the no-script fallback.
+// The script reads the options, takes the list attribute off (so the browser's own popup doesn't
 // compete) and shows a themed listbox that filters as you type. This is the ARIA editable combobox
 // with list autocomplete: focus stays in the input, aria-activedescendant names the current option,
 // Down/Up move, Enter picks, Esc closes, and a live region says how many suggestions there are.
