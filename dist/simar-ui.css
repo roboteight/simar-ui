@@ -4098,13 +4098,12 @@ input[type=file].input:disabled::file-selector-button {
   background: var(--code-bg);
   box-shadow: 0 0 0 1px var(--hairline-strong), 0 10px 24px -14px color-mix(in srgb, #000 min(100%, 50% * var(--shade-k)), transparent);
 }
-.code__label, .code:not(:has(.code__label)) .code__body::before {
-  position: relative;
+.code__label {
   display: flex;
   align-items: center;
   min-height: 2.1rem;
   margin: 0;
-  padding: 0 1rem 0 4.4rem;
+  padding: 0 1rem;
   background: color-mix(in srgb, var(--code-bg) 90%, #fff);
   color: #c5cbd6;
   font: 600 0.72rem/1 var(--font-mono);
@@ -4112,36 +4111,12 @@ input[type=file].input:disabled::file-selector-button {
   text-transform: lowercase;
 }
 @media (forced-colors: active) {
-  .code__label, .code:not(:has(.code__label)) .code__body::before {
+  .code__label {
     forced-color-adjust: none;
     background: Canvas;
     color: CanvasText;
     border-bottom: 1px solid CanvasText;
   }
-}
-.code__label::before, .code:not(:has(.code__label)) .code__body::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 1.15rem;
-  width: 0.6rem;
-  height: 0.6rem;
-  margin-top: -0.3rem;
-  border-radius: 50%;
-  background: #ff5f57;
-  box-shadow: 1rem 0 #febc2e, 2rem 0 #28c840;
-}
-@media (forced-colors: active) {
-  .code__label::before, .code:not(:has(.code__label)) .code__body::after {
-    display: none;
-  }
-}
-.code:not(:has(.code__label)) .code__body::before {
-  content: "";
-  padding: 0;
-}
-.code:not(:has(.code__label)) .code__body::after {
-  top: 1.05rem;
 }
 .code__body {
   position: relative;

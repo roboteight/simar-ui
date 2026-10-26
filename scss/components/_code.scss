@@ -1,7 +1,7 @@
 @use "../abstracts" as *;
 
-// Code: a terminal window for showing code: a title bar with the three window dots and the label,
-// monospace text on a dark screen, and a copy button.
+// Code: a terminal window for showing code: an optional title bar with the label, monospace text on a
+// dark screen, and a copy button.
 //
 //   <figure class="code">
 //     <figcaption class="code__label">HTML</figcaption>
@@ -20,15 +20,13 @@ $bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
   background: var(--code-bg);
   box-shadow: 0 0 0 1px var(--hairline-strong), 0 10px 24px -14px shade(0.5);
 
-  // The title bar. The three window dots are decoration only.
-  &__label,
-  &:not(:has(.code__label)) &__body::before {
-    position: relative;
+  // The title bar, shown when the block has a label.
+  &__label {
     display: flex;
     align-items: center;
     min-height: 2.1rem;
     margin: 0;
-    padding: 0 1rem 0 4.4rem;
+    padding: 0 1rem;
     background: $bar;
     color: #c5cbd6;
     font: 600 0.72rem/1 $mono;
@@ -37,25 +35,6 @@ $bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
 
     @include forced-colors { forced-color-adjust: none; background: Canvas; color: CanvasText; border-bottom: 1px solid CanvasText; }
   }
-
-  &__label::before,
-  &:not(:has(.code__label)) &__body::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 1.15rem;
-    width: 0.6rem;
-    height: 0.6rem;
-    margin-top: -0.3rem;
-    border-radius: 50%;
-    background: #ff5f57;
-    box-shadow: 1rem 0 #febc2e, 2rem 0 #28c840;
-
-    @include forced-colors { display: none; }
-  }
-
-  &:not(:has(.code__label)) &__body::before { content: ""; padding: 0; }
-  &:not(:has(.code__label)) &__body::after { top: 1.05rem; }
 
   &__body { position: relative; }
 

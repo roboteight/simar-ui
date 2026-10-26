@@ -281,7 +281,7 @@ A short block with a small label, a title and a few words. Put several in a `blu
 
 #### Code
 
-A terminal-style block: monospace text on a dark screen under a title bar, with line numbers and a copy button. The numbers are skipped by screen readers and aren't copied; the block can be scrolled by keyboard.
+A terminal-style block: monospace text on a dark screen, with a title bar when it has a label, with line numbers and a copy button. The numbers are skipped by screen readers and aren't copied; the block can be scrolled by keyboard.
 
 <img src="docs/screenshots/html-key.png" alt="The HTML key opened to show how a component is written" width="640">
 
