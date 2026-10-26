@@ -1,0 +1,77 @@
+@use "../abstracts" as *;
+
+// A select whose list can show moving artwork (a spinner). Built by the script over a real
+// <select data-picker>, which keeps the value; see enhancePickers.
+.picker {
+  position: relative;
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  &__shown,
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__art {
+    display: inline-flex;
+    flex: none;
+    min-width: 2rem;
+    justify-content: center;
+  }
+
+  &__icon {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--ink-soft);
+    filter: none;
+
+    @include forced-colors { color: FieldText; }
+  }
+
+  &__list {
+    @include surface(14px, 0 18px 40px -12px shade(0.4));
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    padding: 0.4rem;
+    list-style: none;
+    overflow: auto;
+    max-height: min(24rem, 60vh);
+
+    @include forced-colors { border: 1px solid CanvasText; }
+  }
+
+  &__option {
+    padding: 0.4rem 0.6rem;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &.is-active { background: color-mix(in srgb, var(--lit) 16%, transparent); }
+
+    &[aria-selected="true"] { font-weight: 600; }
+    &[aria-selected="true"]::after {
+      content: "";
+      width: 0.45rem;
+      height: 0.8rem;
+      margin-left: auto;
+      border: solid var(--ink);
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg) translate(-2px, -2px);
+    }
+
+    @include forced-colors {
+      &.is-active { outline: 2px solid Highlight; outline-offset: -2px; background: transparent; }
+    }
+  }
+}

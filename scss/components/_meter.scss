@@ -1,0 +1,70 @@
+@use "../abstracts" as *;
+
+// <meter>: a gauge for a known quantity (disk used, battery), as opposed to <progress>, which is
+// work being done. It sits in a recessed groove like the fader's, and its fill has three states
+// that are told apart by pattern as well as color: solid is good, striped is middling, dotted is
+// poor. The state is the browser's own, from min, max, low, high and optimum.
+//
+//   <meter class="meter" min="0" max="100" low="30" high="80" optimum="100" value="72">72%</meter>
+.meter {
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  width: 100%;
+  height: 14px;
+  border: 0;
+  border-radius: 999px;
+  overflow: hidden;
+  background: linear-gradient(180deg, $groove-top, $groove-bottom);
+  box-shadow: inset 0 2px 3px shade(0.2), 0 1px 0 var(--lip);
+
+  &::-webkit-meter-bar {
+    height: 100%;
+    border: 0;
+    background: transparent;
+  }
+
+  // good
+  &::-webkit-meter-optimum-value {
+    border-radius: 999px;
+    background: var(--meter-ok);
+  }
+
+  // middling: diagonal stripes
+  &::-webkit-meter-suboptimum-value {
+    border-radius: 999px;
+    background: repeating-linear-gradient(135deg, var(--meter-pattern) 0 4px, transparent 4px 9px), var(--meter-warn);
+  }
+
+  // poor: dots
+  &::-webkit-meter-even-less-good-value {
+    border-radius: 999px;
+    background: radial-gradient(var(--meter-pattern) 1.6px, transparent 2.2px) 0 0 / 7px 7px, var(--meter-bad);
+  }
+
+  // Firefox names the same three parts differently.
+  &::-moz-meter-bar {
+    border-radius: 999px;
+    background: var(--meter-ok);
+  }
+
+  &:-moz-meter-sub-optimum::-moz-meter-bar {
+    background: repeating-linear-gradient(135deg, var(--meter-pattern) 0 4px, transparent 4px 9px), var(--meter-warn);
+  }
+
+  &:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+    background: radial-gradient(var(--meter-pattern) 1.6px, transparent 2.2px) 0 0 / 7px 7px, var(--meter-bad);
+  }
+
+  @include forced-colors {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
+    background: Canvas;
+    box-shadow: none;
+
+    &::-webkit-meter-optimum-value,
+    &::-webkit-meter-suboptimum-value,
+    &::-webkit-meter-even-less-good-value,
+    &::-moz-meter-bar { background: Highlight; }
+  }
+}

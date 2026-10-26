@@ -36,7 +36,7 @@ const addCode = (unit, { isSection }) => {
   if (!unit.hasAttribute('data-no-html')) {
     const copy = unit.cloneNode(true);
     copy.querySelectorAll('script[data-example], .snippet').forEach((node) => node.remove());
-    if (isSection) copy.querySelectorAll('h2, .note, .panel').forEach((node) => node.remove());
+    if (isSection) copy.querySelectorAll('h2, h3, .note, .panel').forEach((node) => node.remove());
     const code = isSection
       ? dedent(copy.outerHTML.replace(/^<section[^>]*>|<\/section>$/g, ''))
       : dedentOuter(copy.outerHTML);

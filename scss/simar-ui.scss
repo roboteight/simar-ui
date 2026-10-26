@@ -2,8 +2,13 @@
 @use "base/root";
 
 @use "components/panel";
+@use "components/type";
 @use "components/key";
 @use "components/check";
+@use "components/form";
+@use "components/input";
+@use "components/picker";
+@use "components/meter";
 @use "components/lcd";
 @use "components/fader";
 @use "components/knob";

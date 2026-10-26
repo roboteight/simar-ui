@@ -670,6 +670,268 @@ const enhanceCode = (claim) => {
   }
 };
 
+// ---- Form controls ----------------------------------------------------------------------
+
+// Number stepper: the keys call the input's own stepUp/stepDown, so min, max and step apply. A
+// screen reader can't see the number change when a key is pressed, so the new value is announced.
+const enhanceSteppers = (claim) => {
+  for (const key of claim('[data-step]')) {
+    const input = document.getElementById(key.getAttribute('aria-controls'));
+    if (!input) continue;
+    const stepper = key.closest('.stepper');
+    stepper.classList.add('is-enhanced');
+    let status = stepper.querySelector('.stepper__status');
+    if (!status) {
+      status = el('span', 'stepper__status', stepper);
+      status.setAttribute('role', 'status');
+      status.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)';
+    }
+    key.addEventListener('click', () => {
+      const by = +key.dataset.step;
+      try { if (by > 0) input.stepUp(by); else input.stepDown(-by); } catch { /* no valid step from here */ }
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      status.textContent = `${input.labels?.[0]?.textContent.trim() ?? 'Value'}: ${input.value}`;
+    });
+  }
+};
+
+// Password reveal: toggles the field between password and text. aria-pressed and the label say which.
+const enhanceReveal = (claim) => {
+  for (const button of claim('[data-reveal]')) {
+    const input = document.getElementById(button.getAttribute('aria-controls'));
+    if (!input) continue;
+    button.closest('.input-reveal')?.classList.add('is-enhanced');
+    button.addEventListener('click', () => {
+      const show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      button.setAttribute('aria-pressed', String(show));
+      button.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+      button.innerHTML = icon(show ? 'eye-off' : 'eye');
+    });
+  }
+};
+
+// Picker: a <select data-picker> whose list can show more than text, such as a moving spinner. The
+// select stays in the form and keeps the value; a select-only combobox (the ARIA pattern) is built
+// over it. An option points at a <template> with data-art, and that is drawn beside its words.
+// Keys: Down/Up/Enter/Space open it; arrows, Home, End and letters move; Enter or Space picks;
+// Esc closes. Focus stays on the button and aria-activedescendant names the current option.
+let pickers = 0;
+const enhancePickers = (claim) => {
+  for (const select of claim('select[data-picker]')) {
+    const id = `simar-picker-${++pickers}`;
+    const label = select.id ? document.querySelector(`label[for="${select.id}"]`) : null;
+    const options = [...select.options];
+    const art = (option) => {
+      const template = option.dataset.art && document.getElementById(option.dataset.art);
+      return template ? template.content.cloneNode(true) : null;
+    };
+    const fill = (target, option) => {
+      const holder = el('span', 'picker__art', target);
+      holder.setAttribute('aria-hidden', 'true');
+      holder.append(art(option) ?? '');
+      el('span', 'picker__text', target).textContent = option.textContent;
+    };
+
+    const wrap = el('div', 'picker');
+    const button = el('button', 'input picker__button', wrap);
+    button.type = 'button';
+    button.id = `${id}-button`;
+    button.setAttribute('role', 'combobox');
+    button.setAttribute('aria-haspopup', 'listbox');
+    button.setAttribute('aria-expanded', 'false');
+    if (label) {
+      label.setAttribute('for', button.id);
+      label.id ||= `${id}-label`;
+      button.setAttribute('aria-labelledby', `${label.id} ${button.id}`);
+    } else if (select.getAttribute('aria-label')) {
+      button.setAttribute('aria-label', select.getAttribute('aria-label'));
+    }
+    const shown = el('span', 'picker__shown', button);
+    button.insertAdjacentHTML('beforeend', icon('chevron-down').replace('class="icon"', 'class="icon picker__icon"'));
+
+    const list = el('ul', 'picker__list', wrap);
+    list.id = `${id}-list`;
+    list.setAttribute('role', 'listbox');
+    list.setAttribute('popover', 'auto');
+    if (label) list.setAttribute('aria-labelledby', label.id);
+    const items = options.map((option, i) => {
+      const item = el('li', 'picker__option', list);
+      item.id = `${id}-option-${i}`;
+      item.setAttribute('role', 'option');
+      fill(item, option);
+      item.addEventListener('pointerdown', (e) => e.preventDefault()); // keep focus on the button
+      item.addEventListener('click', () => { choose(i); close(); });
+      item.addEventListener('pointermove', () => highlight(i));
+      return item;
+    });
+
+    let active = select.selectedIndex;
+    const isOpen = () => list.matches(':popover-open');
+    const highlight = (i) => {
+      active = Math.max(0, Math.min(items.length - 1, i));
+      items.forEach((item, n) => item.classList.toggle('is-active', n === active));
+      button.setAttribute('aria-activedescendant', items[active].id);
+      items[active].scrollIntoView({ block: 'nearest' });
+    };
+    const render = () => {
+      shown.replaceChildren();
+      fill(shown, select.options[select.selectedIndex]);
+      items.forEach((item, n) => item.setAttribute('aria-selected', String(n === select.selectedIndex)));
+    };
+    const choose = (i) => {
+      if (select.selectedIndex === i) return;
+      select.selectedIndex = i;
+      render();
+      select.dispatchEvent(new Event('input', { bubbles: true }));
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+    const open = () => {
+      if (isOpen() || button.disabled) return;
+      const box = button.getBoundingClientRect();
+      list.style.minWidth = `${box.width}px`;
+      list.style.left = `${box.left}px`;
+      list.showPopover();
+      const below = innerHeight - box.bottom;
+      const height = list.offsetHeight;
+      list.style.top = `${below >= height + 8 || box.top < height ? box.bottom + 4 : box.top - height - 4}px`;
+      highlight(select.selectedIndex);
+    };
+    const close = () => { if (isOpen()) list.hidePopover(); };
+    list.addEventListener('toggle', () => {
+      button.setAttribute('aria-expanded', String(isOpen()));
+      // aria-controls only while the list is showing: a pointer to a hidden element is invalid.
+      if (isOpen()) button.setAttribute('aria-controls', list.id);
+      else { button.removeAttribute('aria-controls'); button.removeAttribute('aria-activedescendant'); }
+    });
+
+    button.addEventListener('click', () => (isOpen() ? close() : open()));
+    button.addEventListener('keydown', (e) => {
+      const key = e.key;
+      if (!isOpen()) {
+        if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(key)) { e.preventDefault(); open(); }
+        else if (key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          const next = options.findIndex((o, n) => n > select.selectedIndex && o.textContent.toLowerCase().startsWith(key.toLowerCase()));
+          if (next >= 0) { e.preventDefault(); choose(next); }
+        }
+        return;
+      }
+      if (key === 'ArrowDown') highlight(active + 1);
+      else if (key === 'ArrowUp') highlight(active - 1);
+      else if (key === 'Home') highlight(0);
+      else if (key === 'End') highlight(items.length - 1);
+      else if (key === 'Enter' || key === ' ') { choose(active); close(); }
+      else if (key === 'Tab') { choose(active); close(); return; }
+      else if (key === 'Escape') { close(); }
+      else if (key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const next = options.findIndex((o, n) => n > active && o.textContent.toLowerCase().startsWith(key.toLowerCase()));
+        if (next >= 0) highlight(next);
+      } else return;
+      e.preventDefault();
+    });
+    select.addEventListener('change', render); // the value was set from outside
+
+    const host = select.closest('.select') ?? select; // the chevron wrapper goes too: the picker has its own
+    host.hidden = true;
+    host.after(wrap);
+    render();
+  }
+};
+
+// Color: the readout beside the swatch follows it.
+const enhanceColors = (claim) => {
+  for (const input of claim('.color input[type="color"]')) {
+    const out = input.closest('.color').querySelector('output');
+    const sync = () => { if (out) out.value = input.value; };
+    input.addEventListener('input', sync);
+    sync();
+  }
+};
+
+// Validation. <form data-validate> swaps the browser's pop-up bubbles for messages in the page:
+// words with an icon under each field, linked to it with aria-describedby and aria-invalid, a
+// summary announced at the top, and focus sent to the first problem (WCAG 3.3.1 and 3.3.3). The
+// text is the control's data-error, or the browser's own validationMessage. Without JavaScript
+// the browser's native validation still applies.
+const CHECKABLE = 'input:not([type="hidden"]):not([type="submit"]):not([type="reset"]):not([type="button"]):not([type="image"]):not([type="radio"]), select, textarea';
+let errorCount = 0;
+
+const enhanceForms = (claim) => {
+  for (const form of claim('form[data-validate]')) {
+    form.noValidate = true;
+    let summary = form.querySelector('.form__summary');
+    if (!summary) {
+      summary = el('div', 'form__summary');
+      summary.hidden = true;
+      summary.setAttribute('role', 'alert');
+      summary.tabIndex = -1;
+      form.prepend(summary);
+    }
+
+    const nameOf = (control) => control.labels?.[0]?.textContent.replace(/\s+/g, ' ').trim() || control.getAttribute('aria-label') || control.name;
+
+    const errorNode = (control) => {
+      if (!control.id) control.id = `simar-field-${++errorCount}`;
+      let node = document.getElementById(`${control.id}-error`);
+      if (!node) {
+        node = el('p', 'field__error');
+        node.id = `${control.id}-error`;
+        node.hidden = true;
+        node.innerHTML = `${icon('circle-alert')}<span></span>`;
+        const check = !control.closest('.field') && control.closest('.check');
+        if (check) check.after(node);
+        else (control.closest('.field') ?? control.parentElement).append(node);
+      }
+      return node;
+    };
+
+    const setError = (control, message) => {
+      const node = errorNode(control);
+      const ids = (control.getAttribute('aria-describedby') ?? '').split(/\s+/).filter((id) => id && id !== node.id);
+      if (message) {
+        node.querySelector('span').textContent = message;
+        node.hidden = false;
+        control.setAttribute('aria-invalid', 'true');
+        control.setAttribute('aria-describedby', [...ids, node.id].join(' '));
+      } else {
+        node.hidden = true;
+        control.removeAttribute('aria-invalid');
+        if (ids.length) control.setAttribute('aria-describedby', ids.join(' '));
+        else control.removeAttribute('aria-describedby');
+      }
+    };
+
+    const check = (control) => {
+      setError(control, control.validity.valid ? '' : control.dataset.error || control.validationMessage);
+      return control.validity.valid;
+    };
+
+    const controls = () => [...form.elements].filter((c) => c.matches(CHECKABLE) && c.willValidate);
+
+    const refreshSummary = () => {
+      const bad = controls().filter((c) => !c.validity.valid && c.getAttribute('aria-invalid') === 'true');
+      if (!bad.length) { summary.hidden = true; summary.textContent = ''; return; }
+      summary.textContent = `${bad.length} ${bad.length === 1 ? 'field needs' : 'fields need'} attention: ${bad.map(nameOf).join(', ')}.`;
+      summary.hidden = false;
+    };
+
+    form.addEventListener('submit', (e) => {
+      const bad = controls().filter((c) => !check(c));
+      if (!bad.length) { summary.hidden = true; return; }
+      e.preventDefault();
+      refreshSummary();
+      bad[0].focus();
+    });
+    form.addEventListener('change', (e) => { if (e.target.matches?.(CHECKABLE)) { check(e.target); refreshSummary(); } });
+    // while fixing a field that is flagged, clear the flag as soon as it is valid
+    form.addEventListener('input', (e) => {
+      if (e.target.matches?.(CHECKABLE) && e.target.getAttribute('aria-invalid') === 'true') { check(e.target); refreshSummary(); }
+    });
+    form.addEventListener('reset', () => { controls().forEach((c) => setError(c, '')); summary.hidden = true; });
+  }
+};
+
 // ---- Checkboxes ------------------------------------------------------------------------
 
 // A checkbox's mixed state exists only as a property, never an attribute, so data-indeterminate
@@ -859,6 +1121,11 @@ const init = (scope = document) => {
   enhanceDateRanges(claim);
   enhanceCode(claim);
   enhanceChecks(claim);
+  enhanceSteppers(claim);
+  enhanceReveal(claim);
+  enhanceColors(claim);
+  enhancePickers(claim);
+  enhanceForms(claim);
   enhanceTooltips(scope);
   audit(scope);
 };

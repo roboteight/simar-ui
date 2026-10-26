@@ -1,6 +1,6 @@
 (() => {
   // src/icons.svg
-  var icons_default = '<svg xmlns="http://www.w3.org/2000/svg" hidden>\n  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10" /><path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></symbol>\n  <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>\n  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></symbol>\n  <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></symbol>\n  <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>\n  <symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>\n  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M15 12H3" /><path d="M17 19H3" /></symbol>\n  <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M17 12H7" /><path d="M19 19H5" /></symbol>\n  <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M21 12H9" /><path d="M21 19H7" /></symbol>\n  <symbol id="i-align-justify" viewBox="0 0 24 24"><path d="M3 5h18" /><path d="M3 12h18" /><path d="M3 19h18" /></symbol>\n  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>\n  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol>\n  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></symbol>\n  <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></symbol>\n  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>\n  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>\n  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></symbol>\n  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>\n  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>\n  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>\n  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>\n</svg>\n';
+  var icons_default = '<svg xmlns="http://www.w3.org/2000/svg" hidden>\n  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10" /><path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></symbol>\n  <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>\n  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></symbol>\n  <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></symbol>\n  <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>\n  <symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>\n  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M15 12H3" /><path d="M17 19H3" /></symbol>\n  <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M17 12H7" /><path d="M19 19H5" /></symbol>\n  <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M21 12H9" /><path d="M21 19H7" /></symbol>\n  <symbol id="i-align-justify" viewBox="0 0 24 24"><path d="M3 5h18" /><path d="M3 12h18" /><path d="M3 19h18" /></symbol>\n  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>\n  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol>\n  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></symbol>\n  <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></symbol>\n  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>\n  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>\n  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></symbol>\n  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>\n  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" /><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" /><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" /><path d="m2 2 20 20" /></symbol>\n  <symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" /></symbol>\n  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="M12 5v14" /></symbol>\n  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>\n  <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" x2="12" y1="8" y2="12" /><line x1="12" x2="12.01" y1="16" y2="16" /></symbol>\n  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m17 8-5-5-5 5" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></symbol>\n  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></symbol>\n  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>\n  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>\n  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>\n</svg>\n';
 
   // src/tags.js
   var esc = (text) => String(text).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -24,6 +24,12 @@
     }
     return out;
   };
+  var SPINNERS = {
+    ticks: Array.from({ length: 12 }, (_, i) => `<line class="spinner__tick" x1="26" y1="2.6" x2="26" y2="14" transform="rotate(${i * 30} 26 26)"/>`).join(""),
+    ring: '<circle class="spinner__track" cx="26" cy="26" r="21"/><circle class="spinner__arc" cx="26" cy="26" r="21" pathLength="100"/>',
+    dots: [11, 26, 41].map((x) => `<circle class="spinner__dot" cx="${x}" cy="26" r="4.6"/>`).join(""),
+    bars: [8, 17.5, 27, 36.5].map((x) => `<rect class="spinner__bar" x="${x}" y="8" width="6" height="36" rx="3"/>`).join("")
+  };
   var rangeAttrs = (node) => ["min", "max", "step", "value", "name", "list"].map((name) => attr(node, name)).join("") + flag(node, "disabled") + attr(node, "unit", "data-unit") + attr(node, "prefix", "data-prefix");
   var swap = (node, html) => {
     const template = document.createElement("template");
@@ -37,6 +43,36 @@
     const attrs = ["name", "value", "form"].map((a) => attr(node, a)).join("") + flag(node, "checked") + flag(node, "disabled") + flag(node, "required") + (node.hasAttribute("indeterminate") ? " data-indeterminate" : "") + attr(node, "tooltip", "data-tooltip") + (isSwitch ? ' role="switch"' : "");
     return `<label${rootAttrs(node, "check")}><span class="well${isSwitch ? " switch" : ""}"><input type="checkbox"${attrs}><span class="key ${isSwitch ? "key--round" : "key--box"}">${faces}</span></span>${label ? `<span class="check__text">${esc(label)}</span>` : ""}</label>`;
   };
+  var NATIVE_INPUT_ATTRS = [
+    "type",
+    "name",
+    "value",
+    "placeholder",
+    "min",
+    "max",
+    "step",
+    "minlength",
+    "maxlength",
+    "pattern",
+    "autocomplete",
+    "inputmode",
+    "list",
+    "accept",
+    "size",
+    "rows",
+    "cols",
+    "form"
+  ];
+  var controlAttrs = (node) => NATIVE_INPUT_ATTRS.map((a) => attr(node, a)).join("") + ["required", "disabled", "readonly", "multiple"].map((a) => flag(node, a)).join("") + attr(node, "error", "data-error") + attr(node, "tooltip", "data-tooltip");
+  var fieldShell = (node, kind, control) => {
+    const id = node.getAttribute("id") ?? nextId(kind);
+    const hint = node.getAttribute("hint");
+    const hintId = hint ? `${id}-hint` : "";
+    return `<div${rootAttrs(node, "field")}><div class="field__head"><label class="field__label" for="${esc(id)}">${esc(
+      node.getAttribute("label") ?? ""
+    )}</label>${node.hasAttribute("required") ? '<span class="field__flag">Required</span>' : ""}</div>${control(esc(id), hintId ? ` aria-describedby="${hintId}"` : "")}${hint ? `<p class="field__hint" id="${hintId}">${esc(hint)}</p>` : ""}</div>`;
+  };
+  var svgIcon = (name, cls = "") => `<svg class="icon${cls ? ` ${cls}` : ""}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
   var builders = {
     // <simar-button icon="play" variant="accent|round|sq" label="Play">Text</simar-button>
     "simar-button": (node) => {
@@ -112,10 +148,57 @@
     // <simar-switch label="Notifications" name="notify">
     "simar-checkbox": (node) => checkLike(node, false),
     "simar-switch": (node) => checkLike(node, true),
+    // <simar-input label="Email" type="email" name="email" required hint="Used for receipts" error="Enter an email like name@chrissimari.com">
+    // type="password" with reveal adds a show/hide button; type can be text, email, tel, url, search, number,
+    // date, time, datetime-local, month or week.
+    "simar-input": (node) => {
+      const password = node.getAttribute("type") === "password" && node.hasAttribute("reveal");
+      return fieldShell(node, "input", (id, describedby) => {
+        const input = `<input class="input" id="${id}"${controlAttrs(node)}${describedby}>`;
+        return password ? `<span class="input-reveal">${input}<button type="button" class="input-reveal__button" aria-label="Show password" aria-pressed="false" aria-controls="${id}" data-reveal>${svgIcon("eye")}</button></span>` : input;
+      });
+    },
+    // <simar-textarea label="Message" name="message" rows="5" maxlength="500">Starting text</simar-textarea>
+    "simar-textarea": (node) => fieldShell(node, "textarea", (id, describedby) => `<textarea class="input" id="${id}"${controlAttrs(node)}${describedby}>${escText(node.textContent.trim())}</textarea>`),
+    // <simar-select label="Size" name="size"><simar-option value="s">Small</simar-option>...</simar-select>
+    // multiple makes a list box; <simar-group label="Group"> makes an optgroup.
+    "simar-select": (node) => {
+      const options = (parent) => [...parent.children].map((child) => {
+        if (child.tagName === "SIMAR-GROUP") return `<optgroup label="${esc(child.getAttribute("label") ?? "")}">${options(child)}</optgroup>`;
+        return `<option${attr(child, "value")}${flag(child, "selected")}${flag(child, "disabled")}>${escText(child.textContent.trim())}</option>`;
+      }).join("");
+      const multiple = node.hasAttribute("multiple");
+      return fieldShell(node, "select", (id, describedby) => {
+        const select = `<select class="input" id="${id}"${controlAttrs(node)}${describedby}>${options(node)}</select>`;
+        return multiple ? select : `<span class="select">${select}${svgIcon("chevron-down", "select__icon")}</span>`;
+      });
+    },
+    // <simar-number label="Quantity" name="qty" min="1" max="10" value="2">  (keys on each side; the input still works alone)
+    "simar-number": (node) => fieldShell(node, "number", (id, describedby) => {
+      const key = (step, label, icon3) => `<span class="well"><button type="button" class="key key--sq" aria-label="${label}" aria-controls="${id}" data-step="${step}">${svgIcon(icon3)}</button></span>`;
+      return `<div class="stepper">${key(-1, "Decrease", "minus")}<input class="input" id="${id}" type="number"${controlAttrs(node).replace(/ type="[^"]*"/, "")}${describedby}>${key(1, "Increase", "plus")}</div>`;
+    }),
+    // <simar-color label="Accent" name="accent" value="#36d27a">
+    "simar-color": (node) => fieldShell(node, "color", (id, describedby) => {
+      const value = node.getAttribute("value") ?? "#000000";
+      return `<span class="color"><input id="${id}" type="color"${controlAttrs(node).replace(/ type="[^"]*"/, "")}${describedby}><output class="lcd" for="${id}">${esc(value)}</output></span>`;
+    }),
+    // <simar-file label="Attachment" name="file" accept="image/*" multiple>
+    "simar-file": (node) => fieldShell(node, "file", (id, describedby) => `<input class="input" id="${id}" type="file"${controlAttrs(node).replace(/ type="[^"]*"/, "")}${describedby}>`),
+    // <simar-meter label="Disk used" value="72" min="0" max="100" low="30" high="80" optimum="100">
+    "simar-meter": (node) => {
+      const id = node.getAttribute("id") ?? nextId("meter");
+      const attrs = ["value", "min", "max", "low", "high", "optimum"].map((a) => attr(node, a)).join("");
+      return `<div${rootAttrs(node, "field")}><div class="field__head"><label class="field__label" for="${esc(id)}">${esc(node.getAttribute("label") ?? "")}</label></div><meter class="meter" id="${esc(id)}"${attrs}>${esc(node.getAttribute("value") ?? "")}</meter></div>`;
+    },
     // <simar-loader label="Uploading" value="64" max="100">   (leave value off for an unknown length)
     "simar-loader": (node) => `<progress${rootAttrs(node, "loader")} aria-label="${esc(node.getAttribute("label") ?? "Loading")}"${attr(node, "value")}${attr(node, "max")}></progress>`,
-    // <simar-spinner label="Loading results">
-    "simar-spinner": (node) => `<span${rootAttrs(node, "spinner")} role="status"><span class="spinner__ticks" aria-hidden="true">${"<i></i>".repeat(12)}</span><span class="spinner__label">${esc(node.getAttribute("label") ?? "Loading")}</span></span>`,
+    // <simar-spinner label="Loading results" variant="ring">   variant: ticks (default), ring, dots, bars
+    "simar-spinner": (node) => {
+      const variant = SPINNERS[node.getAttribute("variant")] ? node.getAttribute("variant") : "ticks";
+      const base = variant === "ticks" ? "spinner" : `spinner spinner--${variant}`;
+      return `<span${rootAttrs(node, base)} role="status"><svg class="spinner__art" viewBox="0 0 52 52" aria-hidden="true" focusable="false">${SPINNERS[variant]}</svg><span class="spinner__label">${esc(node.getAttribute("label") ?? "Loading")}</span></span>`;
+    },
     // <simar-code lang="html" label="Example">…</simar-code>
     // Put the code in a <template> or <script type="text/plain"> child to write it unescaped;
     // plain text works too (escape < as &lt;). Add `nocopy` to leave the copy button off, `nolines` the line numbers.
@@ -157,7 +240,7 @@
   };
   var checks = [
     [
-      'input[type="range"], input[type="date"], input[type="radio"], input[type="checkbox"], select, textarea',
+      'input:not([type="hidden"]):not([type="submit"]):not([type="reset"]):not([type="button"]):not([type="image"]), select, textarea, meter, progress',
       "has no accessible name. Add a label (a <label for>, a wrapping <label>, or aria-label), or give the tag a label attribute."
     ],
     [
@@ -765,6 +848,275 @@
       });
     }
   };
+  var enhanceSteppers = (claim) => {
+    for (const key of claim("[data-step]")) {
+      const input = document.getElementById(key.getAttribute("aria-controls"));
+      if (!input) continue;
+      const stepper = key.closest(".stepper");
+      stepper.classList.add("is-enhanced");
+      let status = stepper.querySelector(".stepper__status");
+      if (!status) {
+        status = el("span", "stepper__status", stepper);
+        status.setAttribute("role", "status");
+        status.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)";
+      }
+      key.addEventListener("click", () => {
+        const by = +key.dataset.step;
+        try {
+          if (by > 0) input.stepUp(by);
+          else input.stepDown(-by);
+        } catch {
+        }
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+        status.textContent = `${input.labels?.[0]?.textContent.trim() ?? "Value"}: ${input.value}`;
+      });
+    }
+  };
+  var enhanceReveal = (claim) => {
+    for (const button of claim("[data-reveal]")) {
+      const input = document.getElementById(button.getAttribute("aria-controls"));
+      if (!input) continue;
+      button.closest(".input-reveal")?.classList.add("is-enhanced");
+      button.addEventListener("click", () => {
+        const show = input.type === "password";
+        input.type = show ? "text" : "password";
+        button.setAttribute("aria-pressed", String(show));
+        button.setAttribute("aria-label", show ? "Hide password" : "Show password");
+        button.innerHTML = icon2(show ? "eye-off" : "eye");
+      });
+    }
+  };
+  var pickers = 0;
+  var enhancePickers = (claim) => {
+    for (const select of claim("select[data-picker]")) {
+      const id = `simar-picker-${++pickers}`;
+      const label = select.id ? document.querySelector(`label[for="${select.id}"]`) : null;
+      const options = [...select.options];
+      const art = (option) => {
+        const template = option.dataset.art && document.getElementById(option.dataset.art);
+        return template ? template.content.cloneNode(true) : null;
+      };
+      const fill = (target, option) => {
+        const holder = el("span", "picker__art", target);
+        holder.setAttribute("aria-hidden", "true");
+        holder.append(art(option) ?? "");
+        el("span", "picker__text", target).textContent = option.textContent;
+      };
+      const wrap = el("div", "picker");
+      const button = el("button", "input picker__button", wrap);
+      button.type = "button";
+      button.id = `${id}-button`;
+      button.setAttribute("role", "combobox");
+      button.setAttribute("aria-haspopup", "listbox");
+      button.setAttribute("aria-expanded", "false");
+      if (label) {
+        label.setAttribute("for", button.id);
+        label.id ||= `${id}-label`;
+        button.setAttribute("aria-labelledby", `${label.id} ${button.id}`);
+      } else if (select.getAttribute("aria-label")) {
+        button.setAttribute("aria-label", select.getAttribute("aria-label"));
+      }
+      const shown = el("span", "picker__shown", button);
+      button.insertAdjacentHTML("beforeend", icon2("chevron-down").replace('class="icon"', 'class="icon picker__icon"'));
+      const list = el("ul", "picker__list", wrap);
+      list.id = `${id}-list`;
+      list.setAttribute("role", "listbox");
+      list.setAttribute("popover", "auto");
+      if (label) list.setAttribute("aria-labelledby", label.id);
+      const items = options.map((option, i) => {
+        const item = el("li", "picker__option", list);
+        item.id = `${id}-option-${i}`;
+        item.setAttribute("role", "option");
+        fill(item, option);
+        item.addEventListener("pointerdown", (e) => e.preventDefault());
+        item.addEventListener("click", () => {
+          choose(i);
+          close();
+        });
+        item.addEventListener("pointermove", () => highlight(i));
+        return item;
+      });
+      let active = select.selectedIndex;
+      const isOpen = () => list.matches(":popover-open");
+      const highlight = (i) => {
+        active = Math.max(0, Math.min(items.length - 1, i));
+        items.forEach((item, n) => item.classList.toggle("is-active", n === active));
+        button.setAttribute("aria-activedescendant", items[active].id);
+        items[active].scrollIntoView({ block: "nearest" });
+      };
+      const render = () => {
+        shown.replaceChildren();
+        fill(shown, select.options[select.selectedIndex]);
+        items.forEach((item, n) => item.setAttribute("aria-selected", String(n === select.selectedIndex)));
+      };
+      const choose = (i) => {
+        if (select.selectedIndex === i) return;
+        select.selectedIndex = i;
+        render();
+        select.dispatchEvent(new Event("input", { bubbles: true }));
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      };
+      const open = () => {
+        if (isOpen() || button.disabled) return;
+        const box = button.getBoundingClientRect();
+        list.style.minWidth = `${box.width}px`;
+        list.style.left = `${box.left}px`;
+        list.showPopover();
+        const below = innerHeight - box.bottom;
+        const height = list.offsetHeight;
+        list.style.top = `${below >= height + 8 || box.top < height ? box.bottom + 4 : box.top - height - 4}px`;
+        highlight(select.selectedIndex);
+      };
+      const close = () => {
+        if (isOpen()) list.hidePopover();
+      };
+      list.addEventListener("toggle", () => {
+        button.setAttribute("aria-expanded", String(isOpen()));
+        if (isOpen()) button.setAttribute("aria-controls", list.id);
+        else {
+          button.removeAttribute("aria-controls");
+          button.removeAttribute("aria-activedescendant");
+        }
+      });
+      button.addEventListener("click", () => isOpen() ? close() : open());
+      button.addEventListener("keydown", (e) => {
+        const key = e.key;
+        if (!isOpen()) {
+          if (["ArrowDown", "ArrowUp", "Enter", " "].includes(key)) {
+            e.preventDefault();
+            open();
+          } else if (key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+            const next = options.findIndex((o, n) => n > select.selectedIndex && o.textContent.toLowerCase().startsWith(key.toLowerCase()));
+            if (next >= 0) {
+              e.preventDefault();
+              choose(next);
+            }
+          }
+          return;
+        }
+        if (key === "ArrowDown") highlight(active + 1);
+        else if (key === "ArrowUp") highlight(active - 1);
+        else if (key === "Home") highlight(0);
+        else if (key === "End") highlight(items.length - 1);
+        else if (key === "Enter" || key === " ") {
+          choose(active);
+          close();
+        } else if (key === "Tab") {
+          choose(active);
+          close();
+          return;
+        } else if (key === "Escape") {
+          close();
+        } else if (key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          const next = options.findIndex((o, n) => n > active && o.textContent.toLowerCase().startsWith(key.toLowerCase()));
+          if (next >= 0) highlight(next);
+        } else return;
+        e.preventDefault();
+      });
+      select.addEventListener("change", render);
+      const host = select.closest(".select") ?? select;
+      host.hidden = true;
+      host.after(wrap);
+      render();
+    }
+  };
+  var enhanceColors = (claim) => {
+    for (const input of claim('.color input[type="color"]')) {
+      const out = input.closest(".color").querySelector("output");
+      const sync = () => {
+        if (out) out.value = input.value;
+      };
+      input.addEventListener("input", sync);
+      sync();
+    }
+  };
+  var CHECKABLE = 'input:not([type="hidden"]):not([type="submit"]):not([type="reset"]):not([type="button"]):not([type="image"]):not([type="radio"]), select, textarea';
+  var errorCount = 0;
+  var enhanceForms = (claim) => {
+    for (const form of claim("form[data-validate]")) {
+      form.noValidate = true;
+      let summary = form.querySelector(".form__summary");
+      if (!summary) {
+        summary = el("div", "form__summary");
+        summary.hidden = true;
+        summary.setAttribute("role", "alert");
+        summary.tabIndex = -1;
+        form.prepend(summary);
+      }
+      const nameOf = (control) => control.labels?.[0]?.textContent.replace(/\s+/g, " ").trim() || control.getAttribute("aria-label") || control.name;
+      const errorNode = (control) => {
+        if (!control.id) control.id = `simar-field-${++errorCount}`;
+        let node = document.getElementById(`${control.id}-error`);
+        if (!node) {
+          node = el("p", "field__error");
+          node.id = `${control.id}-error`;
+          node.hidden = true;
+          node.innerHTML = `${icon2("circle-alert")}<span></span>`;
+          const check2 = !control.closest(".field") && control.closest(".check");
+          if (check2) check2.after(node);
+          else (control.closest(".field") ?? control.parentElement).append(node);
+        }
+        return node;
+      };
+      const setError = (control, message) => {
+        const node = errorNode(control);
+        const ids = (control.getAttribute("aria-describedby") ?? "").split(/\s+/).filter((id) => id && id !== node.id);
+        if (message) {
+          node.querySelector("span").textContent = message;
+          node.hidden = false;
+          control.setAttribute("aria-invalid", "true");
+          control.setAttribute("aria-describedby", [...ids, node.id].join(" "));
+        } else {
+          node.hidden = true;
+          control.removeAttribute("aria-invalid");
+          if (ids.length) control.setAttribute("aria-describedby", ids.join(" "));
+          else control.removeAttribute("aria-describedby");
+        }
+      };
+      const check = (control) => {
+        setError(control, control.validity.valid ? "" : control.dataset.error || control.validationMessage);
+        return control.validity.valid;
+      };
+      const controls = () => [...form.elements].filter((c) => c.matches(CHECKABLE) && c.willValidate);
+      const refreshSummary = () => {
+        const bad = controls().filter((c) => !c.validity.valid && c.getAttribute("aria-invalid") === "true");
+        if (!bad.length) {
+          summary.hidden = true;
+          summary.textContent = "";
+          return;
+        }
+        summary.textContent = `${bad.length} ${bad.length === 1 ? "field needs" : "fields need"} attention: ${bad.map(nameOf).join(", ")}.`;
+        summary.hidden = false;
+      };
+      form.addEventListener("submit", (e) => {
+        const bad = controls().filter((c) => !check(c));
+        if (!bad.length) {
+          summary.hidden = true;
+          return;
+        }
+        e.preventDefault();
+        refreshSummary();
+        bad[0].focus();
+      });
+      form.addEventListener("change", (e) => {
+        if (e.target.matches?.(CHECKABLE)) {
+          check(e.target);
+          refreshSummary();
+        }
+      });
+      form.addEventListener("input", (e) => {
+        if (e.target.matches?.(CHECKABLE) && e.target.getAttribute("aria-invalid") === "true") {
+          check(e.target);
+          refreshSummary();
+        }
+      });
+      form.addEventListener("reset", () => {
+        controls().forEach((c) => setError(c, ""));
+        summary.hidden = true;
+      });
+    }
+  };
   var enhanceChecks = (claim) => {
     for (const box of claim('input[type="checkbox"][data-indeterminate]')) box.indeterminate = true;
   };
@@ -911,6 +1263,11 @@
     enhanceDateRanges(claim);
     enhanceCode(claim);
     enhanceChecks(claim);
+    enhanceSteppers(claim);
+    enhanceReveal(claim);
+    enhanceColors(claim);
+    enhancePickers(claim);
+    enhanceForms(claim);
     enhanceTooltips(scope);
     audit(scope);
   };

@@ -1,0 +1,232 @@
+@use "sass:map";
+@use "../abstracts" as *;
+
+// Typography. Nothing here restyles bare elements on a page: use the classes (.h1 to .h6,
+// .display-1 to .display-3, .lead) anywhere, or wrap running text in .prose to style the
+// elements inside it. Sizes scale with the window (clamp) so headings fit a phone.
+$heading-sizes: (
+  1: clamp(2rem, 1.4rem + 2.4vw, 2.75rem),
+  2: clamp(1.65rem, 1.3rem + 1.4vw, 2.1rem),
+  3: clamp(1.4rem, 1.2rem + 0.8vw, 1.65rem),
+  4: 1.3rem,
+  5: 1.12rem,
+  6: 0.95rem,
+);
+
+@mixin heading($level) {
+  margin: 0 0 0.5em;
+  color: var(--ink);
+  font-family: var(--font-heading);
+  font-size: map.get($heading-sizes, $level);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+@for $n from 1 through 6 {
+  .h#{$n},
+  .prose h#{$n} { @include heading($n); }
+}
+
+.prose h6,
+.h6 {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+// Display: for a headline that has the page to itself.
+.display-1,
+.display-2,
+.display-3 {
+  margin: 0 0 0.4em;
+  color: var(--ink);
+  font-family: var(--font-heading);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.display-1 { font-size: clamp(2.75rem, 1.6rem + 5vw, 4.75rem); }
+.display-2 { font-size: clamp(2.4rem, 1.5rem + 4vw, 4rem); }
+.display-3 { font-size: clamp(2.1rem, 1.4rem + 3vw, 3.25rem); }
+
+.lead {
+  margin: 0 0 1em;
+  color: var(--ink-soft);
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.3rem);
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+.prose {
+  max-width: 65ch;
+  line-height: 1.65;
+  color: var(--ink);
+
+  > :first-child { margin-top: 0; }
+  > :last-child { margin-bottom: 0; }
+
+  p,
+  ul,
+  ol,
+  dl { margin: 0 0 1em; }
+
+  ul,
+  ol { padding-left: 1.4em; }
+  li + li { margin-top: 0.3em; }
+  li::marker { color: var(--ink-soft); }
+
+  dt { font-weight: 600; }
+  dd { margin: 0 0 0.6em; color: var(--ink-soft); }
+
+  a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--lit-ink);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+
+    &:hover { text-decoration-color: currentColor; }
+    &:focus-visible { @include focus-ring(2px); border-radius: 2px; }
+  }
+
+  hr {
+    height: 0;
+    margin: 1.5em 0;
+    border: 0;
+    border-top: 1px solid var(--hairline-strong);
+    box-shadow: 0 1px 0 var(--lip);
+  }
+
+  small,
+  .small { font-size: 0.85em; color: var(--ink-soft); }
+
+  mark {
+    padding: 0.05em 0.3em;
+    border-radius: 4px;
+    color: var(--ink);
+    background: color-mix(in srgb, var(--lit) 28%, transparent);
+
+    @include forced-colors { background: Mark; color: MarkText; }
+  }
+
+  code,
+  samp { font-family: var(--font-mono); font-size: 0.9em; }
+
+  abbr[title] { text-decoration: underline dotted; text-underline-offset: 0.2em; cursor: help; }
+  del { color: var(--ink-soft); }
+  ins { text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+  sub,
+  sup { font-size: 0.75em; line-height: 0; }
+}
+
+// A keyboard key, inline: a small cap.
+kbd.kbd,
+.prose kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 0.1em 0.5em;
+  border-radius: 6px;
+  color: var(--ink);
+  font: 0.85em/1.4 var(--font-mono);
+  text-align: center;
+  background: linear-gradient(var(--cap-top), var(--cap-bottom));
+  box-shadow: 0 0 0 1px var(--hairline-strong), 0 2px 0 var(--wall-near), 0 3px 3px rgba(0, 0, 0, 0.12);
+
+  @include forced-colors { border: 1px solid ButtonText; box-shadow: none; background: ButtonFace; }
+}
+
+// A quotation: a bar in the highlight color beside the words, and who said it underneath.
+// <figure class="quote"><blockquote><p>…</p></blockquote><figcaption>…<cite>…</cite></figcaption></figure>
+.quote {
+  margin: 0;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  border-left: 4px solid var(--lit);
+  border-radius: 2px;
+
+  @include forced-colors { border-left-color: Highlight; }
+
+  blockquote {
+    margin: 0;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    font-style: italic;
+
+    p { margin: 0 0 0.5em; }
+    > :last-child { margin-bottom: 0; }
+  }
+
+  figcaption {
+    margin-top: 0.6rem;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+
+    &::before { content: "\2014\00a0" / ""; } // an em dash, which is not read out
+  }
+
+  cite { font-style: normal; font-weight: 600; color: var(--ink); }
+
+  // A pull quote: larger, centred, set apart.
+  &--pull {
+    padding: 1rem 0;
+    border-left: 0;
+    text-align: center;
+
+    blockquote {
+      font-size: clamp(1.35rem, 1.1rem + 1.2vw, 1.9rem);
+      font-style: normal;
+      font-weight: 300;
+      line-height: 1.35;
+      text-wrap: balance;
+
+      &::before {
+        content: "\201C" / "";
+        display: block;
+        height: 0.5em;
+        color: var(--lit);
+        font: 700 3em/0.9 Georgia, "Times New Roman", serif;
+      }
+    }
+  }
+}
+
+// A text blurb: a short block with a small label, a title and a few words.
+.blurb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1rem;
+}
+
+.blurb {
+  padding: 1.1rem 1.25rem 1.25rem;
+  border-radius: 16px;
+  background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
+  box-shadow: 0 0 0 1px var(--hairline), 0 6px 14px -8px shade(0.3);
+
+  &__eyebrow {
+    margin: 0 0 0.4rem;
+    @include label-caps(0.72rem);
+  }
+
+  &__title {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+
+  &__text {
+    margin: 0;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+
+  // Sunk into the page, like a well.
+  &--inset {
+    background: linear-gradient(var(--well-top), var(--well-bottom));
+    box-shadow: inset 0 2px 4px var(--grip-dark), 0 1px 0 var(--lip);
+  }
+
+  @include forced-colors { border: 1px solid CanvasText; box-shadow: none; }
+}

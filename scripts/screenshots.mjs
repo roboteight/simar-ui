@@ -38,7 +38,11 @@ const shoot = async (name, handles, pad = 14) => {
   await page.screenshot({ path: path.join(out, `${name}.png`), clip, captureBeyondViewport: true });
   console.log(`  ${name}.png  ${Math.round(clip.width)}x${Math.round(clip.height)}`);
 };
-const panel = (legend) => page.evaluateHandle((text) => [...document.querySelectorAll('.panel')].find((p) => p.querySelector('legend')?.textContent.trim() === text), legend);
+const panel = async (legend) => {
+  const handle = await page.evaluateHandle((text) => [...document.querySelectorAll('.panel')].find((p) => p.querySelector('legend')?.textContent.trim() === text) ?? null, legend);
+  if (!handle.asElement()) throw new Error(`No panel with the legend "${legend}"`);
+  return handle;
+};
 const section = (id) => page.$(`section[aria-labelledby="${id}"]`);
 
 console.log('Demo page');
@@ -56,9 +60,37 @@ await shoot('knobs', [await panel('Output'), await panel('Options')]);
 await shoot('rotary', [await panel('Range')]);
 await shoot('accordion', [await section('accordion')], 4);
 await shoot('code', [await panel('Code block')]);
-await page.click('#pause-motion');          // freeze the motion for a steady frame
-await shoot('loader', [await panel('Spinner and progress')]);
-await page.click('#pause-motion');
+for (const key of await page.$$('[data-pause]')) await key.click();   // freeze the motion for a steady frame
+await shoot('progress', [await panel('Progress')]);
+await shoot('spinners', [await panel('Spinners')]);
+for (const key of await page.$$('[data-pause]')) await key.click();
+await shoot('meter', [await panel('Meter')]);
+await shoot('typography', [await panel('Headings'), await panel('Text')]);
+await shoot('quotes', [await panel('Blockquote'), await panel('Pull quote')]);
+await shoot('blurbs', [await panel('Blurbs')]);
+await shoot('form-control', [await panel('Text inputs'), await panel('Textarea')]);
+await shoot('date-time', [await panel('Date and time'), await panel('File and color')]);
+await shoot('select', [await panel('Select')]);
+await shoot('input-group', [await panel('Number stepper'), await panel('Password')]);
+await shoot('validation', [await panel('Sign up')]);
+await page.click('#signup button[type="submit"]');
+await wait(400);
+await shoot('validation-errors', [await panel('Sign up')]);
+await page.click('#signup button[type="reset"]');
+await page.evaluate(() => {
+  for (const field of document.querySelectorAll('#signup input, #signup select')) {
+    if (field.type === 'checkbox') field.checked = true;
+    else if (field.tagName === 'SELECT') field.selectedIndex = 1;
+    else if (field.type === 'email') field.value = 'hello@chrissimari.com';
+    else if (field.type === 'number') field.value = '30';
+    else if (!field.value && field.type === 'password') field.value = 'longenough1';
+    else if (!field.value && field.type !== 'submit' && field.type !== 'reset') field.value = 'Chris';
+  }
+});
+await page.click('#signup button[type="submit"]');
+await wait(1300);
+await shoot('form-sent', [await panel('Sign up')]);
+await page.click('[data-sent-again]');
 
 // the date range, with the calendar open and a range chosen
 await (await page.$('section[aria-labelledby="dates"] .daterange button[popovertarget]')).evaluate((b) => b.scrollIntoView({ block: 'center' }));
@@ -84,11 +116,14 @@ await (await (await htmlKey.$$('.snippet__tabs label'))[1]).click();
 await wait(200);
 await shoot('html-key', [keysPanel, htmlKey]);
 
-// a tooltip, shown the way a keyboard user sees it
+// a tooltip, shown the way a keyboard user sees it (on a fresh page, so earlier steps can't interfere)
+await open('index.html');
 await (await page.$('#tooltip-demo')).evaluate((n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.mouse.move(0, 0);
 await page.keyboard.press('Tab');
-await page.evaluate(() => document.querySelector('#tooltip-demo button[data-tooltip="Saves a copy to this device"]').focus());
-await wait(400);
+await page.focus('#tooltip-demo button[data-tooltip="Saves a copy to this device"]');
+await page.waitForSelector('[role="tooltip"]:popover-open', { timeout: 4000 });
+await wait(300);
 await shoot('tooltip', [await panel('Tooltips'), await page.$('[role="tooltip"]:popover-open')], 20);
 await page.evaluate(() => document.activeElement.blur());
 
@@ -115,8 +150,13 @@ await shoot('radios-dark', [await panel('Mode'), await panel('Channel'), await p
 await shoot('checks-dark', [await panel('Checkboxes'), await panel('Switches')]);
 await shoot('faders-dark', [await panel('Faders'), await panel('Min and max')]);
 await shoot('knobs-dark', [await panel('Output'), await panel('Options')]);
-await page.click('#pause-motion');
-await shoot('loader-dark', [await panel('Spinner and progress')]);
+for (const key of await page.$$('[data-pause]')) await key.click();
+await shoot('progress-dark', [await panel('Progress')]);
+await shoot('form-control-dark', [await panel('Text inputs'), await panel('Textarea')]);
+await page.click('#signup button[type="submit"]');
+await wait(400);
+await shoot('validation-errors-dark', [await panel('Sign up')]);
+await page.click('#signup button[type="reset"]');
 
 // the Auto / Light / Dark control, top right of the page
 await page.addStyleTag({ content: '.themebar { display: block !important; }' });

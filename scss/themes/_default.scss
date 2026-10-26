@@ -1,0 +1,246 @@
+// The default theme: the first look simar-ui ships with. A theme is one file like this one. It
+// supplies the design tokens (every color, shadow strength and highlight) for light and for dark,
+// the highlight presets, and the colors of the button variants. Everything else in the library reads
+// those tokens and has no colors of its own, so a new theme is a copy of this file with new values.
+//
+//   scss/themes/_default.scss   <- this file
+//   scss/themes/_yours.scss     <- same shape: $lit-presets, $key-colors, @mixin light, @mixin dark
+//
+// To use another theme, change the one @use in scss/base/_root.scss (and scss/components/_key.scss).
+@use "sass:map";
+@use "sass:color";
+
+// Secondary text on a tinted palette: bright hues (green, yellow) are lighter than blue at the same
+// HSL lightness, so pull it darker (light theme) or lighter (dark theme) to keep 4.5:1.
+@function text-tone($c, $hue, $sat, $shift) {
+  @if $hue == null { @return $c; }
+  @return color.scale(color.change($c, $hue: $hue, $saturation: $sat), $lightness: $shift);
+}
+
+// Retints a neutral to a palette's hue. With no hue it is returned unchanged (the default theme).
+@function tone($c, $hue, $sat) {
+  @if $hue == null { @return $c; }
+  @return color.change($c, $hue: $hue, $saturation: $sat);
+}
+
+// data-lit="name" presets for the highlight colour. The first four are simar-ui's own; the rest are
+// the Material Design 500 palette (https://m2.material.io/design/color), by name. Any value works:
+// the lit text and fills are derived from the color by lightness, so it stays readable.
+$lit-presets: (
+  "blue": #3b8cff,
+  "amber": #ffb020,
+  "red": #ff4d5e,
+  "violet": #9b6bff,
+  // Material
+  "deep-orange": #ff5722,
+  "orange": #ff9800,
+  "yellow": #ffeb3b,
+  "lime": #cddc39,
+  "light-green": #8bc34a,
+  "teal": #009688,
+  "cyan": #00bcd4,
+  "light-blue": #03a9f4,
+  "indigo": #3f51b5,
+  "deep-purple": #673ab7,
+  "purple": #9c27b0,
+  "pink": #e91e63,
+  "brown": #795548,
+  "blue-grey": #607d8b,
+);
+
+// The button variants: class="key key--primary". Each is a gradient cap (top to bottom) and the ink
+// on it, chosen so the label is at least 4.5:1 against both ends (checked in tests/a11y.mjs).
+// `accent` is the orange key, which also tints the knobs' index mark through --accent.
+$key-colors: (
+  "primary":   (top: #8dbaff, bottom: #5b95ff, ink: #1f2024, shadow: (0 1px 0 rgba(255, 255, 255, 0.4))),
+  "secondary": (top: #d6dae1, bottom: #b4bbc7, ink: #1f2024, shadow: (0 1px 0 rgba(255, 255, 255, 0.45))),
+  "success":   (top: #79e0a3, bottom: #45c97e, ink: #1f2024, shadow: (0 1px 0 rgba(255, 255, 255, 0.4))),
+  "danger":    (top: #ff9a92, bottom: #ff6459, ink: #1f2024, shadow: (0 1px 0 rgba(255, 255, 255, 0.4))),
+  "warning":   (top: #ffd778, bottom: #ffb938, ink: #1f2024, shadow: (0 1px 0 rgba(255, 255, 255, 0.45))),
+  "info":      (top: #7ae0f2, bottom: #3fc6e2, ink: #1f2024, shadow: (0 1px 0 rgba(255, 255, 255, 0.4))),
+  "light":     (top: #fdfdfd, bottom: #dcdee2, ink: #1f2024, shadow: (0 1px 0 #fff)),
+  "dark":      (top: #5a5f6b, bottom: #383c45, ink: #ffffff, shadow: (0 -1px 0 rgba(0, 0, 0, 0.5))),
+);
+
+// Design tokens. Light is the default; dark applies when the system asks for it, or when
+// data-theme="dark" is set on any element (data-theme="light" forces light, even in a dark
+// system). Override any token on :root, or on one element, to restyle.
+@mixin light($hue: null, $sat: null) {
+  color-scheme: light;
+  --ink: #{tone(#2b2d31, $hue, $sat)};
+  --ink-soft: #{text-tone(#5a5e66, $hue, $sat, -22%)};
+  --ink-disabled: #{tone(#9a9ea6, $hue, $sat)};
+  --on-accent: #2b2d31; // text on the orange accent key: dark in both themes, white is only 2:1
+  --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  --focus: #2f6fed;
+
+  --surface-top: #{tone(#f6f7f8, $hue, $sat)};
+  --surface-bottom: #{tone(#fdfdfe, $hue, $sat)};
+  --sheet-top: #{tone(#fdfdfe, $hue, $sat)};
+  --sheet-bottom: #{tone(#f3f4f6, $hue, $sat)};
+  --hairline: rgba(0, 0, 0, 0.06);
+  --hairline-strong: rgba(0, 0, 0, 0.08);
+  --lip: #fff; // the light edge under a recessed part
+  --scrim: rgba(40, 44, 52, 0.35);
+
+  // cap (a key)
+  --cap-top: #{tone(#fdfdfd, $hue, $sat)};
+  --cap-bottom: #{tone(#dcdee2, $hue, $sat)};
+  --cap-edge-light: #ffffff;
+  --cap-edge-dark: #{tone(#d6d9de, $hue, $sat)};
+  --wall-near: #{tone(#cdd1d7, $hue, $sat)};
+  --wall-far: #{tone(#c1c6cd, $hue, $sat)};
+  --latch-top: #{tone(#e4e6ea, $hue, $sat)};
+  --latch-bottom: #{tone(#f2f3f5, $hue, $sat)};
+  --latch-wall: #{tone(#ccd0d6, $hue, $sat)};
+  --key-text-shadow: 0 1px 0 #fff;
+  --icon-shadow: 0 1px 0 #fff;
+
+  // well and groove (the recessed parts)
+  --well-top: #{tone(#e4e6ea, $hue, $sat)};
+  --well-bottom: #{tone(#f1f2f4, $hue, $sat)};
+  --groove-top: #{tone(#bfc3ca, $hue, $sat)};
+  --groove-bottom: #{tone(#d9dce1, $hue, $sat)};
+  --grip-dark: rgba(0, 0, 0, 0.2);
+  --grip-light: rgba(255, 255, 255, 0.95);
+  --tick: #{tone(#b3b7be, $hue, $sat)};
+
+  // knobs and dials
+  --metal-1: #{tone(#f6f7f9, $hue, $sat)};
+  --metal-2: #{tone(#cdd0d6, $hue, $sat)};
+  --metal-3: #{tone(#fbfbfc, $hue, $sat)};
+  --metal-4: #{tone(#bfc3ca, $hue, $sat)};
+  --metal-hub: #{tone(#dfe2e6, $hue, $sat)};
+  --dish-1: #fff;
+  --dish-2: #{tone(#e6e8ec, $hue, $sat)};
+  --dish-3: #{tone(#c8ccd2, $hue, $sat)};
+  --knurl: rgba(0, 0, 0, 0.14);
+  --arc-lip: #fff;
+  --arc-groove: #{tone(#aeb2ba, $hue, $sat)};
+  --arc-floor: #{tone(#d1d4d9, $hue, $sat)};
+
+  --code-bg: #{tone(#22262d, $hue, $sat)};
+  --code-ink: #{tone(#d7dae0, $hue, $sat)};
+  --swatch-ring: #fff;
+  --tip-bg: #{tone(#2b2d31, $hue, $sat)};
+  --tip-ink: #fff;
+
+  // text fields, errors, and the meter's three states
+  --input-top: #{tone(#eceef1, $hue, $sat)};
+  --input-bottom: #{tone(#f4f5f7, $hue, $sat)};
+  --input-edge: rgba(0, 0, 0, 0.1);
+  --error: #b3261e;
+  --meter-ok: #1f7a45;
+  --meter-warn: #a8610a;
+  --meter-bad: #b3261e;
+  --meter-pattern: rgba(255, 255, 255, 0.42);
+
+  // how strong shadows and highlights are, and how the lit colour is made readable on a key
+  --shade-k: 1;
+  --tint-k: 1;
+  --lit-ink-mix: 45%;
+  --lit-ink-end: #000;
+  // How light or dark the lit text may be (OKLCH lightness 0 to 1): dark enough on the light keys.
+  --lit-ink-min-l: 0;
+  --lit-ink-max-l: 0.45;
+}
+
+@mixin dark($hue: null, $sat: null) {
+  color-scheme: dark;
+  --ink: #{tone(#e9ebef, $hue, $sat)};
+  --ink-soft: #{text-tone(#a3a8b2, $hue, $sat, 12%)};
+  --ink-disabled: #{tone(#6c717a, $hue, $sat)};
+  --on-accent: #1f2024;
+  --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+  --focus: #7aa7ff;
+
+  --surface-top: #{tone(#292c33, $hue, $sat)};
+  --surface-bottom: #{tone(#23262c, $hue, $sat)};
+  --sheet-top: #{tone(#2e3138, $hue, $sat)};
+  --sheet-bottom: #{tone(#272a30, $hue, $sat)};
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-strong: rgba(255, 255, 255, 0.12);
+  --lip: rgba(255, 255, 255, 0.07);
+  --scrim: rgba(0, 0, 0, 0.6);
+
+  --cap-top: #{tone(#4f535d, $hue, $sat)};
+  --cap-bottom: #{tone(#3c3f47, $hue, $sat)};
+  --cap-edge-light: rgba(255, 255, 255, 0.22);
+  --cap-edge-dark: #{tone(#2a2c32, $hue, $sat)};
+  --wall-near: #{tone(#25272c, $hue, $sat)};
+  --wall-far: #{tone(#1b1c20, $hue, $sat)};
+  --latch-top: #{tone(#2f3238, $hue, $sat)};
+  --latch-bottom: #{tone(#393c44, $hue, $sat)};
+  --latch-wall: #{tone(#202227, $hue, $sat)};
+  --key-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.55);
+  --icon-shadow: 0 -1px 0 rgba(0, 0, 0, 0.55);
+
+  --well-top: #{tone(#15161a, $hue, $sat)};
+  --well-bottom: #{tone(#1c1d21, $hue, $sat)};
+  --groove-top: #{tone(#121316, $hue, $sat)};
+  --groove-bottom: #{tone(#1a1b1f, $hue, $sat)};
+  --grip-dark: rgba(0, 0, 0, 0.55);
+  --grip-light: rgba(255, 255, 255, 0.2);
+  --tick: #{tone(#5a5e68, $hue, $sat)};
+
+  --metal-1: #{tone(#7e838e, $hue, $sat)};
+  --metal-2: #{tone(#4c505a, $hue, $sat)};
+  --metal-3: #{tone(#8d929d, $hue, $sat)};
+  --metal-4: #{tone(#40434b, $hue, $sat)};
+  --metal-hub: #{tone(#5d616b, $hue, $sat)};
+  --dish-1: #{tone(#70757f, $hue, $sat)};
+  --dish-2: #{tone(#565a64, $hue, $sat)};
+  --dish-3: #{tone(#43464e, $hue, $sat)};
+  --knurl: rgba(0, 0, 0, 0.35);
+  --arc-lip: rgba(255, 255, 255, 0.1);
+  --arc-groove: #{tone(#0e0f12, $hue, $sat)};
+  --arc-floor: #{tone(#1a1b1f, $hue, $sat)};
+
+  --code-bg: #{tone(#101114, $hue, $sat)};
+  --code-ink: #{tone(#d7dae0, $hue, $sat)};
+  --swatch-ring: #e9ebef;
+  --tip-bg: #{tone(#e9ebef, $hue, $sat)};
+  --tip-ink: #1b1c20;
+
+  --input-top: #{tone(#121317, $hue, $sat)};
+  --input-bottom: #{tone(#191a1e, $hue, $sat)};
+  --input-edge: rgba(255, 255, 255, 0.1);
+  --error: #ff9b92;
+  --meter-ok: #5fd48f;
+  --meter-warn: #ffb44d;
+  --meter-bad: #ff8a80;
+  --meter-pattern: rgba(0, 0, 0, 0.35);
+
+  --shade-k: 3;
+  --tint-k: 0.12;
+  --lit-ink-mix: 60%;
+  --lit-ink-end: #fff;
+  // ...and light enough on the dark ones.
+  --lit-ink-min-l: 0.88;
+  --lit-ink-max-l: 1;
+}
+
+
+// Font choices, picked with data-font="name" on <html>. The page's own (system) fonts are the default,
+// so nothing loads until a font is chosen. Each sets up to three tokens: --font-body (text and
+// controls), --font-heading (headings and display type) and --font-mono (code). The families are
+// from Google Fonts; load them yourself (the demo page does it when you pick one).
+$fonts: (
+  "sans":  (body: ('Inter', system-ui, sans-serif), heading: ('Inter', system-ui, sans-serif)),
+  "serif": (body: ('Source Serif 4', Georgia, serif), heading: ('Source Serif 4', Georgia, serif)),
+  "both":  (body: ('Inter', system-ui, sans-serif), heading: ('Source Serif 4', Georgia, serif)),
+);
+$mono-web: ('JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace);
+
+// Whole-page color themes, picked with data-palette="name" on <html>. Each retints every neutral
+// (surfaces, wells, caps, metal, ink) to one hue in light and in dark, and brings its own highlight
+// color. Hues follow the Material Design palette. Add one by adding a line.
+//   name: (hue in degrees, saturation of the neutrals, highlight color)
+$palettes: (
+  "indigo": (hue: 231deg, sat: 24%, lit: #5c6bc0),
+  "teal":   (hue: 174deg, sat: 22%, lit: #00a896),
+  "rose":   (hue: 340deg, sat: 22%, lit: #e91e63),
+  "amber":  (hue: 38deg,  sat: 26%, lit: #ffa000),
+  "forest": (hue: 125deg, sat: 18%, lit: #43a047),
+  "ocean":  (hue: 200deg, sat: 26%, lit: #039be5),
+);

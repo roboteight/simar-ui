@@ -129,11 +129,18 @@ const suite = async (theme) => {
   add(await run(`${t}, JavaScript on`));
   total += await gradientContrast(`${t}, JavaScript on`);
   // Lit text has to stay readable whichever highlight colour is chosen.
-  for (const preset of ['blue', 'amber', 'red', 'violet']) {
+  for (const preset of ['blue', 'amber', 'red', 'violet', 'deep-orange', 'orange', 'yellow', 'lime', 'light-green', 'teal', 'cyan', 'light-blue', 'indigo', 'deep-purple', 'purple', 'pink', 'brown', 'blue-grey']) {
     await page.evaluate((name) => { document.documentElement.dataset.lit = name; }, preset);
     total += await gradientContrast(`${t}, highlight ${preset}`);
   }
   await page.evaluate(() => { delete document.documentElement.dataset.lit; });
+  // Every whole-page theme has to pass too, with its own surfaces and highlight.
+  for (const palette of ['indigo', 'teal', 'rose', 'amber', 'forest', 'ocean']) {
+    await page.evaluate((name) => { document.documentElement.dataset.palette = name; }, palette);
+    add(await run(`${t}, ${palette} palette`));
+    total += await gradientContrast(`${t}, ${palette} palette`);
+  }
+  await page.evaluate(() => { delete document.documentElement.dataset.palette; });
 
   // calendar popover open
   await page.evaluate(() => document.querySelector('[data-daterange] button[popovertarget]').scrollIntoView({ block: 'center' }));
@@ -160,6 +167,24 @@ const suite = async (theme) => {
   add(await run(`${t}, tooltip showing`));
   total += await gradientContrast(`${t}, tooltip showing`);
   await page.keyboard.press('Escape');
+
+  // the sign-up form with its errors showing
+  await page.evaluate(() => document.querySelector('#signup').scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.click('#signup button[type="submit"]');
+  await wait(300);
+  add(await run(`${t}, form errors showing`));
+  total += await gradientContrast(`${t}, form errors showing`);
+  await page.click('#signup button[type="reset"]');
+
+  // the settings drawer open
+  await page.evaluate(() => scrollTo({ top: 1400, behavior: 'instant' }));
+  await wait(300);
+  await page.click('.settings-tab__toggle');
+  await wait(300);
+  add(await run(`${t}, settings drawer open`));
+  total += await gradientContrast(`${t}, settings drawer open`);
+  await page.keyboard.press('Escape');
+  await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
 
   // the plain-HTML fallback
   await load(page_url('?js=off'));

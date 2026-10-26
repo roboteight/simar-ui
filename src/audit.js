@@ -24,7 +24,7 @@ export const report = (node, problem) => {
 };
 
 const checks = [
-  ['input[type="range"], input[type="date"], input[type="radio"], input[type="checkbox"], select, textarea',
+  ['input:not([type="hidden"]):not([type="submit"]):not([type="reset"]):not([type="button"]):not([type="image"]), select, textarea, meter, progress',
     'has no accessible name. Add a label (a <label for>, a wrapping <label>, or aria-label), or give the tag a label attribute.'],
   ['button, summary',
     'has no accessible name. Icon-only buttons need an aria-label (or a label attribute on the tag).'],

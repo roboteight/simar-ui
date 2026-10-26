@@ -12,16 +12,9 @@ $groove-top: var(--groove-top);
 $groove-bottom: var(--groove-bottom);
 $tick: var(--tick);
 
-$mono: ui-monospace, "SF Mono", Menlo, monospace;
+// Code always uses the monospace token, whatever font the page picks.
+$mono: var(--font-mono);
 $sheet-bg: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
-
-// data-lit="name" presets for the highlight colour.
-$lit-presets: (
-  "blue": #3b8cff,
-  "amber": #ffb020,
-  "red": #ff4d5e,
-  "violet": #9b6bff,
-);
 
 // Motion. A key goes down fast and comes back slower, which reads as a real press; colour and
 // glow changes fade rather than snap. All of it switches off under prefers-reduced-motion.

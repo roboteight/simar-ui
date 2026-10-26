@@ -31,6 +31,14 @@ const rootAttrs = (node, base) => {
   return out;
 };
 
+// The drawing inside each spinner variant (one SVG, so it is crisp at any size on any background).
+const SPINNERS = {
+  ticks: Array.from({ length: 12 }, (_, i) => `<line class="spinner__tick" x1="26" y1="2.6" x2="26" y2="14" transform="rotate(${i * 30} 26 26)"/>`).join(''),
+  ring: '<circle class="spinner__track" cx="26" cy="26" r="21"/><circle class="spinner__arc" cx="26" cy="26" r="21" pathLength="100"/>',
+  dots: [11, 26, 41].map((x) => `<circle class="spinner__dot" cx="${x}" cy="26" r="4.6"/>`).join(''),
+  bars: [8, 17.5, 27, 36.5].map((x) => `<rect class="spinner__bar" x="${x}" y="8" width="6" height="36" rx="3"/>`).join(''),
+};
+
 // Native range attributes plus the library's data-* options.
 const rangeAttrs = (node) =>
   ['min', 'max', 'step', 'value', 'name', 'list'].map((name) => attr(node, name)).join('') +
@@ -60,6 +68,23 @@ const checkLike = (node, isSwitch) => {
   return `<label${rootAttrs(node, 'check')}><span class="well${isSwitch ? ' switch' : ''}"><input type="checkbox"${attrs}><span class="key ${
     isSwitch ? 'key--round' : 'key--box'}">${faces}</span></span>${label ? `<span class="check__text">${esc(label)}</span>` : ''}</label>`;
 };
+
+// The label row, control, hint and flag shared by every form-control tag.
+const NATIVE_INPUT_ATTRS = ['type', 'name', 'value', 'placeholder', 'min', 'max', 'step', 'minlength', 'maxlength', 'pattern',
+  'autocomplete', 'inputmode', 'list', 'accept', 'size', 'rows', 'cols', 'form'];
+const controlAttrs = (node) => NATIVE_INPUT_ATTRS.map((a) => attr(node, a)).join('')
+  + ['required', 'disabled', 'readonly', 'multiple'].map((a) => flag(node, a)).join('')
+  + attr(node, 'error', 'data-error') + attr(node, 'tooltip', 'data-tooltip');
+
+const fieldShell = (node, kind, control) => {
+  const id = node.getAttribute('id') ?? nextId(kind);
+  const hint = node.getAttribute('hint');
+  const hintId = hint ? `${id}-hint` : '';
+  return `<div${rootAttrs(node, 'field')}><div class="field__head"><label class="field__label" for="${esc(id)}">${esc(
+    node.getAttribute('label') ?? '')}</label>${node.hasAttribute('required') ? '<span class="field__flag">Required</span>' : ''}</div>${
+    control(esc(id), hintId ? ` aria-describedby="${hintId}"` : '')}${hint ? `<p class="field__hint" id="${hintId}">${esc(hint)}</p>` : ''}</div>`;
+};
+const svgIcon = (name, cls = '') => `<svg class="icon${cls ? ` ${cls}` : ''}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 
 const builders = {
   // <simar-button icon="play" variant="accent|round|sq" label="Play">Text</simar-button>
@@ -156,13 +181,71 @@ const builders = {
   'simar-checkbox': (node) => checkLike(node, false),
   'simar-switch': (node) => checkLike(node, true),
 
+  // <simar-input label="Email" type="email" name="email" required hint="Used for receipts" error="Enter an email like name@chrissimari.com">
+  // type="password" with reveal adds a show/hide button; type can be text, email, tel, url, search, number,
+  // date, time, datetime-local, month or week.
+  'simar-input': (node) => {
+    const password = node.getAttribute('type') === 'password' && node.hasAttribute('reveal');
+    return fieldShell(node, 'input', (id, describedby) => {
+      const input = `<input class="input" id="${id}"${controlAttrs(node)}${describedby}>`;
+      return password
+        ? `<span class="input-reveal">${input}<button type="button" class="input-reveal__button" aria-label="Show password" aria-pressed="false" aria-controls="${id}" data-reveal>${
+          svgIcon('eye')}</button></span>`
+        : input;
+    });
+  },
+
+  // <simar-textarea label="Message" name="message" rows="5" maxlength="500">Starting text</simar-textarea>
+  'simar-textarea': (node) => fieldShell(node, 'textarea', (id, describedby) =>
+    `<textarea class="input" id="${id}"${controlAttrs(node)}${describedby}>${escText(node.textContent.trim())}</textarea>`),
+
+  // <simar-select label="Size" name="size"><simar-option value="s">Small</simar-option>...</simar-select>
+  // multiple makes a list box; <simar-group label="Group"> makes an optgroup.
+  'simar-select': (node) => {
+    const options = (parent) => [...parent.children].map((child) => {
+      if (child.tagName === 'SIMAR-GROUP') return `<optgroup label="${esc(child.getAttribute('label') ?? '')}">${options(child)}</optgroup>`;
+      return `<option${attr(child, 'value')}${flag(child, 'selected')}${flag(child, 'disabled')}>${escText(child.textContent.trim())}</option>`;
+    }).join('');
+    const multiple = node.hasAttribute('multiple');
+    return fieldShell(node, 'select', (id, describedby) => {
+      const select = `<select class="input" id="${id}"${controlAttrs(node)}${describedby}>${options(node)}</select>`;
+      return multiple ? select : `<span class="select">${select}${svgIcon('chevron-down', 'select__icon')}</span>`;
+    });
+  },
+
+  // <simar-number label="Quantity" name="qty" min="1" max="10" value="2">  (keys on each side; the input still works alone)
+  'simar-number': (node) => fieldShell(node, 'number', (id, describedby) => {
+    const key = (step, label, icon) => `<span class="well"><button type="button" class="key key--sq" aria-label="${label}" aria-controls="${id}" data-step="${step}">${svgIcon(icon)}</button></span>`;
+    return `<div class="stepper">${key(-1, 'Decrease', 'minus')}<input class="input" id="${id}" type="number"${controlAttrs(node).replace(/ type="[^"]*"/, '')}${describedby}>${key(1, 'Increase', 'plus')}</div>`;
+  }),
+
+  // <simar-color label="Accent" name="accent" value="#36d27a">
+  'simar-color': (node) => fieldShell(node, 'color', (id, describedby) => {
+    const value = node.getAttribute('value') ?? '#000000';
+    return `<span class="color"><input id="${id}" type="color"${controlAttrs(node).replace(/ type="[^"]*"/, '')}${describedby}><output class="lcd" for="${id}">${esc(value)}</output></span>`;
+  }),
+
+  // <simar-file label="Attachment" name="file" accept="image/*" multiple>
+  'simar-file': (node) => fieldShell(node, 'file', (id, describedby) => `<input class="input" id="${id}" type="file"${controlAttrs(node).replace(/ type="[^"]*"/, '')}${describedby}>`),
+
+  // <simar-meter label="Disk used" value="72" min="0" max="100" low="30" high="80" optimum="100">
+  'simar-meter': (node) => {
+    const id = node.getAttribute('id') ?? nextId('meter');
+    const attrs = ['value', 'min', 'max', 'low', 'high', 'optimum'].map((a) => attr(node, a)).join('');
+    return `<div${rootAttrs(node, 'field')}><div class="field__head"><label class="field__label" for="${esc(id)}">${esc(node.getAttribute('label') ?? '')}</label></div><meter class="meter" id="${esc(id)}"${attrs}>${esc(node.getAttribute('value') ?? '')}</meter></div>`;
+  },
+
   // <simar-loader label="Uploading" value="64" max="100">   (leave value off for an unknown length)
   'simar-loader': (node) => `<progress${rootAttrs(node, 'loader')} aria-label="${esc(node.getAttribute('label') ?? 'Loading')}"${
     attr(node, 'value')}${attr(node, 'max')}></progress>`,
 
-  // <simar-spinner label="Loading results">
-  'simar-spinner': (node) => `<span${rootAttrs(node, 'spinner')} role="status"><span class="spinner__ticks" aria-hidden="true">${
-    '<i></i>'.repeat(12)}</span><span class="spinner__label">${esc(node.getAttribute('label') ?? 'Loading')}</span></span>`,
+  // <simar-spinner label="Loading results" variant="ring">   variant: ticks (default), ring, dots, bars
+  'simar-spinner': (node) => {
+    const variant = SPINNERS[node.getAttribute('variant')] ? node.getAttribute('variant') : 'ticks';
+    const base = variant === 'ticks' ? 'spinner' : `spinner spinner--${variant}`;
+    return `<span${rootAttrs(node, base)} role="status"><svg class="spinner__art" viewBox="0 0 52 52" aria-hidden="true" focusable="false">${
+      SPINNERS[variant]}</svg><span class="spinner__label">${esc(node.getAttribute('label') ?? 'Loading')}</span></span>`;
+  },
 
   // <simar-code lang="html" label="Example">…</simar-code>
   // Put the code in a <template> or <script type="text/plain"> child to write it unescaped;

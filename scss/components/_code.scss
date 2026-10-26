@@ -1,6 +1,7 @@
 @use "../abstracts" as *;
 
-// Code: a dark block for showing code, with an optional label and a copy button.
+// Code: a terminal window for showing code: a title bar with the three window dots and the label,
+// monospace text on a dark screen, and a copy button.
 //
 //   <figure class="code">
 //     <figcaption class="code__label">HTML</figcaption>
@@ -9,15 +10,52 @@
 //
 // The <pre> is focusable (tabindex="0") so keyboard users can scroll it. The script adds the
 // copy button; without it the block is simply readable code.
+$bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
+
 .code {
   min-width: 0;
   margin: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--code-bg);
+  box-shadow: 0 0 0 1px var(--hairline-strong), 0 10px 24px -14px shade(0.5);
 
-  &__label {
-    display: block;
-    margin: 0 0 0.4rem;
-    @include label-caps(0.7rem, 700, 0.08em);
+  // The title bar. The three window dots are decoration only.
+  &__label,
+  &:not(:has(.code__label)) &__body::before {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 2.1rem;
+    margin: 0;
+    padding: 0 1rem 0 4.4rem;
+    background: $bar;
+    color: #c5cbd6;
+    font: 600 0.72rem/1 $mono;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+
+    @include forced-colors { forced-color-adjust: none; background: Canvas; color: CanvasText; border-bottom: 1px solid CanvasText; }
   }
+
+  &__label::before,
+  &:not(:has(.code__label)) &__body::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 1.15rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    margin-top: -0.3rem;
+    border-radius: 50%;
+    background: #ff5f57;
+    box-shadow: 1rem 0 #febc2e, 2rem 0 #28c840;
+
+    @include forced-colors { display: none; }
+  }
+
+  &:not(:has(.code__label)) &__body::before { content: ""; padding: 0; }
+  &:not(:has(.code__label)) &__body::after { top: 1.05rem; }
 
   &__body { position: relative; }
 
@@ -26,14 +64,12 @@
     padding: 1rem;
     max-height: var(--code-max, 28rem);
     overflow: auto;
-    border-radius: 12px;
     background: var(--code-bg);
     color: var(--code-ink);
-    font: 0.78rem/1.55 $mono;
+    font: 0.8rem/1.6 $mono;
     tab-size: 2;
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
 
-    &:focus-visible { @include focus-ring(2px); }
+    &:focus-visible { @include focus-ring(2px); outline-offset: -3px; }
 
     code {
       padding: 0;
@@ -44,10 +80,8 @@
 
     @include forced-colors {
       forced-color-adjust: none;
-      border: 1px solid CanvasText;
       background: Canvas;
       color: CanvasText;
-      box-shadow: none;
     }
   }
 
@@ -82,7 +116,7 @@
   &__copy {
     position: absolute;
     top: 0.45rem;
-    right: 0.45rem;
+    right: 0.45rem; // inside the screen, under the title bar
     display: grid;
     place-items: center;
     width: 2rem;

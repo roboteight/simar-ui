@@ -1,4 +1,6 @@
+@use "sass:map";
 @use "../abstracts" as *;
+@use "../themes/default" as theme;
 
 // The well: a recessed socket a key sits in. Radio inputs live inside it, hidden but
 // still focusable and checkable.
@@ -146,12 +148,23 @@
     }
   }
 
-  // A dark label: white on this orange is only 2:1, short of WCAG AA (4.5:1).
+  // The orange accent key. Its label is dark: white on this orange is only 2:1, short of WCAG AA.
   &--accent {
     --k-top: #ffa070;
     --k-bottom: var(--accent);
     color: var(--on-accent);
     text-shadow: var(--accent-text-shadow);
+  }
+
+  // The theme's color variants (primary, secondary, success, danger, warning, info, light, dark).
+  @each $name, $c in theme.$key-colors {
+    &--#{$name} {
+      // A palette can replace a variant's colors with --key-NAME-top and --key-NAME-bottom.
+      --k-top: var(--key-#{$name}-top, #{map.get($c, top)});
+      --k-bottom: var(--key-#{$name}-bottom, #{map.get($c, bottom)});
+      color: map.get($c, ink);
+      text-shadow: map.get($c, shadow);
+    }
   }
 
   @include reduced-motion { transition: none; }

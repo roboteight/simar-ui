@@ -4,7 +4,7 @@
 ![dependencies: none](https://img.shields.io/badge/dependencies-none-2b2d31?style=flat-square)
 ![accessibility: axe, keyboard and contrast tested](https://img.shields.io/badge/accessibility-axe%20%C2%B7%20keyboard%20%C2%B7%20contrast%20tested-2b2d31?style=flat-square)
 
-**Beveled, extruded form controls built on real HTML elements.** Keys, faders, knobs, a date range, a dialog, an accordion, a code block and a preloader, in light and dark. You configure them with HTML attributes, they work without JavaScript, and they're built to be fully accessible.
+**Beveled, extruded form controls built on real HTML elements.** Text fields, selects, checkboxes, switches, keys, faders, knobs, a date range, validation, a dialog and more, in light and dark. You configure them with HTML attributes, they work without JavaScript, and they're built to be fully accessible.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/hero-dark.png">
@@ -13,7 +13,7 @@
 
 **Free and open source.** simar-ui is public and MIT licensed: use it in personal and commercial projects, change it, and ship it, no strings attached.
 
-- **Native underneath.** Every control is an `<input>`, `<button>`, `<progress>`, `<details>` or `<dialog>`, so forms, labels, validation, keyboard and screen-reader behavior come from the browser. The styling sits on top.
+- **Native underneath.** Every control is an `<input>`, `<select>`, `<textarea>`, `<button>`, `<meter>`, `<progress>`, `<details>` or `<dialog>`, so forms, labels, validation, keyboard and screen-reader behavior come from the browser. The styling sits on top.
 - **Configured in HTML.** Options are attributes (`min`, `max`, `step`, `data-lit="blue"`, `data-haptic="off"`), or short tags like `<simar-knob label="Volume" max="11">`. No config objects.
 - **Accessible, and kept that way.** Keyboard operable, WCAG 2.2 AA contrast, no dragging required, reduced motion and high contrast supported. Automated tests run in light and dark, and the library warns you while you build if you forget a label. [More below.](#accessibility)
 - **No dependencies, no build step to use it.** Two files from a CDN, or `npm install`.
@@ -58,27 +58,50 @@ Open `index.html` for the live demo, with a contents list that floats on the lef
 
 ## What's inside
 
-### Keys and radio keys
+The demo page and its contents list follow Bootstrap's docs order: Getting started, Customize, Content, Forms, then Components, with similar items together.
 
-Beveled caps that sit in a recessed well. They go down quickly and ease back up, a selected key stays latched with its dot lit, and small keys light their label or icon instead.
+### Forms
+
+#### Form control
+
+Text-like fields sunk into the panel, like the well a key sits in. One class, `.input`, covers text, email, password, search, tel, url, number, the date and time types, file, textarea and select. Every field has a real `<label>`; a hint and an error are linked to it with `aria-describedby`; a required field is flagged in words.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/form-control-dark.png">
+  <img src="docs/screenshots/form-control.png" alt="Text fields and a textarea" width="640">
+</picture>
+
+```html
+<simar-input label="Email" type="email" name="email" required
+             hint="Used only for receipts." error="Enter an email like name@chrissimari.com"></simar-input>
+<simar-textarea label="Message" name="message" rows="4" maxlength="200"></simar-textarea>
+```
+
+<img src="docs/screenshots/date-time.png" alt="Date and time fields, a file field and a color field" width="640">
+
+Color has a readout beside it, so the color is never the only way to know what's picked.
+
+#### Select
+
+Native `<select>`, so the list that opens is the browser's own: accessible, searchable by typing, and following the theme. Wrap a single select to get the chevron; a multiple select is a list box; `<datalist>` gives a text field native suggestions.
+
+<img src="docs/screenshots/select.png" alt="Single selects with a chevron, a multiple select list box and a field with suggestions" width="640">
+
+```html
+<simar-select label="Size" name="size">
+  <simar-option value="s">Small</simar-option>
+  <simar-option value="m" selected>Medium</simar-option>
+</simar-select>
+```
+
+#### Checks and radios
+
+Beveled caps that sit in a recessed well. They go down quickly and ease back up, a selected key stays latched with its dot lit, and small keys light their label or icon instead. Checkboxes show a check mark (a dash when mixed) and a switch slides a cap, so neither relies on color alone.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/radios-dark.png">
   <img src="docs/screenshots/radios.png" alt="Radio keys: Mode, Channel and Align" width="640">
 </picture>
-
-```html
-<simar-keys name="mode" legend="Mode">
-  <simar-key value="auto" checked>Auto</simar-key>
-  <simar-key value="manual">Manual</simar-key>
-</simar-keys>
-```
-
-<img src="docs/screenshots/keys.png" alt="Buttons and icon buttons" width="640">
-
-### Checkboxes and switches
-
-Native `<input type="checkbox">` in the same recessed well. Checking latches the key down and lights its check mark (a dash when mixed); a switch is a checkbox with `role="switch"` and a cap that slides. Neither relies on color alone.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/checks-dark.png">
@@ -86,11 +109,15 @@ Native `<input type="checkbox">` in the same recessed well. Checking latches the
 </picture>
 
 ```html
+<simar-keys name="mode" legend="Mode">
+  <simar-key value="auto" checked>Auto</simar-key>
+  <simar-key value="manual">Manual</simar-key>
+</simar-keys>
 <simar-checkbox label="Send me the newsletter" name="news" checked></simar-checkbox>
 <simar-switch label="Notifications" name="notify"></simar-switch>
 ```
 
-### Faders and ranges
+#### Range
 
 Native `<input type="range">` with a gripped cap. `step` snaps the cap, `data-marks` draws a tick at each step, and a pair of inputs makes a min/max range.
 
@@ -99,14 +126,7 @@ Native `<input type="range">` with a gripped cap. `step` snaps the cap, `data-ma
   <img src="docs/screenshots/faders.png" alt="Faders and a two-handle range" width="640">
 </picture>
 
-```html
-<simar-fader label="Quality" min="1" max="5" step="1" value="3" marks></simar-fader>
-<simar-range label="Price" min="0" max="500" step="5" low="120" high="340" prefix="$"></simar-range>
-```
-
-### Knobs
-
-Drag up or right, hold Shift for fine control, double-click to reset, use the arrow keys, or click the ring or a label. `labels` turns a knob into a stepped selector, and a rotary range puts two handles on one arc.
+Knobs: drag up or right, hold Shift for fine control, double-click to reset, use the arrow keys, or click the ring or a label. `labels` turns a knob into a stepped selector, and a rotary range puts two handles on one arc.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/knobs-dark.png">
@@ -116,11 +136,12 @@ Drag up or right, hold Shift for fine control, double-click to reset, use the ar
 <img src="docs/screenshots/rotary.png" alt="Rotary ranges with two handles on an arc" width="640">
 
 ```html
+<simar-fader label="Quality" min="1" max="5" step="1" value="3" marks></simar-fader>
+<simar-range label="Price" min="0" max="500" step="5" low="120" high="340" prefix="$"></simar-range>
 <simar-knob label="Volume" max="11" step="1" value="7" ticks="12"></simar-knob>
-<simar-range-knob label="Band" low="25" high="70" unit="%"></simar-range-knob>
 ```
 
-### Date range
+#### Date range
 
 Two native date inputs stay the source of truth, so typing, `min`/`max` and form submission all work. A calendar opens as a native popover: click a start day, then an end day.
 
@@ -130,21 +151,77 @@ Two native date inputs stay the source of truth, so typing, `min`/`max` and form
 <simar-date-range name="stay" from="2026-11-02" to="2026-11-09" min="2026-10-26" months="2" max-span="14"></simar-date-range>
 ```
 
-### Preloader
+#### Input group
 
-A spinner and a progress bar. The bar is a native `<progress>`; leave off `value` when you don't know how long it will take. Motion stops with `prefers-reduced-motion`, and `data-paused` freezes it.
+A field with a control attached: a number with a key on each side, a password with a show/hide button. Both stay real inputs. The keys are added by the script, announce the new value, and without JavaScript you get the plain native field.
+
+<img src="docs/screenshots/input-group.png" alt="A number stepper and a password field with a reveal button" width="640">
+
+```html
+<simar-number label="Quantity" name="qty" min="1" max="10" value="2"></simar-number>
+<simar-input label="Password" type="password" name="password" reveal></simar-input>
+```
+
+#### Validation
+
+Add `data-validate` to a form and the browser's pop-up bubbles are replaced with messages in the page: words and an icon under each field, linked with `aria-describedby`; a summary announced at the top; focus sent to the first problem; each error clears the moment the field is valid. The text is the field's `data-error`, or the browser's own message. Without JavaScript the browser's native validation still applies.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/loader-dark.png">
-  <img src="docs/screenshots/loader.png" alt="A spinner, a progress bar and an indeterminate bar" width="640">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/validation-errors-dark.png">
+  <img src="docs/screenshots/validation-errors.png" alt="A sign-up form with four errors, a summary and linked messages" width="640">
 </picture>
 
 ```html
-<simar-spinner label="Loading results"></simar-spinner>
-<simar-loader label="Uploading" value="64" max="100"></simar-loader>
+<form data-validate>
+  <simar-input label="Email" type="email" name="email" required
+               error="Enter an email like name@chrissimari.com"></simar-input>
+  <simar-checkbox label="I agree to the terms" name="terms" required></simar-checkbox>
+  <button type="submit" class="key key--accent">Submit</button>
+</form>
 ```
 
-### Tooltips
+### Components
+
+#### Accordion, buttons and dialog
+
+A native `<details>` accordion, keys (`<button class="key">`, also on submit and reset), and a native `<dialog>` opened with `command="show-modal"` (no JavaScript needed where supported).
+
+<img src="docs/screenshots/keys.png" alt="Buttons and icon buttons" width="640">
+
+<img src="docs/screenshots/accordion.png" alt="An accordion with the first item open" width="640">
+
+<img src="docs/screenshots/dialog.png" alt="A modal dialog with radio keys, a fader and buttons" width="420">
+
+```html
+<button type="button" command="show-modal" commandfor="settings">Open</button>
+
+<simar-accordion name="faq">
+  <simar-item title="What is it?" open>A set of form controls.</simar-item>
+</simar-accordion>
+```
+
+#### Meter, progress and spinners
+
+`<meter>` for a known quantity (a gauge), `<progress>` for work being done, and a spinner. The meter's fill is told apart by pattern as well as color: solid is good, striped is middling, dotted is poor. Motion stops with `prefers-reduced-motion`, and `data-paused` freezes it.
+
+<img src="docs/screenshots/meter.png" alt="Three meters: solid green, striped amber and dotted red" width="640">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/progress-dark.png">
+  <img src="docs/screenshots/progress.png" alt="A progress bar and an indeterminate bar" width="640">
+</picture>
+
+<img src="docs/screenshots/spinners.png" alt="A spinner style picker showing the active spinner" width="640">
+
+Four spinner styles, all SVG so they stay crisp on any background: `ticks` (default), `ring`, `dots` and `bars`. Pick one with `variant` on the tag or a `spinner--ring` class.
+
+```html
+<simar-meter label="Battery" value="85" low="20" high="50" optimum="100"></simar-meter>
+<simar-loader label="Uploading" value="64" max="100"></simar-loader>
+<simar-spinner label="Loading results" variant="ring"></simar-spinner>
+```
+
+#### Tooltips
 
 Add `data-tooltip="Text"` to a button, link or radio key. It shows on mouse hover and on keyboard focus, Esc dismisses it, and you can move the pointer onto it (WCAG 1.4.13). Icon-only keys with an `aria-label` get theirs as a tooltip automatically; opt one out with `data-tooltip=""`.
 
@@ -157,23 +234,64 @@ Add `data-tooltip="Text"` to a button, link or radio key. It shows on mouse hove
 
 Keep the `aria-label` in the markup: a tooltip needs JavaScript, a label doesn't. The library warns if a control's only name is its tooltip.
 
-### Dialog, accordion and code
+### Content
 
-A native `<dialog>` opened with `command="show-modal"` (no JavaScript needed where supported), a native `<details>` accordion, and a code block with line numbers and a copy button.
+#### Typography
 
-<img src="docs/screenshots/dialog.png" alt="A modal dialog with radio keys, a fader and buttons" width="420">
+Headings, display type, a lead paragraph and running text. Use the classes anywhere (`.h1` to `.h6`, `.display-1` to `.display-3`, `.lead`), or wrap text in `.prose` to style the plain elements inside it (links, lists, `mark`, `kbd`, `abbr`, `hr`). Sizes scale with the window, so they fit a phone.
+
+<img src="docs/screenshots/typography.png" alt="Headings one to six, display type, a lead paragraph and body text" width="640">
+
+```html
+<h1 class="display-1">Display</h1>
+<div class="prose">
+  <p class="lead">What this page is about.</p>
+  <p>Text with a <a href="/">link</a>, <mark>a mark</mark> and <kbd>Ctrl</kbd> + <kbd>K</kbd>.</p>
+</div>
+```
+
+**Fonts.** The page's own (system) fonts are the default and nothing is downloaded. Set `data-font="sans"`, `"serif"` or `"both"` (serif headings, sans text) on `<html>` to use Inter and Source Serif 4 from Google Fonts; load them yourself with a `<link>` (the demo page does it the first time you pick one). Code always uses a monospace font (JetBrains Mono, then the system's). To use your own fonts, set three tokens:
+
+```css
+:root {
+  --font-body: "Your Sans", system-ui, sans-serif;
+  --font-heading: "Your Serif", Georgia, serif;
+  --font-mono: "Your Mono", ui-monospace, monospace;
+}
+```
+
+#### Quotes
+
+A `<blockquote>` in a `<figure class="quote">`, with who said it in the `<figcaption>`. Add `quote--pull` for a pull quote.
+
+<img src="docs/screenshots/quotes.png" alt="A block quote with a colored bar and a centered pull quote" width="640">
+
+```html
+<figure class="quote">
+  <blockquote><p>Buy the ticket, take the ride.</p></blockquote>
+  <figcaption><cite>Hunter S. Thompson</cite>, Fear and Loathing in Las Vegas</figcaption>
+</figure>
+```
+
+#### Text blurbs
+
+A short block with a small label, a title and a few words. Put several in a `blurb-grid` and they wrap to fit the window; `blurb--inset` sinks one into the page.
+
+<img src="docs/screenshots/blurbs.png" alt="Three text blurbs side by side" width="640">
+
+#### Code
+
+A terminal-style block: monospace text on a dark screen under a title bar, with line numbers and a copy button. The numbers are skipped by screen readers and aren't copied; the block can be scrolled by keyboard.
 
 <img src="docs/screenshots/html-key.png" alt="The HTML key opened to show how a component is written" width="640">
 
 ```html
-<button type="button" command="show-modal" commandfor="settings">Open</button>
-
-<simar-accordion name="faq">
-  <simar-item title="What is it?" open>A set of form controls.</simar-item>
-</simar-accordion>
-
 <simar-code lang="html"><template><button class="key">Push</button></template></simar-code>
 ```
+
+## Themes
+
+A theme is one file in `scss/themes/` (`_default.scss`): the design tokens for light and dark, the highlight presets (`data-lit`, including the Material palette), the color of each button variant (`key--primary`, `--secondary`, `--success`, `--danger`, `--warning`, `--info`, `--light`, `--dark`) and whole-page palettes (`data-palette="indigo"`, `teal`, `rose`, `amber`, `forest`, `ocean`), which retint every surface and bring their own highlight and button colors. This is the first theme; more will follow, and a new one is a copy of that file with new values.
 
 ## Light and dark
 
@@ -223,6 +341,8 @@ Every color and size is a CSS custom property, so you can restyle without touchi
 | `data-paused` | spinner, loader (or an ancestor) | Freezes the loading motion |
 | `data-tooltip="Text"` | button, link, radio key | A tooltip on hover and keyboard focus (Esc dismisses). On a tag: `tooltip="Text"` |
 | `checked` `disabled` `indeterminate` | checkbox, switch | Native states; `data-indeterminate` sets the mixed state |
+| `data-validate` | form | Show validation as messages in the page (see Validation) |
+| `required`, `hint`, `error`, `reveal` | form-control tags | Required flag, hint text, error text, show/hide on a password |
 | `nolines` / `nocopy` | code block | Leave off the line numbers or the copy button |
 
 Haptics use the browser's Vibration API, so there is nothing to install. It works on Android browsers; iOS Safari doesn't support it and the calls are skipped.

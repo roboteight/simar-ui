@@ -60,7 +60,9 @@ const small = await page.evaluate(() => {
   const visible = (n) => { const r = n.getBoundingClientRect(); const s = getComputedStyle(n); return r.width && s.visibility !== 'hidden' && s.display !== 'none' && !n.closest('[hidden], dialog:not([open]), .needs-js:not(:root *)'); };
   // Hidden native inputs are operated through their visible stand-in (the key, the dial), which is measured instead.
   const targets = [...document.querySelectorAll('button, a[href], summary, input:not([type="radio"]):not([type="checkbox"]):not(.fader):not(.knob input):not(.rknob input):not(.range2 input), .key, .day, label.well, .knob__dial, .rknob__handle')]
-    .filter(visible).filter((n) => !n.closest('.knob__tick-label'));
+    .filter(visible).filter((n) => !n.closest('.knob__tick-label'))
+    // A link inside a sentence is exempt (WCAG 2.5.8, "inline"): its size is set by the text around it.
+    .filter((n) => !(n.matches('a') && [...n.parentElement.childNodes].some((c) => c.nodeType === 3 && c.textContent.trim())));
   return targets.map((n) => { const r = n.getBoundingClientRect(); return { n: `${n.tagName.toLowerCase()}${n.className ? '.' + String(n.className).split(' ')[0] : ''} "${(n.textContent || n.getAttribute('aria-label') || '').trim().slice(0, 18)}"`, w: Math.round(r.width), h: Math.round(r.height) }; })
     .filter((t) => t.w < 24 || t.h < 24);
 });
@@ -100,6 +102,7 @@ const forced = await page.evaluate(() => {
     if (getComputedStyle(node).backgroundImage !== 'none') { issues.push(`gradient still painted in forced colours: ${node.className || node.tagName}`); break; }
   }
   for (const panel of [...document.querySelectorAll('.panel')].slice(0, 3)) if (!edge(panel)) { issues.push('a panel has no visible edge'); break; }
+  for (const field of [...document.querySelectorAll('.input:not(:disabled)')].slice(0, 6)) if (!edge(field)) { issues.push('a form field has no visible edge'); break; }
   const checked = document.querySelector('input[name="mode"]:checked + .key');
   const unchecked = document.querySelector('input[name="mode"]:not(:checked):not(:disabled) + .key');
   if (checked && unchecked && getComputedStyle(checked).backgroundColor === getComputedStyle(unchecked).backgroundColor) issues.push('the selected key looks the same as an unselected one');
@@ -125,7 +128,7 @@ for (const theme of ['light', 'dark']) {
     const rgb = (css) => { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = css; ctx.fillRect(0, 0, 1, 1); const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data; return [r, g, b]; };
     const lum = ([r, g, b]) => { const [x, y, z] = [r, g, b].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * x + 0.7152 * y + 0.0722 * z; };
     const ratio = (a, b) => { const [hi, lo] = [lum(rgb(a)), lum(rgb(b))].sort((p, q) => q - p); return (hi + 0.05) / (lo + 0.05); };
-    const root = getComputedStyle(document.querySelector('#loader-demo'));
+    const root = getComputedStyle(document.querySelector('#progress-demo'));
     const bar = getComputedStyle(document.querySelector('#upload'));
     const lit = bar.color;                                           // the fill and the spinner's lit tick
     const get = (name) => root.getPropertyValue(name).trim();
@@ -222,7 +225,7 @@ await page.emulateMediaFeatures([]);
 console.log('\nTable of contents');
 await open(1280);
 const toc = await page.evaluate(() => {
-  const heads = [...document.querySelectorAll('main > section[aria-labelledby] > h2[id]')].map((h) => h.id);
+  const heads = [...document.querySelectorAll('main > section[aria-labelledby] > h3[id]')].map((h) => h.id);
   const links = [...document.querySelectorAll('.toc a[href^="#"]')].map((a) => a.getAttribute('href').slice(1));
   const nav = document.querySelector('nav.toc');
   const r = nav.getBoundingClientRect(); const m = document.querySelector('main').getBoundingClientRect();
@@ -237,11 +240,11 @@ await wait(500);
 const current = await page.$$eval('.toc a[aria-current="location"]', (n) => n.map((a) => a.getAttribute('href')));
 current.length === 1 && current[0] === '#knobs' ? pass('marks the section being read (aria-current)') : fail(`current: ${JSON.stringify(current)}`);
 await page.evaluate(() => scrollTo(0, 0));
-await page.click('.toc a[href="#preloader"]');
+await page.click('.toc a[href="#spinners"]');
 let last = -1;
 for (let i = 0; i < 40; i++) { await wait(100); const y = await page.evaluate(() => scrollY); if (y === last) break; last = y; } // wait for the smooth scroll to finish
-const landed = await page.evaluate(() => ({ hash: location.hash, top: Math.round(document.getElementById('preloader').getBoundingClientRect().top) }));
-landed.hash === '#preloader' && landed.top >= 0 && landed.top < 120 ? pass(`a link takes you to its section (heading ${landed.top}px from the top)`) : fail(`link landed at ${JSON.stringify(landed)}`);
+const landed = await page.evaluate(() => ({ hash: location.hash, top: Math.round(document.getElementById('spinners').getBoundingClientRect().top) }));
+landed.hash === '#spinners' && landed.top >= 0 && landed.top < 120 ? pass(`a link takes you to its section (heading ${landed.top}px from the top)`) : fail(`link landed at ${JSON.stringify(landed)}`);
 await open(1280, '?js=off');
 await page.click('.toc a[href="#tooltips"]');
 await wait(500);
@@ -280,6 +283,156 @@ notify ? pass(`a screen reader gets a switch named "Notifications" (${notify.che
 const mix = all.find((n) => n.role === 'checkbox' && /everything/i.test(n.name ?? ''));
 mix ? pass(`mixed state reported to assistive technology: checked=${JSON.stringify(mix.checked)}`) : fail('the "Everything" checkbox is missing from the tree');
 
+// ---- form controls ----------------------------------------------------------------------------
+console.log('\nForm controls');
+await open(1000);
+const visibleText = (sel) => page.$eval(sel, (n) => n.textContent.trim());
+
+// validation: submit the empty sign-up form
+await page.$eval('#signup', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.click('#signup button[type="submit"]');
+await wait(300);
+const v = await page.evaluate(() => {
+  const form = document.querySelector('#signup');
+  const summary = form.querySelector('.form__summary');
+  const bad = [...form.querySelectorAll('[aria-invalid="true"]')];
+  return {
+    summaryShown: !summary.hidden, summaryRole: summary.getAttribute('role'), summaryText: summary.textContent,
+    focused: document.activeElement.name,
+    fields: bad.map((c) => { const id = (c.getAttribute('aria-describedby') ?? '').split(' ').find((i) => i.endsWith('-error')); const e = id && document.getElementById(id); return { name: c.name, text: e?.textContent.trim(), visible: e && !e.hidden, hasIcon: !!e?.querySelector('svg') }; }),
+  };
+});
+v.summaryShown && v.summaryRole === 'alert' ? pass(`a summary is announced (role=alert): "${v.summaryText}"`) : fail(`summary: ${JSON.stringify(v)}`);
+v.fields.length === 4 && v.fields.every((f) => f.visible && f.text && f.hasIcon) ? pass('each invalid field has a visible message with an icon, linked by aria-describedby') : fail(`field errors: ${JSON.stringify(v.fields)}`);
+v.focused === 'name' ? pass('focus goes to the first problem') : fail(`focus went to "${v.focused}"`);
+v.fields.find((f) => f.name === 'email')?.text === 'Enter an email like name@chrissimari.com' ? pass('uses the author\'s own message when there is one') : fail('custom message not used');
+
+await page.type('#v-name', 'Ada');
+const cleared = await page.evaluate(() => ({ invalid: document.querySelector('#v-name').getAttribute('aria-invalid'), summary: document.querySelector('#signup .form__summary').textContent }));
+cleared.invalid === null ? pass('an error clears as soon as the field is valid') : fail('the error stayed after fixing the field');
+/3 fields/.test(cleared.summary) ? pass('and the summary count follows') : fail(`summary after fixing one: "${cleared.summary}"`);
+
+await page.type('#v-email', 'ada@chrissimari.com');
+await page.type('#v-age', '36');
+await page.focus('input[name="terms"]');
+await page.keyboard.press('Space');
+await page.click('#signup button[type="submit"]');
+await wait(300);
+const done = await page.evaluate(() => ({ formHidden: document.querySelector('#signup').hidden, sentShown: !document.querySelector('#signup-sent').hidden, focus: document.activeElement.className, anyInvalid: document.querySelectorAll('#signup [aria-invalid="true"]').length }));
+done.formHidden && done.sentShown && done.focus === 'sent__title' && !done.anyInvalid ? pass('a valid form is replaced by the "sent" message, which takes focus so it is announced') : fail(`valid submit: ${JSON.stringify(done)}`);
+await page.click('[data-sent-again]');
+await wait(100);
+const backName = await page.evaluate(() => document.activeElement.name);
+!(await page.$eval('#signup', (f) => f.hidden)) && backName === 'name' ? pass('"Send another" brings the form back with focus on the first field') : fail(`send another: form hidden or focus on "${backName}"`);
+await page.click('#signup button[type="reset"]');
+const afterReset = await page.evaluate(() => ({ errors: [...document.querySelectorAll('#signup .field__error')].filter((e) => !e.hidden).length, value: document.querySelector('#v-name').value }));
+afterReset.errors === 0 && afterReset.value === '' ? pass('Reset clears the values and any errors') : fail(`after reset: ${JSON.stringify(afterReset)}`);
+
+// stepper
+await page.$eval('#g-qty', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+const qtyBefore = +(await page.$eval('#g-qty', (i) => i.value));
+await page.click('.stepper button[data-step="1"]');
+const afterInc = await page.evaluate(() => ({ value: +document.querySelector('#g-qty').value, said: document.querySelector('.stepper__status')?.textContent }));
+afterInc.value === qtyBefore + 1 && /Quantity: 3/.test(afterInc.said ?? '') ? pass(`the + key steps the number and announces it ("${afterInc.said}")`) : fail(`stepper: ${JSON.stringify(afterInc)}`);
+await page.$eval('#g-qty', (i) => { i.value = 10; });
+await page.click('.stepper button[data-step="1"]');
+(+(await page.$eval('#g-qty', (i) => i.value))) === 10 ? pass('and stops at max') : fail('the stepper went past max');
+
+// password reveal
+await page.click('[data-reveal]');
+const rev = await page.evaluate(() => ({ type: document.querySelector('#g-pass').type, pressed: document.querySelector('[data-reveal]').getAttribute('aria-pressed'), label: document.querySelector('[data-reveal]').getAttribute('aria-label') }));
+rev.type === 'text' && rev.pressed === 'true' && rev.label === 'Hide password' ? pass('the reveal button shows the password and says so (aria-pressed, label)') : fail(`reveal: ${JSON.stringify(rev)}`);
+await page.click('[data-reveal]');
+
+// color readout
+await page.$eval('#f-color', (i) => { i.value = '#ff4d6d'; i.dispatchEvent(new Event('input', { bubbles: true })); });
+(await visibleText('.color output')) === '#ff4d6d' ? pass('the color readout follows the swatch') : fail('the color readout did not update');
+
+// the three meter states look different, not only a different color
+await page.$eval('#m-good', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await wait(200);
+const PNGlib = (await import('pngjs')).PNG;
+const looks = [];
+for (const id of ['m-good', 'm-mid', 'm-low']) {
+  const handle = await page.$(`#${id}`);
+  await handle.evaluate((n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+  const png = PNGlib.sync.read(await handle.screenshot());
+  const colors = new Set();
+  for (let y = Math.floor(png.height * 0.35); y < Math.floor(png.height * 0.65); y++) for (let x = 4; x < Math.min(png.width * 0.1, 40); x++) {
+    const i = (y * png.width + x) * 4; colors.add(`${png.data[i] >> 4},${png.data[i + 1] >> 4},${png.data[i + 2] >> 4}`);
+  }
+  looks.push(colors.size);
+}
+looks[0] <= 3 && looks[1] > looks[0] && looks[2] > looks[0] ? pass(`good is solid, middling and poor have a pattern (${looks.join(' / ')} distinct tones)`) : fail(`meter fills: ${looks.join(' / ')} distinct tones`);
+
+// a screen reader gets names and roles for the new controls
+const formTree = await page.accessibility.snapshot({ interestingOnly: false });
+const formNodes = []; (function w(n) { formNodes.push(n); (n.children ?? []).forEach(w); })(formTree);
+const named = (role, re) => formNodes.find((n) => n.role === role && re.test(n.name ?? ''));
+named('textbox', /^name$/i) && named('textbox', /message/i) ? pass('text fields and the textarea are textboxes with names') : fail('textbox names missing');
+named('combobox', /^size$/i) ? pass('a select is a combobox named "Size"') : fail('select not found in the tree');
+(named('listbox', /devices/i) || named('combobox', /devices/i)) ? pass('a multiple select is a list box named "Input devices"') : fail('multiple select not found');
+const meterNode = formNodes.find((n) => n.role === 'meter' && /battery, good/i.test(n.name ?? ''));
+meterNode ? pass(`a meter is a meter named "Battery, good" (value ${meterNode.value})`) : fail('meter not found in the tree');
+formNodes.find((n) => n.role === 'progressbar' && /uploading/i.test(n.name ?? '')) ? pass('a progress bar is a progressbar named "Uploading"') : fail('progress bar not found');
+
+// ---- the settings tab -------------------------------------------------------------------------
+console.log('\nSettings tab (an icon-only disclosure)');
+await open(1280);
+const tabState = () => page.evaluate(() => ({ shown: !document.querySelector('.settings-tab').hidden, open: !document.querySelector('.settings-tab__drawer').hidden }));
+const tabAtTop = await tabState();
+!tabAtTop.shown ? pass('hidden while the Page settings panel is on screen') : fail('the tab is showing at the top of the page');
+await page.evaluate(() => scrollTo({ top: 1400, behavior: 'instant' }));
+await wait(300);
+(await tabState()).shown ? pass('appears once the panel has scrolled past') : fail('the tab did not appear after scrolling past');
+const toggleInfo = await page.$eval('.settings-tab__toggle', (b) => ({ text: b.textContent.trim(), name: b.getAttribute('aria-label'), expanded: b.getAttribute('aria-expanded'), controls: b.getAttribute('aria-controls'), w: b.getBoundingClientRect().width, h: b.getBoundingClientRect().height }));
+toggleInfo.text === '' && toggleInfo.name === 'Page settings' && toggleInfo.controls === 'settings-drawer' && toggleInfo.w >= 24 && toggleInfo.h >= 24
+  ? pass(`has no visible word but is named "${toggleInfo.name}", with aria-controls and a ${Math.round(toggleInfo.w)}x${Math.round(toggleInfo.h)}px target`) : fail(`toggle: ${JSON.stringify(toggleInfo)}`);
+await page.click('.settings-tab__toggle');
+await wait(200);
+const opened = await page.$eval('.settings-tab__toggle', (b) => b.getAttribute('aria-expanded'));
+(await tabState()).open && opened === 'true' ? pass('opens, and aria-expanded says so') : fail('the drawer did not open');
+await page.select('#lit-select-tab', 'violet');
+await wait(200);
+const synced = await page.evaluate(() => ({ lit: document.documentElement.dataset.lit, top: document.querySelector('input[name="lit"]:checked').value, stillOpen: !document.querySelector('.settings-tab__drawer').hidden }));
+synced.lit === 'violet' && synced.top === 'violet' && synced.stillOpen ? pass('the highlight dropdown changes it, and the panel at the top follows') : fail(`swatch: ${JSON.stringify(synced)}`);
+await page.keyboard.press('Escape');
+await wait(150);
+const afterEsc2 = await page.evaluate(() => ({ open: !document.querySelector('.settings-tab__drawer').hidden, onToggle: document.activeElement.classList.contains('settings-tab__toggle') }));
+!afterEsc2.open && afterEsc2.onToggle ? pass('Esc closes it and returns focus to the tab') : fail(`after Esc: ${JSON.stringify(afterEsc2)}`);
+await page.keyboard.press('Enter');
+await wait(150);
+(await tabState()).open ? pass('the keyboard opens it too') : fail('Enter did not open the drawer');
+for (let i = 0; i < 12; i++) await page.keyboard.press('Tab');
+await wait(200);
+!(await tabState()).open ? pass('closes when focus moves on, so it never covers the control you are on') : fail('the drawer stayed open after focus left it');
+await page.evaluate(() => { delete document.documentElement.dataset.lit; });
+await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+await wait(300);
+!(await tabState()).shown ? pass('goes away again at the top') : fail('the tab stayed after returning to the top');
+
+// ---- fonts ---------------------------------------------------------------------------------------
+console.log('\nFont choices');
+await open(1280);
+const fontOf = (selector) => page.evaluate((sel) => getComputedStyle(document.querySelector(sel)).fontFamily, selector);
+const sysBody = await fontOf('body');
+for (const choice of ['sans', 'serif', 'both']) {
+  await page.evaluate((value) => { document.documentElement.dataset.font = value; }, choice);
+  const fam = { body: await fontOf('body'), heading: await fontOf('h3'), code: await fontOf('.code pre') };
+  const monoOk = /mono|ui-monospace|Menlo|Consolas/i.test(fam.code);
+  const bodyOk = choice === 'serif' ? /serif/i.test(fam.body) && !/sans/i.test(fam.body) : /Inter/.test(fam.body);
+  const headOk = choice === 'sans' ? /Inter/.test(fam.heading) : /Source Serif/.test(fam.heading);
+  monoOk && bodyOk && headOk ? pass(`"${choice}": body, headings and code take the right families (code stays monospace)`) : fail(`"${choice}": ${JSON.stringify(fam)}`);
+  for (const width of [320, 768]) {
+    await page.setViewport({ width, height: 800 });
+    const wide = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
+    !wide ? pass(`"${choice}" fits ${width}px without sideways scrolling`) : fail(`"${choice}" overflows at ${width}px`);
+  }
+  await page.setViewport({ width: 1280, height: 800 });
+}
+await page.evaluate(() => { delete document.documentElement.dataset.font; });
+(await fontOf('body')) === sysBody ? pass('Default returns to the visitor\'s own fonts') : fail('Default did not restore the system fonts');
+
 // ---- 2.5.7 Dragging alternatives ---------------------------------------------------------
 console.log('\nSetting a draggable control with a plain click (WCAG 2.5.7)');
 await open(1000);
@@ -297,8 +450,9 @@ const knob1 = +(await page.$eval('#volume', (i) => i.value));
 knob1 !== knob0 && knob1 >= 8 ? pass(`clicking the knob ring set Volume ${knob0} -> ${knob1}`) : fail(`clicking the knob ring did not set Volume (${knob0} -> ${knob1})`);
 // two-handle fader: click near the right end of the groove
 const hi0 = +(await page.$eval('[aria-label="Maximum price"]', (i) => i.value));
-await clickAt('.range2', 0, 0);                // centre of the groove, between the handles
-await clickAt('.range2', 250, 0);              // right of the upper handle
+const priceRange = '.range2:has([aria-label="Maximum price"])';
+await clickAt(priceRange, 0, 0);                // centre of the groove, between the handles
+await clickAt(priceRange, 250, 0);              // right of the upper handle
 const hi1 = +(await page.$eval('[aria-label="Maximum price"]', (i) => i.value));
 hi1 > hi0 ? pass(`clicking the groove moved the upper handle ${hi0} -> ${hi1}`) : fail(`clicking the groove did not move a handle (${hi0} -> ${hi1})`);
 // rotary range: click the arc on the right side
@@ -318,7 +472,8 @@ const nodes = [];
 const find = (role, name) => nodes.find((n) => (role instanceof RegExp ? role.test(n.role) : n.role === role)
   && (name instanceof RegExp ? name.test(n.name ?? '') : (n.name ?? '').toLowerCase() === name.toLowerCase()));
 const expect = (label, node, check = () => true) => (node && check(node) ? pass(label) : fail(`${label} — ${node ? JSON.stringify({ role: node.role, name: node.name, value: node.value, checked: node.checked, expanded: node.expanded }) : 'not found'}`));
-expect('Volume knob is a slider named "Volume" reading "7"', find('slider', 'Volume'), (n) => String(n.value ?? n.valuetext) === '7');
+// (the Declarative tags demo has a Volume knob too, so look at all of them)
+expect('Volume knob is a slider named "Volume" reading "7"', nodes.find((n) => n.role === 'slider' && n.name?.toLowerCase() === 'volume' && String(n.value ?? n.valuetext) === '7'));
 // Chrome's automation interface never reports aria-valuetext (not even for a plain div slider),
 // so check the standard attribute itself. Confirm the spoken result with a real screen reader.
 (await page.$eval('#tone', (i) => i.getAttribute('aria-valuetext'))) === 'Warm' ? pass('Tone knob has aria-valuetext "Warm" (a label, not a number)') : fail('aria-valuetext missing on the Tone knob');

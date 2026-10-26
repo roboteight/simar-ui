@@ -152,7 +152,7 @@
   &.is-end:active:not(:disabled) {
     transform: none;
     background: var(--lit-fill);
-    color: color-mix(in srgb, var(--lit) 12%, #000);
+    color: var(--on-lit);
     font-weight: 800;
     box-shadow: none;
   }

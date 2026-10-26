@@ -29,6 +29,9 @@
   right: max(1rem, env(safe-area-inset-right));
   z-index: 20;
 
+  // On a phone the floating bar would sit over the content: let it scroll away with the page.
+  @media (max-width: 40rem) { position: absolute; }
+
   [role="radiogroup"] {
     display: flex;
     gap: 0.5rem;
@@ -66,4 +69,59 @@
       inset 0 -2px 3px rgba(0, 0, 0, 0.25),
       inset 0 1px 1px rgba(255, 255, 255, 0.5);
   }
+}
+
+// The settings tab: once the Page settings panel has scrolled away, a tab on the right edge opens
+// the same options in a drawer. The drawer closes when focus leaves it, so it never sits over the
+// control you are on.
+.settings-tab {
+  position: fixed;
+  top: 36%;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: row-reverse; // the drawer opens to the left of its tab
+  align-items: flex-start;
+
+  // An icon-only tab: its name is the aria-label, and the library shows that as a tooltip too.
+  &__toggle {
+    width: 2.9rem;
+    min-width: 0;
+    height: 3.4rem;
+    min-height: 0;
+    padding: 0;
+    border-radius: 14px 0 0 14px;
+  }
+
+  &__drawer {
+    width: min(19rem, calc(100vw - 4.5rem));
+    margin: 0 0.6rem 0 0;
+    // Taller than the window once every color is listed: scroll inside the drawer, not the page.
+    max-height: calc(64vh - 1rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    animation: settings-in 160ms ease-out;
+
+    @include reduced-motion { animation: none; }
+  }
+
+  &__title {
+    margin: 0 0 1rem;
+    @include label-caps(0.75rem);
+  }
+
+  .setting + .setting { margin-top: 1.1rem; }
+
+  @media print { display: none; }
+}
+
+.setting__note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+@keyframes settings-in {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: none; }
 }

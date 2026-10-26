@@ -37,7 +37,7 @@ body {
   margin: 0;
   background: var(--page);
   color: var(--ink);
-  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 16px/1.5 var(--font-body);
 }
 
 main {
@@ -45,6 +45,18 @@ main {
   margin: 0 auto;
   padding: 3rem 1rem 5rem;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 { font-family: var(--font-heading); }
+
+code,
+kbd,
+samp,
+pre { font-family: var(--font-mono); }
 
 h1 {
   margin: 0;
@@ -64,11 +76,29 @@ h1 {
   }
 }
 
-h2 {
+// Groups (Getting started, Forms, Components) are h2; each component under them is an h3.
+h2.group {
+  margin: 5rem 0 0;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--hairline-strong);
+  font-size: 1.6rem;
+  letter-spacing: -0.015em;
+
+  &:first-of-type { margin-top: 3rem; }
+}
+
+h3 {
   margin: 3rem 0 0.25rem;
   font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+ul.plain {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+
+  li { margin: 0.4rem 0; }
 }
 
 header p,
@@ -106,8 +136,9 @@ html:not([data-js="on"]) .needs-js { display: none; }
   margin-bottom: 1.25rem;
 }
 
-// Table of contents. A row of links above the page on narrow screens; on wide ones it floats in
-// the margin on the left, clear of the content, so it never covers anything.
+// Table of contents, in groups like Bootstrap's docs navigation. A set of chips above the page on
+// narrow screens; on wide ones it floats in the left margin, clear of the content, and scrolls
+// itself so the current section stays in view.
 .toc {
   max-width: 44rem;
   margin: 2rem auto -1rem;
@@ -119,20 +150,32 @@ html:not([data-js="on"]) .needs-js { display: none; }
   }
 
   ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 0.5rem;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
+  &__groups > li + li { margin-top: 0.75rem; }
+
+  &__group {
+    display: block;
+    margin: 0 0 0.2rem 0.65rem;
+    @include label-caps(0.68rem, 700, 0.08em);
+  }
+
+  // The items under a group: chips side by side on narrow screens.
+  &__groups ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.4rem;
+  }
+
   a {
     display: inline-block;
-    padding: 0.3rem 0.65rem;
+    padding: 0.25rem 0.65rem;
     border-radius: 8px;
     color: var(--ink-soft);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     text-decoration: none;
 
     &:hover {
@@ -152,21 +195,18 @@ html:not([data-js="on"]) .needs-js { display: none; }
   // Wide enough that the content leaves room on the left: float it there.
   @media (min-width: 76rem) {
     position: fixed;
-    top: 6rem;
-    left: max(1rem, calc((100vw - 44rem) / 2 - 13.5rem));
-    width: 11.5rem;
-    max-height: calc(100vh - 8rem);
+    top: 5.5rem;
+    left: max(1rem, calc((100vw - 44rem) / 2 - 14rem));
+    width: 12rem;
+    max-height: calc(100vh - 7rem);
     margin: 0;
-    padding: 0;
+    padding: 0 0.25rem 0 0;
     overflow-y: auto;
 
-    ul {
-      display: block;
-    }
+    &__groups ul { display: block; }
 
     a {
       display: block;
-      padding: 0.35rem 0.65rem;
       border-left: 3px solid transparent;
       border-radius: 0 8px 8px 0;
 
@@ -187,3 +227,6 @@ html:not([data-js="on"]) .needs-js { display: none; }
   gap: 0.9rem;
   justify-items: start;
 }
+
+// The spinner style picker is a short control, not a full-width bar.
+#spinner-demo .field { max-width: 22rem; }

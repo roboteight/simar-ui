@@ -1,0 +1,126 @@
+@use "../abstracts" as *;
+
+// What every labelled form control shares: a hint under it, an error under that, and a flag
+// ("Required") beside the label. The hint and error are linked to the control with
+// aria-describedby, so a screen reader reads them with it.
+//
+//   <div class="field">
+//     <div class="field__head"><label class="field__label" for="email">Email</label><span class="field__flag">Required</span></div>
+//     <input class="input" id="email" type="email" required aria-describedby="email-hint">
+//     <p class="field__hint" id="email-hint">We only use it for receipts.</p>
+//     <p class="field__error" id="email-error" hidden>…</p>
+//   </div>
+.field {
+  &__flag {
+    @include label-caps(0.7rem, 700, 0.08em);
+  }
+
+  &__hint {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  // An error is words and an icon, never just a color.
+  &__error {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin: 0;
+    color: var(--error);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.35;
+
+    .icon {
+      flex: none;
+      width: 1.1rem;
+      height: 1.1rem;
+      margin-top: 0.1rem;
+      filter: none;
+    }
+
+    &[hidden] { display: none; }
+  }
+
+  // The label turns the same color, as a second cue.
+  &:has([aria-invalid="true"]) &__label { color: var(--error); }
+}
+
+// A form's parts, stacked with room between them, and a grid for fields side by side. Items align
+// to the top so a field with a hint under it doesn't stretch its neighbour.
+.form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  align-items: start;
+  gap: 1.1rem 1.25rem;
+
+  .field { margin: 0; }
+}
+
+// An error summary at the top of a form, announced when it appears.
+.form__summary {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: var(--hairline);
+  box-shadow: inset 0 0 0 2px var(--error);
+  color: var(--ink);
+  font-weight: 600;
+
+  &[hidden] { display: none; }
+
+  &:focus-visible { @include focus-ring(3px); }
+
+  @include forced-colors {
+    box-shadow: none;
+    border: 2px solid CanvasText;
+    background: Canvas;
+  }
+}
+
+// The confirmation shown in place of a form once it has been sent: a ring and a check mark that
+// draw themselves. The title takes focus so a screen reader announces it; the words say what the
+// mark says, so the mark is decoration.
+.sent {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+
+  &__mark {
+    width: 4.5rem;
+    height: 4.5rem;
+    fill: none;
+    stroke: var(--meter-ok);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 1px 0 var(--lip));
+  }
+
+  &__ring { stroke-dasharray: 145; stroke-dashoffset: 145; animation: sent-draw 600ms ease-out forwards; }
+  &__tick { stroke-dasharray: 40; stroke-dashoffset: 40; animation: sent-draw 350ms 450ms ease-out forwards; }
+
+  &__title {
+    margin: 0;
+    font-size: 1.25rem;
+    &:focus { outline: none; } // focus is moved here to announce it; it is not a control
+  }
+
+  &__text { margin: 0; max-width: 28rem; color: var(--ink-soft); }
+
+  @include reduced-motion {
+    &__ring,
+    &__tick { animation: none; stroke-dashoffset: 0; }
+  }
+}
+
+@keyframes sent-draw { to { stroke-dashoffset: 0; } }

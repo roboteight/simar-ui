@@ -67,15 +67,22 @@ await readRing(); // the focus ring colour is a theme token
 const missing = [];
 const hidden = [];
 let stops = 0;
-for (; stops < 400; stops++) {
+// A date or time field keeps focus while Tab walks its segments (month, day, year, hour...), so the
+// same element coming back a few times in a row is normal. A real trap keeps it forever.
+let sameRun = 0;
+let trapped = false;
+for (; stops < 700; stops++) {
   await page.keyboard.press('Tab');
-  // Same element as last time means focus stopped moving; <body> means it wrapped around.
+  // <body> means focus has left the page's last control.
   const state = await page.evaluate(() => {
     const same = window.__prev === document.activeElement;
     window.__prev = document.activeElement;
     return { same, body: document.activeElement === document.body };
   });
-  if (state.same || state.body) break;
+  if (state.body) break;
+  sameRun = state.same ? sameRun + 1 : 0;
+  if (sameRun > 8) { trapped = true; break; }
+  if (state.same) continue;
   const r = await indicator();
   if (!r.ok && !missing.includes(r.name)) missing.push(r.name);
   if (r.covered > 0.5 && !hidden.includes(r.name)) hidden.push(r.name);
@@ -84,7 +91,7 @@ for (; stops < 400; stops++) {
 console.log(`${theme} theme: tabbed through ${stops} stops`);
 console.log(missing.length ? `✗ no visible focus indicator on: ${missing.join(', ')}` : '✓ every stop shows a focus indicator');
 console.log(hidden.length ? `✗ focus is hidden behind the floating button on: ${hidden.join(', ')}` : '✓ focus is never hidden behind the floating button');
-console.log(stops >= 400 ? '✗ focus did not reach the end (trap?)' : '✓ focus is not trapped');
+console.log(trapped || stops >= 700 ? '✗ focus did not reach the end (a trap?)' : '✓ focus is not trapped, and reaches the end of the page');
 console.log(warnings.length ? `✗ the library warned:\n  ${warnings.join('\n  ')}` : '✓ the library raised no accessibility warnings');
 await browser.close();
-process.exit(missing.length || hidden.length || stops >= 400 || warnings.length ? 1 : 0);
+process.exit(missing.length || hidden.length || trapped || stops >= 700 || warnings.length ? 1 : 0);

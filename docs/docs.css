@@ -36,13 +36,29 @@ body {
   margin: 0;
   background: var(--page);
   color: var(--ink);
-  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 16px/1.5 var(--font-body);
 }
 
 main {
   max-width: 44rem;
   margin: 0 auto;
   padding: 3rem 1rem 5rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
 }
 
 h1 {
@@ -62,11 +78,30 @@ h1 .version {
   vertical-align: middle;
 }
 
-h2 {
+h2.group {
+  margin: 5rem 0 0;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--hairline-strong);
+  font-size: 1.6rem;
+  letter-spacing: -0.015em;
+}
+h2.group:first-of-type {
+  margin-top: 3rem;
+}
+
+h3 {
   margin: 3rem 0 0.25rem;
   font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+ul.plain {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+ul.plain li {
+  margin: 0.4rem 0;
 }
 
 header p,
@@ -118,19 +153,33 @@ html:not([data-js=on]) .needs-js {
   color: var(--ink-soft);
 }
 .toc ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
+.toc__groups > li + li {
+  margin-top: 0.75rem;
+}
+.toc__group {
+  display: block;
+  margin: 0 0 0.2rem 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.toc__groups ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.4rem;
+}
 .toc a {
   display: inline-block;
-  padding: 0.3rem 0.65rem;
+  padding: 0.25rem 0.65rem;
   border-radius: 8px;
   color: var(--ink-soft);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   text-decoration: none;
 }
 .toc a:hover {
@@ -149,20 +198,19 @@ html:not([data-js=on]) .needs-js {
 @media (min-width: 76rem) {
   .toc {
     position: fixed;
-    top: 6rem;
-    left: max(1rem, (100vw - 44rem) / 2 - 13.5rem);
-    width: 11.5rem;
-    max-height: calc(100vh - 8rem);
+    top: 5.5rem;
+    left: max(1rem, (100vw - 44rem) / 2 - 14rem);
+    width: 12rem;
+    max-height: calc(100vh - 7rem);
     margin: 0;
-    padding: 0;
+    padding: 0 0.25rem 0 0;
     overflow-y: auto;
   }
-  .toc ul {
+  .toc__groups ul {
     display: block;
   }
   .toc a {
     display: block;
-    padding: 0.35rem 0.65rem;
     border-left: 3px solid transparent;
     border-radius: 0 8px 8px 0;
   }
@@ -185,6 +233,10 @@ html:not([data-js=on]) .needs-js {
   display: grid;
   gap: 0.9rem;
   justify-items: start;
+}
+
+#spinner-demo .field {
+  max-width: 22rem;
 }
 
 .jsbar .note {
@@ -213,6 +265,11 @@ html:not([data-js=on]) .needs-js {
   top: max(1rem, env(safe-area-inset-top));
   right: max(1rem, env(safe-area-inset-right));
   z-index: 20;
+}
+@media (max-width: 40rem) {
+  .themebar {
+    position: absolute;
+  }
 }
 .themebar [role=radiogroup] {
   display: flex;
@@ -253,6 +310,69 @@ input:checked + .key .swatch {
   box-shadow: 0 0 0 2px var(--swatch-ring), 0 0 8px 2px var(--lit-glow), inset 0 -2px 3px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
+.settings-tab {
+  position: fixed;
+  top: 36%;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+}
+.settings-tab__toggle {
+  width: 2.9rem;
+  min-width: 0;
+  height: 3.4rem;
+  min-height: 0;
+  padding: 0;
+  border-radius: 14px 0 0 14px;
+}
+.settings-tab__drawer {
+  width: min(19rem, 100vw - 4.5rem);
+  margin: 0 0.6rem 0 0;
+  max-height: calc(64vh - 1rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: settings-in 160ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .settings-tab__drawer {
+    animation: none;
+  }
+}
+.settings-tab__title {
+  margin: 0 0 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.settings-tab .setting + .setting {
+  margin-top: 1.1rem;
+}
+@media print {
+  .settings-tab {
+    display: none;
+  }
+}
+
+.setting__note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+@keyframes settings-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 .snippet {
   margin: 1rem 0 1.5rem;
 }
