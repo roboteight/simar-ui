@@ -103,6 +103,7 @@
         <li><a href="#accordion">Accordion</a></li>
         <li><a href="#buttons">Buttons</a></li>
         <li><a href="#dialogs">Dialog</a></li>
+        <li><a href="#menus">Dropdown menu</a></li>
         <li><a href="#meters">Meter</a></li>
         <li><a href="#progress">Progress</a></li>
         <li><a href="#spinners">Spinners</a></li>
@@ -1260,6 +1261,44 @@
       </script>
     </section>
 
+    <section aria-labelledby="menus">
+      <h3 id="menus">Dropdown menu</h3>
+      <p class="note">A button that opens a list of actions or links. It is a native <code>popover</code>, so it opens, closes, dismisses on Esc and on a click outside without any JavaScript. The script adds the menu roles and keyboard movement: Enter, Space or the arrow keys open it, the arrows, Home, End and letters move, Esc closes and returns focus to the button, and Tab leaves.</p>
+
+      <fieldset class="panel">
+        <legend>Menu</legend>
+        <div class="well-row">
+          <div class="menu">
+            <span class="well"><button type="button" class="key" id="menu-demo-button" popovertarget="menu-demo">Actions<svg class="icon icon--lead icon--chevron-down" aria-hidden="true"><use href="#i-chevron-down"/></svg></button></span>
+            <ul class="menu__list" id="menu-demo" popover>
+              <li><button type="button" class="menu__item">Edit</button></li>
+              <li><button type="button" class="menu__item">Duplicate</button></li>
+              <li><a class="menu__item" href="#menus">Export as link</a></li>
+              <li role="separator"></li>
+              <li><button type="button" class="menu__item" aria-disabled="true">Archive (unavailable)</button></li>
+              <li><button type="button" class="menu__item menu__item--danger">Delete</button></li>
+            </ul>
+          </div>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-menu label="Actions">
+            <simar-menu-item>Edit</simar-menu-item>
+            <simar-menu-item href="/export">Export</simar-menu-item>
+            <simar-menu-separator></simar-menu-separator>
+            <simar-menu-item danger>Delete</simar-menu-item>
+          </simar-menu>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <div class="menu">
+            <span class="well"><button type="button" class="key" popovertarget="actions">Actions</button></span>
+            <ul class="menu__list" id="actions" popover>
+              <li><button type="button" class="menu__item">Edit</button></li>
+              <li><a class="menu__item" href="/export">Export</a></li>
+            </ul>
+          </div>
+        </script>
+      </fieldset>
+    </section>
     <section aria-labelledby="meters">
       <h3 id="meters">Meter</h3>
       <p class="note">A native <code>&lt;meter&gt;</code>: a gauge for a known quantity, as opposed to <code>&lt;progress&gt;</code>, which is work being done. The browser decides good, middling or poor from <code>low</code>, <code>high</code> and <code>optimum</code>, and the fill tells them apart by pattern (solid, striped, dotted) as well as color.</p>

@@ -172,6 +172,20 @@ const builders = {
     return `<div${rootAttrs(node, 'tabs')} data-tabs${attr(node, 'label', 'data-label')}>${panels.join('')}</div>`;
   },
 
+  // <simar-menu label="Actions"><simar-menu-item>Edit</simar-menu-item><simar-menu-item href="/x">Export</simar-menu-item>
+  //   <simar-menu-item danger>Delete</simar-menu-item><simar-menu-separator></simar-menu-separator></simar-menu>
+  'simar-menu': (node) => {
+    const id = nextId('menu');
+    const rows = [...node.children].map((child) => {
+      if (child.localName === 'simar-menu-separator') return '<li role="separator"></li>';
+      const cls = `menu__item${child.hasAttribute('danger') ? ' menu__item--danger' : ''}`;
+      const dis = child.hasAttribute('disabled') ? ' aria-disabled="true"' : '';
+      const inner = esc(child.textContent.trim());
+      return child.getAttribute('href') ? `<li><a class="${cls}" href="${esc(child.getAttribute('href'))}"${dis}>${inner}</a></li>` : `<li><button type="button" class="${cls}"${dis}>${inner}</button></li>`;
+    });
+    return `<div${rootAttrs(node, 'menu')}><span class="well"><button type="button" class="key" id="${id}-button" popovertarget="${id}">${esc(node.getAttribute('label') ?? 'Menu')}<svg class="icon icon--lead icon--chevron-down" aria-hidden="true"><use href="#i-chevron-down"/></svg></button></span><ul class="menu__list" id="${id}" popover>${rows.join('')}</ul></div>`;
+  },
+
   // <simar-accordion name="faq"><simar-item title="What is it?" open>Answer…</simar-item></simar-accordion>
   // Items open one at a time (sharing `name`) unless `multiple` is set.
   'simar-accordion': (node) => {

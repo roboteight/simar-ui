@@ -4307,6 +4307,80 @@ input[type=file].input:disabled::file-selector-button {
   border-radius: 8px;
 }
 
+.menu {
+  display: inline-block;
+}
+.menu__list {
+  border: 0;
+  border-radius: 14px;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
+  box-shadow: 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k)), transparent);
+  position: fixed;
+  inset: auto;
+  min-width: 12rem;
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+  overflow: auto;
+  max-height: min(24rem, 70vh);
+}
+@media (forced-colors: active) {
+  .menu__list {
+    border: 1px solid CanvasText;
+  }
+}
+.menu__list li {
+  margin: 0;
+}
+.menu__list hr,
+.menu__list [role=separator] {
+  height: 0;
+  margin: 0.35rem 0.4rem;
+  border: 0;
+  border-top: 1px solid var(--hairline-strong);
+}
+.menu__item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.menu__item:hover, .menu__item:focus-visible {
+  background: color-mix(in srgb, var(--lit) 16%, transparent);
+}
+.menu__item:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  outline-offset: -2px;
+}
+.menu__item--danger {
+  color: var(--error);
+}
+.menu__item[aria-disabled=true], .menu__item:disabled {
+  color: var(--ink-disabled);
+  cursor: not-allowed;
+}
+.menu__item[aria-disabled=true]:hover, .menu__item:disabled:hover {
+  background: none;
+}
+@media (forced-colors: active) {
+  .menu__item:hover, .menu__item:focus-visible {
+    background: transparent;
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
 .daterange {
   display: flex;
   flex-wrap: wrap;

@@ -177,6 +177,14 @@ const suite = async (theme) => {
   total += await gradientContrast(`${t}, form errors showing`);
   await page.click('#signup button[type="reset"]');
 
+  // the dropdown menu open
+  await page.evaluate(() => document.querySelector('#menu-demo-button').scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.click('#menu-demo-button');
+  await wait(300);
+  add(await run(`${t}, menu open`));
+  total += await gradientContrast(`${t}, menu open`);
+  await page.keyboard.press('Escape');
+
   // the settings drawer open
   await page.evaluate(() => scrollTo({ top: 1400, behavior: 'instant' }));
   await wait(300);

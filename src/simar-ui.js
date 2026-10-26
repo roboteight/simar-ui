@@ -762,6 +762,68 @@ const enhanceTabs = (claim) => {
   }
 };
 
+// Menu: the popover attribute already opens and closes the list. This adds the menu roles, moves
+// focus into the list when it opens, and handles arrows, Home, End, letters, Esc and Tab (the
+// ARIA menu button pattern). A disabled item stays in the arrow order but does nothing.
+const enhanceMenus = (claim) => {
+  for (const root of claim('.menu')) {
+    const button = root.querySelector('[popovertarget]');
+    const list = button && document.getElementById(button.getAttribute('popovertarget'));
+    if (!list) continue;
+    const items = () => [...list.querySelectorAll('.menu__item')];
+    list.setAttribute('role', 'menu');
+    if (!list.getAttribute('aria-label') && !list.getAttribute('aria-labelledby')) list.setAttribute('aria-labelledby', button.id ||= `${list.id}-button`);
+    for (const li of list.querySelectorAll('li')) li.setAttribute('role', li.querySelector('.menu__item') ? 'none' : 'separator');
+    for (const item of items()) {
+      item.setAttribute('role', 'menuitem');
+      item.tabIndex = -1;
+      if (item.matches('[aria-disabled="true"]')) item.addEventListener('click', (e) => e.preventDefault());
+    }
+    button.setAttribute('aria-haspopup', 'menu');
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-controls', list.id);
+
+    const place = () => {
+      const box = button.getBoundingClientRect();
+      list.style.left = `${Math.max(8, Math.min(box.left, innerWidth - list.offsetWidth - 8))}px`;
+      const below = innerHeight - box.bottom;
+      list.style.top = `${below >= list.offsetHeight + 8 || box.top < list.offsetHeight ? box.bottom + 4 : box.top - list.offsetHeight - 4}px`;
+    };
+    let focusEnd = false;
+    list.addEventListener('toggle', (e) => {
+      const open = e.newState === 'open';
+      button.setAttribute('aria-expanded', String(open));
+      if (!open) return;
+      place();
+      const all = items();
+      (focusEnd ? all.at(-1) : all[0])?.focus();
+      focusEnd = false;
+    });
+    button.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      e.preventDefault();
+      focusEnd = e.key === 'ArrowUp';
+      list.showPopover();
+    });
+    list.addEventListener('click', (e) => {
+      const item = e.target.closest('.menu__item');
+      if (item && item.getAttribute('aria-disabled') !== 'true') list.hidePopover();
+    });
+    list.addEventListener('keydown', (e) => {
+      const all = items();
+      const at = all.indexOf(document.activeElement);
+      if (e.key === 'Tab') { list.hidePopover(); return; }
+      const next = { ArrowDown: (at + 1) % all.length, ArrowUp: (at - 1 + all.length) % all.length, Home: 0, End: all.length - 1 }[e.key];
+      if (next !== undefined) { e.preventDefault(); all[next].focus(); return; }
+      if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const letter = e.key.toLowerCase();
+        const found = [...all.slice(at + 1), ...all.slice(0, at + 1)].find((n) => n.textContent.trim().toLowerCase().startsWith(letter));
+        if (found) { e.preventDefault(); found.focus(); }
+      }
+    });
+  }
+};
+
 // Picker: a <select data-picker> whose list can show more than text, such as a moving spinner. The
 // select stays in the form and keeps the value; a select-only combobox (the ARIA pattern) is built
 // over it. An option points at a <template> with data-art, and that is drawn beside its words.
@@ -1172,6 +1234,7 @@ const init = (scope = document) => {
   enhanceCode(claim);
   enhanceChecks(claim);
   enhanceTabs(claim);
+  enhanceMenus(claim);
   enhanceSteppers(claim);
   enhanceReveal(claim);
   enhanceColors(claim);

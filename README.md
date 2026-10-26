@@ -221,6 +221,34 @@ Four spinner styles, all SVG so they stay crisp on any background: `ticks` (defa
 <simar-spinner label="Loading results" variant="ring"></simar-spinner>
 ```
 
+#### Tabs
+
+Write each tab as a headed section. Without JavaScript they stack under their headings; with it the headings become a row of latched keys and one panel shows at a time. Left and Right arrows, Home and End move between tabs (the ARIA tabs pattern).
+
+<img src="docs/screenshots/tabs.png" alt="A row of three tabs with the middle one selected, and its panel below" width="640">
+
+```html
+<simar-tabs label="Project">
+  <simar-tab title="Overview">The summary.</simar-tab>
+  <simar-tab title="Details" selected>The details.</simar-tab>
+</simar-tabs>
+```
+
+#### Dropdown menu
+
+A button that opens a list of actions or links. It is a native `popover`, so it opens, closes and dismisses with no JavaScript; the script adds the menu roles and the keys from the ARIA menu button pattern (Enter, Space and the arrows open it, arrows, Home, End and letters move, Esc returns focus to the button, Tab leaves).
+
+<img src="docs/screenshots/menu.png" alt="An Actions button with its menu open: Edit, Duplicate, Export, Archive and Delete" width="460">
+
+```html
+<simar-menu label="Actions">
+  <simar-menu-item>Edit</simar-menu-item>
+  <simar-menu-item href="/export">Export</simar-menu-item>
+  <simar-menu-separator></simar-menu-separator>
+  <simar-menu-item danger>Delete</simar-menu-item>
+</simar-menu>
+```
+
 #### Tooltips
 
 Add `data-tooltip="Text"` to a button, link or radio key. It shows on mouse hover and on keyboard focus, Esc dismisses it, and you can move the pointer onto it (WCAG 1.4.13). Icon-only keys with an `aria-label` get theirs as a tooltip automatically; opt one out with `data-tooltip=""`.

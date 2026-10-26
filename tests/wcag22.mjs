@@ -485,6 +485,35 @@ await page.keyboard.press('End');
 await page.keyboard.press('Tab');
 (await page.evaluate(() => document.activeElement.getAttribute('role'))) === 'tabpanel' ? pass('Tab moves from the tabs into the panel') : fail('Tab did not reach the panel');
 
+// ---- dropdown menu --------------------------------------------------------------------------------
+console.log('\nDropdown menu (ARIA menu button pattern)');
+await open(1280);
+const menuNow = () => page.evaluate(() => ({ open: document.querySelector('#menu-demo').matches(':popover-open'), expanded: document.querySelector('#menu-demo-button').getAttribute('aria-expanded'), focus: document.activeElement.textContent.trim() }));
+const menuAttrs = await page.evaluate(() => { const b = document.querySelector('#menu-demo-button'); const l = document.querySelector('#menu-demo'); return { haspopup: b.getAttribute('aria-haspopup'), controls: b.getAttribute('aria-controls'), role: l.getAttribute('role'), named: !!(l.getAttribute('aria-labelledby') && document.getElementById(l.getAttribute('aria-labelledby'))), items: [...l.querySelectorAll('.menu__item')].every((i) => i.getAttribute('role') === 'menuitem' && i.tabIndex === -1), wrappers: [...l.querySelectorAll(':scope > li')].map((li) => li.getAttribute('role')).join(',') }; });
+menuAttrs.haspopup === 'menu' && menuAttrs.controls === 'menu-demo' && menuAttrs.role === 'menu' && menuAttrs.named && menuAttrs.items && menuAttrs.wrappers === 'none,none,none,separator,none,none' ? pass('roles are menu, menuitem, none (list items) and separator, and the menu is named by its button') : fail(`menu roles: ${JSON.stringify(menuAttrs)}`);
+await page.$eval('#menu-demo-button', (b) => b.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.focus('#menu-demo-button');
+await page.keyboard.press('Enter');
+await wait(250);
+const m1 = await menuNow();
+m1.open && m1.expanded === 'true' && m1.focus === 'Edit' ? pass('Enter opens it with focus on the first item, and aria-expanded follows') : fail(`open: ${JSON.stringify(m1)}`);
+await page.keyboard.press('End');
+(await menuNow()).focus === 'Delete' ? pass('End goes to the last item') : fail('End did not reach the last item');
+await page.keyboard.press('ArrowDown');
+(await menuNow()).focus === 'Edit' ? pass('ArrowDown wraps to the first item') : fail('ArrowDown did not wrap');
+await page.keyboard.type('d');
+(await menuNow()).focus === 'Duplicate' ? pass('typing a letter moves to the next item starting with it') : fail('type-ahead failed');
+await page.keyboard.press('Escape');
+await wait(200);
+const m2 = await menuNow();
+!m2.open && m2.expanded === 'false' && m2.focus.startsWith('Actions') ? pass('Esc closes it and returns focus to the button') : fail(`esc: ${JSON.stringify(m2)}`);
+await page.keyboard.press('ArrowUp');
+await wait(250);
+(await menuNow()).focus === 'Delete' ? pass('ArrowUp on the button opens it on the last item') : fail('ArrowUp did not open on the last item');
+await page.keyboard.press('Tab');
+await wait(200);
+!(await menuNow()).open ? pass('Tab closes it and moves on') : fail('Tab left the menu open');
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

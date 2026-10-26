@@ -140,6 +140,19 @@
       });
       return `<div${rootAttrs(node, "tabs")} data-tabs${attr(node, "label", "data-label")}>${panels.join("")}</div>`;
     },
+    // <simar-menu label="Actions"><simar-menu-item>Edit</simar-menu-item><simar-menu-item href="/x">Export</simar-menu-item>
+    //   <simar-menu-item danger>Delete</simar-menu-item><simar-menu-separator></simar-menu-separator></simar-menu>
+    "simar-menu": (node) => {
+      const id = nextId("menu");
+      const rows = [...node.children].map((child) => {
+        if (child.localName === "simar-menu-separator") return '<li role="separator"></li>';
+        const cls = `menu__item${child.hasAttribute("danger") ? " menu__item--danger" : ""}`;
+        const dis = child.hasAttribute("disabled") ? ' aria-disabled="true"' : "";
+        const inner = esc(child.textContent.trim());
+        return child.getAttribute("href") ? `<li><a class="${cls}" href="${esc(child.getAttribute("href"))}"${dis}>${inner}</a></li>` : `<li><button type="button" class="${cls}"${dis}>${inner}</button></li>`;
+      });
+      return `<div${rootAttrs(node, "menu")}><span class="well"><button type="button" class="key" id="${id}-button" popovertarget="${id}">${esc(node.getAttribute("label") ?? "Menu")}<svg class="icon icon--lead icon--chevron-down" aria-hidden="true"><use href="#i-chevron-down"/></svg></button></span><ul class="menu__list" id="${id}" popover>${rows.join("")}</ul></div>`;
+    },
     // <simar-accordion name="faq"><simar-item title="What is it?" open>Answer…</simar-item></simar-accordion>
     // Items open one at a time (sharing `name`) unless `multiple` is set.
     "simar-accordion": (node) => {
@@ -942,6 +955,73 @@
       select(Math.max(0, panels.findIndex((p) => p.hasAttribute("data-selected"))));
     }
   };
+  var enhanceMenus = (claim) => {
+    for (const root of claim(".menu")) {
+      const button = root.querySelector("[popovertarget]");
+      const list = button && document.getElementById(button.getAttribute("popovertarget"));
+      if (!list) continue;
+      const items = () => [...list.querySelectorAll(".menu__item")];
+      list.setAttribute("role", "menu");
+      if (!list.getAttribute("aria-label") && !list.getAttribute("aria-labelledby")) list.setAttribute("aria-labelledby", button.id ||= `${list.id}-button`);
+      for (const li of list.querySelectorAll("li")) li.setAttribute("role", li.querySelector(".menu__item") ? "none" : "separator");
+      for (const item of items()) {
+        item.setAttribute("role", "menuitem");
+        item.tabIndex = -1;
+        if (item.matches('[aria-disabled="true"]')) item.addEventListener("click", (e) => e.preventDefault());
+      }
+      button.setAttribute("aria-haspopup", "menu");
+      button.setAttribute("aria-expanded", "false");
+      button.setAttribute("aria-controls", list.id);
+      const place = () => {
+        const box = button.getBoundingClientRect();
+        list.style.left = `${Math.max(8, Math.min(box.left, innerWidth - list.offsetWidth - 8))}px`;
+        const below = innerHeight - box.bottom;
+        list.style.top = `${below >= list.offsetHeight + 8 || box.top < list.offsetHeight ? box.bottom + 4 : box.top - list.offsetHeight - 4}px`;
+      };
+      let focusEnd = false;
+      list.addEventListener("toggle", (e) => {
+        const open = e.newState === "open";
+        button.setAttribute("aria-expanded", String(open));
+        if (!open) return;
+        place();
+        const all = items();
+        (focusEnd ? all.at(-1) : all[0])?.focus();
+        focusEnd = false;
+      });
+      button.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+        e.preventDefault();
+        focusEnd = e.key === "ArrowUp";
+        list.showPopover();
+      });
+      list.addEventListener("click", (e) => {
+        const item = e.target.closest(".menu__item");
+        if (item && item.getAttribute("aria-disabled") !== "true") list.hidePopover();
+      });
+      list.addEventListener("keydown", (e) => {
+        const all = items();
+        const at = all.indexOf(document.activeElement);
+        if (e.key === "Tab") {
+          list.hidePopover();
+          return;
+        }
+        const next = { ArrowDown: (at + 1) % all.length, ArrowUp: (at - 1 + all.length) % all.length, Home: 0, End: all.length - 1 }[e.key];
+        if (next !== void 0) {
+          e.preventDefault();
+          all[next].focus();
+          return;
+        }
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          const letter = e.key.toLowerCase();
+          const found = [...all.slice(at + 1), ...all.slice(0, at + 1)].find((n) => n.textContent.trim().toLowerCase().startsWith(letter));
+          if (found) {
+            e.preventDefault();
+            found.focus();
+          }
+        }
+      });
+    }
+  };
   var pickers = 0;
   var enhancePickers = (claim) => {
     for (const select of claim("select[data-picker]")) {
@@ -1319,6 +1399,7 @@
     enhanceCode(claim);
     enhanceChecks(claim);
     enhanceTabs(claim);
+    enhanceMenus(claim);
     enhanceSteppers(claim);
     enhanceReveal(claim);
     enhanceColors(claim);

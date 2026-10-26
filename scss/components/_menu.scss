@@ -1,0 +1,75 @@
+@use "../abstracts" as *;
+
+// Dropdown menu. A button opens a native popover holding a list of actions (buttons or links).
+// The popover attribute does the opening, closing, Esc and click-away with no script; the script adds
+// the menu roles, arrow-key movement and the placement under the button.
+//
+//   <div class="menu">
+//     <span class="well"><button type="button" class="key" popovertarget="actions">Actions</button></span>
+//     <ul class="menu__list" id="actions" popover>
+//       <li><button type="button" class="menu__item">Edit</button></li>
+//       <li><a class="menu__item" href="/export">Export</a></li>
+//     </ul>
+//   </div>
+.menu {
+  display: inline-block;
+
+  &__list {
+    @include surface(14px, 0 18px 40px -12px shade(0.4));
+    position: fixed;
+    inset: auto;
+    min-width: 12rem;
+    margin: 0;
+    padding: 0.4rem;
+    list-style: none;
+    overflow: auto;
+    max-height: min(24rem, 70vh);
+
+    @include forced-colors { border: 1px solid CanvasText; }
+
+    li { margin: 0; }
+    hr,
+    [role="separator"] {
+      height: 0;
+      margin: 0.35rem 0.4rem;
+      border: 0;
+      border-top: 1px solid var(--hairline-strong);
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.5rem 0.7rem;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible { background: color-mix(in srgb, var(--lit) 16%, transparent); }
+
+    &:focus-visible { @include focus-ring(2px); outline-offset: -2px; }
+
+    &--danger { color: var(--error); }
+
+    &[aria-disabled="true"],
+    &:disabled {
+      color: var(--ink-disabled);
+      cursor: not-allowed;
+
+      &:hover { background: none; }
+    }
+
+    @include forced-colors {
+      &:hover,
+      &:focus-visible { background: transparent; outline: 2px solid Highlight; outline-offset: -2px; }
+    }
+  }
+}
