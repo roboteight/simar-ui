@@ -22,7 +22,10 @@
   // The highlight colour. Everything lit derives from it; override --lit on any element
   // (style="--lit: #ff4d6d") or pick a preset with data-lit="blue|amber|red|violet".
   --lit: #36d27a;
+  // The accent (the call-to-action key, the knob index mark) follows the highlight color. Without
+  // relative-color support it falls back to this orange.
   --accent: #ff7a3d;
+  --accent-top: #ffa070;
 
   --travel: 2px; // how far a cap is extruded above its well
   --radius: 14px;
@@ -50,6 +53,9 @@
 // whichever has more contrast.
 @supports (color: oklch(from red l c h)) {
   * {
+    // Light enough that the dark label on the accent key stays above 4.5:1 for any highlight.
+    --accent: oklch(from var(--lit) clamp(0.74, l, 0.84) c h);
+    --accent-top: oklch(from var(--lit) clamp(0.82, calc(l + 0.1), 0.93) c h);
     --lit-ink: oklch(from var(--lit) clamp(var(--lit-ink-min-l), l, var(--lit-ink-max-l)) c h);
     --lit-screen: oklch(from var(--lit) max(l, 0.82) c h);
     --on-lit: oklch(from var(--lit-fill) clamp(0, (0.6 - l) * 100, 1) 0 0);

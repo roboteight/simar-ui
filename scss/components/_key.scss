@@ -109,9 +109,12 @@
   &:disabled,
   input:disabled + & {
     cursor: not-allowed;
+    // A flat, neutral cap in every variant: no color, no lift. The label stays at 4.5:1 or better
+    // (so it is still readable); the missing color and bevel are what say "unavailable".
+    --k-top: var(--disabled-top);
+    --k-bottom: var(--disabled-bottom);
     color: var(--ink-disabled);
-    filter: saturate(0.5);
-    opacity: 0.75;
+    text-shadow: none;
 
     .icon { filter: none; }
   }
@@ -148,9 +151,10 @@
     }
   }
 
-  // The orange accent key. Its label is dark: white on this orange is only 2:1, short of WCAG AA.
+  // The accent key takes the highlight color. Its label is dark: white on a mid color is often short of
+  // WCAG AA (white on the old orange was 2:1), and the accent is kept light enough for dark text.
   &--accent {
-    --k-top: #ffa070;
+    --k-top: var(--accent-top);
     --k-bottom: var(--accent);
     color: var(--on-accent);
     text-shadow: var(--accent-text-shadow);

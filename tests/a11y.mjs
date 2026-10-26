@@ -93,7 +93,8 @@ const gradientContrast = async (label) => {
       const own = [...node.childNodes].some((c) => c.nodeType === 3 && c.textContent.trim());
       const isField = node.matches('input[type="date"]');
       if (!own && !isField) continue;
-      if (node.closest(':disabled, input:disabled + *, label:has(input:disabled)')) continue;
+      // Disabled controls are exempt from WCAG contrast, but they are held to the same 4.5:1 here:
+      // a disabled button should still be readable.
       const cs = getComputedStyle(node);
       if (cs.visibility === 'hidden' || cs.display === 'none' || +cs.opacity === 0) continue;
       const rect = node.getBoundingClientRect();

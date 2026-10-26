@@ -7,6 +7,7 @@
 //   4.1.2  Name, role, value the accessibility tree describes each control the way a screen reader would
 // Exits non-zero on any failure.
 
+import { PNG } from 'pngjs';
 import puppeteer from 'puppeteer-core';
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
@@ -106,12 +107,20 @@ const forced = await page.evaluate(() => {
   const checked = document.querySelector('input[name="mode"]:checked + .key');
   const unchecked = document.querySelector('input[name="mode"]:not(:checked):not(:disabled) + .key');
   if (checked && unchecked && getComputedStyle(checked).backgroundColor === getComputedStyle(unchecked).backgroundColor) issues.push('the selected key looks the same as an unselected one');
-  const thumb = document.querySelector('#bright');
-  if (thumb && getComputedStyle(thumb, '::-webkit-slider-thumb').backgroundColor === 'rgba(0, 0, 0, 0)') issues.push('fader cap has no fill');
   return issues;
 });
 forced.length ? forced.forEach(fail) : pass('keys keep a border and the selected state is distinguishable');
 await page.screenshot({ path: path.join(process.env.TMPDIR ?? '/tmp', 'simar-ui-forced-colors.png') });
+// The fader cap is a pseudo-element, which getComputedStyle reports unreliably under forced colours,
+// so look at the pixels: the middle of the cap must not be the page's own background.
+await page.$eval('#bright', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await wait(200);
+const capPoint = await page.$eval('#bright', (n) => { const r = n.getBoundingClientRect(); const f = (n.value - n.min) / (n.max - n.min); return { x: r.left + scrollX + 22 + f * (r.width - 44), y: r.top + scrollY + r.height / 2, bgY: r.top + scrollY - 6 }; });
+const capShot = PNG.sync.read(await page.screenshot({ clip: { x: Math.round(capPoint.x) - 1, y: Math.round(capPoint.y) - 1, width: 3, height: 3 } }));
+const bgShot = PNG.sync.read(await page.screenshot({ clip: { x: Math.round(capPoint.x) - 1, y: Math.max(0, Math.round(capPoint.bgY) - 1), width: 3, height: 3 } }));
+const capPx = [...capShot.data.slice(0, 3)];
+const bgPx = [...bgShot.data.slice(0, 3)];
+capPx.some((c, k) => Math.abs(c - bgPx[k]) > 40) ? pass('the fader cap is filled (not the same as the page) under forced colours') : fail(`fader cap pixel ${capPx} matches the background ${bgPx}`);
 await page.emulateMediaFeatures([]);
 
 // ---- 1.4.11 Non-text contrast ------------------------------------------------------------

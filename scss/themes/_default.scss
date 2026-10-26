@@ -50,7 +50,8 @@ $lit-presets: (
 
 // The button variants: class="key key--primary". Each is a gradient cap (top to bottom) and the ink
 // on it, chosen so the label is at least 4.5:1 against both ends (checked in tests/a11y.mjs).
-// `accent` is the orange key, which also tints the knobs' index mark through --accent.
+// The accent key is not listed here: it takes the highlight color (--accent, derived from --lit), so a
+// palette's own highlight shows up on its call-to-action buttons and the knobs' index mark.
 $key-colors: (
   "primary":   (top: #8dbaff, bottom: #5b95ff, ink: #1f2024, shadow: (0 1px 0 rgba(255, 255, 255, 0.4))),
   "secondary": (top: #d6dae1, bottom: #b4bbc7, ink: #1f2024, shadow: (0 1px 0 rgba(255, 255, 255, 0.45))),
@@ -69,7 +70,9 @@ $key-colors: (
   color-scheme: light;
   --ink: #{tone(#2b2d31, $hue, $sat)};
   --ink-soft: #{text-tone(#5a5e66, $hue, $sat, -22%)};
-  --ink-disabled: #{tone(#9a9ea6, $hue, $sat)};
+  --ink-disabled: #{text-tone(#5a5e67, $hue, $sat, -22%)};
+  --disabled-top: #{tone(#eceef1, $hue, $sat)};
+  --disabled-bottom: #{tone(#e0e2e6, $hue, $sat)};
   --on-accent: #2b2d31; // text on the orange accent key: dark in both themes, white is only 2:1
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   --focus: #2f6fed;
@@ -149,7 +152,9 @@ $key-colors: (
   color-scheme: dark;
   --ink: #{tone(#e9ebef, $hue, $sat)};
   --ink-soft: #{text-tone(#a3a8b2, $hue, $sat, 12%)};
-  --ink-disabled: #{tone(#6c717a, $hue, $sat)};
+  --ink-disabled: #{text-tone(#a9aeb8, $hue, $sat, 12%)};
+  --disabled-top: #{tone(#3a3e47, $hue, $sat)};
+  --disabled-bottom: #{tone(#32363e, $hue, $sat)};
   --on-accent: #1f2024;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
   --focus: #7aa7ff;

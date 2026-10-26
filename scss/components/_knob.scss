@@ -108,7 +108,7 @@
       margin-left: -2.5px;
       border-radius: 3px;
       background: var(--accent);
-      box-shadow: 0 0 6px rgba(255, 122, 61, 0.6), inset 0 -1px 1px shade(0.25);
+      box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 60%, transparent), inset 0 -1px 1px shade(0.25);
 
       @include forced-colors {
         forced-color-adjust: none;

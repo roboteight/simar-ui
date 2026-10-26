@@ -14,7 +14,9 @@
   color-scheme: light;
   --ink: #2b2d31;
   --ink-soft: #5a5e66;
-  --ink-disabled: #9a9ea6;
+  --ink-disabled: #5a5e67;
+  --disabled-top: #eceef1;
+  --disabled-bottom: #e0e2e6;
   --on-accent: #2b2d31;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   --focus: #2f6fed;
@@ -81,7 +83,9 @@
   color-scheme: dark;
   --ink: #e9ebef;
   --ink-soft: #a3a8b2;
-  --ink-disabled: #6c717a;
+  --ink-disabled: #a9aeb8;
+  --disabled-top: #3a3e47;
+  --disabled-bottom: #32363e;
   --on-accent: #1f2024;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
   --focus: #7aa7ff;
@@ -149,7 +153,9 @@
     color-scheme: dark;
     --ink: #e9ebef;
     --ink-soft: #a3a8b2;
-    --ink-disabled: #6c717a;
+    --ink-disabled: #a9aeb8;
+    --disabled-top: #3a3e47;
+    --disabled-bottom: #32363e;
     --on-accent: #1f2024;
     --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
     --focus: #7aa7ff;
@@ -215,6 +221,7 @@
 :root {
   --lit: #36d27a;
   --accent: #ff7a3d;
+  --accent-top: #ffa070;
   --travel: 2px;
   --radius: 14px;
   interpolate-size: allow-keywords;
@@ -231,6 +238,8 @@
 
 @supports (color: oklch(from red l c h)) {
   * {
+    --accent: oklch(from var(--lit) clamp(0.74, l, 0.84) c h);
+    --accent-top: oklch(from var(--lit) clamp(0.82, calc(l + 0.1), 0.93) c h);
     --lit-ink: oklch(from var(--lit) clamp(var(--lit-ink-min-l), l, var(--lit-ink-max-l)) c h);
     --lit-screen: oklch(from var(--lit) max(l, 0.82) c h);
     --on-lit: oklch(from var(--lit-fill) clamp(0, (0.6 - l) * 100, 1) 0 0);
@@ -264,7 +273,9 @@
   color-scheme: light;
   --ink: rgb(13.7098039216%, 15.008627451%, 22.368627451%);
   --ink-soft: rgb(22.3171764706%, 24.4314352941%, 36.4122352941%);
-  --ink-disabled: rgb(53.8039215686%, 56.4862745098%, 71.6862745098%);
+  --ink-disabled: rgb(22.4334117647%, 24.5586823529%, 36.6018823529%);
+  --disabled-top: rgb(91.9764705882%, 92.4423529412%, 95.0823529412%);
+  --disabled-bottom: rgb(86.3843137255%, 87.1749019608%, 91.6549019608%);
   --on-accent: #2b2d31;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   --focus: #2f6fed;
@@ -341,7 +352,9 @@
     color-scheme: dark;
     --ink: rgb(90.7607843137%, 91.297254902%, 94.337254902%);
     --ink-soft: rgb(63.840627451%, 65.9402039216%, 77.8378039216%);
-    --ink-disabled: rgb(34.2745098039%, 37.5215686275%, 55.9215686275%);
+    --ink-disabled: rgb(66.4081568627%, 68.3586509804%, 79.4114509804%);
+    --disabled-top: rgb(19.2235294118%, 21.0447058824%, 31.3647058824%);
+    --disabled-bottom: rgb(16.6901960784%, 18.271372549%, 27.231372549%);
     --on-accent: #1f2024;
     --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
     --focus: #7aa7ff;
@@ -417,7 +430,9 @@
   color-scheme: dark;
   --ink: rgb(90.7607843137%, 91.297254902%, 94.337254902%);
   --ink-soft: rgb(63.840627451%, 65.9402039216%, 77.8378039216%);
-  --ink-disabled: rgb(34.2745098039%, 37.5215686275%, 55.9215686275%);
+  --ink-disabled: rgb(66.4081568627%, 68.3586509804%, 79.4114509804%);
+  --disabled-top: rgb(19.2235294118%, 21.0447058824%, 31.3647058824%);
+  --disabled-bottom: rgb(16.6901960784%, 18.271372549%, 27.231372549%);
   --on-accent: #1f2024;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
   --focus: #7aa7ff;
@@ -493,7 +508,9 @@
   color-scheme: light;
   --ink: rgb(14.0705882353%, 22.0078431373%, 21.2141176471%);
   --ink-soft: rgb(22.9044705882%, 35.8249411765%, 34.5328941176%);
-  --ink-disabled: rgb(54.5490196078%, 70.9411764706%, 69.3019607843%);
+  --ink-disabled: rgb(23.0237647059%, 36.0115294118%, 34.7127529412%);
+  --disabled-top: rgb(92.1058823529%, 94.9529411765%, 94.6682352941%);
+  --disabled-bottom: rgb(86.6039215686%, 91.4352941176%, 90.9521568627%);
   --on-accent: #2b2d31;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   --focus: #2f6fed;
@@ -570,7 +587,9 @@
     color-scheme: dark;
     --ink: rgb(90.9098039216%, 94.1882352941%, 93.8603921569%);
     --ink-soft: rgb(64.4238431373%, 77.2545882353%, 75.9715137255%);
-    --ink-disabled: rgb(35.1764705882%, 55.0196078431%, 53.0352941176%);
+    --ink-disabled: rgb(66.9499607843%, 78.8696470588%, 77.6776784314%);
+    --disabled-top: rgb(19.7294117647%, 30.8588235294%, 29.7458823529%);
+    --disabled-bottom: rgb(17.1294117647%, 26.7921568627%, 25.8258823529%);
     --on-accent: #1f2024;
     --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
     --focus: #7aa7ff;
@@ -646,7 +665,9 @@
   color-scheme: dark;
   --ink: rgb(90.9098039216%, 94.1882352941%, 93.8603921569%);
   --ink-soft: rgb(64.4238431373%, 77.2545882353%, 75.9715137255%);
-  --ink-disabled: rgb(35.1764705882%, 55.0196078431%, 53.0352941176%);
+  --ink-disabled: rgb(66.9499607843%, 78.8696470588%, 77.6776784314%);
+  --disabled-top: rgb(19.7294117647%, 30.8588235294%, 29.7458823529%);
+  --disabled-bottom: rgb(17.1294117647%, 26.7921568627%, 25.8258823529%);
   --on-accent: #1f2024;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
   --focus: #7aa7ff;
@@ -722,7 +743,9 @@
   color-scheme: light;
   --ink: rgb(22.0078431373%, 14.0705882353%, 16.7163398693%);
   --ink-soft: rgb(35.8249411765%, 22.9044705882%, 27.2112941176%);
-  --ink-disabled: rgb(70.9411764706%, 54.5490196078%, 60.0130718954%);
+  --ink-disabled: rgb(36.0115294118%, 23.0237647059%, 27.3530196078%);
+  --disabled-top: rgb(94.9529411765%, 92.1058823529%, 93.0549019608%);
+  --disabled-bottom: rgb(91.4352941176%, 86.6039215686%, 88.214379085%);
   --on-accent: #2b2d31;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   --focus: #2f6fed;
@@ -799,7 +822,9 @@
     color-scheme: dark;
     --ink: rgb(94.1882352941%, 90.9098039216%, 92.0026143791%);
     --ink-soft: rgb(77.2545882353%, 64.4238431373%, 68.7007581699%);
-    --ink-disabled: rgb(55.0196078431%, 35.1764705882%, 41.7908496732%);
+    --ink-disabled: rgb(78.8696470588%, 66.9499607843%, 70.9231895425%);
+    --disabled-top: rgb(30.8588235294%, 19.7294117647%, 23.4392156863%);
+    --disabled-bottom: rgb(26.7921568627%, 17.1294117647%, 20.3503267974%);
     --on-accent: #1f2024;
     --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
     --focus: #7aa7ff;
@@ -875,7 +900,9 @@
   color-scheme: dark;
   --ink: rgb(94.1882352941%, 90.9098039216%, 92.0026143791%);
   --ink-soft: rgb(77.2545882353%, 64.4238431373%, 68.7007581699%);
-  --ink-disabled: rgb(55.0196078431%, 35.1764705882%, 41.7908496732%);
+  --ink-disabled: rgb(78.8696470588%, 66.9499607843%, 70.9231895425%);
+  --disabled-top: rgb(30.8588235294%, 19.7294117647%, 23.4392156863%);
+  --disabled-bottom: rgb(26.7921568627%, 17.1294117647%, 20.3503267974%);
   --on-accent: #1f2024;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
   --focus: #7aa7ff;
@@ -951,7 +978,9 @@
   color-scheme: light;
   --ink: rgb(22.7294117647%, 19.2899346405%, 13.3490196078%);
   --ink-soft: rgb(36.9995294118%, 31.4006588235%, 21.7298823529%);
-  --ink-disabled: rgb(72.431372549%, 65.3281045752%, 53.0588235294%);
+  --ink-disabled: rgb(37.1922352941%, 31.5642039216%, 21.8430588235%);
+  --disabled-top: rgb(95.2117647059%, 93.9780392157%, 91.8470588235%);
+  --disabled-bottom: rgb(91.8745098039%, 89.7809150327%, 86.1647058824%);
   --on-accent: #2b2d31;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   --focus: #2f6fed;
@@ -1028,7 +1057,9 @@
     color-scheme: dark;
     --ink: rgb(94.4862745098%, 93.065620915%, 90.6117647059%);
     --ink-soft: rgb(78.4210196078%, 72.8610300654%, 63.2574117647%);
-    --ink-disabled: rgb(56.8235294118%, 48.2248366013%, 33.3725490196%);
+    --ink-disabled: rgb(79.953254902%, 74.7880575163%, 65.8663529412%);
+    --disabled-top: rgb(31.8705882353%, 27.0478431373%, 18.7176470588%);
+    --disabled-bottom: rgb(27.6705882353%, 23.4833986928%, 16.2509803922%);
     --on-accent: #1f2024;
     --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
     --focus: #7aa7ff;
@@ -1104,7 +1135,9 @@
   color-scheme: dark;
   --ink: rgb(94.4862745098%, 93.065620915%, 90.6117647059%);
   --ink-soft: rgb(78.4210196078%, 72.8610300654%, 63.2574117647%);
-  --ink-disabled: rgb(56.8235294118%, 48.2248366013%, 33.3725490196%);
+  --ink-disabled: rgb(79.953254902%, 74.7880575163%, 65.8663529412%);
+  --disabled-top: rgb(31.8705882353%, 27.0478431373%, 18.7176470588%);
+  --disabled-bottom: rgb(27.6705882353%, 23.4833986928%, 16.2509803922%);
   --on-accent: #1f2024;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
   --focus: #7aa7ff;
@@ -1180,7 +1213,9 @@
   color-scheme: light;
   --ink: rgb(14.7921568627%, 21.2862745098%, 15.3333333333%);
   --ink-soft: rgb(24.0790588235%, 34.6503529412%, 24.96%);
-  --ink-disabled: rgb(56.0392156863%, 69.4509803922%, 57.1568627451%);
+  --ink-disabled: rgb(24.2044705882%, 34.8308235294%, 25.09%);
+  --disabled-top: rgb(92.3647058824%, 94.6941176471%, 92.5588235294%);
+  --disabled-bottom: rgb(87.0431372549%, 90.9960784314%, 87.3725490196%);
   --on-accent: #2b2d31;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   --focus: #2f6fed;
@@ -1257,7 +1292,9 @@
     color-scheme: dark;
     --ink: rgb(91.2078431373%, 93.8901960784%, 91.431372549%);
     --ink-soft: rgb(65.5902745098%, 76.0881568627%, 66.4650980392%);
-    --ink-disabled: rgb(36.9803921569%, 53.2156862745%, 38.3333333333%);
+    --ink-disabled: rgb(68.0335686275%, 77.7860392157%, 68.8462745098%);
+    --disabled-top: rgb(20.7411764706%, 29.8470588235%, 21.5%);
+    --disabled-bottom: rgb(18.0078431373%, 25.9137254902%, 18.6666666667%);
     --on-accent: #1f2024;
     --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
     --focus: #7aa7ff;
@@ -1333,7 +1370,9 @@
   color-scheme: dark;
   --ink: rgb(91.2078431373%, 93.8901960784%, 91.431372549%);
   --ink-soft: rgb(65.5902745098%, 76.0881568627%, 66.4650980392%);
-  --ink-disabled: rgb(36.9803921569%, 53.2156862745%, 38.3333333333%);
+  --ink-disabled: rgb(68.0335686275%, 77.7860392157%, 68.8462745098%);
+  --disabled-top: rgb(20.7411764706%, 29.8470588235%, 21.5%);
+  --disabled-bottom: rgb(18.0078431373%, 25.9137254902%, 18.6666666667%);
   --on-accent: #1f2024;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
   --focus: #7aa7ff;
@@ -1409,7 +1448,9 @@
   color-scheme: light;
   --ink: rgb(13.3490196078%, 19.6026143791%, 22.7294117647%);
   --ink-soft: rgb(21.7298823529%, 31.9096470588%, 36.9995294118%);
-  --ink-disabled: rgb(53.0588235294%, 65.9738562092%, 72.431372549%);
+  --ink-disabled: rgb(21.8430588235%, 32.0758431373%, 37.1922352941%);
+  --disabled-top: rgb(91.8470588235%, 94.0901960784%, 95.2117647059%);
+  --disabled-bottom: rgb(86.1647058824%, 89.9712418301%, 91.8745098039%);
   --on-accent: #2b2d31;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   --focus: #2f6fed;
@@ -1486,7 +1527,9 @@
     color-scheme: dark;
     --ink: rgb(90.6117647059%, 93.1947712418%, 94.4862745098%);
     --ink-soft: rgb(63.2574117647%, 73.3664836601%, 78.4210196078%);
-    --ink-disabled: rgb(33.3725490196%, 49.0065359477%, 56.8235294118%);
+    --ink-disabled: rgb(65.8663529412%, 75.257620915%, 79.953254902%);
+    --disabled-top: rgb(18.7176470588%, 27.4862745098%, 31.8705882353%);
+    --disabled-bottom: rgb(16.2509803922%, 23.8640522876%, 27.6705882353%);
     --on-accent: #1f2024;
     --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
     --focus: #7aa7ff;
@@ -1562,7 +1605,9 @@
   color-scheme: dark;
   --ink: rgb(90.6117647059%, 93.1947712418%, 94.4862745098%);
   --ink-soft: rgb(63.2574117647%, 73.3664836601%, 78.4210196078%);
-  --ink-disabled: rgb(33.3725490196%, 49.0065359477%, 56.8235294118%);
+  --ink-disabled: rgb(65.8663529412%, 75.257620915%, 79.953254902%);
+  --disabled-top: rgb(18.7176470588%, 27.4862745098%, 31.8705882353%);
+  --disabled-bottom: rgb(16.2509803922%, 23.8640522876%, 27.6705882353%);
   --on-accent: #1f2024;
   --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
   --focus: #7aa7ff;
@@ -2193,9 +2238,10 @@ input:checked + .key::after, .key[aria-pressed=true]::after {
 }
 .key:disabled, input:disabled + .key {
   cursor: not-allowed;
+  --k-top: var(--disabled-top);
+  --k-bottom: var(--disabled-bottom);
   color: var(--ink-disabled);
-  filter: saturate(0.5);
-  opacity: 0.75;
+  text-shadow: none;
 }
 .key:disabled .icon, input:disabled + .key .icon {
   filter: none;
@@ -2228,7 +2274,7 @@ input:checked + .key--sq .icon, .key--sq[aria-pressed=true] .icon {
   filter: drop-shadow(0 0 3px var(--lit-glow));
 }
 .key--accent {
-  --k-top: #ffa070;
+  --k-top: var(--accent-top);
   --k-bottom: var(--accent);
   color: var(--on-accent);
   text-shadow: var(--accent-text-shadow);
@@ -3274,7 +3320,7 @@ input[type=file].input:disabled::file-selector-button {
   margin-left: -2.5px;
   border-radius: 3px;
   background: var(--accent);
-  box-shadow: 0 0 6px rgba(255, 122, 61, 0.6), inset 0 -1px 1px color-mix(in srgb, #000 min(100%, 25% * var(--shade-k)), transparent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 60%, transparent), inset 0 -1px 1px color-mix(in srgb, #000 min(100%, 25% * var(--shade-k)), transparent);
 }
 @media (forced-colors: active) {
   .knob__face::after {
