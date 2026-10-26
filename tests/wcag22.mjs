@@ -490,7 +490,7 @@ console.log('\nDropdown menu (ARIA menu button pattern)');
 await open(1280);
 const menuNow = () => page.evaluate(() => ({ open: document.querySelector('#menu-demo').matches(':popover-open'), expanded: document.querySelector('#menu-demo-button').getAttribute('aria-expanded'), focus: document.activeElement.textContent.trim() }));
 const menuAttrs = await page.evaluate(() => { const b = document.querySelector('#menu-demo-button'); const l = document.querySelector('#menu-demo'); return { haspopup: b.getAttribute('aria-haspopup'), controls: b.getAttribute('aria-controls'), role: l.getAttribute('role'), named: !!(l.getAttribute('aria-labelledby') && document.getElementById(l.getAttribute('aria-labelledby'))), items: [...l.querySelectorAll('.menu__item')].every((i) => i.getAttribute('role') === 'menuitem' && i.tabIndex === -1), wrappers: [...l.querySelectorAll(':scope > li')].map((li) => li.getAttribute('role')).join(',') }; });
-menuAttrs.haspopup === 'menu' && menuAttrs.controls === 'menu-demo' && menuAttrs.role === 'menu' && menuAttrs.named && menuAttrs.items && menuAttrs.wrappers === 'none,none,none,separator,none,none' ? pass('roles are menu, menuitem, none (list items) and separator, and the menu is named by its button') : fail(`menu roles: ${JSON.stringify(menuAttrs)}`);
+menuAttrs.haspopup === 'menu' && menuAttrs.role === 'menu' && menuAttrs.named && menuAttrs.items && menuAttrs.wrappers === 'none,none,none,separator,none,none' ? pass('roles are menu, menuitem, none (list items) and separator, and the menu is named by its button') : fail(`menu roles: ${JSON.stringify(menuAttrs)}`);
 await page.$eval('#menu-demo-button', (b) => b.scrollIntoView({ block: 'center', behavior: 'instant' }));
 await page.focus('#menu-demo-button');
 await page.keyboard.press('Enter');
@@ -513,6 +513,33 @@ await wait(250);
 await page.keyboard.press('Tab');
 await wait(200);
 !(await menuNow()).open ? pass('Tab closes it and moves on') : fail('Tab left the menu open');
+
+// ---- datalist and autocomplete ----------------------------------------------------------------------
+console.log('\nDatalist and autocomplete (ARIA editable combobox)');
+await open(1280);
+const listsOk = await page.evaluate(() => [...document.querySelectorAll('input[list], input[data-autocomplete]')].every((i) => { const id = i.getAttribute('list') ?? i.getAttribute('aria-controls'); return i.id && document.querySelector(`label[for="${i.id}"]`) && (i.hasAttribute('data-autocomplete') || (document.getElementById(id)?.localName === 'datalist' && document.getElementById(id).options.length)); }));
+listsOk ? pass('every datalist field has a label and points at a datalist with options') : fail('a field with suggestions has no label or no datalist');
+const acNow = () => page.evaluate(() => { const i = document.querySelector('#ac-country'); const l = document.querySelector('.suggest'); const a = i.getAttribute('aria-activedescendant'); return { open: l.matches(':popover-open'), expanded: i.getAttribute('aria-expanded'), role: i.getAttribute('role'), auto: i.getAttribute('aria-autocomplete'), active: a ? document.getElementById(a)?.textContent : null, count: l.children.length, value: i.value, status: i.parentNode.querySelector('.suggest__status').textContent, focusIn: document.activeElement === i }; });
+await page.$eval('#ac-country', (i) => i.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.focus('#ac-country');
+await page.keyboard.type('un', { delay: 30 });
+await wait(200);
+const ac1 = await acNow();
+ac1.role === 'combobox' && ac1.auto === 'list' && ac1.open && ac1.expanded === 'true' && ac1.count === 2 && /2 suggestions/.test(ac1.status) && ac1.focusIn ? pass('typing opens a filtered list, focus stays in the field, and the count is announced') : fail(`type: ${JSON.stringify(ac1)}`);
+await page.keyboard.press('ArrowDown');
+await page.keyboard.press('ArrowDown');
+(await acNow()).active === 'United States' ? pass('arrow keys move through the options (aria-activedescendant)') : fail('arrow keys did not move');
+await page.keyboard.press('Enter');
+await wait(100);
+const ac2 = await acNow();
+ac2.value === 'United States' && !ac2.open && ac2.expanded === 'false' ? pass('Enter picks the option and closes the list') : fail(`enter: ${JSON.stringify(ac2)}`);
+await page.$eval('#ac-country', (i) => { i.value = ''; });
+await page.keyboard.type('po', { delay: 30 });
+await wait(150);
+await page.keyboard.press('Escape');
+await wait(100);
+const ac3 = await acNow();
+!ac3.open && ac3.value === 'po' ? pass('Esc closes the list and keeps what was typed') : fail(`esc: ${JSON.stringify(ac3)}`);
 
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');

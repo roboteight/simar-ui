@@ -173,10 +173,14 @@
     // <simar-input label="Email" type="email" name="email" required hint="Used for receipts" error="Enter an email like name@chrissimari.com">
     // type="password" with reveal adds a show/hide button; type can be text, email, tel, url, search, number,
     // date, time, datetime-local, month or week.
+    // Give it <simar-option value="Lisbon"> children (a label is optional) for native suggestions.
     "simar-input": (node) => {
       const password = node.getAttribute("type") === "password" && node.hasAttribute("reveal");
+      const options = [...node.querySelectorAll("simar-option")];
+      const listId = options.length ? nextId("list") : null;
+      const datalist = listId ? `<datalist id="${listId}">${options.map((o) => `<option value="${esc(o.getAttribute("value") ?? o.textContent.trim())}"${o.getAttribute("label") ? ` label="${esc(o.getAttribute("label"))}"` : ""}></option>`).join("")}</datalist>` : "";
       return fieldShell(node, "input", (id, describedby) => {
-        const input = `<input class="input" id="${id}"${controlAttrs(node)}${describedby}>`;
+        const input = `<input class="input" id="${id}"${controlAttrs(node)}${listId ? ` list="${listId}"` : ""}${node.hasAttribute("suggest") ? " data-autocomplete" : ""}${describedby}>${datalist}`;
         return password ? `<span class="input-reveal">${input}<button type="button" class="input-reveal__button" aria-label="Show password" aria-pressed="false" aria-controls="${id}" data-reveal>${svgIcon("eye")}</button></span>` : input;
       });
     },
@@ -971,7 +975,6 @@
       }
       button.setAttribute("aria-haspopup", "menu");
       button.setAttribute("aria-expanded", "false");
-      button.setAttribute("aria-controls", list.id);
       const place = () => {
         const box = button.getBoundingClientRect();
         list.style.left = `${Math.max(8, Math.min(box.left, innerWidth - list.offsetWidth - 8))}px`;
@@ -982,6 +985,8 @@
       list.addEventListener("toggle", (e) => {
         const open = e.newState === "open";
         button.setAttribute("aria-expanded", String(open));
+        if (open) button.setAttribute("aria-controls", list.id);
+        else button.removeAttribute("aria-controls");
         if (!open) return;
         place();
         const all = items();
@@ -1020,6 +1025,118 @@
           }
         }
       });
+    }
+  };
+  var suggestions = 0;
+  var enhanceAutocomplete = (claim) => {
+    for (const input of claim("input[data-autocomplete][list]")) {
+      const datalist = document.getElementById(input.getAttribute("list"));
+      if (!datalist) continue;
+      const id = `simar-suggest-${++suggestions}`;
+      const all = [...datalist.options].map((o) => ({ value: o.value, label: o.label && o.label !== o.value ? o.label : "" }));
+      const label = input.id ? document.querySelector(`label[for="${input.id}"]`) : null;
+      const list = el("ul", "picker__list suggest", input.closest('main, dialog, [role="dialog"], [popover]') ?? document.body);
+      list.id = `${id}-list`;
+      list.setAttribute("role", "listbox");
+      list.setAttribute("popover", "manual");
+      if (label) {
+        label.id ||= `${id}-label`;
+        list.setAttribute("aria-labelledby", label.id);
+      } else if (input.getAttribute("aria-label")) list.setAttribute("aria-label", input.getAttribute("aria-label"));
+      const status = el("span", "suggest__status", input.parentNode);
+      status.setAttribute("role", "status");
+      input.removeAttribute("list");
+      input.setAttribute("role", "combobox");
+      input.setAttribute("aria-autocomplete", "list");
+      input.setAttribute("aria-expanded", "false");
+      input.setAttribute("aria-controls", list.id);
+      input.autocomplete = "off";
+      let shown = [];
+      let active = -1;
+      const isOpen = () => list.matches(":popover-open");
+      const close = () => {
+        if (isOpen()) list.hidePopover();
+        input.setAttribute("aria-expanded", "false");
+        input.removeAttribute("aria-activedescendant");
+        active = -1;
+      };
+      const highlight = (i) => {
+        active = i;
+        [...list.children].forEach((item, n) => item.classList.toggle("is-active", n === i));
+        if (i < 0) {
+          input.removeAttribute("aria-activedescendant");
+          return;
+        }
+        input.setAttribute("aria-activedescendant", list.children[i].id);
+        list.children[i].scrollIntoView({ block: "nearest" });
+      };
+      const choose = (i) => {
+        input.value = shown[i].value;
+        close();
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      };
+      const render = () => {
+        const query = input.value.trim().toLowerCase();
+        shown = all.filter((o) => !query || `${o.value} ${o.label}`.toLowerCase().includes(query)).sort((a, b) => Number(b.value.toLowerCase().startsWith(query)) - Number(a.value.toLowerCase().startsWith(query))).slice(0, 8);
+        list.replaceChildren();
+        shown.forEach((o, i) => {
+          const item = el("li", "picker__option", list);
+          item.id = `${id}-option-${i}`;
+          item.setAttribute("role", "option");
+          item.setAttribute("aria-selected", "false");
+          const text = el("span", "picker__text", item);
+          const at = query ? o.value.toLowerCase().indexOf(query) : -1;
+          if (at >= 0) {
+            text.append(o.value.slice(0, at));
+            el("mark", "", text).textContent = o.value.slice(at, at + query.length);
+            text.append(o.value.slice(at + query.length));
+          } else text.textContent = o.value;
+          if (o.label) el("span", "suggest__hint", item).textContent = o.label;
+          item.addEventListener("pointerdown", (e) => e.preventDefault());
+          item.addEventListener("click", () => choose(i));
+          item.addEventListener("pointermove", () => highlight(i));
+        });
+        if (shown.length && !(shown.length === 1 && shown[0].value.toLowerCase() === query)) {
+          const box = input.getBoundingClientRect();
+          list.style.minWidth = `${box.width}px`;
+          list.style.left = `${box.left}px`;
+          if (!isOpen()) list.showPopover();
+          const below = innerHeight - box.bottom;
+          list.style.top = `${below >= list.offsetHeight + 8 || box.top < list.offsetHeight ? box.bottom + 4 : box.top - list.offsetHeight - 4}px`;
+          input.setAttribute("aria-expanded", "true");
+          status.textContent = `${shown.length} suggestion${shown.length === 1 ? "" : "s"} available. Use the up and down arrows to review.`;
+        } else {
+          close();
+          status.textContent = query && !shown.length ? "No suggestions." : "";
+        }
+        active = -1;
+        input.removeAttribute("aria-activedescendant");
+      };
+      input.addEventListener("input", render);
+      input.addEventListener("focus", () => {
+        if (input.value) render();
+      });
+      input.addEventListener("blur", () => {
+        close();
+        status.textContent = "";
+      });
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          if (!isOpen()) render();
+          if (!isOpen()) return;
+          e.preventDefault();
+          const n = shown.length;
+          highlight(e.key === "ArrowDown" ? (active + 1) % n : (active - 1 + n) % n);
+        } else if (e.key === "Enter" && isOpen() && active >= 0) {
+          e.preventDefault();
+          choose(active);
+        } else if (e.key === "Escape" && isOpen()) {
+          e.preventDefault();
+          close();
+        }
+      });
+      addEventListener("resize", close);
     }
   };
   var pickers = 0;
@@ -1400,6 +1517,7 @@
     enhanceChecks(claim);
     enhanceTabs(claim);
     enhanceMenus(claim);
+    enhanceAutocomplete(claim);
     enhanceSteppers(claim);
     enhanceReveal(claim);
     enhanceColors(claim);

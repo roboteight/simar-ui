@@ -88,6 +88,7 @@
         <ul>
         <li><a href="#form-control">Form control</a></li>
         <li><a href="#selects">Select</a></li>
+        <li><a href="#datalist">Datalist and autocomplete</a></li>
         <li><a href="#checks">Checkboxes and switches</a></li>
         <li><a href="#radios">Radio buttons</a></li>
         <li><a href="#ranges">Range pickers</a></li>
@@ -664,6 +665,73 @@
             <option value="Lisbon">
             <option value="Lima">
           </datalist>
+        </script>
+      </fieldset>
+    </section>
+    <section aria-labelledby="datalist">
+      <h3 id="datalist">Datalist and autocomplete</h3>
+      <p class="note">A text field with suggestions: add <code>list</code> to an input and point it at a <code>&lt;datalist&gt;</code> of <code>&lt;option&gt;</code>s. The field stays a plain input, so anything can still be typed, and the browser shows the matching suggestions as you type. The suggestion list is drawn by the browser (so it follows light and dark but not the rest of the theme), and it works on text, search, email, url, number, date, time and color fields. If a browser has no <code>list</code> support, it is just the field. For a themed list that filters as you type, add <code>data-autocomplete</code> (see Autocomplete below).</p>
+
+      <fieldset class="panel">
+        <legend>Suggestions</legend>
+        <div class="field-grid">
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="dl-city">City</label></div>
+            <input class="input" id="dl-city" name="city" list="dl-cities" placeholder="Start typing a city" autocomplete="off">
+            <datalist id="dl-cities"><option value="Lisbon"><option value="Lima"><option value="London"><option value="Los Angeles"><option value="Lyon"></datalist>
+          </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="dl-site">Website</label></div>
+            <input class="input" id="dl-site" name="site" type="url" list="dl-sites" placeholder="https://" autocomplete="off">
+            <datalist id="dl-sites"><option value="https://chrissimari.com" label="Chris Simari"><option value="https://github.com/roboteight/simar-ui" label="simar-ui on GitHub"></datalist>
+          </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="dl-qty">Quantity</label></div>
+            <input class="input" id="dl-qty" name="qty" type="number" list="dl-qtys" min="1" max="100" placeholder="1 to 100">
+            <datalist id="dl-qtys"><option value="1"><option value="6"><option value="12"><option value="24"></datalist>
+          </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="dl-color">Brand color</label></div>
+            <input class="input color" id="dl-color" name="brand" type="color" list="dl-colors" value="#5c6bc0">
+            <datalist id="dl-colors"><option value="#5c6bc0"><option value="#00a896"><option value="#e91e63"><option value="#ffa000"></datalist>
+          </div>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-input label="City" name="city">
+            <simar-option value="Lisbon"></simar-option>
+            <simar-option value="Lima"></simar-option>
+          </simar-input>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <label for="city">City</label>
+          <input class="input" id="city" name="city" list="cities" autocomplete="off">
+          <datalist id="cities">
+            <option value="Lisbon">
+            <option value="Lima">
+          </datalist>
+        </script>
+      </fieldset>
+      <fieldset class="panel">
+        <legend>Autocomplete</legend>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="ac-country">Country</label></div>
+          <input class="input" id="ac-country" name="country" list="ac-countries" data-autocomplete placeholder="Start typing a country">
+          <datalist id="ac-countries"><option value="Argentina"><option value="Australia"><option value="Austria"><option value="Belgium"><option value="Brazil"><option value="Canada"><option value="Chile"><option value="China"><option value="Colombia"><option value="Denmark"><option value="Egypt"><option value="Finland"><option value="France"><option value="Germany"><option value="Greece"><option value="India"><option value="Ireland"><option value="Italy"><option value="Japan"><option value="Kenya"><option value="Mexico"><option value="Netherlands"><option value="New Zealand"><option value="Nigeria"><option value="Norway"><option value="Peru"><option value="Poland"><option value="Portugal"><option value="Spain"><option value="Sweden"><option value="Switzerland"><option value="United Kingdom"><option value="United States"></datalist>
+          <p class="field__hint">As you type, matching countries appear in a list. Use the up and down arrows, then Enter.</p>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <label for="country">Country</label>
+          <input class="input" id="country" list="countries" data-autocomplete>
+          <datalist id="countries">
+            <option value="Argentina">
+            <option value="Australia">
+          </datalist>
+        </script>
+        <script type="text/plain" data-example="Tag">
+          <simar-input label="Country" name="country" suggest>
+            <simar-option value="Argentina"></simar-option>
+            <simar-option value="Australia"></simar-option>
+          </simar-input>
         </script>
       </fieldset>
     </section>

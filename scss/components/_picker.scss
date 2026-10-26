@@ -75,3 +75,22 @@
     }
   }
 }
+
+// Autocomplete suggestions reuse the picker's list. The matched letters are bold, not colored, so
+// the match never depends on color alone.
+.suggest {
+  mark {
+    background: none;
+    color: inherit;
+    font-weight: 700;
+  }
+
+  &__hint {
+    margin-left: auto;
+    color: var(--ink-soft);
+    font-size: 0.85em;
+  }
+
+  // The words for screen readers: how many suggestions there are.
+  &__status { @include visually-hidden; }
+}

@@ -177,6 +177,15 @@ const suite = async (theme) => {
   total += await gradientContrast(`${t}, form errors showing`);
   await page.click('#signup button[type="reset"]');
 
+  // autocomplete suggestions showing
+  await page.evaluate(() => document.querySelector('#ac-country').scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.focus('#ac-country');
+  await page.keyboard.type('un', { delay: 30 });
+  await wait(300);
+  add(await run(`${t}, autocomplete open`));
+  total += await gradientContrast(`${t}, autocomplete open`);
+  await page.$eval('#ac-country', (i) => { i.value = ''; i.blur(); });
+
   // the dropdown menu open
   await page.evaluate(() => document.querySelector('#menu-demo-button').scrollIntoView({ block: 'center', behavior: 'instant' }));
   await page.click('#menu-demo-button');

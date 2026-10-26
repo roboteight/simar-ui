@@ -3664,6 +3664,26 @@ input[type=file].input:disabled::file-selector-button {
   }
 }
 
+.suggest mark {
+  background: none;
+  color: inherit;
+  font-weight: 700;
+}
+.suggest__hint {
+  margin-left: auto;
+  color: var(--ink-soft);
+  font-size: 0.85em;
+}
+.suggest__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+}
+
 .meter {
   appearance: none;
   -webkit-appearance: none;

@@ -781,7 +781,6 @@ const enhanceMenus = (claim) => {
     }
     button.setAttribute('aria-haspopup', 'menu');
     button.setAttribute('aria-expanded', 'false');
-    button.setAttribute('aria-controls', list.id);
 
     const place = () => {
       const box = button.getBoundingClientRect();
@@ -793,6 +792,9 @@ const enhanceMenus = (claim) => {
     list.addEventListener('toggle', (e) => {
       const open = e.newState === 'open';
       button.setAttribute('aria-expanded', String(open));
+      // aria-controls only while the list is showing: a pointer to a hidden element is invalid.
+      if (open) button.setAttribute('aria-controls', list.id);
+      else button.removeAttribute('aria-controls');
       if (!open) return;
       place();
       const all = items();
@@ -821,6 +823,120 @@ const enhanceMenus = (claim) => {
         if (found) { e.preventDefault(); found.focus(); }
       }
     });
+  }
+};
+
+// Autocomplete: an <input data-autocomplete list="id"> keeps its datalist as the no-script fallback;
+// the script reads the options, takes the list attribute off (so the browser's own popup doesn't
+// compete) and shows a themed listbox that filters as you type. This is the ARIA editable combobox
+// with list autocomplete: focus stays in the input, aria-activedescendant names the current option,
+// Down/Up move, Enter picks, Esc closes, and a live region says how many suggestions there are.
+let suggestions = 0;
+const enhanceAutocomplete = (claim) => {
+  for (const input of claim('input[data-autocomplete][list]')) {
+    const datalist = document.getElementById(input.getAttribute('list'));
+    if (!datalist) continue;
+    const id = `simar-suggest-${++suggestions}`;
+    const all = [...datalist.options].map((o) => ({ value: o.value, label: o.label && o.label !== o.value ? o.label : '' }));
+    const label = input.id ? document.querySelector(`label[for="${input.id}"]`) : null;
+
+    const list = el('ul', 'picker__list suggest', input.closest('main, dialog, [role="dialog"], [popover]') ?? document.body); // inside a landmark
+    list.id = `${id}-list`;
+    list.setAttribute('role', 'listbox');
+    list.setAttribute('popover', 'manual');
+    if (label) { label.id ||= `${id}-label`; list.setAttribute('aria-labelledby', label.id); }
+    else if (input.getAttribute('aria-label')) list.setAttribute('aria-label', input.getAttribute('aria-label'));
+    const status = el('span', 'suggest__status', input.parentNode);
+    status.setAttribute('role', 'status');
+
+    input.removeAttribute('list');
+    input.setAttribute('role', 'combobox');
+    input.setAttribute('aria-autocomplete', 'list');
+    input.setAttribute('aria-expanded', 'false');
+    input.setAttribute('aria-controls', list.id);
+    input.autocomplete = 'off';
+
+    let shown = [];
+    let active = -1;
+    const isOpen = () => list.matches(':popover-open');
+    const close = () => {
+      if (isOpen()) list.hidePopover();
+      input.setAttribute('aria-expanded', 'false');
+      input.removeAttribute('aria-activedescendant');
+      active = -1;
+    };
+    const highlight = (i) => {
+      active = i;
+      [...list.children].forEach((item, n) => item.classList.toggle('is-active', n === i));
+      if (i < 0) { input.removeAttribute('aria-activedescendant'); return; }
+      input.setAttribute('aria-activedescendant', list.children[i].id);
+      list.children[i].scrollIntoView({ block: 'nearest' });
+    };
+    const choose = (i) => {
+      input.value = shown[i].value;
+      close();
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+    const render = () => {
+      const query = input.value.trim().toLowerCase();
+      shown = all.filter((o) => !query || `${o.value} ${o.label}`.toLowerCase().includes(query))
+        .sort((a, b) => Number(b.value.toLowerCase().startsWith(query)) - Number(a.value.toLowerCase().startsWith(query)))
+        .slice(0, 8);
+      list.replaceChildren();
+      shown.forEach((o, i) => {
+        const item = el('li', 'picker__option', list);
+        item.id = `${id}-option-${i}`;
+        item.setAttribute('role', 'option');
+        item.setAttribute('aria-selected', 'false');
+        const text = el('span', 'picker__text', item);
+        const at = query ? o.value.toLowerCase().indexOf(query) : -1;
+        if (at >= 0) {
+          text.append(o.value.slice(0, at));
+          el('mark', '', text).textContent = o.value.slice(at, at + query.length);
+          text.append(o.value.slice(at + query.length));
+        } else text.textContent = o.value;
+        if (o.label) el('span', 'suggest__hint', item).textContent = o.label;
+        item.addEventListener('pointerdown', (e) => e.preventDefault()); // keep focus in the input
+        item.addEventListener('click', () => choose(i));
+        item.addEventListener('pointermove', () => highlight(i));
+      });
+      if (shown.length && !(shown.length === 1 && shown[0].value.toLowerCase() === query)) {
+        const box = input.getBoundingClientRect();
+        list.style.minWidth = `${box.width}px`;
+        list.style.left = `${box.left}px`;
+        if (!isOpen()) list.showPopover();
+        const below = innerHeight - box.bottom;
+        list.style.top = `${below >= list.offsetHeight + 8 || box.top < list.offsetHeight ? box.bottom + 4 : box.top - list.offsetHeight - 4}px`;
+        input.setAttribute('aria-expanded', 'true');
+        status.textContent = `${shown.length} suggestion${shown.length === 1 ? '' : 's'} available. Use the up and down arrows to review.`;
+      } else {
+        close();
+        status.textContent = query && !shown.length ? 'No suggestions.' : '';
+      }
+      active = -1;
+      input.removeAttribute('aria-activedescendant');
+    };
+
+    input.addEventListener('input', render);
+    input.addEventListener('focus', () => { if (input.value) render(); });
+    input.addEventListener('blur', () => { close(); status.textContent = ''; });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        if (!isOpen()) render();
+        if (!isOpen()) return;
+        e.preventDefault();
+        const n = shown.length;
+        highlight(e.key === 'ArrowDown' ? (active + 1) % n : (active - 1 + n) % n);
+      } else if (e.key === 'Enter' && isOpen() && active >= 0) {
+        e.preventDefault();
+        choose(active);
+      } else if (e.key === 'Escape' && isOpen()) {
+        e.preventDefault();
+        close();
+      }
+    });
+    addEventListener('resize', close);
   }
 };
 
@@ -1235,6 +1351,7 @@ const init = (scope = document) => {
   enhanceChecks(claim);
   enhanceTabs(claim);
   enhanceMenus(claim);
+  enhanceAutocomplete(claim);
   enhanceSteppers(claim);
   enhanceReveal(claim);
   enhanceColors(claim);

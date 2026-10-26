@@ -208,10 +208,16 @@ const builders = {
   // <simar-input label="Email" type="email" name="email" required hint="Used for receipts" error="Enter an email like name@chrissimari.com">
   // type="password" with reveal adds a show/hide button; type can be text, email, tel, url, search, number,
   // date, time, datetime-local, month or week.
+  // Give it <simar-option value="Lisbon"> children (a label is optional) for native suggestions.
   'simar-input': (node) => {
     const password = node.getAttribute('type') === 'password' && node.hasAttribute('reveal');
+    const options = [...node.querySelectorAll('simar-option')];
+    const listId = options.length ? nextId('list') : null;
+    const datalist = listId
+      ? `<datalist id="${listId}">${options.map((o) => `<option value="${esc(o.getAttribute('value') ?? o.textContent.trim())}"${o.getAttribute('label') ? ` label="${esc(o.getAttribute('label'))}"` : ''}></option>`).join('')}</datalist>`
+      : '';
     return fieldShell(node, 'input', (id, describedby) => {
-      const input = `<input class="input" id="${id}"${controlAttrs(node)}${describedby}>`;
+      const input = `<input class="input" id="${id}"${controlAttrs(node)}${listId ? ` list="${listId}"` : ''}${node.hasAttribute('suggest') ? ' data-autocomplete' : ''}${describedby}>${datalist}`;
       return password
         ? `<span class="input-reveal">${input}<button type="button" class="input-reveal__button" aria-label="Show password" aria-pressed="false" aria-controls="${id}" data-reveal>${
           svgIcon('eye')}</button></span>`

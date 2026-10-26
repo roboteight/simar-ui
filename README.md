@@ -94,6 +94,23 @@ Native `<select>`, so the list that opens is the browser's own: accessible, sear
 </simar-select>
 ```
 
+#### Datalist and autocomplete
+
+A text field with suggestions: add `list` to an input and point it at a `<datalist>`. It stays a plain input, so anything can still be typed, and the browser shows matches as you type. The list is drawn by the browser, so it follows light and dark but not the rest of the theme. It works on text, search, email, url, number, date, time and color fields.
+
+<img src="docs/screenshots/datalist.png" alt="City, website, quantity and color fields that offer suggestions" width="640">
+
+For a themed list that filters as you type, add `data-autocomplete`. The datalist stays as the fallback without JavaScript; with it, a listbox appears under the field with the matching part in bold. It follows the ARIA editable combobox pattern: focus stays in the field, the arrow keys move, Enter picks, Esc closes, and a live region says how many suggestions there are.
+
+<img src="docs/screenshots/autocomplete.png" alt="A country field with United Kingdom and United States suggested" width="460">
+
+```html
+<simar-input label="Country" name="country" suggest>
+  <simar-option value="Argentina"></simar-option>
+  <simar-option value="Australia"></simar-option>
+</simar-input>
+```
+
 #### Checks and radios
 
 Beveled caps that sit in a recessed well. They go down quickly and ease back up, a selected key stays latched with its dot lit, and small keys light their label or icon instead. Checkboxes show a check mark (a dash when mixed) and a switch slides a cap, so neither relies on color alone.
