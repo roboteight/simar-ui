@@ -162,6 +162,16 @@ const builders = {
       }<span class="rknob__label" id="${labelId}">${esc(label)}</span></div>`;
   },
 
+  // <simar-tabs label="Project"><simar-tab title="Overview">…</simar-tab><simar-tab title="Details" selected>…</simar-tab></simar-tabs>
+  'simar-tabs': (node) => {
+    const panels = [...node.querySelectorAll('simar-tab')].map((tab) => {
+      const body = tab.innerHTML.trim();
+      const content = tab.children.length ? body : `<p>${body}</p>`;
+      return `<section class="tabs__panel"${tab.hasAttribute('selected') ? ' data-selected' : ''}><h4 class="tabs__title">${esc(tab.getAttribute('title') ?? '')}</h4>${content}</section>`;
+    });
+    return `<div${rootAttrs(node, 'tabs')} data-tabs${attr(node, 'label', 'data-label')}>${panels.join('')}</div>`;
+  },
+
   // <simar-accordion name="faq"><simar-item title="What is it?" open>Answer…</simar-item></simar-accordion>
   // Items open one at a time (sharing `name`) unless `multiple` is set.
   'simar-accordion': (node) => {

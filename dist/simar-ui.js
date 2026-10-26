@@ -131,6 +131,15 @@
       const input = (side) => `<input type="range" aria-label="${esc(`${label} ${side}`.trim())}"${bounds}${attr(node, side, "value")}${name ? ` name="${esc(name)}-${side}"` : ""}>`;
       return `<div${rootAttrs(node, "rknob")} data-range-knob role="group" aria-labelledby="${labelId}"${attr(node, "unit", "data-unit")}${attr(node, "prefix", "data-prefix")}>${input("low")}${input("high")}<span class="rknob__label" id="${labelId}">${esc(label)}</span></div>`;
     },
+    // <simar-tabs label="Project"><simar-tab title="Overview">…</simar-tab><simar-tab title="Details" selected>…</simar-tab></simar-tabs>
+    "simar-tabs": (node) => {
+      const panels = [...node.querySelectorAll("simar-tab")].map((tab) => {
+        const body = tab.innerHTML.trim();
+        const content = tab.children.length ? body : `<p>${body}</p>`;
+        return `<section class="tabs__panel"${tab.hasAttribute("selected") ? " data-selected" : ""}><h4 class="tabs__title">${esc(tab.getAttribute("title") ?? "")}</h4>${content}</section>`;
+      });
+      return `<div${rootAttrs(node, "tabs")} data-tabs${attr(node, "label", "data-label")}>${panels.join("")}</div>`;
+    },
     // <simar-accordion name="faq"><simar-item title="What is it?" open>Answer…</simar-item></simar-accordion>
     // Items open one at a time (sharing `name`) unless `multiple` is set.
     "simar-accordion": (node) => {
@@ -887,6 +896,52 @@
       });
     }
   };
+  var tabsMade = 0;
+  var enhanceTabs = (claim) => {
+    for (const root of claim("[data-tabs]")) {
+      const panels = [...root.querySelectorAll(":scope > .tabs__panel")];
+      if (!panels.length) continue;
+      const id = `simar-tabs-${++tabsMade}`;
+      const list = el("div", "tabs__list");
+      list.setAttribute("role", "tablist");
+      if (root.dataset.label) list.setAttribute("aria-label", root.dataset.label);
+      const tabs = panels.map((panel, i) => {
+        const title = panel.querySelector(".tabs__title");
+        const tab = el("button", "key", list);
+        tab.type = "button";
+        tab.id = `${id}-tab-${i}`;
+        tab.setAttribute("role", "tab");
+        tab.setAttribute("aria-controls", `${id}-panel-${i}`);
+        tab.textContent = title?.textContent ?? `Tab ${i + 1}`;
+        panel.id = `${id}-panel-${i}`;
+        panel.setAttribute("role", "tabpanel");
+        panel.setAttribute("aria-labelledby", tab.id);
+        panel.tabIndex = 0;
+        return tab;
+      });
+      const select = (index, focus = false) => {
+        tabs.forEach((tab, i) => {
+          tab.setAttribute("aria-selected", String(i === index));
+          tab.tabIndex = i === index ? 0 : -1;
+          panels[i].hidden = i !== index;
+        });
+        if (focus) tabs[index].focus();
+      };
+      tabs.forEach((tab, i) => {
+        tab.addEventListener("click", () => select(i));
+        tab.addEventListener("keydown", (e) => {
+          const last = tabs.length - 1;
+          const next = { ArrowRight: i === last ? 0 : i + 1, ArrowLeft: i === 0 ? last : i - 1, Home: 0, End: last }[e.key];
+          if (next === void 0) return;
+          e.preventDefault();
+          select(next, true);
+        });
+      });
+      root.prepend(list);
+      root.classList.add("is-enhanced");
+      select(Math.max(0, panels.findIndex((p) => p.hasAttribute("data-selected"))));
+    }
+  };
   var pickers = 0;
   var enhancePickers = (claim) => {
     for (const select of claim("select[data-picker]")) {
@@ -1263,6 +1318,7 @@
     enhanceDateRanges(claim);
     enhanceCode(claim);
     enhanceChecks(claim);
+    enhanceTabs(claim);
     enhanceSteppers(claim);
     enhanceReveal(claim);
     enhanceColors(claim);

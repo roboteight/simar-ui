@@ -712,6 +712,56 @@ const enhanceReveal = (claim) => {
   }
 };
 
+// Tabs: builds the tab row from the panel headings and shows one panel at a time. The tabs follow
+// the ARIA tabs pattern: one tab stop for the row, arrows/Home/End move and select, and the panel
+// takes the next tab stop so keyboard users can scroll it.
+let tabsMade = 0;
+const enhanceTabs = (claim) => {
+  for (const root of claim('[data-tabs]')) {
+    const panels = [...root.querySelectorAll(':scope > .tabs__panel')];
+    if (!panels.length) continue;
+    const id = `simar-tabs-${++tabsMade}`;
+    const list = el('div', 'tabs__list');
+    list.setAttribute('role', 'tablist');
+    if (root.dataset.label) list.setAttribute('aria-label', root.dataset.label);
+    const tabs = panels.map((panel, i) => {
+      const title = panel.querySelector('.tabs__title');
+      const tab = el('button', 'key', list);
+      tab.type = 'button';
+      tab.id = `${id}-tab-${i}`;
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-controls', `${id}-panel-${i}`);
+      tab.textContent = title?.textContent ?? `Tab ${i + 1}`;
+      panel.id = `${id}-panel-${i}`;
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', tab.id);
+      panel.tabIndex = 0;
+      return tab;
+    });
+    const select = (index, focus = false) => {
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('aria-selected', String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+        panels[i].hidden = i !== index;
+      });
+      if (focus) tabs[index].focus();
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (e) => {
+        const last = tabs.length - 1;
+        const next = { ArrowRight: i === last ? 0 : i + 1, ArrowLeft: i === 0 ? last : i - 1, Home: 0, End: last }[e.key];
+        if (next === undefined) return;
+        e.preventDefault();
+        select(next, true);
+      });
+    });
+    root.prepend(list);
+    root.classList.add('is-enhanced');
+    select(Math.max(0, panels.findIndex((p) => p.hasAttribute('data-selected'))));
+  }
+};
+
 // Picker: a <select data-picker> whose list can show more than text, such as a moving spinner. The
 // select stays in the form and keeps the value; a select-only combobox (the ARIA pattern) is built
 // over it. An option points at a <template> with data-art, and that is drawn beside its words.
@@ -1121,6 +1171,7 @@ const init = (scope = document) => {
   enhanceDateRanges(claim);
   enhanceCode(claim);
   enhanceChecks(claim);
+  enhanceTabs(claim);
   enhanceSteppers(claim);
   enhanceReveal(claim);
   enhanceColors(claim);

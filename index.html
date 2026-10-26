@@ -106,6 +106,7 @@
         <li><a href="#meters">Meter</a></li>
         <li><a href="#progress">Progress</a></li>
         <li><a href="#spinners">Spinners</a></li>
+        <li><a href="#tabs">Tabs</a></li>
         <li><a href="#tooltips">Tooltips</a></li>
         </ul>
       </li>
@@ -1341,6 +1342,31 @@
           <simar-spinner variant="ring" label="Loading"></simar-spinner>
           <simar-spinner variant="dots" label="Loading"></simar-spinner>
           <simar-spinner variant="bars" label="Loading"></simar-spinner>
+        </script>
+      </fieldset>
+    </section>
+    <section aria-labelledby="tabs">
+      <h3 id="tabs">Tabs</h3>
+      <p class="note">Write each tab as a headed section. Without JavaScript they simply stack under their headings; with it, the headings become a row of keys and one panel shows at a time. Arrow keys, Home and End move between tabs, and the selected tab stays latched. Add <code>data-selected</code> to open on a different tab.</p>
+
+      <fieldset class="panel">
+        <legend>Tabs</legend>
+        <div class="tabs" data-tabs data-label="Project">
+          <section class="tabs__panel"><h4 class="tabs__title">Overview</h4><p>Tabs are for content that belongs together but would be too long to show at once.</p></section>
+          <section class="tabs__panel"><h4 class="tabs__title">Details</h4><p>Each panel is a real section, so it reads in order with no script, and it can be linked to.</p></section>
+          <section class="tabs__panel" data-selected><h4 class="tabs__title">Activity</h4><p>This one opens first, because it has <code>data-selected</code>.</p></section>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-tabs label="Project">
+            <simar-tab title="Overview">The summary.</simar-tab>
+            <simar-tab title="Details" selected>The details.</simar-tab>
+          </simar-tabs>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <div class="tabs" data-tabs data-label="Project">
+            <section class="tabs__panel"><h4 class="tabs__title">Overview</h4><p>The summary.</p></section>
+            <section class="tabs__panel"><h4 class="tabs__title">Details</h4><p>The details.</p></section>
+          </div>
         </script>
       </fieldset>
     </section>

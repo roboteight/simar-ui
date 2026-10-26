@@ -1,0 +1,37 @@
+@use "../abstracts" as *;
+
+// Tabs. Written as headed sections: without the script they are simply stacked, each under its
+// heading. With it, a row of keys swaps between them (arrow keys, Home and End move between tabs).
+//
+//   <div class="tabs" data-tabs>
+//     <section class="tabs__panel"><h4 class="tabs__title">Overview</h4> … </section>
+//     <section class="tabs__panel"><h4 class="tabs__title">Details</h4> … </section>
+//   </div>
+.tabs {
+  &__panel + &__panel { margin-top: 1.5rem; }
+
+  &__title {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+  }
+
+  // With the script the headings become the tab labels.
+  &.is-enhanced &__title { display: none; }
+  &.is-enhanced &__panel + &__panel { margin-top: 0; }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style: none;
+
+    // A tab is a key; the selected one stays latched.
+    .key { min-height: 2.5rem; }
+  }
+
+  &__panel { outline: none; }
+  &__panel:focus-visible { @include focus-ring(3px); border-radius: 8px; }
+}

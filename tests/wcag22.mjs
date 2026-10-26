@@ -470,6 +470,21 @@ g375.phoneText && !g800.phoneText ? pass('d-md-none shows below md and hides fro
 !g375.overflow && !g800.overflow && !g1300.overflow ? pass('no sideways scrolling at any of those widths') : fail('the grid page overflows sideways');
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- tabs -----------------------------------------------------------------------------------------
+console.log('\nTabs');
+await open(1280);
+const tabsNow = () => page.evaluate(() => ({ sel: [...document.querySelectorAll('[role="tab"]')].map((t) => t.getAttribute('aria-selected') === 'true' ? 1 : 0).join(''), shown: [...document.querySelectorAll('[role="tabpanel"]')].map((n) => (n.hidden ? 0 : 1)).join(''), stops: [...document.querySelectorAll('[role="tab"]')].map((t) => t.tabIndex).join(','), named: [...document.querySelectorAll('[role="tabpanel"]')].every((n) => n.getAttribute('aria-labelledby') && document.getElementById(n.getAttribute('aria-labelledby'))) }));
+const tab0 = await tabsNow();
+tab0.sel === '001' && tab0.shown === '001' && tab0.stops === '-1,-1,0' && tab0.named ? pass('one tab selected and one panel shown, a single tab stop, every panel named by its tab') : fail(`tabs: ${JSON.stringify(tab0)}`);
+await page.focus('[role="tab"][aria-selected="true"]');
+await page.keyboard.press('ArrowRight');
+const tabWrap = await tabsNow();
+tabWrap.sel === '100' && tabWrap.shown === '100' ? pass('ArrowRight wraps to the first tab and shows its panel') : fail(`wrap: ${JSON.stringify(tabWrap)}`);
+await page.keyboard.press('End');
+(await tabsNow()).sel === '001' ? pass('End goes to the last tab, Home to the first') : fail('End did not select the last tab');
+await page.keyboard.press('Tab');
+(await page.evaluate(() => document.activeElement.getAttribute('role'))) === 'tabpanel' ? pass('Tab moves from the tabs into the panel') : fail('Tab did not reach the panel');
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

@@ -64,7 +64,8 @@
 
   // The lit dot of a selected key (or a pressed toggle): always there, fading and growing in.
   input + &::after,
-  &[aria-pressed]::after {
+  &[aria-pressed]::after,
+  &[aria-selected]::after {
     content: "";
     position: absolute;
     top: 6px;
@@ -83,7 +84,8 @@
 
   // Selected (or a pressed toggle, aria-pressed="true"): latched down, with its dot lit.
   input:checked + &,
-  &[aria-pressed="true"] {
+  &[aria-pressed="true"],
+  &[aria-selected="true"] {
     @include latched;
 
     &::after {
@@ -143,7 +145,8 @@
     &::after { display: none; }
 
     input:checked + &,
-    &[aria-pressed="true"] {
+    &[aria-pressed="true"],
+    &[aria-selected="true"] {
       color: var(--lit-ink);
       text-shadow: 0 0 7px var(--lit-glow), 0 0 2px var(--lit-glow);
 

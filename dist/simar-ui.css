@@ -2930,7 +2930,7 @@ kbd.kbd,
   box-shadow: pressed-shadow;
   transition-duration: 90ms, 90ms, 220ms, 220ms, 220ms, 220ms;
 }
-input + .key::after, .key[aria-pressed]::after {
+input + .key::after, .key[aria-pressed]::after, .key[aria-selected]::after {
   content: "";
   position: absolute;
   top: 6px;
@@ -2945,28 +2945,28 @@ input + .key::after, .key[aria-pressed]::after {
   transition: opacity 220ms ease-out, transform 240ms cubic-bezier(0.22, 0.9, 0.3, 1);
 }
 @media (prefers-reduced-motion: reduce) {
-  input + .key::after, .key[aria-pressed]::after {
+  input + .key::after, .key[aria-pressed]::after, .key[aria-selected]::after {
     transition: none;
   }
 }
-input:checked + .key, .key[aria-pressed=true] {
+input:checked + .key, .key[aria-pressed=true], .key[aria-selected=true] {
   --k-top: var(--latch-top);
   --k-bottom: var(--latch-bottom);
   transform: translateY(-1px);
   box-shadow: inset 0 3px 5px -1px color-mix(in srgb, #000 min(100%, 16% * var(--shade-k)), transparent), 0 1px 0 var(--latch-wall), 0 2px 3px color-mix(in srgb, #000 min(100%, 18% * var(--shade-k)), transparent);
 }
-input:checked + .key::after, .key[aria-pressed=true]::after {
+input:checked + .key::after, .key[aria-pressed=true]::after, .key[aria-selected=true]::after {
   opacity: 1;
   transform: scale(1);
 }
 @media (forced-colors: active) {
-  input:checked + .key::after, .key[aria-pressed=true]::after {
+  input:checked + .key::after, .key[aria-pressed=true]::after, .key[aria-selected=true]::after {
     background: HighlightText;
     box-shadow: none;
   }
 }
 @media (forced-colors: active) {
-  input:checked + .key, .key[aria-pressed=true] {
+  input:checked + .key, .key[aria-pressed=true], .key[aria-selected=true] {
     background: Highlight;
     color: HighlightText;
     border-color: ButtonText;
@@ -3006,11 +3006,11 @@ input:checked + .key::after, .key[aria-pressed=true]::after {
 .key--sq::after {
   display: none;
 }
-input:checked + .key--sq, .key--sq[aria-pressed=true] {
+input:checked + .key--sq, .key--sq[aria-pressed=true], .key--sq[aria-selected=true] {
   color: var(--lit-ink);
   text-shadow: 0 0 7px var(--lit-glow), 0 0 2px var(--lit-glow);
 }
-input:checked + .key--sq .icon, .key--sq[aria-pressed=true] .icon {
+input:checked + .key--sq .icon, .key--sq[aria-pressed=true] .icon, .key--sq[aria-selected=true] .icon {
   filter: drop-shadow(0 0 3px var(--lit-glow));
 }
 .key--accent {
@@ -4271,6 +4271,40 @@ input[type=file].input:disabled::file-selector-button {
 }
 .accordion__body p {
   margin: 0;
+}
+
+.tabs__panel + .tabs__panel {
+  margin-top: 1.5rem;
+}
+.tabs__title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+}
+.tabs.is-enhanced .tabs__title {
+  display: none;
+}
+.tabs.is-enhanced .tabs__panel + .tabs__panel {
+  margin-top: 0;
+}
+.tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+.tabs__list .key {
+  min-height: 2.5rem;
+}
+.tabs__panel {
+  outline: none;
+}
+.tabs__panel:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 8px;
 }
 
 .daterange {
