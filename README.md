@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/logo/simar-ui-sans-dark.svg">
+    <img src="docs/logo/simar-ui-sans-light.svg" alt="simar-ui" width="420">
+  </picture>
+</p>
+
 # simar-ui v1
 
 ![license: MIT](https://img.shields.io/badge/license-MIT-2b2d31?style=flat-square)

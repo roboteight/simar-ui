@@ -4,6 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>simar-ui v1</title>
+  <link rel="icon" href="docs/logo/simar-ui-mark.svg" type="image/svg+xml">
+  <link rel="icon" href="docs/logo/icon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="docs/logo/apple-touch-icon.png">
+  <link rel="manifest" href="docs/logo/site.webmanifest">
+  <meta name="theme-color" content="#1b1d21">
   <script>
     // Apply a saved theme before the page paints, so it never flashes the other one.
     try { const f = localStorage.getItem('simar-ui:font'); if (f === 'sans' || f === 'serif' || f === 'both') document.documentElement.dataset.font = f; } catch {}
@@ -48,7 +53,7 @@
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>
   </svg>
   <header class="topbar">
-    <a class="topbar__brand" href="#top">simar-ui</a>
+    <a class="topbar__brand" href="#top"><svg class="topbar__mark" viewBox="0 0 64 64" aria-hidden="true"><g transform="translate(32 32) rotate(-32) scale(0.38) translate(-397 -81)"><rect x="312" y="80" width="42" height="15" rx="6.5" fill="currentColor"/><rect x="353" y="72" width="9" height="31" rx="4.5" fill="currentColor"/><path d="M362 81C404 79 446 74 482 60C458 87 412 97 362 95Z" fill="currentColor"/><path d="M372 92C410 91 440 84 464 71" fill="none" stroke="#36d27a" stroke-width="2.6" stroke-linecap="round"/></g></svg>simar-ui</a>
     <search class="topbar__search needs-js" hidden>
       <label class="visually-hidden" for="site-search">Search the docs</label>
       <span class="topbar__field">

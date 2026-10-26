@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="t">
+  <title id="t">simar-ui</title>
+  <rect width="64" height="64" rx="14" fill="#1b1d21"/>
+  <g transform="translate(32 32) rotate(-32) scale(0.3) translate(-397 -81)">
+    <rect x="312" y="80" width="42" height="15" rx="6.5" fill="#e9ebef"/>
+    <path d="M323 80l7 15M334 80l7 15M345 80l6 12" stroke="#1b1d21" stroke-width="1.7" stroke-linecap="round" opacity=".55"/>
+    <rect x="353" y="72" width="9" height="31" rx="4.5" fill="#e9ebef"/>
+    <path d="M362 81C404 79 446 74 482 60C458 87 412 97 362 95Z" fill="#e9ebef"/>
+    <path d="M372 92C410 91 440 84 464 71" fill="none" stroke="#36d27a" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+</svg>
