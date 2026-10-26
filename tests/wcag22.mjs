@@ -450,6 +450,26 @@ await wait(200);
 const t4 = await page.evaluate(() => ({ drawer: document.querySelector('.toc').classList.contains('toc--drawer'), nav: !document.querySelector('.toc').hidden, icon: getComputedStyle(document.querySelector('.toc-toggle')).display }));
 !t4.drawer && t4.nav && t4.icon === 'none' ? pass('wide screens keep the list in the margin, with no icon') : fail(`wide: ${JSON.stringify(t4)}`);
 
+// ---- responsive grid ----------------------------------------------------------------------------
+console.log('\nResponsive grid and breakpoints');
+const gridAt = async (width) => {
+  await page.setViewport({ width, height: 800 });
+  await wait(150);
+  return page.evaluate(() => {
+    const items = [...document.querySelector('#layout').closest('section').querySelectorAll('.row')[0].children];
+    const rows = new Set(items.map((n) => Math.round(n.getBoundingClientRect().top)));
+    const shown = ['d-md-none', 'd-md-inline'].map((c) => [...document.querySelectorAll('#layout ~ * strong, section[aria-labelledby="layout"] strong')].filter((n) => n.classList.contains(c)).some((n) => getComputedStyle(n).display !== 'none'));
+    return { rows: rows.size, phoneText: shown[0], overflow: document.documentElement.scrollWidth > innerWidth + 1 };
+  });
+};
+const g375 = await gridAt(375);
+const g800 = await gridAt(800);
+const g1300 = await gridAt(1300);
+g375.rows === 3 && g800.rows === 2 && g1300.rows === 1 ? pass('three columns stack on a phone, pair up from md and sit in one row from lg') : fail(`rows at 375, 800 and 1300px: ${g375.rows}, ${g800.rows}, ${g1300.rows}`);
+g375.phoneText && !g800.phoneText ? pass('d-md-none shows below md and hides from md up') : fail(`display helpers: ${JSON.stringify([g375.phoneText, g800.phoneText])}`);
+!g375.overflow && !g800.overflow && !g1300.overflow ? pass('no sideways scrolling at any of those widths') : fail('the grid page overflows sideways');
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

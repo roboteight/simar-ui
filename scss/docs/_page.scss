@@ -101,6 +101,9 @@ ul.plain {
   li { margin: 0.4rem 0; }
 }
 
+// Every link on the page shows the focus ring (text links in notes included).
+main a:focus-visible { @include focus-ring(2px); border-radius: 2px; }
+
 header p,
 .note {
   margin: 0.25rem 0 1.25rem;

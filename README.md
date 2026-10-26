@@ -279,6 +279,21 @@ A short block with a small label, a title and a few words. Put several in a `blu
 
 <img src="docs/screenshots/blurbs.png" alt="Three text blurbs side by side" width="640">
 
+#### Layout and breakpoints
+
+Responsive behavior borrowed from [Bootstrap](https://getbootstrap.com/docs/5.3/layout/grid/): a `container`, a 12-column `row` of `col-*` items, and `d-*` display helpers that change at five mobile-first breakpoints (`sm` 36rem, `md` 48rem, `lg` 62rem, `xl` 75rem, `xxl` 87.5rem, in `rem` so they follow the reader's text size). The class names will be familiar; the code is our own, and uses CSS grid.
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4">One</div>
+    <div class="col-12 col-md-6 col-lg-4">Two</div>
+    <div class="col-12 col-lg-4">Three</div>
+  </div>
+</div>
+<span class="d-md-none">Shown below md</span>
+```
+
 #### Code
 
 A terminal-style block: monospace text on a dark screen, with a title bar when it has a label, with line numbers and a copy button. The numbers are skipped by screen readers and aren't copied; the block can be scrolled by keyboard.

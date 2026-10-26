@@ -79,6 +79,7 @@
         <li><a href="#typography">Typography</a></li>
         <li><a href="#quotes">Quotes</a></li>
         <li><a href="#blurbs">Text blurbs</a></li>
+        <li><a href="#layout">Layout and breakpoints</a></li>
         <li><a href="#code">Code</a></li>
         </ul>
       </li>
@@ -433,6 +434,40 @@
               <p class="blurb__text">A few words.</p>
             </div>
           </div>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="layout">
+      <h3 id="layout">Layout and breakpoints</h3>
+      <p class="note">Mobile first, like Bootstrap: a class with no breakpoint applies everywhere, and one with a breakpoint (<code>md</code>) applies from that width up. The breakpoints are <code>sm</code> 36rem, <code>md</code> 48rem, <code>lg</code> 62rem, <code>xl</code> 75rem and <code>xxl</code> 87.5rem (576, 768, 992, 1200 and 1400px at the default size), and they are in <code>rem</code>, so they follow the reader's text size. Resize the window to see the columns below change. The class names and breakpoint approach are borrowed from <a href="https://getbootstrap.com/docs/5.3/layout/grid/">Bootstrap</a>, so they will feel familiar.</p>
+
+      <fieldset class="panel">
+        <legend>Grid</legend>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-4"><div class="blurb blurb--inset"><p class="blurb__eyebrow">col-12 col-md-6 col-lg-4</p><p class="blurb__text">Full width on a phone, half from md, a third from lg.</p></div></div>
+          <div class="col-12 col-md-6 col-lg-4"><div class="blurb blurb--inset"><p class="blurb__eyebrow">col-12 col-md-6 col-lg-4</p><p class="blurb__text">The columns wrap onto new rows by themselves.</p></div></div>
+          <div class="col-12 col-md-12 col-lg-4"><div class="blurb blurb--inset"><p class="blurb__eyebrow">col-12 col-lg-4</p><p class="blurb__text">Twelve columns in a row; the gap is <code>--gap</code>.</p></div></div>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-4">One</div>
+              <div class="col-12 col-md-6 col-lg-4">Two</div>
+              <div class="col-12 col-lg-4">Three</div>
+            </div>
+          </div>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Show and hide</legend>
+        <div class="row">
+          <div class="col-12"><p class="blurb__text">You are looking at a <strong class="d-md-none">phone-sized</strong><strong class="d-none d-md-inline d-lg-none">tablet-sized</strong><strong class="d-none d-lg-inline">desktop-sized</strong> window.</p></div>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <span class="d-md-none">Shown below md</span>
+          <span class="d-none d-md-inline">Shown from md up</span>
         </script>
       </fieldset>
     </section>
