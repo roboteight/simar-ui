@@ -9,9 +9,10 @@
   background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
   @include well-shadow;
 
-  > input[type="radio"] { @include visually-hidden; }
+  > input[type="radio"],
+  > input[type="checkbox"] { @include visually-hidden; }
 
-  &:has(> input[type="radio"]) { position: relative; }
+  &:has(> input[type="radio"], > input[type="checkbox"]) { position: relative; }
   &:has(> input:not(:disabled)) { cursor: pointer; }
 
   @include forced-colors { box-shadow: none; }

@@ -1,16 +1,33 @@
 :root {
   --page: whitesmoke;
+  --vignette: rgba(0, 0, 0, 0.07);
 }
 
 [data-theme=dark] {
   --page: #141518;
+  --vignette: rgba(0, 0, 0, 0.45);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme=light]) {
     --page: #141518;
+    --vignette: rgba(0, 0, 0, 0.45);
   }
 }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 85% 75% at 50% 35%, transparent 55%, var(--vignette) 100%);
+}
+@media print {
+  body::before {
+    display: none;
+  }
+}
+
 html {
   scroll-padding-block: 4.5rem 5rem;
 }
@@ -85,6 +102,89 @@ html:not([data-js=on]) .needs-js {
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 1.25rem;
+}
+
+.toc {
+  max-width: 44rem;
+  margin: 2rem auto -1rem;
+  padding: 0 1rem;
+}
+.toc__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.toc ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.toc a {
+  display: inline-block;
+  padding: 0.3rem 0.65rem;
+  border-radius: 8px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+.toc a:hover {
+  background: var(--hairline);
+  color: var(--ink);
+}
+.toc a[aria-current=location] {
+  background: var(--hairline);
+  color: var(--ink);
+  font-weight: 700;
+}
+.toc a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+@media (min-width: 76rem) {
+  .toc {
+    position: fixed;
+    top: 6rem;
+    left: max(1rem, (100vw - 44rem) / 2 - 13.5rem);
+    width: 11.5rem;
+    max-height: calc(100vh - 8rem);
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+  }
+  .toc ul {
+    display: block;
+  }
+  .toc a {
+    display: block;
+    padding: 0.35rem 0.65rem;
+    border-left: 3px solid transparent;
+    border-radius: 0 8px 8px 0;
+  }
+  .toc a[aria-current=location] {
+    border-left-color: var(--lit-ink);
+  }
+}
+@media print {
+  .toc {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+.check-list {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: start;
 }
 
 .jsbar .note {

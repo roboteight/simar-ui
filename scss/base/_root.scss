@@ -11,7 +11,7 @@
 @mixin theme-light {
   color-scheme: light;
   --ink: #2b2d31;
-  --ink-soft: #6b6f76;
+  --ink-soft: #5a5e66;
   --ink-disabled: #9a9ea6;
   --on-accent: #2b2d31; // text on the orange accent key: dark in both themes, white is only 2:1
   --accent-text-shadow: 0 1px 0 #fff;
@@ -65,6 +65,8 @@
   --code-bg: #22262d;
   --code-ink: #d7dae0;
   --swatch-ring: #fff;
+  --tip-bg: #2b2d31;
+  --tip-ink: #fff;
 
   // how strong shadows and highlights are, and how the lit colour is made readable on a key
   --shade-k: 1;
@@ -127,6 +129,8 @@
   --code-bg: #101114;
   --code-ink: #d7dae0;
   --swatch-ring: #e9ebef;
+  --tip-bg: #e9ebef;
+  --tip-ink: #1b1c20;
 
   --shade-k: 3;
   --tint-k: 0.12;

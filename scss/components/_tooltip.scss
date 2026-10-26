@@ -1,0 +1,65 @@
+@use "../abstracts" as *;
+
+// Tooltips. Add data-tooltip="Text" to a button, link or radio key:
+//
+//   <button type="button" class="key" data-tooltip="Settings">…</button>
+//
+// The script turns the text into a popover (so it is never clipped), shows it on mouse hover and
+// on keyboard focus, and connects it with aria-describedby. It follows WCAG 1.4.13: Esc dismisses
+// it, the pointer can move onto it, and it stays until you leave or dismiss it.
+.tooltip {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  padding: 0.4rem 0.65rem;
+  max-width: min(18rem, calc(100vw - 16px));
+  overflow: visible; // so the arrow can poke out
+  border: 0;
+  border-radius: 8px;
+  background: var(--tip-bg);
+  color: var(--tip-ink);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  box-shadow: 0 6px 18px shade(0.3);
+  opacity: 0;
+  transition: opacity 120ms ease-out, overlay 120ms allow-discrete, display 120ms allow-discrete;
+
+  &:popover-open { opacity: 1; }
+
+  @starting-style {
+    &:popover-open { opacity: 0; }
+  }
+
+  // The little arrow, pointing at the key.
+  &::before {
+    content: "";
+    position: absolute;
+    left: var(--arrow, 50%);
+    width: 8px;
+    height: 8px;
+    margin-left: -4px;
+    background: inherit;
+    transform: rotate(45deg);
+  }
+
+  &[data-side="above"]::before { bottom: -4px; }
+  &[data-side="below"]::before { top: -4px; }
+
+  @include reduced-motion { transition: none; }
+
+  @include forced-colors {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+
+    &::before {
+      border: 1px solid CanvasText;
+      background: Canvas;
+    }
+  }
+}

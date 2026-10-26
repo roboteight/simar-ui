@@ -32,17 +32,37 @@
     <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>
     <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>
   </svg>
   <aside class="themebar needs-js" aria-label="Appearance">
   <div role="radiogroup" aria-label="Theme">
-    <label class="well"><input type="radio" name="theme" value="auto" aria-label="Auto, follow the system" checked><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-monitor"/></svg></span></label>
-    <label class="well"><input type="radio" name="theme" value="light" aria-label="Light"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span></label>
-    <label class="well"><input type="radio" name="theme" value="dark" aria-label="Dark"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></span></label>
+    <label class="well"><input type="radio" name="theme" value="auto" data-tooltip="Auto, follow the system" aria-label="Auto, follow the system" checked><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-monitor"/></svg></span></label>
+    <label class="well"><input type="radio" name="theme" value="light" data-tooltip="Light" aria-label="Light"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span></label>
+    <label class="well"><input type="radio" name="theme" value="dark" data-tooltip="Dark" aria-label="Dark"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></span></label>
   </div>
   </aside>
+  <nav class="toc" aria-label="On this page">
+    <p class="toc__title">On this page</p>
+    <ul>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#radios">Radio buttons</a></li>
+      <li><a href="#checks">Checkboxes</a></li>
+      <li><a href="#ranges">Range pickers</a></li>
+      <li><a href="#knobs">Knobs</a></li>
+      <li><a href="#dialogs">Dialog</a></li>
+      <li><a href="#accordion">Accordion</a></li>
+      <li><a href="#code">Code</a></li>
+      <li><a href="#preloader">Preloader</a></li>
+      <li><a href="#tooltips">Tooltips</a></li>
+      <li><a href="#dates">Date range</a></li>
+      <li><a href="#tags">Declarative tags</a></li>
+      <li><a href="#config">Configuration</a></li>
+    </ul>
+  </nav>
   <main>
     <div class="jsbar">
       <span class="well"><a class="key" id="js-toggle" href="?js=off">Turn JS off</a></span>
@@ -135,12 +155,12 @@
       <fieldset class="panel">
         <legend>Icon keys</legend>
         <div class="well-row">
-          <span class="well"><button type="button" class="key key--sq" aria-label="Previous"><svg class="icon" aria-hidden="true"><use href="#i-skip-back"/></svg></button></span>
-          <span class="well"><button type="button" class="key key--sq" aria-label="Play"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg></button></span>
-          <span class="well"><button type="button" class="key key--sq" aria-label="Pause"><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg></button></span>
-          <span class="well"><button type="button" class="key key--sq" aria-label="Next"><svg class="icon" aria-hidden="true"><use href="#i-skip-forward"/></svg></button></span>
-          <span class="well"><button type="button" class="key key--sq" aria-label="Volume"><svg class="icon" aria-hidden="true"><use href="#i-volume-2"/></svg></button></span>
-          <span class="well"><button type="button" class="key key--sq" aria-label="Settings"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Previous" data-tooltip="Previous"><svg class="icon" aria-hidden="true"><use href="#i-skip-back"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Play" data-tooltip="Play"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Pause" data-tooltip="Pause"><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Next" data-tooltip="Next"><svg class="icon" aria-hidden="true"><use href="#i-skip-forward"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Volume" data-tooltip="Volume"><svg class="icon" aria-hidden="true"><use href="#i-volume-2"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Settings" data-tooltip="Settings"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></button></span>
           <span class="well"><button type="button" class="key" aria-label="Play"><svg class="icon icon--lead" aria-hidden="true"><use href="#i-play"/></svg>Play</button></span>
         </div>
               <script type="text/plain" data-example="Tag">
@@ -229,6 +249,51 @@
         </fieldset>
       </form>
         </section>
+
+    <section aria-labelledby="checks">
+      <h2 id="checks">Checkboxes and switches</h2>
+      <p class="note">Native <code>&lt;input type="checkbox"&gt;</code>. Checking latches the key down and lights its check mark; a switch is a checkbox with <code>role="switch"</code> and a cap that slides. Neither relies on color alone: the check mark and the cap's position carry the state.</p>
+
+      <fieldset class="panel">
+        <legend>Checkboxes</legend>
+        <div class="check-list">
+          <label class="check"><span class="well"><input type="checkbox" name="newsletter" checked><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Newsletter</span></label>
+          <label class="check"><span class="well"><input type="checkbox" name="reminders"><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Reminders</span></label>
+          <label class="check"><span class="well"><input type="checkbox" name="everything" data-indeterminate><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Everything</span></label>
+          <label class="check"><span class="well"><input type="checkbox" name="unavailable" disabled><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Unavailable</span></label>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-checkbox label="Send me the newsletter" name="news" checked></simar-checkbox>
+          <simar-checkbox label="Remind me before it expires" name="remind"></simar-checkbox>
+
+          <!-- a mixed state, as for a "select all" above a partly chosen list -->
+          <simar-checkbox label="Select all" name="all" indeterminate></simar-checkbox>
+          <simar-checkbox label="Not available" name="na" disabled></simar-checkbox>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const all = document.querySelector('[name="all"]');
+
+          // The mixed state is a property (not an attribute): set it from code, or with
+          // data-indeterminate. Pressing the box clears it, like any native checkbox.
+          all.indeterminate = true;
+          all.addEventListener('change', () => console.log(all.checked));
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Switches</legend>
+        <div class="check-list">
+          <label class="check"><span class="well switch"><input type="checkbox" role="switch" name="notify" checked><span class="key key--round"></span></span><span class="check__text">Notifications</span></label>
+          <label class="check"><span class="well switch"><input type="checkbox" role="switch" name="sidebar"><span class="key key--round"></span></span><span class="check__text">Dark sidebar</span></label>
+          <label class="check"><span class="well switch"><input type="checkbox" role="switch" name="offline" disabled><span class="key key--round"></span></span><span class="check__text">Offline mode</span></label>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-switch label="Notifications" name="notify" checked></simar-switch>
+          <simar-switch label="Dark sidebar" name="sidebar"></simar-switch>
+          <simar-switch label="Offline mode" name="offline" disabled></simar-switch>
+        </script>
+      </fieldset>
+    </section>
 
     <section aria-labelledby="ranges">
       <h2 id="ranges">Range pickers</h2>
@@ -523,7 +588,7 @@
         <div class="loader-row">
           <span class="spinner" role="status"><span class="spinner__ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="spinner__label">Loading results</span></span>
           <span class="spinner" style="--size: 2rem" role="status"><span class="spinner__ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="spinner__label">Saving</span></span>
-          <span class="well needs-js"><button type="button" class="key" id="pause-motion" aria-pressed="false">Pause</button></span>
+          <span class="well needs-js"><button type="button" class="key" id="pause-motion" aria-pressed="false" data-tooltip="Freeze the loading motion">Pause</button></span>
         </div>
         <div class="field">
           <div class="field__head"><label class="field__label" for="upload">Uploading</label></div>
@@ -548,6 +613,42 @@
 
           // Freeze the motion (WCAG 2.2.2): any ancestor works.
           document.querySelector('#loader-demo').setAttribute('data-paused', '');
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="tooltips">
+      <h2 id="tooltips">Tooltips</h2>
+      <p class="note">Add <code>data-tooltip</code> to a button, link or radio key. It shows on mouse hover and on keyboard focus, Esc dismisses it, and you can move the pointer onto it. Give a key with no visible text an <code>aria-label</code> as well, so it has a name without JavaScript; then its tooltip is added automatically.</p>
+
+      <fieldset class="panel" id="tooltip-demo">
+        <legend>Tooltips</legend>
+        <div class="well-row">
+          <span class="well"><button type="button" class="key key--sq" aria-label="Settings" data-tooltip="Settings"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Copy" data-tooltip="Copy"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button></span>
+          <span class="well"><button type="button" class="key" data-tooltip="Saves a copy to this device">Save</button></span>
+          <span class="well"><button type="button" class="key key--accent" data-tooltip="Sends it right away">Send</button></span>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <!-- an icon-only key: label names it, and also becomes its tooltip -->
+          <simar-button variant="sq" icon="settings" label="Settings"></simar-button>
+          <simar-button tooltip="Saves a copy to this device">Save</simar-button>
+
+          <simar-keys name="align" legend="Align" size="sq">
+            <simar-key value="left" icon="align-left" tooltip="Align left" checked></simar-key>
+            <simar-key value="center" icon="align-center" tooltip="Align center"></simar-key>
+          </simar-keys>
+        </script>
+        <script type="text/plain" data-example="Accessibility">
+          What it does for you (WCAG 1.4.13, content on hover or focus):
+
+          - shows on mouse hover (after a short wait) and on keyboard focus
+          - Esc dismisses it; the pointer can move onto it without it vanishing
+          - it stays until you leave or dismiss it
+          - it is linked with aria-describedby, unless it only repeats the key's own name
+          - icon-only keys with an aria-label get it as their tooltip automatically
+          - keep the aria-label in the markup: a tooltip needs JavaScript, a label does not
+          - it is never the only way to know what a key does: keep a real label or aria-label
         </script>
       </fieldset>
     </section>
@@ -648,6 +749,8 @@
           <tr><td><code>data-haptic="off"</code></td><td>any element</td><td>Vibration for it and everything inside: <code>on</code>, <code>off</code>, <code>tick</code>, <code>click</code>, <code>heavy</code>, or milliseconds like <code>10,30,10</code>.</td></tr>
           <tr><td><code>data-paused</code></td><td>spinner, loader (or any ancestor)</td><td>Freezes the loading motion. With prefers-reduced-motion it never moves at all.</td></tr>
           <tr><td><code>&lt;simar-spinner&gt;</code>, <code>&lt;simar-loader value="64"&gt;</code></td><td>page</td><td>Preloaders. Leave <code>value</code> off for a bar of unknown length.</td></tr>
+          <tr><td><code>&lt;simar-checkbox&gt;</code>, <code>&lt;simar-switch&gt;</code></td><td>page</td><td><code>label</code>, <code>name</code>, <code>checked</code>, <code>disabled</code>, <code>indeterminate</code> (checkbox). A switch is a checkbox with <code>role="switch"</code>.</td></tr>
+          <tr><td><code>data-tooltip="Text"</code></td><td>button, link, radio key</td><td>A tooltip on hover and keyboard focus (Esc dismisses). On a tag: <code>tooltip="Text"</code>.</td></tr>
           <tr><td><code>nolines</code> / <code>nocopy</code></td><td>code block</td><td>Leave off the line numbers (shown on blocks of two or more lines) or the copy button.</td></tr>
           <tr><td><code>data-months="2"</code></td><td>date range</td><td>Months shown side by side in the calendar.</td></tr>
           <tr><td><code>data-max-span="7"</code></td><td>date range</td><td>Longest allowed range, in days.</td></tr>

@@ -6,7 +6,7 @@
 
 import sprite from './icons.svg';
 import { expandTags } from './tags.js';
-import { audit } from './audit.js';
+import { audit, report } from './audit.js';
 
 const ARC = 270; // degrees of knob travel, centred on straight up
 const START = -ARC / 2;
@@ -413,6 +413,7 @@ const enhanceDateRanges = (claim) => {
     toggle.type = 'button';
     toggle.setAttribute('aria-label', 'Choose dates');
     toggle.setAttribute('aria-expanded', 'false');
+    toggle.dataset.tooltip = 'Choose dates';
     toggle.innerHTML = icon('calendar');
     const summary = el('output', 'lcd', tools);
 
@@ -465,6 +466,7 @@ const enhanceDateRanges = (claim) => {
 
     const cell = (key) => body.querySelector(`[data-date="${key}"]:not(:disabled)`);
 
+    let navTips = [];
     const render = (focusKey) => {
       const parts = [];
       for (let m = 0; m < months; m++) {
@@ -482,6 +484,11 @@ const enhanceDateRanges = (claim) => {
           <div class="cal__grid" role="group" aria-label="${title}">${cells}</div></div>`);
       }
       body.innerHTML = parts.join('');
+      for (const old of navTips) {
+        if (showing === old) showing = null;
+        old.remove();
+      }
+      navTips = enhanceTooltips(body);
       // One day is tabbable; the arrow keys move between days.
       const target = cell(focusKey) ?? cell(start && iso(start)) ?? cell(iso(today)) ?? body.querySelector('.day:not(:disabled)');
       if (target) {
@@ -647,7 +654,7 @@ const enhanceCode = (claim) => {
     const button = el('button', 'code__copy', body);
     button.type = 'button';
     button.setAttribute('aria-label', 'Copy code');
-    button.title = 'Copy code';
+    button.dataset.tooltip = 'Copy code';
     const status = el('span', 'code__status', body);
     status.setAttribute('role', 'status');
 
@@ -661,6 +668,121 @@ const enhanceCode = (claim) => {
       setTimeout(() => { show('copy'); status.textContent = ''; }, 1500);
     });
   }
+};
+
+// ---- Checkboxes ------------------------------------------------------------------------
+
+// A checkbox's mixed state exists only as a property, never an attribute, so data-indeterminate
+// sets it. Pressing the box clears it, as a native checkbox does.
+const enhanceChecks = (claim) => {
+  for (const box of claim('input[type="checkbox"][data-indeterminate]')) box.indeterminate = true;
+};
+
+// ---- Tooltips --------------------------------------------------------------------------
+
+// data-tooltip="Text" on a button, link or radio key. The text becomes a popover shown on mouse
+// hover (after a short wait) and on keyboard focus. It follows WCAG 1.4.13: Esc dismisses it, the
+// pointer can move onto it without it vanishing, and it stays until you leave or dismiss it. It is
+// connected with aria-describedby unless it only repeats the control's own name, and an icon-only
+// control with no name is named from the tooltip text.
+const tipped = new WeakSet();
+let tipCount = 0;
+let showing = null; // the tooltip currently open
+
+const enhanceTooltips = (scope) => {
+  // A key with no visible words gets its label as a tooltip, so mouse users aren't left guessing.
+  // data-tooltip="" on a control opts it out.
+  for (const control of scope.querySelectorAll('button.key, input[type="radio"]')) {
+    if (control.hasAttribute('data-tooltip')) continue;
+    const face = control.matches('input') ? control.nextElementSibling : control;
+    const label = control.getAttribute('aria-label')?.trim();
+    if (label && face && !face.textContent.trim()) control.dataset.tooltip = label;
+  }
+
+  const created = [];
+  for (const trigger of scope.querySelectorAll('[data-tooltip]')) {
+    const text = trigger.dataset.tooltip.trim();
+    if (tipped.has(trigger) || !text) continue;
+    tipped.add(trigger);
+
+    // Inside a modal dialog (or another popover) the tooltip has to live there too: the rest of
+    // the page is inert, and an inert tooltip could not be hovered.
+    // Otherwise it goes in the nearest landmark or region, so it is never page content outside one.
+    const host = trigger.closest('dialog, [popover], main, nav, aside, header, footer, section[aria-label], section[aria-labelledby]') ?? document.body;
+    const tip = el('span', 'tooltip', host);
+    created.push(tip);
+    tip.id = `simar-tip-${++tipCount}`;
+    tip.setAttribute('role', 'tooltip');
+    tip.setAttribute('popover', 'manual');
+    tip.textContent = text;
+
+    const name = (trigger.getAttribute('aria-label') ?? trigger.textContent ?? '').trim();
+    if (!name) {
+      // Still named, but only while this script runs. Without it the control has no name.
+      trigger.setAttribute('aria-label', text);
+      report(trigger, 'is named only by its tooltip, which needs JavaScript. Add an aria-label in the markup so it is named without it.');
+    }
+    else if (name.toLowerCase() !== text.toLowerCase()) {
+      trigger.setAttribute('aria-describedby', [trigger.getAttribute('aria-describedby'), tip.id].filter(Boolean).join(' '));
+    }
+
+    // A radio key's input is hidden, so measure and listen on the visible key instead.
+    const anchor = trigger.matches('input') ? trigger.nextElementSibling ?? trigger : trigger;
+    const hoverArea = anchor.closest('.well') ?? anchor;
+    let timer;
+    const later = (fn, ms) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
+
+    const place = () => {
+      if (!tip.matches(':popover-open')) return;
+      const a = anchor.getBoundingClientRect();
+      const t = tip.getBoundingClientRect();
+      const gap = 10;
+      const above = a.top - t.height - gap >= 8;
+      const left = Math.max(8, Math.min(a.left + a.width / 2 - t.width / 2, innerWidth - t.width - 8));
+      tip.style.top = `${above ? a.top - t.height - gap : a.bottom + gap}px`;
+      tip.style.left = `${left}px`;
+      tip.style.setProperty('--arrow', `${a.left + a.width / 2 - left}px`);
+      tip.dataset.side = above ? 'above' : 'below';
+    };
+    const show = () => {
+      clearTimeout(timer);
+      if (showing && showing !== tip) showing.hidePopover();
+      if (!tip.matches(':popover-open')) tip.showPopover();
+      showing = tip;
+      tip.place = place;
+      place();
+    };
+    const hide = () => {
+      clearTimeout(timer);
+      if (tip.matches(':popover-open')) tip.hidePopover();
+      if (showing === tip) showing = null;
+    };
+
+    hoverArea.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') later(show, 450); });
+    hoverArea.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') later(hide, 150); });
+    tip.addEventListener('pointerenter', () => clearTimeout(timer)); // hoverable
+    tip.addEventListener('pointerleave', () => later(hide, 150));
+    // One tick later: focus often lands while a dialog or the calendar is itself opening, and a
+    // browser refuses to show one popover in the middle of another's show.
+    trigger.addEventListener('focus', () => { if (trigger.matches(':focus-visible')) later(show, 0); });
+    trigger.addEventListener('blur', hide);
+    trigger.addEventListener('pointerdown', hide);
+  }
+  return created;
+};
+
+// Registered once: Esc dismisses the open tooltip (a second Esc then closes a dialog), and an
+// open tooltip stays attached to its key as the page moves.
+const listenForTooltips = () => {
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !showing) return;
+    showing.hidePopover();
+    showing = null;
+    e.preventDefault();
+  }, true);
+  const follow = () => showing?.place?.();
+  addEventListener('scroll', follow, { passive: true });
+  addEventListener('resize', follow);
 };
 
 // ---- Haptics ---------------------------------------------------------------------------
@@ -718,6 +840,7 @@ const init = (scope = document) => {
     started = true;
     injectIcons();
     listenForHaptics();
+    listenForTooltips();
   }
   expandTags(scope);
 
@@ -735,6 +858,8 @@ const init = (scope = document) => {
   enhanceDialogs(claim);
   enhanceDateRanges(claim);
   enhanceCode(claim);
+  enhanceChecks(claim);
+  enhanceTooltips(scope);
   audit(scope);
 };
 

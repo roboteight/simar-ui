@@ -21,6 +21,8 @@ const browser = await puppeteer.launch({
 const page = await browser.newPage();
 await page.setViewport({ width: 1000, height: 900 });
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+// Self-test hook: EXTRA_CSS='...' is injected after every page load, to prove a check can fail.
+const load = async (href) => { await page.goto(href); if (process.env.EXTRA_CSS) await page.addStyleTag({ content: process.env.EXTRA_CSS }); };
 
 const run = async (label) => {
   await page.evaluate(axeSource);
@@ -73,7 +75,14 @@ const gradientContrast = async (label) => {
           if (stops.length) return stops;
         }
         const bg = parse(cs.backgroundColor)[0];
-        if (bg && bg.a > 0.9) return [bg];
+        if (bg && bg.a > 0.9) {
+          // The page itself carries a vignette: measure against its darkest point as well.
+          if (n === document.body) {
+            const v = parse(getComputedStyle(document.documentElement).getPropertyValue('--vignette'))[0];
+            if (v) return [bg, over(v, bg)];
+          }
+          return [bg];
+        }
       }
       return [white];
     };
@@ -115,7 +124,7 @@ const suite = async (theme) => {
   await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: theme }]);
   const t = `${theme} theme`;
 
-  await page.goto(page_url());
+  await load(page_url());
   await wait(600);
   add(await run(`${t}, JavaScript on`));
   total += await gradientContrast(`${t}, JavaScript on`);
@@ -143,8 +152,17 @@ const suite = async (theme) => {
   total += await gradientContrast(`${t}, dialog open`);
   await page.keyboard.press('Escape');
 
+  // a tooltip showing (keyboard focus on an icon key)
+  await page.evaluate(() => document.querySelector('#tooltip-demo button[data-tooltip="Settings"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.keyboard.press('Tab');
+  await page.evaluate(() => document.querySelector('#tooltip-demo button[data-tooltip="Settings"]').focus());
+  await wait(300);
+  add(await run(`${t}, tooltip showing`));
+  total += await gradientContrast(`${t}, tooltip showing`);
+  await page.keyboard.press('Escape');
+
   // the plain-HTML fallback
-  await page.goto(page_url('?js=off'));
+  await load(page_url('?js=off'));
   await wait(500);
   add(await run(`${t}, JavaScript off`));
   total += await gradientContrast(`${t}, JavaScript off`);

@@ -54,6 +54,7 @@
   if (toggle) {
     toggle.textContent = off ? 'Turn JS on' : 'Turn JS off';
     toggle.href = off ? location.pathname : '?js=off';
+    toggle.dataset.tooltip = off ? 'Reload with JavaScript on' : 'Reload with JavaScript off, to see how this page downgrades';
     toggle.addEventListener('click', remember);
   }
   if (note) {

@@ -3,6 +3,7 @@
 
 @use "components/panel";
 @use "components/key";
+@use "components/check";
 @use "components/lcd";
 @use "components/fader";
 @use "components/knob";
@@ -12,4 +13,5 @@
 @use "components/rknob";
 @use "components/loader";
 @use "components/code";
+@use "components/tooltip";
 @use "components/a11y";

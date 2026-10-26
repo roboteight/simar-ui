@@ -16,7 +16,7 @@ const hasName = (node) => {
   return Boolean(node.getAttribute('title')?.trim());
 };
 
-const report = (node, problem) => {
+export const report = (node, problem) => {
   if (seen.has(node)) return;
   seen.add(node);
   node.setAttribute('data-a11y-issue', problem);

@@ -1,0 +1,120 @@
+@use "../abstracts" as *;
+
+// Checkboxes and switches: a native <input type="checkbox"> inside a recessed well, with a key as
+// its visible face. Selecting latches the key down and lights it, exactly like a radio key.
+//
+//   <label class="check">
+//     <span class="well">
+//       <input type="checkbox" name="news" checked>
+//       <span class="key key--box"><svg class="icon icon--check" …/><svg class="icon icon--minus" …/></span>
+//     </span>
+//     <span class="check__text">Send me the newsletter</span>
+//   </label>
+//
+// A switch is the same with role="switch" and a sliding cap. Neither depends on color alone: a
+// checkbox shows a check mark (or a dash when mixed), a switch shows its cap's position.
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2rem;
+  color: var(--ink);
+  cursor: pointer;
+
+  .well {
+    padding: 4px;
+    border-radius: 12px;
+  }
+
+  &__text {
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  &:has(input:disabled) {
+    color: var(--ink-disabled);
+    cursor: not-allowed;
+  }
+}
+
+// ---- Checkbox -----------------------------------------------------------------------------
+
+.key--box {
+  min-width: 0;
+  width: 1.7rem;
+  height: 1.7rem;
+  min-height: 0;
+  padding: 0;
+  border-radius: 8px;
+
+  &::after { display: none; } // no dot: the check mark is the indicator
+
+  .icon {
+    width: 1.05rem;
+    height: 1.05rem;
+    opacity: 0;
+    transform: scale(0.4);
+    transition: opacity $fade ease-out, transform $release $ease, filter $fade ease-out;
+
+    @include reduced-motion { transition: none; }
+  }
+
+  .icon--minus { display: none; }
+
+  // checked: the check mark fades in and grows, lit
+  input:checked + &,
+  input:indeterminate + & {
+    color: var(--lit-ink);
+
+    .icon {
+      opacity: 1;
+      transform: none;
+      filter: drop-shadow(0 0 3px var(--lit-glow));
+    }
+  }
+
+  // mixed (set with the indeterminate property, or data-indeterminate): a dash instead
+  input:indeterminate + & {
+    .icon--check { display: none; }
+    .icon--minus { display: inline; }
+  }
+}
+
+// ---- Switch ---------------------------------------------------------------------------------
+
+.switch {
+  --cap: 1.7rem;
+  width: calc(var(--cap) * 2 + 8px);
+  border-radius: 999px !important; // beats the checkbox's rounded square
+  justify-content: flex-start;
+
+  .key {
+    --travel: 2px;
+    width: var(--cap);
+    height: var(--cap);
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    border-radius: 999px;
+    translate: 0 0;
+    transition:
+      translate $release $ease,
+      transform $release $ease,
+      box-shadow $release $ease,
+      --k-top $fade ease-out,
+      --k-bottom $fade ease-out;
+
+    // the lit dot sits in the middle of the cap, fading in when it is on
+    &::after {
+      display: block;
+      top: 50%;
+      right: 50%;
+      margin: -3.5px -3.5px 0 0;
+    }
+
+    @include reduced-motion { transition: none; }
+  }
+
+  // on: the cap slides across
+  input:checked + .key { translate: var(--cap) 0; }
+}

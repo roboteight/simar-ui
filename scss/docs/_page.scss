@@ -1,10 +1,33 @@
 @use "../abstracts" as *;
 
 // Page chrome for the demo site. Not part of the library.
-:root { --page: whitesmoke; }
-[data-theme="dark"] { --page: #141518; }
+:root {
+  --page: whitesmoke;
+  --vignette: rgba(0, 0, 0, 0.07);
+}
+[data-theme="dark"] {
+  --page: #141518;
+  --vignette: rgba(0, 0, 0, 0.45);
+}
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --page: #141518; }
+  :root:not([data-theme="light"]) {
+    --page: #141518;
+    --vignette: rgba(0, 0, 0, 0.45);
+  }
+}
+
+// A slight vignette: the page darkens gently toward its edges. It is fixed to the window and sits
+// behind all content, so it never moves or covers anything. (Text on the page is checked against
+// its darkest point by tests/a11y.mjs.)
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 85% 75% at 50% 35%, transparent 55%, var(--vignette) 100%);
+
+  @media print { display: none; }
 }
 
 // The floating toggles sit over the page, so keep focused controls scrolled clear of them.
@@ -81,4 +104,86 @@ html:not([data-js="on"]) .needs-js { display: none; }
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 1.25rem;
+}
+
+// Table of contents. A row of links above the page on narrow screens; on wide ones it floats in
+// the margin on the left, clear of the content, so it never covers anything.
+.toc {
+  max-width: 44rem;
+  margin: 2rem auto -1rem;
+  padding: 0 1rem;
+
+  &__title {
+    margin: 0 0 0.5rem;
+    @include label-caps(0.75rem);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-block;
+    padding: 0.3rem 0.65rem;
+    border-radius: 8px;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    text-decoration: none;
+
+    &:hover {
+      background: var(--hairline);
+      color: var(--ink);
+    }
+
+    &[aria-current="location"] {
+      background: var(--hairline);
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    &:focus-visible { @include focus-ring(2px); }
+  }
+
+  // Wide enough that the content leaves room on the left: float it there.
+  @media (min-width: 76rem) {
+    position: fixed;
+    top: 6rem;
+    left: max(1rem, calc((100vw - 44rem) / 2 - 13.5rem));
+    width: 11.5rem;
+    max-height: calc(100vh - 8rem);
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+
+    ul {
+      display: block;
+    }
+
+    a {
+      display: block;
+      padding: 0.35rem 0.65rem;
+      border-left: 3px solid transparent;
+      border-radius: 0 8px 8px 0;
+
+      &[aria-current="location"] { border-left-color: var(--lit-ink); }
+    }
+  }
+
+  @media print { display: none; }
+}
+
+// Jumping to a section lands it clear of the floating buttons, and glides only if motion is welcome.
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+.check-list {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: start;
 }

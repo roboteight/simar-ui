@@ -1,6 +1,6 @@
 (() => {
   // src/icons.svg
-  var icons_default = '<svg xmlns="http://www.w3.org/2000/svg" hidden>\n  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10" /><path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></symbol>\n  <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>\n  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></symbol>\n  <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></symbol>\n  <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>\n  <symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>\n  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M15 12H3" /><path d="M17 19H3" /></symbol>\n  <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M17 12H7" /><path d="M19 19H5" /></symbol>\n  <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M21 12H9" /><path d="M21 19H7" /></symbol>\n  <symbol id="i-align-justify" viewBox="0 0 24 24"><path d="M3 5h18" /><path d="M3 12h18" /><path d="M3 19h18" /></symbol>\n  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>\n  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol>\n  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></symbol>\n  <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></symbol>\n  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>\n  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>\n  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></symbol>\n  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>\n  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>\n  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>\n</svg>\n';
+  var icons_default = '<svg xmlns="http://www.w3.org/2000/svg" hidden>\n  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10" /><path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></symbol>\n  <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>\n  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></symbol>\n  <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></symbol>\n  <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>\n  <symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>\n  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M15 12H3" /><path d="M17 19H3" /></symbol>\n  <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M17 12H7" /><path d="M19 19H5" /></symbol>\n  <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M21 12H9" /><path d="M21 19H7" /></symbol>\n  <symbol id="i-align-justify" viewBox="0 0 24 24"><path d="M3 5h18" /><path d="M3 12h18" /><path d="M3 19h18" /></symbol>\n  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>\n  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol>\n  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></symbol>\n  <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></symbol>\n  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>\n  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>\n  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></symbol>\n  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>\n  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>\n  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>\n  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>\n</svg>\n';
 
   // src/tags.js
   var esc = (text) => String(text).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -31,6 +31,12 @@
     node.replaceWith(template.content);
   };
   var each = (scope, tag, build) => scope.querySelectorAll(tag).forEach((node) => swap(node, build(node)));
+  var checkLike = (node, isSwitch) => {
+    const label = node.getAttribute("label") ?? "";
+    const faces = isSwitch ? "" : '<svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg>';
+    const attrs = ["name", "value", "form"].map((a) => attr(node, a)).join("") + flag(node, "checked") + flag(node, "disabled") + flag(node, "required") + (node.hasAttribute("indeterminate") ? " data-indeterminate" : "") + attr(node, "tooltip", "data-tooltip") + (isSwitch ? ' role="switch"' : "");
+    return `<label${rootAttrs(node, "check")}><span class="well${isSwitch ? " switch" : ""}"><input type="checkbox"${attrs}><span class="key ${isSwitch ? "key--round" : "key--box"}">${faces}</span></span>${label ? `<span class="check__text">${esc(label)}</span>` : ""}</label>`;
+  };
   var builders = {
     // <simar-button icon="play" variant="accent|round|sq" label="Play">Text</simar-button>
     "simar-button": (node) => {
@@ -39,7 +45,7 @@
       const classes = ["key", variant && `key--${variant}`].filter(Boolean).join(" ");
       const name = node.getAttribute("icon");
       const label = node.getAttribute("label") ?? (name && !text ? name : null);
-      const extra = ["type", "name", "value", "command", "commandfor", "popovertarget", "form"].map((a) => attr(node, a)).join("");
+      const extra = ["type", "name", "value", "command", "commandfor", "popovertarget", "form"].map((a) => attr(node, a)).join("") + attr(node, "tooltip", "data-tooltip");
       const type = node.hasAttribute("type") ? "" : ' type="button"';
       return `<span class="well"${rootAttrs(node, "").replace(' class=""', "")}><button class="${classes}"${type}${extra}${flag(node, "disabled")}${label ? ` aria-label="${esc(label)}"` : ""}>${name ? icon(name) : ""}${esc(text)}</button></span>`;
     },
@@ -51,7 +57,7 @@
         const text = key.textContent.trim();
         const iconName = key.getAttribute("icon");
         const label = key.getAttribute("label") ?? (iconName && !text ? iconName : null);
-        return `<label class="well"><input type="radio" name="${esc(name)}"${attr(key, "value")}${flag(key, "checked")}${flag(key, "disabled")}${label ? ` aria-label="${esc(label)}"` : ""}><span class="key${size ? ` key--${esc(size)}` : ""}">${iconName ? icon(iconName).replace(" icon--lead", "") : ""}${esc(text)}</span></label>`;
+        return `<label class="well"><input type="radio" name="${esc(name)}"${attr(key, "value")}${attr(key, "tooltip", "data-tooltip")}${flag(key, "checked")}${flag(key, "disabled")}${label ? ` aria-label="${esc(label)}"` : ""}><span class="key${size ? ` key--${esc(size)}` : ""}">${iconName ? icon(iconName).replace(" icon--lead", "") : ""}${esc(text)}</span></label>`;
       });
       const legend = node.getAttribute("legend");
       return legend ? `<fieldset${rootAttrs(node, "panel")}><legend>${esc(legend)}</legend><div class="well-row">${keys.join("")}</div></fieldset>` : `<div${rootAttrs(node, "well-row")} role="radiogroup"${attr(node, "label", "aria-label")}>${keys.join("")}</div>`;
@@ -102,6 +108,10 @@
       });
       return `<div${rootAttrs(node, "accordion")}>${items.join("")}</div>`;
     },
+    // <simar-checkbox label="Send me the newsletter" name="news" checked>   (indeterminate for a mixed state)
+    // <simar-switch label="Notifications" name="notify">
+    "simar-checkbox": (node) => checkLike(node, false),
+    "simar-switch": (node) => checkLike(node, true),
     // <simar-loader label="Uploading" value="64" max="100">   (leave value off for an unknown length)
     "simar-loader": (node) => `<progress${rootAttrs(node, "loader")} aria-label="${esc(node.getAttribute("label") ?? "Loading")}"${attr(node, "value")}${attr(node, "max")}></progress>`,
     // <simar-spinner label="Loading results">
@@ -520,6 +530,7 @@
       toggle.type = "button";
       toggle.setAttribute("aria-label", "Choose dates");
       toggle.setAttribute("aria-expanded", "false");
+      toggle.dataset.tooltip = "Choose dates";
       toggle.innerHTML = icon2("calendar");
       const summary = el("output", "lcd", tools);
       const pop = el("div", "daterange__pop cal", root);
@@ -567,6 +578,7 @@
       const nav = (dir) => `<span class="well"><button type="button" class="key key--sq" data-nav="${dir}"
       aria-label="${dir < 0 ? "Previous" : "Next"} month">${icon2(dir < 0 ? "chevron-left" : "chevron-right")}</button></span>`;
       const cell = (key) => body.querySelector(`[data-date="${key}"]:not(:disabled)`);
+      let navTips = [];
       const render = (focusKey) => {
         const parts = [];
         for (let m = 0; m < months; m++) {
@@ -584,6 +596,11 @@
           <div class="cal__grid" role="group" aria-label="${title}">${cells}</div></div>`);
         }
         body.innerHTML = parts.join("");
+        for (const old of navTips) {
+          if (showing === old) showing = null;
+          old.remove();
+        }
+        navTips = enhanceTooltips(body);
         const target = cell(focusKey) ?? cell(start && iso(start)) ?? cell(iso(today)) ?? body.querySelector(".day:not(:disabled)");
         if (target) {
           target.tabIndex = 0;
@@ -729,7 +746,7 @@
       const button = el("button", "code__copy", body);
       button.type = "button";
       button.setAttribute("aria-label", "Copy code");
-      button.title = "Copy code";
+      button.dataset.tooltip = "Copy code";
       const status = el("span", "code__status", body);
       status.setAttribute("role", "status");
       const show = (name) => {
@@ -747,6 +764,97 @@
         }, 1500);
       });
     }
+  };
+  var enhanceChecks = (claim) => {
+    for (const box of claim('input[type="checkbox"][data-indeterminate]')) box.indeterminate = true;
+  };
+  var tipped = /* @__PURE__ */ new WeakSet();
+  var tipCount = 0;
+  var showing = null;
+  var enhanceTooltips = (scope) => {
+    for (const control of scope.querySelectorAll('button.key, input[type="radio"]')) {
+      if (control.hasAttribute("data-tooltip")) continue;
+      const face = control.matches("input") ? control.nextElementSibling : control;
+      const label = control.getAttribute("aria-label")?.trim();
+      if (label && face && !face.textContent.trim()) control.dataset.tooltip = label;
+    }
+    const created = [];
+    for (const trigger of scope.querySelectorAll("[data-tooltip]")) {
+      const text = trigger.dataset.tooltip.trim();
+      if (tipped.has(trigger) || !text) continue;
+      tipped.add(trigger);
+      const host = trigger.closest("dialog, [popover], main, nav, aside, header, footer, section[aria-label], section[aria-labelledby]") ?? document.body;
+      const tip = el("span", "tooltip", host);
+      created.push(tip);
+      tip.id = `simar-tip-${++tipCount}`;
+      tip.setAttribute("role", "tooltip");
+      tip.setAttribute("popover", "manual");
+      tip.textContent = text;
+      const name = (trigger.getAttribute("aria-label") ?? trigger.textContent ?? "").trim();
+      if (!name) {
+        trigger.setAttribute("aria-label", text);
+        report(trigger, "is named only by its tooltip, which needs JavaScript. Add an aria-label in the markup so it is named without it.");
+      } else if (name.toLowerCase() !== text.toLowerCase()) {
+        trigger.setAttribute("aria-describedby", [trigger.getAttribute("aria-describedby"), tip.id].filter(Boolean).join(" "));
+      }
+      const anchor = trigger.matches("input") ? trigger.nextElementSibling ?? trigger : trigger;
+      const hoverArea = anchor.closest(".well") ?? anchor;
+      let timer;
+      const later = (fn, ms) => {
+        clearTimeout(timer);
+        timer = setTimeout(fn, ms);
+      };
+      const place = () => {
+        if (!tip.matches(":popover-open")) return;
+        const a = anchor.getBoundingClientRect();
+        const t = tip.getBoundingClientRect();
+        const gap = 10;
+        const above = a.top - t.height - gap >= 8;
+        const left = Math.max(8, Math.min(a.left + a.width / 2 - t.width / 2, innerWidth - t.width - 8));
+        tip.style.top = `${above ? a.top - t.height - gap : a.bottom + gap}px`;
+        tip.style.left = `${left}px`;
+        tip.style.setProperty("--arrow", `${a.left + a.width / 2 - left}px`);
+        tip.dataset.side = above ? "above" : "below";
+      };
+      const show = () => {
+        clearTimeout(timer);
+        if (showing && showing !== tip) showing.hidePopover();
+        if (!tip.matches(":popover-open")) tip.showPopover();
+        showing = tip;
+        tip.place = place;
+        place();
+      };
+      const hide = () => {
+        clearTimeout(timer);
+        if (tip.matches(":popover-open")) tip.hidePopover();
+        if (showing === tip) showing = null;
+      };
+      hoverArea.addEventListener("pointerenter", (e) => {
+        if (e.pointerType === "mouse") later(show, 450);
+      });
+      hoverArea.addEventListener("pointerleave", (e) => {
+        if (e.pointerType === "mouse") later(hide, 150);
+      });
+      tip.addEventListener("pointerenter", () => clearTimeout(timer));
+      tip.addEventListener("pointerleave", () => later(hide, 150));
+      trigger.addEventListener("focus", () => {
+        if (trigger.matches(":focus-visible")) later(show, 0);
+      });
+      trigger.addEventListener("blur", hide);
+      trigger.addEventListener("pointerdown", hide);
+    }
+    return created;
+  };
+  var listenForTooltips = () => {
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape" || !showing) return;
+      showing.hidePopover();
+      showing = null;
+      e.preventDefault();
+    }, true);
+    const follow = () => showing?.place?.();
+    addEventListener("scroll", follow, { passive: true });
+    addEventListener("resize", follow);
   };
   var BUZZ = { tick: 8, click: 14, heavy: 28 };
   var lastBuzz = 0;
@@ -787,6 +895,7 @@
       started = true;
       injectIcons();
       listenForHaptics();
+      listenForTooltips();
     }
     expandTags(scope);
     const claim = (selector) => [...scope.querySelectorAll(selector)].filter((node) => {
@@ -801,6 +910,8 @@
     enhanceDialogs(claim);
     enhanceDateRanges(claim);
     enhanceCode(claim);
+    enhanceChecks(claim);
+    enhanceTooltips(scope);
     audit(scope);
   };
   window.SimarUI = { init, audit };

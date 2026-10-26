@@ -50,6 +50,7 @@ await shoot('hero', [await page.$('h1'), await panel('Mode')], 24);
 
 await shoot('keys', [await panel('Keys'), await panel('Icon keys')]);
 await shoot('radios', [await panel('Mode'), await panel('Channel'), await panel('Align')]);
+await shoot('checks', [await panel('Checkboxes'), await panel('Switches')]);
 await shoot('faders', [await panel('Faders'), await panel('Min and max')]);
 await shoot('knobs', [await panel('Output'), await panel('Options')]);
 await shoot('rotary', [await panel('Range')]);
@@ -83,6 +84,14 @@ await (await (await htmlKey.$$('.snippet__tabs label'))[1]).click();
 await wait(200);
 await shoot('html-key', [keysPanel, htmlKey]);
 
+// a tooltip, shown the way a keyboard user sees it
+await (await page.$('#tooltip-demo')).evaluate((n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.keyboard.press('Tab');
+await page.evaluate(() => document.querySelector('#tooltip-demo button[data-tooltip="Saves a copy to this device"]').focus());
+await wait(400);
+await shoot('tooltip', [await panel('Tooltips'), await page.$('[role="tooltip"]:popover-open')], 20);
+await page.evaluate(() => document.activeElement.blur());
+
 // the dialog
 await page.evaluate(() => document.querySelector('[commandfor="settings"]').scrollIntoView({ block: 'center' }));
 await page.click('[commandfor="settings"]');
@@ -103,6 +112,7 @@ await open('index.html');
 await page.addStyleTag({ content: '.panel.needs-js, section[aria-labelledby="install"] { display: none !important; }' });
 await shoot('hero-dark', [await page.$('h1'), await panel('Mode')], 24);
 await shoot('radios-dark', [await panel('Mode'), await panel('Channel'), await panel('Align')]);
+await shoot('checks-dark', [await panel('Checkboxes'), await panel('Switches')]);
 await shoot('faders-dark', [await panel('Faders'), await panel('Min and max')]);
 await shoot('knobs-dark', [await panel('Output'), await panel('Options')]);
 await page.click('#pause-motion');
@@ -114,6 +124,16 @@ await page.evaluate(() => scrollTo(0, 0));
 await page.screenshot({ path: path.join(out, 'theme-control.png'), clip: { x: 860 - 190, y: 0, width: 190, height: 74 } });
 console.log('  theme-control.png');
 await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }, { name: 'prefers-color-scheme', value: 'light' }]);
+
+console.log('Table of contents');
+await page.setViewport({ width: 1280, height: 720, deviceScaleFactor: 2 });
+await open('index.html');
+await page.addStyleTag({ content: '.themebar { display: block !important; }' });
+await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+await wait(300);
+await page.screenshot({ path: path.join(out, 'toc.png'), clip: { x: 0, y: 0, width: 620, height: 640 } });
+console.log('  toc.png');
+await page.setViewport({ width: 860, height: 900, deviceScaleFactor: 2 });
 
 console.log('Without JavaScript');
 await open('index.html', '?js=off');

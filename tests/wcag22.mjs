@@ -59,7 +59,7 @@ await open(1000);
 const small = await page.evaluate(() => {
   const visible = (n) => { const r = n.getBoundingClientRect(); const s = getComputedStyle(n); return r.width && s.visibility !== 'hidden' && s.display !== 'none' && !n.closest('[hidden], dialog:not([open]), .needs-js:not(:root *)'); };
   // Hidden native inputs are operated through their visible stand-in (the key, the dial), which is measured instead.
-  const targets = [...document.querySelectorAll('button, a[href], summary, input:not([type="radio"]):not(.fader):not(.knob input):not(.rknob input):not(.range2 input), .key, .day, label.well, .knob__dial, .rknob__handle')]
+  const targets = [...document.querySelectorAll('button, a[href], summary, input:not([type="radio"]):not([type="checkbox"]):not(.fader):not(.knob input):not(.rknob input):not(.range2 input), .key, .day, label.well, .knob__dial, .rknob__handle')]
     .filter(visible).filter((n) => !n.closest('.knob__tick-label'));
   return targets.map((n) => { const r = n.getBoundingClientRect(); return { n: `${n.tagName.toLowerCase()}${n.className ? '.' + String(n.className).split(' ')[0] : ''} "${(n.textContent || n.getAttribute('aria-label') || '').trim().slice(0, 18)}"`, w: Math.round(r.width), h: Math.round(r.height) }; })
     .filter((t) => t.w < 24 || t.h < 24);
@@ -140,11 +140,151 @@ for (const theme of ['light', 'dark']) {
 }
 await page.emulateMediaFeatures([]);
 
+// ---- 1.4.13 Content on hover or focus (tooltips) -----------------------------------------
+console.log('\nTooltips (dismissible, hoverable, persistent, keyboard, described)');
+await open(1000);
+const shownTip = () => page.evaluate(() => { const t = document.querySelector('[role="tooltip"]:popover-open'); return t ? t.textContent : null; });
+const keyboardFocus = async (selector) => {
+  await page.$eval(selector, (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.keyboard.press('Tab'); // puts the page in keyboard mode, so :focus-visible applies
+  await page.$eval(selector, (n) => n.focus());
+  await wait(200);
+};
+const save = '#tooltip-demo button[data-tooltip="Saves a copy to this device"]';
+const gear = '#tooltip-demo button[data-tooltip="Settings"]';
+
+await keyboardFocus(save);
+(await shownTip()) === 'Saves a copy to this device' ? pass('appears on keyboard focus') : fail(`no tooltip on keyboard focus (got ${await shownTip()})`);
+const wiring = await page.evaluate((sel) => { const b = document.querySelector(sel); const ids = (b.getAttribute('aria-describedby') ?? '').split(' ').filter(Boolean); const t = ids.map((id) => document.getElementById(id)).find((n) => n?.getAttribute('role') === 'tooltip'); return { linked: !!t, text: t?.textContent }; }, save);
+wiring.linked && wiring.text === 'Saves a copy to this device' ? pass('linked to its key with aria-describedby') : fail('the tooltip is not linked with aria-describedby');
+const described = await page.accessibility.snapshot({ interestingOnly: true });
+const flat = []; (function w(n) { flat.push(n); (n.children ?? []).forEach(w); })(described);
+const saveNode = flat.find((n) => n.role === 'button' && n.name === 'Save');
+saveNode?.description === 'Saves a copy to this device' ? pass('a screen reader gets it as the key\'s description') : fail(`the accessibility tree description is ${JSON.stringify(saveNode?.description)}`);
+const dup = await page.$eval(gear, (b) => ({ label: b.getAttribute('aria-label'), described: b.hasAttribute('aria-describedby') }));
+dup.label === 'Settings' && !dup.described ? pass('an icon-only key keeps its aria-label, and is not described twice') : fail(`icon-only key: ${JSON.stringify(dup)}`);
+
+await page.keyboard.press('Escape');
+await wait(150);
+const afterEsc = await page.evaluate((sel) => ({ shown: !!document.querySelector('[role="tooltip"]:popover-open'), stillFocused: document.activeElement === document.querySelector(sel) }), save);
+!afterEsc.shown && afterEsc.stillFocused ? pass('Esc dismisses it and focus stays where it was') : fail(`after Esc: ${JSON.stringify(afterEsc)}`);
+
+await page.$eval(save, (n) => n.blur());
+await wait(150);
+(await shownTip()) === null ? pass('goes away when focus leaves') : fail('stays after focus leaves');
+
+// mouse: waits a moment, can be reached, and stays
+await page.$eval(save, (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await wait(200);
+const rectOf = (selector) => page.$eval(selector, (n) => { const r = n.getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height }; });
+const key = await rectOf(save);
+await page.mouse.move(key.x + key.w / 2, key.y + key.h / 2);
+await wait(120);
+const early = await shownTip();
+await wait(700);
+const later = await shownTip();
+early === null && later ? pass('mouse hover waits a moment, then shows') : fail(`hover timing: after 120ms ${early}, after 820ms ${later}`);
+const tipRect = await page.evaluate(() => { const r = document.querySelector('[role="tooltip"]:popover-open')?.getBoundingClientRect(); return r && { x: r.x, y: r.y, w: r.width, h: r.height }; });
+if (tipRect) {
+  await page.mouse.move(tipRect.x + tipRect.w / 2, tipRect.y + tipRect.h / 2, { steps: 8 });
+  await wait(600);
+  (await shownTip()) ? pass('stays when the pointer moves onto it (hoverable)') : fail('it vanished as the pointer moved onto it');
+  await wait(1800);
+  (await shownTip()) ? pass('stays as long as the pointer is on it (persistent)') : fail('it timed out while hovered');
+}
+await page.mouse.move(5, 5);
+await wait(600);
+(await shownTip()) === null ? pass('goes away when the pointer leaves') : fail('stays after the pointer leaves');
+
+// at the edge of the screen it stays on screen (the theme control is top right)
+await keyboardFocus('input[name="theme"][value="dark"]');
+const edge = await page.evaluate(() => { const r = document.querySelector('[role="tooltip"]:popover-open')?.getBoundingClientRect(); return r && { l: Math.round(r.left), r: Math.round(r.right), t: Math.round(r.top), b: Math.round(r.bottom), w: innerWidth, h: innerHeight }; });
+edge && edge.l >= 0 && edge.r <= edge.w && edge.t >= 0 && edge.b <= edge.h ? pass(`stays on screen at the page edge (${edge.l}-${edge.r} of ${edge.w})`) : fail(`off screen: ${JSON.stringify(edge)}`);
+await page.keyboard.press('Escape');
+
+for (const theme of ['light', 'dark']) {
+  await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: theme }]);
+  await page.reload();
+  await wait(500);
+  const ratio = await page.evaluate(() => {
+    const ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true }); ctx.canvas.width = ctx.canvas.height = 1;
+    const rgb = (css) => { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = css; ctx.fillRect(0, 0, 1, 1); return [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3); };
+    const lum = (c) => { const [x, y, z] = c.map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * x + 0.7152 * y + 0.0722 * z; };
+    const cs = getComputedStyle(document.querySelector('[role="tooltip"]'));
+    const [hi, lo] = [lum(rgb(cs.color)), lum(rgb(cs.backgroundColor))].sort((a, b) => b - a);
+    return (hi + 0.05) / (lo + 0.05);
+  });
+  ratio >= 4.5 ? pass(`${theme}: text contrast ${ratio.toFixed(1)}:1`) : fail(`${theme}: tooltip text contrast is only ${ratio.toFixed(1)}:1`);
+}
+await page.emulateMediaFeatures([]);
+
+// ---- table of contents ----------------------------------------------------------------------
+console.log('\nTable of contents');
+await open(1280);
+const toc = await page.evaluate(() => {
+  const heads = [...document.querySelectorAll('main > section[aria-labelledby] > h2[id]')].map((h) => h.id);
+  const links = [...document.querySelectorAll('.toc a[href^="#"]')].map((a) => a.getAttribute('href').slice(1));
+  const nav = document.querySelector('nav.toc');
+  const r = nav.getBoundingClientRect(); const m = document.querySelector('main').getBoundingClientRect();
+  return { missing: heads.filter((id) => !links.includes(id)), dead: links.filter((id) => !document.getElementById(id)), landmark: nav.getAttribute('aria-label'), fixed: getComputedStyle(nav).position, right: Math.round(r.right), left: Math.round(r.left), mainLeft: Math.round(m.left) };
+});
+toc.missing.length ? fail(`sections with no link: ${toc.missing.join(', ')}`) : pass('every section is linked');
+toc.dead.length ? fail(`links to nothing: ${toc.dead.join(', ')}`) : pass('every link goes somewhere');
+toc.landmark ? pass(`is a navigation landmark ("${toc.landmark}")`) : fail('the contents has no label');
+toc.fixed === 'fixed' && toc.left >= 0 && toc.right <= toc.mainLeft ? pass(`floats on the left, clear of the content (${toc.left}-${toc.right}px, page starts at ${toc.mainLeft}px)`) : fail(`placement: ${JSON.stringify(toc)}`);
+await page.$eval('#knobs', (n) => n.scrollIntoView({ behavior: 'instant' }));
+await wait(500);
+const current = await page.$$eval('.toc a[aria-current="location"]', (n) => n.map((a) => a.getAttribute('href')));
+current.length === 1 && current[0] === '#knobs' ? pass('marks the section being read (aria-current)') : fail(`current: ${JSON.stringify(current)}`);
+await page.evaluate(() => scrollTo(0, 0));
+await page.click('.toc a[href="#preloader"]');
+let last = -1;
+for (let i = 0; i < 40; i++) { await wait(100); const y = await page.evaluate(() => scrollY); if (y === last) break; last = y; } // wait for the smooth scroll to finish
+const landed = await page.evaluate(() => ({ hash: location.hash, top: Math.round(document.getElementById('preloader').getBoundingClientRect().top) }));
+landed.hash === '#preloader' && landed.top >= 0 && landed.top < 120 ? pass(`a link takes you to its section (heading ${landed.top}px from the top)`) : fail(`link landed at ${JSON.stringify(landed)}`);
+await open(1280, '?js=off');
+await page.click('.toc a[href="#tooltips"]');
+await wait(500);
+(await page.evaluate(() => location.hash)) === '#tooltips' ? pass('the links work with JavaScript off') : fail('the contents does not work without JavaScript');
+
+// ---- checkboxes and switches ------------------------------------------------------------------
+console.log('\nCheckboxes and switches');
+await open(1000);
+const state = (name) => page.$eval(`input[name="${name}"]`, (i) => ({ checked: i.checked, indeterminate: i.indeterminate }));
+await page.$eval('input[name="reminders"]', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.keyboard.press('Tab');
+await page.$eval('input[name="reminders"]', (n) => n.focus());
+await page.keyboard.press('Space');
+(await state('reminders')).checked ? pass('Space toggles a checkbox') : fail('Space did not toggle the checkbox');
+await page.click('label.check:has(input[name="reminders"]) .check__text');
+!(await state('reminders')).checked ? pass('clicking the label toggles it') : fail('clicking the label did not toggle it');
+const mixed = await page.$eval('input[name="everything"]', (i) => i.indeterminate);
+mixed ? pass('data-indeterminate gives the mixed state') : fail('the mixed state was not set');
+await page.click('label.check:has(input[name="everything"]) .key');
+const afterClick = await state('everything');
+!afterClick.indeterminate && afterClick.checked ? pass('pressing a mixed box resolves it to checked') : fail(`mixed box after a press: ${JSON.stringify(afterClick)}`);
+await page.$eval('input[name="notify"]', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+const cap = () => page.$eval('input[name="notify"] + .key', (k) => Math.round(k.getBoundingClientRect().left));
+const before = await cap();
+await page.keyboard.press('Tab'); await page.$eval('input[name="notify"]', (n) => n.focus());
+await page.keyboard.press('Space');
+await wait(500);
+const after = await cap();
+Math.abs(after - before) > 12 ? pass(`a switch's cap slides (${before}px -> ${after}px), so the state is not color alone`) : fail(`the switch cap did not move (${before} -> ${after})`);
+const a11y = await page.accessibility.snapshot({ interestingOnly: true });
+const all = []; (function w(n) { all.push(n); (n.children ?? []).forEach(w); })(a11y);
+const news = all.find((n) => n.role === 'checkbox' && /newsletter/i.test(n.name ?? ''));
+const notify = all.find((n) => n.role === 'switch' && /notifications/i.test(n.name ?? ''));
+news && news.checked === true ? pass('a screen reader gets a checked checkbox named "Newsletter"') : fail(`checkbox in the tree: ${JSON.stringify(news)}`);
+notify ? pass(`a screen reader gets a switch named "Notifications" (${notify.checked ? 'on' : 'off'})`) : fail('the switch is not a switch in the accessibility tree');
+const mix = all.find((n) => n.role === 'checkbox' && /everything/i.test(n.name ?? ''));
+mix ? pass(`mixed state reported to assistive technology: checked=${JSON.stringify(mix.checked)}`) : fail('the "Everything" checkbox is missing from the tree');
+
 // ---- 2.5.7 Dragging alternatives ---------------------------------------------------------
 console.log('\nSetting a draggable control with a plain click (WCAG 2.5.7)');
 await open(1000);
 const clickAt = async (selector, dx, dy, from = 'center') => {
-  await page.$eval(selector, (n) => n.scrollIntoView({ block: 'center' }));
+  await page.$eval(selector, (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
   await wait(150);
   const box = await (await page.$(selector)).boundingBox();
   await page.mouse.click(box.x + (from === 'center' ? box.width / 2 : 0) + dx, box.y + (from === 'center' ? box.height / 2 : 0) + dy);

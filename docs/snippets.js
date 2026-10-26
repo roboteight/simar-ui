@@ -48,6 +48,7 @@ const addCode = (unit, { isSection }) => {
   const id = blocks++;
   const details = el('details', 'snippet');
   const summary = el('summary', '', details);
+  summary.dataset.tooltip = 'Show how this is written';
   summary.innerHTML = '<span class="well"><span class="key"><svg class="icon icon--lead" aria-hidden="true"><use href="#i-code"/></svg>HTML</span></span>';
 
   const bar = el('div', 'snippet__tabs well-row', details);

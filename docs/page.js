@@ -40,3 +40,26 @@ if (pause) {
     document.getElementById('loader-demo').toggleAttribute('data-paused', paused);
   });
 }
+
+// Table of contents: mark the link for the section being read with aria-current="location".
+// The links themselves are plain anchors and work without any of this.
+const toc = document.querySelector('.toc');
+if (toc) {
+  const links = [...toc.querySelectorAll('a[href^="#"]')];
+  const targets = links.map((a) => [document.getElementById(a.getAttribute('href').slice(1)), a]).filter(([heading]) => heading);
+  let queued = false;
+  const spy = () => {
+    queued = false;
+    // The last heading that has reached the upper part of the screen is the current section.
+    let current = targets[0]?.[1];
+    for (const [heading, link] of targets) if (heading.getBoundingClientRect().top <= innerHeight * 0.3) current = link;
+    for (const link of links) {
+      if (link === current) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    }
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(spy); } };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  spy();
+}

@@ -54,7 +54,7 @@ Write the native markup, or use short tags that expand into it:
 
 The tags are replaced with real inputs, so values submit with their form and `input` / `change` events work as usual. Tags need JavaScript; the native markup doesn't. For markup added after page load, call `SimarUI.init(element)`.
 
-Open `index.html` for the live demo: every component has an **HTML** key that shows exactly how it was added to the page, with the tag form and JavaScript examples.
+Open `index.html` for the live demo, with a contents list that floats on the left: every component has an **HTML** key that shows exactly how it was added to the page, with the tag form and JavaScript examples.
 
 ## What's inside
 
@@ -75,6 +75,20 @@ Beveled caps that sit in a recessed well. They go down quickly and ease back up,
 ```
 
 <img src="docs/screenshots/keys.png" alt="Buttons and icon buttons" width="640">
+
+### Checkboxes and switches
+
+Native `<input type="checkbox">` in the same recessed well. Checking latches the key down and lights its check mark (a dash when mixed); a switch is a checkbox with `role="switch"` and a cap that slides. Neither relies on color alone.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/checks-dark.png">
+  <img src="docs/screenshots/checks.png" alt="Checkboxes, including a mixed one, and switches" width="640">
+</picture>
+
+```html
+<simar-checkbox label="Send me the newsletter" name="news" checked></simar-checkbox>
+<simar-switch label="Notifications" name="notify"></simar-switch>
+```
 
 ### Faders and ranges
 
@@ -130,6 +144,19 @@ A spinner and a progress bar. The bar is a native `<progress>`; leave off `value
 <simar-loader label="Uploading" value="64" max="100"></simar-loader>
 ```
 
+### Tooltips
+
+Add `data-tooltip="Text"` to a button, link or radio key. It shows on mouse hover and on keyboard focus, Esc dismisses it, and you can move the pointer onto it (WCAG 1.4.13). Icon-only keys with an `aria-label` get theirs as a tooltip automatically; opt one out with `data-tooltip=""`.
+
+<img src="docs/screenshots/tooltip.png" alt="A tooltip above a Save key" width="460">
+
+```html
+<button type="button" class="key" aria-label="Settings" data-tooltip="Settings">…</button>
+<simar-button tooltip="Saves a copy to this device">Save</simar-button>
+```
+
+Keep the `aria-label` in the markup: a tooltip needs JavaScript, a label doesn't. The library warns if a control's only name is its tooltip.
+
 ### Dialog, accordion and code
 
 A native `<dialog>` opened with `command="show-modal"` (no JavaScript needed where supported), a native `<details>` accordion, and a code block with line numbers and a copy button.
@@ -153,6 +180,10 @@ A native `<dialog>` opened with `command="show-modal"` (no JavaScript needed whe
 simar-ui follows the system setting. To choose, put `data-theme="dark"` or `data-theme="light"` on `<html>`, or on any element to theme just that part of the page. The demo has an **Auto / Light / Dark** control in the top right.
 
 <img src="docs/screenshots/theme-control.png" alt="The Auto, Light and Dark theme control" width="190">
+
+The demo page's contents list floats in the left margin on wide screens (and sits above the page on narrow ones), marking the section you're reading:
+
+<img src="docs/screenshots/toc.png" alt="The floating table of contents" width="420">
 
 ### Highlight color
 
@@ -190,6 +221,8 @@ Every color and size is a CSS custom property, so you can restyle without touchi
 | `data-months`, `data-max-span`, `data-first-day` | date range | Months shown, longest range in days, week start |
 | `name="faq"` / `multiple` | accordion | Items open one at a time, or several at once |
 | `data-paused` | spinner, loader (or an ancestor) | Freezes the loading motion |
+| `data-tooltip="Text"` | button, link, radio key | A tooltip on hover and keyboard focus (Esc dismisses). On a tag: `tooltip="Text"` |
+| `checked` `disabled` `indeterminate` | checkbox, switch | Native states; `data-indeterminate` sets the mixed state |
 | `nolines` / `nocopy` | code block | Leave off the line numbers or the copy button |
 
 Haptics use the browser's Vibration API, so there is nothing to install. It works on Android browsers; iOS Safari doesn't support it and the calls are skipped.
@@ -205,6 +238,7 @@ Every control is a native element, so the keyboard, focus and screen-reader beha
 - **No dragging required (WCAG 2.5.7):** a click on a knob's ring, the groove of a two-handle range, or the arc of a rotary range sets the value; stepped knobs also jump when you click a label.
 - **Reflow and target size:** no sideways scrolling down to 320px wide; every target is at least 24 by 24px.
 - **Motion and contrast modes:** `prefers-reduced-motion` turns transitions and animation off (the preloader shows a still "busy" state). In `forced-colors` (Windows High Contrast) the controls drop their gradients and use only system colors, so the user's own theme decides.
+- **Tooltips (WCAG 1.4.13):** dismissible with Esc, hoverable, persistent, shown on keyboard focus, linked with `aria-describedby`, and kept on screen at the page edge.
 - **Code blocks:** line numbers are skipped by screen readers, can't be selected, and aren't copied; the block can be scrolled by keyboard.
 
 ### Safeguards

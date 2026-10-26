@@ -46,6 +46,21 @@ const swap = (node, html) => {
 
 const each = (scope, tag, build) => scope.querySelectorAll(tag).forEach((node) => swap(node, build(node)));
 
+// A checkbox or a switch: the native input in a well, a key as its face, and the label beside it.
+const checkLike = (node, isSwitch) => {
+  const label = node.getAttribute('label') ?? '';
+  const faces = isSwitch
+    ? ''
+    : '<svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg>';
+  const attrs = ['name', 'value', 'form'].map((a) => attr(node, a)).join('')
+    + flag(node, 'checked') + flag(node, 'disabled') + flag(node, 'required')
+    + (node.hasAttribute('indeterminate') ? ' data-indeterminate' : '')
+    + attr(node, 'tooltip', 'data-tooltip')
+    + (isSwitch ? ' role="switch"' : '');
+  return `<label${rootAttrs(node, 'check')}><span class="well${isSwitch ? ' switch' : ''}"><input type="checkbox"${attrs}><span class="key ${
+    isSwitch ? 'key--round' : 'key--box'}">${faces}</span></span>${label ? `<span class="check__text">${esc(label)}</span>` : ''}</label>`;
+};
+
 const builders = {
   // <simar-button icon="play" variant="accent|round|sq" label="Play">Text</simar-button>
   'simar-button': (node) => {
@@ -56,7 +71,7 @@ const builders = {
     const label = node.getAttribute('label') ?? (name && !text ? name : null);
     const extra = ['type', 'name', 'value', 'command', 'commandfor', 'popovertarget', 'form']
       .map((a) => attr(node, a))
-      .join('');
+      .join('') + attr(node, 'tooltip', 'data-tooltip');
     const type = node.hasAttribute('type') ? '' : ' type="button"';
     return `<span class="well"${rootAttrs(node, '').replace(' class=""', '')}><button class="${classes}"${type}${extra}${flag(node, 'disabled')}${
       label ? ` aria-label="${esc(label)}"` : ''}>${name ? icon(name) : ''}${esc(text)}</button></span>`;
@@ -70,7 +85,7 @@ const builders = {
       const text = key.textContent.trim();
       const iconName = key.getAttribute('icon');
       const label = key.getAttribute('label') ?? (iconName && !text ? iconName : null);
-      return `<label class="well"><input type="radio" name="${esc(name)}"${attr(key, 'value')}${flag(key, 'checked')}${flag(key, 'disabled')}${
+      return `<label class="well"><input type="radio" name="${esc(name)}"${attr(key, 'value')}${attr(key, 'tooltip', 'data-tooltip')}${flag(key, 'checked')}${flag(key, 'disabled')}${
         label ? ` aria-label="${esc(label)}"` : ''}><span class="key${size ? ` key--${esc(size)}` : ''}">${
         iconName ? icon(iconName).replace(' icon--lead', '') : ''}${esc(text)}</span></label>`;
     });
@@ -135,6 +150,11 @@ const builders = {
     });
     return `<div${rootAttrs(node, 'accordion')}>${items.join('')}</div>`;
   },
+
+  // <simar-checkbox label="Send me the newsletter" name="news" checked>   (indeterminate for a mixed state)
+  // <simar-switch label="Notifications" name="notify">
+  'simar-checkbox': (node) => checkLike(node, false),
+  'simar-switch': (node) => checkLike(node, true),
 
   // <simar-loader label="Uploading" value="64" max="100">   (leave value off for an unknown length)
   'simar-loader': (node) => `<progress${rootAttrs(node, 'loader')} aria-label="${esc(node.getAttribute('label') ?? 'Loading')}"${
