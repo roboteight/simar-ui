@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>simar-ui highlight colors</title>
+  <link rel="stylesheet" href="../dist/simar-ui.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+  <main>
+    <h1>Highlight colors</h1>
+    <p class="note">One value, <code>--lit</code>, recolors every lit part. Set it on any element, or pick a preset with <code>data-lit</code>.</p>
+
+    <div class="themes">
+      <fieldset class="panel" aria-label="Green, the default">
+        <legend>Default</legend>
+        <simar-keys name="mode-green" label="Mode"><simar-key value="a" checked>Auto</simar-key><simar-key value="m">Manual</simar-key></simar-keys>
+        <simar-fader label="Level" name="level-green" value="62" unit="%"></simar-fader>
+        <simar-knob label="Gain" name="gain-green" max="10" step="1" value="6"></simar-knob>
+      </fieldset>
+
+      <fieldset class="panel" data-lit="blue">
+        <legend>data-lit="blue"</legend>
+        <simar-keys name="mode-blue" label="Mode"><simar-key value="a" checked>Auto</simar-key><simar-key value="m">Manual</simar-key></simar-keys>
+        <simar-fader label="Level" name="level-blue" value="62" unit="%"></simar-fader>
+        <simar-knob label="Gain" name="gain-blue" max="10" step="1" value="6"></simar-knob>
+      </fieldset>
+
+      <fieldset class="panel" data-lit="amber">
+        <legend>data-lit="amber"</legend>
+        <simar-keys name="mode-amber" label="Mode"><simar-key value="a" checked>Auto</simar-key><simar-key value="m">Manual</simar-key></simar-keys>
+        <simar-fader label="Level" name="level-amber" value="62" unit="%"></simar-fader>
+        <simar-knob label="Gain" name="gain-amber" max="10" step="1" value="6"></simar-knob>
+      </fieldset>
+
+      <fieldset class="panel" data-lit="red">
+        <legend>data-lit="red"</legend>
+        <simar-keys name="mode-red" label="Mode"><simar-key value="a" checked>Auto</simar-key><simar-key value="m">Manual</simar-key></simar-keys>
+        <simar-fader label="Level" name="level-red" value="62" unit="%"></simar-fader>
+        <simar-knob label="Gain" name="gain-red" max="10" step="1" value="6"></simar-knob>
+      </fieldset>
+
+      <fieldset class="panel" data-lit="violet">
+        <legend>data-lit="violet"</legend>
+        <simar-keys name="mode-violet" label="Mode"><simar-key value="a" checked>Auto</simar-key><simar-key value="m">Manual</simar-key></simar-keys>
+        <simar-fader label="Level" name="level-violet" value="62" unit="%"></simar-fader>
+        <simar-knob label="Gain" name="gain-violet" max="10" step="1" value="6"></simar-knob>
+      </fieldset>
+
+      <fieldset class="panel" style="--lit: #ff4d9a">
+        <legend>style="--lit: #ff4d9a"</legend>
+        <simar-keys name="mode-custom" label="Mode"><simar-key value="a" checked>Auto</simar-key><simar-key value="m">Manual</simar-key></simar-keys>
+        <simar-fader label="Level" name="level-custom" value="62" unit="%"></simar-fader>
+        <simar-knob label="Gain" name="gain-custom" max="10" step="1" value="6"></simar-knob>
+      </fieldset>
+    </div>
+  </main>
+  <script src="../dist/simar-ui.js"></script>
+</body>
+</html>

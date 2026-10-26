@@ -1,0 +1,171 @@
+@use "../abstracts" as *;
+
+// A labelled row for a range control: label and readout above, the control below.
+.field {
+  position: relative;
+  display: grid;
+  gap: 0.25rem;
+  margin: 0 0 1rem;
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__label { @include label-caps; }
+
+  // data-marks: a tick at each step the cap can snap to.
+  .marks {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1px;
+    height: 7px;
+    pointer-events: none;
+
+    i {
+      @include tick-mark;
+      left: calc(15px + (100% - 30px) * var(--f));
+      margin-left: -1px;
+    }
+  }
+}
+
+// Range picker: a groove with an extruded, gripped fader cap.
+.fader {
+  --thumb-w: 30px;
+  --thumb-h: 34px;
+  --track-h: 12px;
+  --lift: 2px;
+  --fill: calc(var(--thumb-w) / 2 + (100% - var(--thumb-w)) * var(--frac, 0));
+  --track-bg:
+    linear-gradient(90deg, var(--lit-fill) 0 var(--fill), transparent var(--fill)),
+    linear-gradient(180deg, #{$groove-top}, #{$groove-bottom});
+  --track-shadow: inset 0 2px 3px #{shade(0.2)}, 0 1px 0 var(--lip);
+  --thumb-bg:
+    repeating-linear-gradient(90deg, var(--grip-dark) 0 1px, var(--grip-light) 1px 2px, transparent 2px 4px) center / 14px 20px no-repeat,
+    linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
+  --thumb-up: #{raised-shadow(var(--lift))};
+  --thumb-down: #{pressed-shadow()};
+
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  width: 100%;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+
+  // The lit fill follows the value through script (--frac). Without the script, leave the
+  // groove plain rather than show a fill that disagrees with the cap.
+  :root:not([data-js="on"]) & {
+    --track-bg: linear-gradient(180deg, #{$groove-top}, #{$groove-bottom});
+  }
+
+  @include track {
+    height: var(--track-h);
+    border-radius: 999px;
+    background: var(--track-bg);
+    box-shadow: var(--track-shadow);
+
+    @include forced-colors {
+      border: 2px solid ButtonText;
+      box-shadow: none;
+    }
+  }
+
+  @include thumb {
+    width: var(--thumb-w);
+    height: var(--thumb-h);
+    border: 0;
+    border-radius: 10px;
+    background: var(--thumb-bg);
+    box-shadow: var(--thumb-up);
+    transform: translateY(calc(var(--lift) * -1));
+    transition: transform $release $ease, box-shadow $release $ease;
+
+    @include reduced-motion { transition: none; }
+
+    @include forced-colors {
+      border: 2px solid ButtonText;
+      background: Highlight;
+      box-shadow: none;
+      transform: none;
+    }
+  }
+
+  // WebKit needs its thumb reset and centred on the track by hand.
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: calc((var(--track-h) - var(--thumb-h)) / 2);
+  }
+
+  &:active {
+    @include thumb {
+      transform: translateY(0);
+      box-shadow: var(--thumb-down);
+      transition-duration: $press;
+    }
+  }
+
+  &:focus-visible {
+    @include focus-ring(2px);
+    border-radius: 10px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    filter: saturate(0.5);
+  }
+}
+
+// Dual-handle range (min and max). Two native range inputs, one per handle. Without JS they
+// stack as two ordinary faders; with JS (.is-enhanced) they overlay one shared groove.
+.range2.is-enhanced {
+  --thumb-w: 30px;
+  --track-h: 12px;
+  --lo: 0;
+  --hi: 1;
+  --a: calc(var(--thumb-w) / 2 + (100% - var(--thumb-w)) * var(--lo));
+  --b: calc(var(--thumb-w) / 2 + (100% - var(--thumb-w)) * var(--hi));
+  position: relative;
+  height: 48px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: var(--track-h);
+    margin-top: calc(var(--track-h) / -2);
+    border-radius: 999px;
+    background:
+      linear-gradient(90deg, transparent var(--a), var(--lit-fill) var(--a) var(--b), transparent var(--b)),
+      linear-gradient(180deg, $groove-top, $groove-bottom);
+    box-shadow: inset 0 2px 3px shade(0.2), 0 1px 0 var(--lip);
+  }
+
+  // The inputs are transparent overlays; only their caps take the pointer.
+  > .fader {
+    --track-bg: transparent;
+    --track-shadow: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+
+    @include thumb { pointer-events: auto; }
+
+    &:focus-visible {
+      outline: none;
+
+      @include thumb { @include focus-ring(2px); }
+    }
+  }
+}

@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>simar-ui v1</title>
+  <script>
+    // Apply a saved theme before the page paints, so it never flashes the other one.
+    try { const t = localStorage.getItem('simar-ui:theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch {}
+  </script>
+  <link rel="stylesheet" href="dist/simar-ui.css">
+  <link rel="stylesheet" href="docs/docs.css">
+</head>
+<body>
+  <!-- Icons: Lucide (https://lucide.dev), ISC license, see THIRD_PARTY_LICENSES.md -->
+  <svg xmlns="http://www.w3.org/2000/svg" hidden>
+    <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10" /><path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></symbol>
+    <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></symbol>
+    <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>
+    <symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /><circle cx="12" cy="12" r="3" /></symbol>
+    <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M15 12H3" /><path d="M17 19H3" /></symbol>
+    <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M17 12H7" /><path d="M19 19H5" /></symbol>
+    <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M21 12H9" /><path d="M21 19H7" /></symbol>
+    <symbol id="i-align-justify" viewBox="0 0 24 24"><path d="M3 5h18" /><path d="M3 12h18" /><path d="M3 19h18" /></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>
+  </svg>
+  <aside class="themebar needs-js" aria-label="Appearance">
+  <div role="radiogroup" aria-label="Theme">
+    <label class="well"><input type="radio" name="theme" value="auto" aria-label="Auto, follow the system" checked><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-monitor"/></svg></span></label>
+    <label class="well"><input type="radio" name="theme" value="light" aria-label="Light"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span></label>
+    <label class="well"><input type="radio" name="theme" value="dark" aria-label="Dark"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></span></label>
+  </div>
+  </aside>
+  <main>
+    <div class="jsbar">
+      <span class="well"><a class="key" id="js-toggle" href="?js=off">Turn JS off</a></span>
+      <p class="note" id="js-note" hidden></p>
+      <noscript><p class="note">JavaScript is disabled in this browser, so this is the plain HTML fallback: native controls, styled by CSS alone.</p></noscript>
+    </div>
+
+    <header>
+      <h1>simar-ui <span class="version">v1</span></h1>
+      <p>Custom form controls. Every one is a real HTML element underneath. Press <em>HTML</em> under any component to see how it was added to the page.</p>
+    </header>
+
+    <fieldset class="panel needs-js" data-haptic="off">
+      <legend>Page settings</legend>
+      <div class="well-row">
+        <div class="setting">
+          <span class="setting__label">Highlight</span>
+          <div class="well-row" role="radiogroup" aria-label="Highlight color">
+            <label class="well"><input type="radio" name="lit" value="green" aria-label="Green" checked><span class="key key--sq"><span class="swatch" style="--lit: #36d27a"></span></span></label>
+            <label class="well"><input type="radio" name="lit" value="blue" aria-label="Blue"><span class="key key--sq"><span class="swatch" style="--lit: #3b8cff"></span></span></label>
+            <label class="well"><input type="radio" name="lit" value="amber" aria-label="Amber"><span class="key key--sq"><span class="swatch" style="--lit: #ffb020"></span></span></label>
+            <label class="well"><input type="radio" name="lit" value="red" aria-label="Red"><span class="key key--sq"><span class="swatch" style="--lit: #ff4d5e"></span></span></label>
+            <label class="well"><input type="radio" name="lit" value="violet" aria-label="Violet"><span class="key key--sq"><span class="swatch" style="--lit: #9b6bff"></span></span></label>
+          </div>
+        </div>
+        <div class="setting" id="haptics-setting" hidden>
+          <span class="setting__label">Haptics</span>
+          <div class="well-row" role="radiogroup" aria-label="Haptics">
+            <label class="well"><input type="radio" name="haptics" value="on" checked><span class="key">On</span></label>
+            <label class="well"><input type="radio" name="haptics" value="off"><span class="key">Off</span></label>
+          </div>
+        </div>
+      </div>
+      <p class="note" id="haptics-note" hidden>Haptics need a device with vibration support (most Android phones). This one has none.</p>
+    </fieldset>
+
+    <section aria-labelledby="install" data-no-html>
+      <h2 id="install">Install</h2>
+      <p class="note">Two files, no build step. Put these in the page, then write the markup below or the <code>&lt;simar-*&gt;</code> tags.</p>
+<figure class="code"><div class="code__body"><pre tabindex="0"><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/roboteight/simar-ui@1/dist/simar-ui.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/roboteight/simar-ui@1/dist/simar-ui.min.js" defer&gt;&lt;/script&gt;</code></pre></div></figure>
+      <p class="note">Or <code>npm install simar-ui</code> and import <code>simar-ui/css</code> and the script. Everything is configured with HTML attributes, listed under Configuration.</p>
+              <script type="text/plain" data-example="Bundler">
+      import 'simar-ui/css';   // styles
+      import 'simar-ui';       // enhancements; starts itself
+      </script>
+      <script type="text/plain" data-example="Sass">
+      // Use the source to override tokens or reuse its mixins.
+      @use "node_modules/simar-ui/scss/simar-ui";
+      </script>
+      <script type="text/plain" data-example="Theme">
+      /* Every colour and size is a custom property. Set it globally... */
+      :root {
+        --lit: #ff4d6d;      /* highlight colour: LEDs, fills, selected ends */
+        --accent: #3b8cff;   /* the accent key and knob mark */
+        --radius: 10px;      /* key corners */
+        --travel: 3px;       /* how tall keys stand above their wells */
+      }
+
+      /* ...or on any one element and everything inside it. */
+      .alerts { --lit: #ffb020; }
+      </script>
+    </section>
+
+    <section aria-labelledby="buttons">
+      <h2 id="buttons">Buttons</h2>
+      <p class="note">Beveled and extruded. Press and hold to see the cap travel.</p>
+
+      <fieldset class="panel">
+        <legend>Keys</legend>
+        <div class="well-row">
+          <span class="well"><button type="button" class="key">Push</button></span>
+          <span class="well"><button type="button" class="key key--accent">Go</button></span>
+          <span class="well"><button type="button" class="key key--round" aria-label="Power"><svg class="icon" aria-hidden="true"><use href="#i-power"/></svg></button></span>
+          <span class="well"><button type="button" class="key" disabled>Disabled</button></span>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <simar-button>Push</simar-button>
+          <simar-button variant="accent">Go</simar-button>
+          <simar-button variant="round" icon="power" label="Power"></simar-button>
+          <simar-button disabled>Disabled</simar-button>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          // A key is an ordinary <button>: use the events you already know.
+          // <button type="button" class="key" id="save" data-haptic="heavy">Save</button>
+          document.querySelector('#save').addEventListener('click', () => console.log('saved'));
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Icon keys</legend>
+        <div class="well-row">
+          <span class="well"><button type="button" class="key key--sq" aria-label="Previous"><svg class="icon" aria-hidden="true"><use href="#i-skip-back"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Play"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Pause"><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Next"><svg class="icon" aria-hidden="true"><use href="#i-skip-forward"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Volume"><svg class="icon" aria-hidden="true"><use href="#i-volume-2"/></svg></button></span>
+          <span class="well"><button type="button" class="key key--sq" aria-label="Settings"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></button></span>
+          <span class="well"><button type="button" class="key" aria-label="Play"><svg class="icon icon--lead" aria-hidden="true"><use href="#i-play"/></svg>Play</button></span>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <simar-button variant="sq" icon="skip-back" label="Previous"></simar-button>
+          <simar-button variant="sq" icon="play" label="Play"></simar-button>
+          <simar-button icon="play">Play</simar-button>   <!-- icon beside a label -->
+        </script>
+        <script type="text/plain" data-example="Your icons">
+          <!-- Icons come from a sprite of <symbol>s named i-<name>. Add your own once... -->
+          <svg hidden>
+            <symbol id="i-heart" viewBox="0 0 24 24"><path d="…"/></symbol>
+          </svg>
+
+          <!-- ...then use its name. -->
+          <simar-button variant="sq" icon="heart" label="Like"></simar-button>
+        </script>
+      </fieldset>
+        </section>
+
+    <section aria-labelledby="radios">
+      <h2 id="radios">Radio buttons</h2>
+      <p class="note">Native radios, set into the panel. The checked key stays pressed in and lit.</p>
+
+      <form>
+        <fieldset class="panel">
+          <legend>Mode</legend>
+          <div class="well-row">
+            <label class="well"><input type="radio" name="mode" value="a" checked><span class="key">Auto</span></label>
+            <label class="well"><input type="radio" name="mode" value="m"><span class="key">Manual</span></label>
+            <label class="well"><input type="radio" name="mode" value="s"><span class="key">Standby</span></label>
+            <label class="well"><input type="radio" name="mode" value="o" disabled><span class="key">Offline</span></label>
+          </div>
+                <script type="text/plain" data-example="Tag">
+          <simar-keys name="mode" legend="Mode">
+            <simar-key value="auto" checked>Auto</simar-key>
+            <simar-key value="manual">Manual</simar-key>
+            <simar-key value="offline" disabled>Offline</simar-key>
+          </simar-keys>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const form = document.querySelector('form');
+
+          // Native radios: the group's value lives on form.elements.
+          form.addEventListener('change', (e) => {
+            if (e.target.name === 'mode') console.log(form.elements.mode.value);
+          });
+
+          form.elements.mode.value = 'manual';   // set it from code
+        </script>
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend>Channel</legend>
+          <div class="well-row">
+            <label class="well"><input type="radio" name="ch" value="1"><span class="key key--sq">1</span></label>
+            <label class="well"><input type="radio" name="ch" value="2" checked><span class="key key--sq">2</span></label>
+            <label class="well"><input type="radio" name="ch" value="3"><span class="key key--sq">3</span></label>
+            <label class="well"><input type="radio" name="ch" value="4"><span class="key key--sq">4</span></label>
+          </div>
+                <script type="text/plain" data-example="Tag">
+          <!-- size="sq" makes small square keys that light their label -->
+          <simar-keys name="channel" legend="Channel" size="sq">
+            <simar-key value="1">1</simar-key>
+            <simar-key value="2" checked>2</simar-key>
+            <simar-key value="3">3</simar-key>
+          </simar-keys>
+        </script>
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend>Align</legend>
+          <div class="well-row">
+            <label class="well"><input type="radio" name="align" value="left" aria-label="Align left" checked><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-align-left"/></svg></span></label>
+            <label class="well"><input type="radio" name="align" value="center" aria-label="Align center"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-align-center"/></svg></span></label>
+            <label class="well"><input type="radio" name="align" value="right" aria-label="Align right"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-align-right"/></svg></span></label>
+            <label class="well"><input type="radio" name="align" value="justify" aria-label="Justify"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-align-justify"/></svg></span></label>
+          </div>
+                <script type="text/plain" data-example="Tag">
+          <!-- icons instead of text: give each key a label for screen readers -->
+          <simar-keys name="align" legend="Align" size="sq">
+            <simar-key value="left" icon="align-left" label="Align left" checked></simar-key>
+            <simar-key value="center" icon="align-center" label="Align center"></simar-key>
+            <simar-key value="right" icon="align-right" label="Align right"></simar-key>
+          </simar-keys>
+        </script>
+        </fieldset>
+      </form>
+        </section>
+
+    <section aria-labelledby="ranges">
+      <h2 id="ranges">Range pickers</h2>
+      <p class="note">Native range inputs with a gripped cap that lifts off the groove. The lit track follows the value.</p>
+
+      <fieldset class="panel">
+        <legend>Faders</legend>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="bright">Brightness</label></div>
+          <input class="fader" id="bright" type="range" min="0" max="100" value="40" data-unit="%">
+        </div>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="quality">Quality</label></div>
+          <input class="fader" id="quality" type="range" min="1" max="5" step="1" value="3" data-marks>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <simar-fader label="Brightness" name="brightness" min="0" max="100" value="40" unit="%"></simar-fader>
+
+          <!-- step snaps the cap to each value; marks draws a tick at every step -->
+          <simar-fader label="Quality" name="quality" min="1" max="5" step="1" value="3" marks></simar-fader>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const brightness = document.querySelector('[name="brightness"]');
+
+          // The input is the source of truth: read it, listen to it, set it.
+          brightness.addEventListener('input', () => console.log(brightness.value));
+
+          brightness.value = 80;
+          brightness.dispatchEvent(new Event('input', { bubbles: true }));   // redraws the lit track
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Min and max</legend>
+        <div class="field">
+          <div class="field__head"><span class="field__label" id="price-label">Price</span></div>
+          <div class="range2" role="group" aria-labelledby="price-label" data-range data-prefix="$">
+            <input class="fader" type="range" aria-label="Minimum price" min="0" max="500" step="5" value="120">
+            <input class="fader" type="range" aria-label="Maximum price" min="0" max="500" step="5" value="340">
+          </div>
+        </div>
+        <div class="field">
+          <div class="field__head"><span class="field__label" id="temp-label">Temperature</span></div>
+          <div class="range2" role="group" aria-labelledby="temp-label" data-range data-unit="°">
+            <input class="fader" type="range" aria-label="Minimum temperature" min="10" max="30" step="1" value="18">
+            <input class="fader" type="range" aria-label="Maximum temperature" min="10" max="30" step="1" value="24">
+          </div>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <simar-range label="Price" name="price" min="0" max="500" step="5" low="120" high="340" prefix="$"></simar-range>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          // Each handle is an input: <name>-low and <name>-high. They can touch but never cross.
+          const low = document.querySelector('[name="price-low"]');
+          const high = document.querySelector('[name="price-high"]');
+
+          for (const input of [low, high]) {
+            input.addEventListener('input', () => console.log(low.value, high.value));
+          }
+        </script>
+      </fieldset>
+        </section>
+
+    <section aria-labelledby="knobs">
+      <h2 id="knobs">Knobs</h2>
+      <p class="note">Drag up or right to turn up, hold Shift for fine control, double-click to reset. Arrow keys, Home/End and the mouse wheel (when focused) work too. Without JS these are plain range sliders.</p>
+
+      <fieldset class="panel">
+        <legend>Output</legend>
+        <div class="knob-row">
+          <div class="knob" data-knob>
+            <input type="range" id="volume" min="0" max="11" step="1" value="7" data-ticks="12">
+            <label for="volume">Volume</label>
+          </div>
+          <div class="knob" data-knob>
+            <input type="range" id="reverb" min="0" max="100" step="1" value="30" data-unit="%">
+            <label for="reverb">Reverb</label>
+          </div>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <simar-knob label="Volume" name="volume" max="11" step="1" value="7" ticks="12"></simar-knob>
+          <simar-knob label="Reverb" name="reverb" value="30" unit="%"></simar-knob>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const volume = document.querySelector('[name="volume"]');
+          volume.addEventListener('input', () => console.log(volume.value));
+
+          // Turn the knob from code. The input event redraws it.
+          volume.value = 9;
+          volume.dispatchEvent(new Event('input', { bubbles: true }));
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Options</legend>
+        <div class="knob-row">
+          <div class="knob" data-knob>
+            <input type="range" id="tone" min="0" max="3" step="1" value="1" data-labels="Flat,Warm,Bright,Punch">
+            <label for="tone">Tone</label>
+          </div>
+          <div class="knob" data-knob>
+            <input type="range" id="source" min="0" max="4" step="1" value="1" data-labels="Mic,Line,Phono,Aux,Tape">
+            <label for="source">Source</label>
+          </div>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <!-- labels makes a stepped selector: it clicks into each position,
+               and clicking a label jumps straight to it -->
+          <simar-knob label="Tone" name="tone" max="3" step="1" value="1" labels="Flat,Warm,Bright,Punch"></simar-knob>
+          <simar-knob label="Source" name="source" max="4" step="1" value="1" labels="Mic,Line,Phono,Aux,Tape"></simar-knob>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const tone = document.querySelector('[name="tone"]');
+          const names = ['Flat', 'Warm', 'Bright', 'Punch'];
+
+          tone.addEventListener('change', () => console.log(names[tone.value]));
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Range</legend>
+        <div class="knob-row">
+          <div class="rknob" data-range-knob role="group" aria-labelledby="band-label" data-unit="%">
+            <input type="range" aria-label="Band low" min="0" max="100" step="1" value="25">
+            <input type="range" aria-label="Band high" min="0" max="100" step="1" value="70">
+            <span class="rknob__label" id="band-label">Band</span>
+          </div>
+          <div class="rknob" data-range-knob role="group" aria-labelledby="comfort-label" data-unit="°">
+            <input type="range" aria-label="Comfort low" min="10" max="30" step="1" value="18">
+            <input type="range" aria-label="Comfort high" min="10" max="30" step="1" value="24">
+            <span class="rknob__label" id="comfort-label">Comfort</span>
+          </div>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <simar-range-knob label="Band" name="band" low="25" high="70" unit="%"></simar-range-knob>
+          <simar-range-knob label="Comfort" name="comfort" min="10" max="30" low="18" high="24" unit="°"></simar-range-knob>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          // Two inputs again: <name>-low and <name>-high.
+          const low = document.querySelector('[name="band-low"]');
+          const high = document.querySelector('[name="band-high"]');
+          low.addEventListener('input', () => console.log(low.value, high.value));
+        </script>
+      </fieldset>
+        </section>
+
+    <section aria-labelledby="dialogs">
+      <h2 id="dialogs">Dialog</h2>
+      <p class="note">A native <code>&lt;dialog&gt;</code> opened as a modal. Esc, a click on the backdrop, or any button in the form closes it.</p>
+
+      <div class="well-row">
+        <span class="well"><button type="button" class="key" command="show-modal" commandfor="settings" data-dialog-open="settings">Open dialog</button></span>
+        <output class="lcd" for="settings">closed</output>
+      </div>
+
+      <dialog id="settings" class="sheet" aria-labelledby="settings-title">
+        <form method="dialog">
+          <header class="sheet__head">
+            <h3 id="settings-title">Output settings</h3>
+            <span class="well"><button class="key key--sq" value="cancel" aria-label="Close" formnovalidate><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></span>
+          </header>
+
+          <fieldset class="panel">
+            <legend>Monitor</legend>
+            <div class="well-row">
+              <label class="well"><input type="radio" name="monitor" value="speakers" checked><span class="key">Speakers</span></label>
+              <label class="well"><input type="radio" name="monitor" value="phones"><span class="key">Phones</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="sheet-volume">Volume</label></div>
+            <input class="fader" id="sheet-volume" name="volume" type="range" min="0" max="100" value="60" data-unit="%">
+          </div>
+
+          <footer class="sheet__actions">
+            <span class="well"><button class="key" value="cancel" formnovalidate>Cancel</button></span>
+            <span class="well"><button class="key key--accent" value="save">Save</button></span>
+          </footer>
+        </form>
+      </dialog>
+              <script type="text/plain" data-example="HTML">
+      <!-- No JavaScript needed to open it, where invoker commands are supported -->
+      <button type="button" command="show-modal" commandfor="settings">Open</button>
+
+      <dialog id="settings" class="sheet" aria-labelledby="settings-title">
+        <form method="dialog">
+          <h3 id="settings-title">Settings</h3>
+          <!-- any button in a method="dialog" form closes it, returning its value -->
+          <button value="cancel">Cancel</button>
+          <button value="save">Save</button>
+        </form>
+      </dialog>
+
+      <!-- optional: shows how the dialog was closed -->
+      <output for="settings"></output>
+      </script>
+      <script type="text/plain" data-example="JavaScript">
+      const dialog = document.getElementById('settings');
+
+      dialog.addEventListener('close', () => {
+        // "save", "cancel", or "dismissed" (Esc or a click on the backdrop)
+        console.log(dialog.returnValue, new FormData(dialog.querySelector('form')));
+      });
+
+      dialog.showModal();
+      </script>
+    </section>
+
+    <section aria-labelledby="accordion">
+      <h2 id="accordion">Accordion</h2>
+      <p class="note">Native <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code> in an <code>.accordion</code>. Items that share a <code>name</code> open one at a time; drop the <code>name</code> to let several stay open. No JavaScript.</p>
+
+      <div class="accordion">
+        <details class="accordion__item" name="faq" open>
+          <summary><span class="well"><span class="key"><svg class="icon icon--lead icon--chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg>What is simar-ui?</span></span></summary>
+          <div class="accordion__body"><p>A set of custom-styled form controls. Each one is a real HTML element underneath, so it still works without CSS or JavaScript.</p></div>
+        </details>
+        <details class="accordion__item" name="faq">
+          <summary><span class="well"><span class="key"><svg class="icon icon--lead icon--chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg>Does it work with a keyboard?</span></span></summary>
+          <div class="accordion__body"><p>Yes. Keys, faders and knobs all take focus and respond to the arrow keys, and every control shows a focus ring.</p></div>
+        </details>
+        <details class="accordion__item" name="faq">
+          <summary><span class="well"><span class="key"><svg class="icon icon--lead icon--chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg>Can I change the colors?</span></span></summary>
+          <div class="accordion__body"><p>The lit color, accent and cap tones are CSS custom properties, and <code>data-lit</code> or <code>style="--lit: …"</code> recolors any part of the page.</p></div>
+        </details>
+      </div>
+              <script type="text/plain" data-example="Tag">
+      <!-- items open one at a time -->
+      <simar-accordion>
+        <simar-item title="What is it?" open>A set of form controls.</simar-item>
+        <simar-item title="Is it accessible?">Yes: <strong>keyboard</strong> and screen readers.</simar-item>
+      </simar-accordion>
+
+      <!-- several can stay open -->
+      <simar-accordion multiple>
+        <simar-item title="One" open>…</simar-item>
+        <simar-item title="Two" open>…</simar-item>
+      </simar-accordion>
+      </script>
+      <script type="text/plain" data-example="JavaScript">
+      // It is a native <details>: use its toggle event and open property.
+      for (const item of document.querySelectorAll('.accordion__item')) {
+        item.addEventListener('toggle', () => console.log(item.open));
+      }
+
+      document.querySelector('.accordion__item').open = true;
+      </script>
+    </section>
+
+    <section aria-labelledby="code">
+      <h2 id="code">Code</h2>
+      <p class="note">Show code with an optional label and a copy button. The block scrolls and takes keyboard focus, so long lines stay readable without a mouse.</p>
+
+      <fieldset class="panel">
+        <legend>Code block</legend>
+        <figure class="code">
+          <figcaption class="code__label">HTML</figcaption>
+          <div class="code__body"><pre tabindex="0"><code>&lt;span class="well"&gt;
+  &lt;button type="button" class="key"&gt;Push&lt;/button&gt;
+&lt;/span&gt;</code></pre></div>
+        </figure>
+        <script type="text/plain" data-example="Tag">
+          <!-- Put the code in a <template> to write it unescaped -->
+          <simar-code lang="html">
+            <template>
+              <span class="well">
+                <button type="button" class="key">Push</button>
+              </span>
+            </template>
+          </simar-code>
+
+          <!-- Plain text works too. label overrides the caption; nocopy removes the button -->
+          <simar-code lang="css" label="Theme" nocopy>:root { --lit: #ff4d6d; }</simar-code>
+        </script>
+        <script type="text/plain" data-example="Style">
+          .code {
+            --code-bg: #1b2430;    /* block background */
+            --code-ink: #e6edf3;   /* text and the copy icon */
+            --code-max: 20rem;     /* tallest it gets before it scrolls */
+          }
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="preloader">
+      <h2 id="preloader">Preloader</h2>
+      <p class="note">A spinner and a progress bar, for when something is loading. The bar is a native <code>&lt;progress&gt;</code>, so it works without JavaScript and is announced as a progress bar. Leave off <code>value</code> when the length isn't known. Motion stops with <code>prefers-reduced-motion</code>, and <code>data-paused</code> freezes it.</p>
+
+      <fieldset class="panel" id="loader-demo">
+        <legend>Spinner and progress</legend>
+        <div class="loader-row">
+          <span class="spinner" role="status"><span class="spinner__ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="spinner__label">Loading results</span></span>
+          <span class="spinner" style="--size: 2rem" role="status"><span class="spinner__ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="spinner__label">Saving</span></span>
+          <span class="well needs-js"><button type="button" class="key" id="pause-motion" aria-pressed="false">Pause</button></span>
+        </div>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="upload">Uploading</label></div>
+          <progress class="loader" id="upload" max="100" value="64"></progress>
+        </div>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="working">Working, length unknown</label></div>
+          <progress class="loader" id="working"></progress>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-spinner label="Loading results"></simar-spinner>
+
+          <!-- value and max make it a measured bar; leave value off when you don't know how long -->
+          <simar-loader label="Uploading" value="64" max="100"></simar-loader>
+          <simar-loader label="Working"></simar-loader>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const bar = document.querySelector('#upload');
+
+          // It is a native <progress>: set value as work completes.
+          bar.value = 80;
+
+          // Freeze the motion (WCAG 2.2.2): any ancestor works.
+          document.querySelector('#loader-demo').setAttribute('data-paused', '');
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="dates">
+      <h2 id="dates">Date range</h2>
+      <p class="note">Two native <code>&lt;input type="date"&gt;</code> fields stay the source of truth, so typing, <code>min</code>/<code>max</code> and form submission all work. With JS, the calendar button opens a range picker: click a start day, then an end day.</p>
+
+      <fieldset class="panel">
+        <legend>Stay, two months</legend>
+        <div class="daterange" data-daterange data-months="2" data-first-day="1">
+          <label class="daterange__field"><span class="field__label">Check in</span><input type="date" name="checkin" value="2026-11-02" min="2026-10-26"></label>
+          <label class="daterange__field"><span class="field__label">Check out</span><input type="date" name="checkout" value="2026-11-09" min="2026-10-26" max="2027-03-31"></label>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <simar-date-range name="stay" from="2026-11-02" to="2026-11-09"
+                            min="2026-10-26" max="2027-03-31" months="2" first-day="1"></simar-date-range>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const from = document.querySelector('[name="stay-from"]');
+          const to = document.querySelector('[name="stay-to"]');
+
+          // The date inputs are the source of truth. "change" fires when either end moves,
+          // typed or picked in the calendar. Values are YYYY-MM-DD.
+          to.addEventListener('change', () => console.log(from.value, to.value));
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Booking, up to 7 days</legend>
+        <div class="daterange" data-daterange data-max-span="7" data-lit="blue">
+          <label class="daterange__field"><span class="field__label">From</span><input type="date" name="from" min="2026-10-26"></label>
+          <label class="daterange__field"><span class="field__label">To</span><input type="date" name="to" min="2026-10-26"></label>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <!-- max-span limits the range in days; lit recolours just this component -->
+          <simar-date-range name="booking" from-label="Arrive" to-label="Leave"
+                            min="2026-10-26" max-span="7" lit="blue"></simar-date-range>
+        </script>
+      </fieldset>
+        </section>
+
+    <section class="needs-js" aria-labelledby="tags">
+      <h2 id="tags">Declarative tags</h2>
+      <p class="note">Write a short tag and the script expands it into the markup shown in the sections above, so inputs still submit with their form. Options are attributes named like the native ones. These need JavaScript; the plain markup above doesn't.</p>
+
+      <fieldset class="panel">
+        <legend>Tags</legend>
+        <simar-fader label="Brightness" name="tag-brightness" min="0" max="100" value="65" unit="%"></simar-fader>
+        <simar-fader label="Quality" name="tag-quality" min="1" max="5" step="1" value="4" marks></simar-fader>
+        <simar-range label="Price" name="tag-price" min="0" max="500" step="5" low="80" high="260" prefix="$"></simar-range>
+        <div class="knob-row">
+          <simar-knob label="Volume" name="tag-volume" max="11" step="1" value="6" ticks="12"></simar-knob>
+          <simar-knob label="Mode" name="tag-mode" max="2" step="1" value="1" labels="Eco,Auto,Boost"></simar-knob>
+          <simar-range-knob label="Range" name="tag-range" low="30" high="80" unit="%" lit="violet"></simar-range-knob>
+        </div>
+              <script type="text/plain" data-example="JavaScript">
+          // Tags are expanded when the page loads. If you add some later (from a framework,
+          // say), expand and enhance just that part:
+          const host = document.querySelector('#panel');
+          host.innerHTML = '<simar-knob label="Gain" max="10" value="4"></simar-knob>';
+          SimarUI.init(host);
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Keys and dates</legend>
+        <div class="well-row">
+          <simar-button icon="play" variant="accent">Play</simar-button>
+          <simar-button icon="settings" variant="sq" label="Settings"></simar-button>
+        </div>
+        <simar-keys name="tag-size" legend="Size">
+          <simar-key value="s">Small</simar-key>
+          <simar-key value="m" checked>Medium</simar-key>
+          <simar-key value="l">Large</simar-key>
+        </simar-keys>
+        <simar-date-range name="tag-trip" from="2026-12-01" to="2026-12-05" min="2026-10-26" lit="amber"></simar-date-range>
+        <simar-accordion name="tag-faq" lit="violet">
+          <simar-item title="Exclusive by default" open>Items in a group open one at a time.</simar-item>
+          <simar-item title="Rich content works">Anything inside an item is used as written, <strong>markup included</strong>.</simar-item>
+        </simar-accordion>
+      </fieldset>
+        </section>
+
+    <section aria-labelledby="config">
+      <h2 id="config">Configuration</h2>
+      <p class="note">Everything is set with HTML attributes. Native ones (<code>min</code>, <code>max</code>, <code>step</code>, <code>name</code>) keep their usual meaning.</p>
+      <div class="ref-scroll" tabindex="0" role="region" aria-label="Configuration reference">
+      <table class="ref">
+        <thead><tr><th>Attribute</th><th>On</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>step</code></td><td>range</td><td>Values snap to each step. Add <code>data-marks</code> to draw a mark at each one.</td></tr>
+          <tr><td><code>data-marks</code> / <code>data-marks="5"</code></td><td>fader</td><td>Tick marks at every step, or at N evenly spaced points.</td></tr>
+          <tr><td><code>data-ticks="12"</code></td><td>knob</td><td>Number of tick marks around the dial.</td></tr>
+          <tr><td><code>data-labels="Off,Low,High"</code></td><td>knob</td><td>Turns the knob into a stepped selector with a click per label.</td></tr>
+          <tr><td><code>data-unit</code>, <code>data-prefix</code></td><td>faders, knobs, ranges</td><td>Text added around the readout, such as <code>%</code> or <code>$</code>.</td></tr>
+          <tr><td><code>data-lit="blue"</code> or <code>style="--lit:#ff4d6d"</code></td><td>any element</td><td>Highlight color for it and everything inside. Presets: blue, amber, red, violet.</td></tr>
+          <tr><td><code>data-haptic="off"</code></td><td>any element</td><td>Vibration for it and everything inside: <code>on</code>, <code>off</code>, <code>tick</code>, <code>click</code>, <code>heavy</code>, or milliseconds like <code>10,30,10</code>.</td></tr>
+          <tr><td><code>data-paused</code></td><td>spinner, loader (or any ancestor)</td><td>Freezes the loading motion. With prefers-reduced-motion it never moves at all.</td></tr>
+          <tr><td><code>&lt;simar-spinner&gt;</code>, <code>&lt;simar-loader value="64"&gt;</code></td><td>page</td><td>Preloaders. Leave <code>value</code> off for a bar of unknown length.</td></tr>
+          <tr><td><code>nolines</code> / <code>nocopy</code></td><td>code block</td><td>Leave off the line numbers (shown on blocks of two or more lines) or the copy button.</td></tr>
+          <tr><td><code>data-months="2"</code></td><td>date range</td><td>Months shown side by side in the calendar.</td></tr>
+          <tr><td><code>data-max-span="7"</code></td><td>date range</td><td>Longest allowed range, in days.</td></tr>
+          <tr><td><code>data-first-day="1"</code></td><td>date range</td><td>First day of the week: 0 is Sunday, 1 is Monday.</td></tr>
+          <tr><td><code>name="faq"</code></td><td>accordion item</td><td>Items sharing a name open one at a time. Leave it off to let several stay open.</td></tr>
+          <tr><td><code>command="show-modal" commandfor="id"</code></td><td>button</td><td>Opens the dialog with that id, no JavaScript needed.</td></tr>
+          <tr><td><code>&lt;simar-fader&gt;</code>, <code>&lt;simar-knob&gt;</code>, <code>&lt;simar-range&gt;</code>, <code>&lt;simar-range-knob&gt;</code>, <code>&lt;simar-keys&gt;</code>, <code>&lt;simar-button&gt;</code>, <code>&lt;simar-accordion&gt;</code>, <code>&lt;simar-code&gt;</code>, <code>&lt;simar-date-range&gt;</code></td><td>page</td><td>Short tags that expand to the full markup. Attributes: <code>label</code>, <code>name</code>, <code>min</code>, <code>max</code>, <code>step</code>, <code>value</code> (or <code>low</code>/<code>high</code>, <code>from</code>/<code>to</code>), <code>unit</code>, <code>prefix</code>, <code>marks</code>, <code>ticks</code>, <code>labels</code>, <code>lit</code>, <code>haptic</code>.</td></tr>
+          <tr><td><code>SimarUI.init(element)</code></td><td>script</td><td>Enhances markup added after page load, such as from a framework.</td></tr>
+          <tr><td><code>html[data-js="on"]</code></td><td>CSS</td><td>Set by the script when it runs, so your own CSS can style the with-JavaScript and without-JavaScript cases.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+  </main>
+  <script src="docs/loader.js"></script>
+</body>
+</html>

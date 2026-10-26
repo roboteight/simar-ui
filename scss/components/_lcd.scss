@@ -1,0 +1,10 @@
+@use "../abstracts" as *;
+
+// A readout screen. Faders, knobs and ranges write their value into one.
+.lcd {
+  min-width: 3.4rem;
+  padding: 0.15rem 0.55rem;
+  font: 600 0.85rem/1.4 $mono;
+  text-align: right;
+  @include lcd-screen(6px);
+}

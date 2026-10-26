@@ -1,0 +1,91 @@
+@use "../abstracts" as *;
+
+// The HTML key under each component. Opening it shows how the component was added to the page.
+.snippet {
+  margin: 1rem 0 1.5rem;
+
+  > summary {
+    display: inline-block;
+    list-style: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &::-webkit-details-marker { display: none; }
+
+    .key {
+      min-width: 0;
+      min-height: 2.25rem;
+      padding: 0 1rem;
+      font-size: 0.8rem;
+    }
+
+    &:focus-visible {
+      outline: none;
+
+      .key { @include focus-ring(3px); }
+    }
+
+    &:active .key {
+      transform: translateY(0);
+      box-shadow: pressed-shadow;
+      @include press-speed;
+    }
+  }
+
+  // Open: the key stays latched down, like a selected one.
+  &[open] > summary .key { @include latched; }
+
+  &[open] > summary:active .key {
+    transform: translateY(0);
+    box-shadow: pressed-shadow;
+  }
+
+  // One tab per example, built from the library's own keys.
+  &__tabs {
+    margin-top: 0.75rem;
+
+    .well { margin: 0; }
+
+    .key {
+      min-width: 0;
+      min-height: 2.25rem;
+      padding: 0 1rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  &__panel { margin-top: 0.75rem; }
+}
+
+// The attribute reference table. It scrolls sideways on small screens, so its wrapper takes
+// keyboard focus.
+.ref-scroll {
+  overflow-x: auto;
+
+  &:focus-visible { @include focus-ring(2px); }
+}
+
+.ref {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+
+  th {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    @include label-caps(0.7rem);
+  }
+
+  td {
+    padding: 0.6rem 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid var(--hairline-strong);
+
+    &:first-child { min-width: 13rem; }
+
+    &:nth-child(2) {
+      min-width: 7rem;
+      color: var(--ink-soft);
+    }
+  }
+}

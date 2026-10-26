@@ -1,0 +1,64 @@
+@use "../abstracts" as *;
+
+// A native <dialog> shown as a modal, fading in from the top layer.
+.sheet {
+  width: min(28rem, calc(100vw - 2rem));
+  padding: 0; // so a click that lands on the dialog box itself is a click on the backdrop
+  @include surface(20px, 0 28px 60px -14px shade(0.4));
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
+  transition: opacity 180ms ease-out, transform 180ms ease-out, overlay 180ms allow-discrete, display 180ms allow-discrete;
+
+  &[open] { opacity: 1; transform: none; }
+
+  @starting-style {
+    &[open] {
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+    }
+  }
+
+  &::backdrop {
+    background: var(--scrim);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    transition: opacity 180ms ease-out, overlay 180ms allow-discrete, display 180ms allow-discrete;
+
+    @include reduced-motion { transition: none; }
+  }
+
+  &[open]::backdrop { opacity: 1; }
+
+  @starting-style {
+    &[open]::backdrop { opacity: 0; }
+  }
+
+  form {
+    display: grid;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+
+  .panel,
+  .field { margin: 0; }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  @include reduced-motion { transition: none; }
+}

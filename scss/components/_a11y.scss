@@ -1,0 +1,8 @@
+@use "../abstracts" as *;
+
+// Development aid: the script marks any control it cannot name with data-a11y-issue and logs
+// why (src/audit.js). On localhost and file: pages those get a dashed red outline.
+:root[data-a11y="show"] [data-a11y-issue] {
+  outline: 3px dashed #d9230f;
+  outline-offset: 3px;
+}

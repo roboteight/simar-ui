@@ -1,0 +1,197 @@
+@use "../abstracts" as *;
+
+// The well: a recessed socket a key sits in. Radio inputs live inside it, hidden but
+// still focusable and checkable.
+.well {
+  display: inline-flex;
+  padding: 5px;
+  border-radius: calc(var(--radius) + 5px);
+  background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
+  @include well-shadow;
+
+  > input[type="radio"] { @include visually-hidden; }
+
+  &:has(> input[type="radio"]) { position: relative; }
+  &:has(> input:not(:disabled)) { cursor: pointer; }
+
+  @include forced-colors { box-shadow: none; }
+}
+
+// The key: a raised cap with a bevelled edge, extruded by a solid side wall.
+// Used on <button>, <summary>, and the <span> after a hidden radio.
+.key {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  min-width: 5.5rem;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  border: 0;
+  border-radius: var(--radius);
+  font: 600 0.95rem/1 inherit;
+  font-family: inherit;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  text-shadow: var(--key-text-shadow);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  --k-top: var(--cap-top);
+  --k-bottom: var(--cap-bottom);
+  background: linear-gradient(180deg, var(--k-top), var(--k-bottom));
+  transform: translateY(calc(var(--travel) * -1));
+  box-shadow: raised-shadow(var(--travel));
+  transition:
+    transform $release $ease,
+    box-shadow $release $ease,
+    --k-top $fade ease-out,
+    --k-bottom $fade ease-out,
+    color $fade ease-out,
+    text-shadow $fade ease-out;
+
+  // Pressed: the cap sinks to the floor, the wall disappears and it dips a hair smaller. It goes
+  // down quickly and eases back up.
+  &:active:not(:disabled),
+  input:active:not(:disabled) + & {
+    transform: translateY(0) scale(0.985);
+    box-shadow: pressed-shadow;
+    @include press-speed;
+  }
+
+  // The lit dot of a selected key (or a pressed toggle): always there, fading and growing in.
+  input + &::after,
+  &[aria-pressed]::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 7px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--lit);
+    box-shadow: 0 0 6px 2px var(--lit-glow), inset 0 -1px 1px shade(0.25);
+    opacity: 0;
+    transform: scale(0.3);
+    transition: opacity $fade ease-out, transform $release $ease;
+
+    @include reduced-motion { transition: none; }
+  }
+
+  // Selected (or a pressed toggle, aria-pressed="true"): latched down, with its dot lit.
+  input:checked + &,
+  &[aria-pressed="true"] {
+    @include latched;
+
+    &::after {
+      opacity: 1;
+      transform: scale(1);
+
+      @include forced-colors {
+        background: HighlightText;
+        box-shadow: none;
+      }
+    }
+
+    @include forced-colors {
+      background: Highlight;
+      color: HighlightText;
+      border-color: ButtonText;
+    }
+  }
+
+  &:focus-visible,
+  input:focus-visible + & { @include focus-ring(3px); }
+
+  &:disabled,
+  input:disabled + & {
+    cursor: not-allowed;
+    color: var(--ink-disabled);
+    filter: saturate(0.5);
+    opacity: 0.75;
+
+    .icon { filter: none; }
+  }
+
+  // An icon beside a label.
+  &:has(.icon--lead) {
+    grid-auto-flow: column;
+    gap: 0.5rem;
+  }
+
+  &--round {
+    min-width: 3rem;
+    width: 3rem;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 1.2rem;
+  }
+
+  // Small keys (numbers, icons) have no room for the LED, so the label itself lights up.
+  &--sq {
+    min-width: 3rem;
+    width: 3rem;
+    padding: 0;
+    font-size: 1.1rem;
+
+    &::after { display: none; }
+
+    input:checked + &,
+    &[aria-pressed="true"] {
+      color: var(--lit-ink);
+      text-shadow: 0 0 7px var(--lit-glow), 0 0 2px var(--lit-glow);
+
+      .icon { filter: drop-shadow(0 0 3px var(--lit-glow)); }
+    }
+  }
+
+  // A dark label: white on this orange is only 2:1, short of WCAG AA (4.5:1).
+  &--accent {
+    --k-top: #ffa070;
+    --k-bottom: var(--accent);
+    color: var(--on-accent);
+    text-shadow: var(--accent-text-shadow);
+  }
+
+  @include reduced-motion { transition: none; }
+
+  // Windows High Contrast: drop the gradients (they make the browser paint a plate behind the
+  // text) and use only system colours, so the user's own theme decides how it looks.
+  @include forced-colors {
+    forced-color-adjust: none;
+    border: 2px solid ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+    text-shadow: none;
+    box-shadow: none;
+    transform: none;
+
+    &:disabled,
+    input:disabled + & {
+      border-style: dashed;
+      color: GrayText;
+    }
+  }
+}
+
+// Icons (Lucide): the stroke follows the key's text colour.
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(var(--icon-shadow));
+  pointer-events: none;
+  transition: filter $fade ease-out; // the glow on a lit icon fades in
+
+  @include reduced-motion { transition: none; }
+
+  &--chevron {
+    transition: transform 200ms ease-out;
+
+    @include reduced-motion { transition: none; }
+  }
+}

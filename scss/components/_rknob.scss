@@ -1,0 +1,140 @@
+@use "../abstracts" as *;
+@use "fader";
+
+// Without JS the two handles are two plain range inputs; give them the fader look.
+.rknob:not(.is-enhanced) > input[type="range"] {
+  @extend .fader;
+  width: 10rem;
+}
+
+// Rotary range (min and max on one arc). Two native range inputs drive two handles on a
+// 270-degree groove. Without JS they stack as two ordinary sliders.
+.rknob {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+
+  &__label { @include label-caps; }
+
+  &.is-enhanced > input { @include visually-hidden; }
+
+  &__dial {
+    --r: 4.4rem; // arc radius, where the handles ride
+    position: relative;
+    width: 11rem;
+    height: 11rem;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+
+    .lcd {
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      text-align: center;
+    }
+  }
+
+  // The groove is four stacked strokes: a highlight lip, the dark groove, a lighter floor,
+  // and the lit stretch between the handles.
+  &__arc {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  &__lip {
+    stroke: var(--arc-lip);
+    stroke-width: 14;
+    transform: translateY(1.2px);
+
+    @include forced-colors { stroke: Canvas; }
+  }
+
+  &__groove {
+    stroke: var(--arc-groove);
+    stroke-width: 14;
+
+    @include forced-colors { stroke: ButtonText; }
+  }
+
+  &__floor {
+    stroke: var(--arc-floor);
+    stroke-width: 11;
+    transform: translateY(1.5px);
+
+    @include forced-colors { stroke: Canvas; }
+  }
+
+  &__lit {
+    stroke: var(--lit-fill);
+    stroke-width: 8;
+    transform: translateY(1px);
+
+    @include forced-colors { stroke: Highlight; }
+  }
+
+  &__bound {
+    position: absolute;
+    top: 86%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+
+  // Positioned by rotating to the value's angle and riding out along the radius.
+  &__handle {
+    --lift: 2px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: -0.875rem 0 0 -0.875rem;
+    cursor: grab;
+    transform: rotate(var(--a)) translateY(calc(var(--r) * -1)) rotate(calc(var(--a) * -1));
+
+    &.is-active {
+      --lift: 0px;
+      cursor: grabbing;
+    }
+  }
+
+  &__cap {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, var(--metal-hub) 0 26%, transparent 28%),
+      conic-gradient(from 30deg, var(--metal-1), var(--metal-2), var(--metal-3), var(--metal-4), var(--metal-1));
+    transform: translateY(calc(var(--lift) * -1));
+    box-shadow: raised-shadow(var(--lift));
+    transition: transform $release $ease, box-shadow $release $ease;
+
+    .rknob__handle.is-active & {
+      box-shadow: pressed-shadow;
+      transition-duration: $press;
+    }
+
+    @include reduced-motion { transition: none; }
+
+    @include forced-colors {
+      background: ButtonFace;
+      border: 2px solid ButtonText;
+      box-shadow: none;
+    }
+  }
+
+  // Focus shows on the handle whose input is focused.
+  > input:nth-of-type(1):focus-visible ~ .rknob__dial .rknob__handle--lo .rknob__cap,
+  > input:nth-of-type(2):focus-visible ~ .rknob__dial .rknob__handle--hi .rknob__cap {
+    @include focus-ring(2px);
+  }
+}

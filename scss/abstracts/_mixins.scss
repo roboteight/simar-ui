@@ -1,0 +1,146 @@
+@use "variables" as *;
+
+// ---- Theme-aware shadows and highlights ----------------------------------------------------
+// A dark page needs stronger shadows and much subtler highlights than a light one, so every black
+// shadow is scaled by --shade-k and every white highlight by --tint-k (both set per theme).
+@function shade($alpha) {
+  @return color-mix(in srgb, #000 min(100%, calc(#{$alpha * 100%} * var(--shade-k))), transparent);
+}
+
+@function tint($alpha) {
+  @return color-mix(in srgb, #fff min(100%, calc(#{$alpha * 100%} * var(--tint-k))), transparent);
+}
+
+// ---- Shadows -------------------------------------------------------------------------
+// Functions rather than mixins so they can also fill custom properties (--thumb-up).
+
+// A raised cap: hairline bevel, a solid side wall $lift tall, and a soft contact shadow.
+@function raised-shadow($lift, $drop: 3px, $blur: 6px) {
+  @return
+    inset 1px 1px 0 var(--cap-edge-light),
+    inset -1px -1.5px 0 var(--cap-edge-dark),
+    0 $lift 0 $wall-near,
+    0 calc(#{$lift} + 1px) 0 $wall-far,
+    0 calc(#{$lift} + #{$drop}) $blur shade(0.14);
+}
+
+// A pushed-in cap: the bevel flips and the wall is gone.
+@function pressed-shadow($blur: 6px, $alpha: 0.1) {
+  @return
+    inset 1px 1px 0 var(--cap-edge-dark),
+    inset -1px -1px 0 var(--cap-edge-light),
+    inset 0 2px $blur shade($alpha),
+    0 0 0 #0000;
+}
+
+// A recessed socket.
+@mixin well-shadow($drop: 2px, $blur: 4px, $alpha: 0.12) {
+  box-shadow:
+    inset 0 $drop $blur shade($alpha),
+    inset 0 -1px 0 tint(0.9),
+    0 1px 0 var(--lip);
+}
+
+// ---- States --------------------------------------------------------------------------
+
+// Selected / open: the cap sits a hair above the floor, shaded by the well's rim.
+@mixin latched {
+  --k-top: var(--latch-top);
+  --k-bottom: var(--latch-bottom);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 3px 5px -1px shade(0.16),
+    0 1px 0 $wall-latched,
+    0 2px 3px shade(0.18);
+}
+
+// How fast a key goes down. Used with the transition list on .key (transform, shadow, then four fades).
+@mixin press-speed {
+  transition-duration: $press, $press, $fade, $fade, $fade, $fade;
+}
+
+@mixin focus-ring($offset: 3px) {
+  outline: 3px solid $focus;
+  outline-offset: $offset;
+}
+
+// ---- Building blocks -----------------------------------------------------------------
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+}
+
+@mixin label-caps($size: 0.8rem, $weight: 700, $tracking: 0.1em) {
+  font-size: $size;
+  font-weight: $weight;
+  letter-spacing: $tracking;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+// The dark green readout screen shared by the LCD output and the date fields.
+@mixin lcd-screen($radius) {
+  border-radius: $radius;
+  background: linear-gradient(180deg, #16211b, #22332a);
+  color: var(--lit-screen);
+  text-shadow: 0 0 6px var(--lit-glow);
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.6), 0 1px 0 var(--lip);
+
+  @include forced-colors {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    text-shadow: none;
+    box-shadow: none;
+  }
+}
+
+// Floating panels in the top layer: the dialog and the calendar popover.
+@mixin surface($radius, $shadow) {
+  border: 0;
+  border-radius: $radius;
+  color: var(--ink);
+  background: $sheet-bg;
+  box-shadow: 0 0 0 1px var(--hairline), $shadow;
+}
+
+// A small tick mark: knob dials and fader marks.
+@mixin tick-mark {
+  position: absolute;
+  width: 2px;
+  height: 7px;
+  border-radius: 1px;
+  background: $tick;
+  box-shadow: 0 1px 0 var(--lip);
+}
+
+// ---- Native range parts --------------------------------------------------------------
+// WebKit and Firefox name these differently, and a selector list that contains an
+// unknown pseudo-element is dropped entirely, so each vendor needs its own rule.
+
+@mixin track {
+  &::-webkit-slider-runnable-track { @content; }
+  &::-moz-range-track { @content; }
+}
+
+@mixin thumb {
+  &::-webkit-slider-thumb { @content; }
+  &::-moz-range-thumb { @content; }
+}
+
+// ---- Media ---------------------------------------------------------------------------
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) { @content; }
+}
+
+@mixin forced-colors {
+  @media (forced-colors: active) { @content; }
+}

@@ -1,0 +1,31 @@
+// Shared constants. Values that must change at runtime (the highlight colour, cap tones)
+// are CSS custom properties in base/_root.scss instead, so HTML can override them.
+
+$focus: var(--focus);
+
+// A key's side wall, from the cap down to the well floor.
+$wall-near: var(--wall-near);
+$wall-far: var(--wall-far);
+$wall-latched: var(--latch-wall);
+
+$groove-top: var(--groove-top);
+$groove-bottom: var(--groove-bottom);
+$tick: var(--tick);
+
+$mono: ui-monospace, "SF Mono", Menlo, monospace;
+$sheet-bg: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
+
+// data-lit="name" presets for the highlight colour.
+$lit-presets: (
+  "blue": #3b8cff,
+  "amber": #ffb020,
+  "red": #ff4d5e,
+  "violet": #9b6bff,
+);
+
+// Motion. A key goes down fast and comes back slower, which reads as a real press; colour and
+// glow changes fade rather than snap. All of it switches off under prefers-reduced-motion.
+$press: 90ms;
+$release: 240ms;
+$fade: 220ms;
+$ease: cubic-bezier(0.22, 0.9, 0.3, 1);

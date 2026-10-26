@@ -1,0 +1,174 @@
+@use "../abstracts" as *;
+
+// Registering the key's gradient stops lets the browser fade between them (gradients themselves
+// can't be transitioned). Browsers without @property simply switch instantly.
+@property --k-top { syntax: "<color>"; inherits: false; initial-value: #fdfdfd; }
+@property --k-bottom { syntax: "<color>"; inherits: false; initial-value: #dcdee2; }
+
+// Design tokens. Light is the default; dark applies when the system asks for it, or when
+// data-theme="dark" is set on any element (data-theme="light" forces light, even in a dark
+// system). Override any token on :root, or on one element, to restyle.
+@mixin theme-light {
+  color-scheme: light;
+  --ink: #2b2d31;
+  --ink-soft: #6b6f76;
+  --ink-disabled: #9a9ea6;
+  --on-accent: #2b2d31; // text on the orange accent key: dark in both themes, white is only 2:1
+  --accent-text-shadow: 0 1px 0 #fff;
+  --focus: #2f6fed;
+
+  --surface-top: #f6f7f8;
+  --surface-bottom: #fdfdfe;
+  --sheet-top: #fdfdfe;
+  --sheet-bottom: #f3f4f6;
+  --hairline: rgba(0, 0, 0, 0.06);
+  --hairline-strong: rgba(0, 0, 0, 0.08);
+  --lip: #fff; // the light edge under a recessed part
+  --scrim: rgba(40, 44, 52, 0.35);
+
+  // cap (a key)
+  --cap-top: #fdfdfd;
+  --cap-bottom: #dcdee2;
+  --cap-edge-light: #ffffff;
+  --cap-edge-dark: #d6d9de;
+  --wall-near: #cdd1d7;
+  --wall-far: #c1c6cd;
+  --latch-top: #e4e6ea;
+  --latch-bottom: #f2f3f5;
+  --latch-wall: #ccd0d6;
+  --key-text-shadow: 0 1px 0 #fff;
+  --icon-shadow: 0 1px 0 #fff;
+
+  // well and groove (the recessed parts)
+  --well-top: #e4e6ea;
+  --well-bottom: #f1f2f4;
+  --groove-top: #bfc3ca;
+  --groove-bottom: #d9dce1;
+  --grip-dark: rgba(0, 0, 0, 0.2);
+  --grip-light: rgba(255, 255, 255, 0.95);
+  --tick: #b3b7be;
+
+  // knobs and dials
+  --metal-1: #f6f7f9;
+  --metal-2: #cdd0d6;
+  --metal-3: #fbfbfc;
+  --metal-4: #bfc3ca;
+  --metal-hub: #dfe2e6;
+  --dish-1: #fff;
+  --dish-2: #e6e8ec;
+  --dish-3: #c8ccd2;
+  --knurl: rgba(0, 0, 0, 0.14);
+  --arc-lip: #fff;
+  --arc-groove: #aeb2ba;
+  --arc-floor: #d1d4d9;
+
+  --code-bg: #22262d;
+  --code-ink: #d7dae0;
+  --swatch-ring: #fff;
+
+  // how strong shadows and highlights are, and how the lit colour is made readable on a key
+  --shade-k: 1;
+  --tint-k: 1;
+  --lit-ink-mix: 45%;
+  --lit-ink-end: #000;
+}
+
+@mixin theme-dark {
+  color-scheme: dark;
+  --ink: #e9ebef;
+  --ink-soft: #a3a8b2;
+  --ink-disabled: #6c717a;
+  --on-accent: #1f2024;
+  --accent-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+  --focus: #7aa7ff;
+
+  --surface-top: #292c33;
+  --surface-bottom: #23262c;
+  --sheet-top: #2e3138;
+  --sheet-bottom: #272a30;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-strong: rgba(255, 255, 255, 0.12);
+  --lip: rgba(255, 255, 255, 0.07);
+  --scrim: rgba(0, 0, 0, 0.6);
+
+  --cap-top: #4f535d;
+  --cap-bottom: #3c3f47;
+  --cap-edge-light: rgba(255, 255, 255, 0.22);
+  --cap-edge-dark: #2a2c32;
+  --wall-near: #25272c;
+  --wall-far: #1b1c20;
+  --latch-top: #2f3238;
+  --latch-bottom: #393c44;
+  --latch-wall: #202227;
+  --key-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.55);
+  --icon-shadow: 0 -1px 0 rgba(0, 0, 0, 0.55);
+
+  --well-top: #15161a;
+  --well-bottom: #1c1d21;
+  --groove-top: #121316;
+  --groove-bottom: #1a1b1f;
+  --grip-dark: rgba(0, 0, 0, 0.55);
+  --grip-light: rgba(255, 255, 255, 0.2);
+  --tick: #5a5e68;
+
+  --metal-1: #7e838e;
+  --metal-2: #4c505a;
+  --metal-3: #8d929d;
+  --metal-4: #40434b;
+  --metal-hub: #5d616b;
+  --dish-1: #70757f;
+  --dish-2: #565a64;
+  --dish-3: #43464e;
+  --knurl: rgba(0, 0, 0, 0.35);
+  --arc-lip: rgba(255, 255, 255, 0.1);
+  --arc-groove: #0e0f12;
+  --arc-floor: #1a1b1f;
+
+  --code-bg: #101114;
+  --code-ink: #d7dae0;
+  --swatch-ring: #e9ebef;
+
+  --shade-k: 3;
+  --tint-k: 0.12;
+  --lit-ink-mix: 60%;
+  --lit-ink-end: #fff;
+}
+
+:root,
+[data-theme="light"] { @include theme-light; }
+
+[data-theme="dark"] { @include theme-dark; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { @include theme-dark; }
+}
+
+:root {
+  // The highlight colour. Everything lit derives from it; override --lit on any element
+  // (style="--lit: #ff4d6d") or pick a preset with data-lit="blue|amber|red|violet".
+  --lit: #36d27a;
+  --accent: #ff7a3d;
+
+  --travel: 2px; // how far a cap is extruded above its well
+  --radius: 14px;
+
+  interpolate-size: allow-keywords; // lets <details> animate its height
+}
+
+* {
+  box-sizing: border-box;
+
+  // Derived on every element so a --lit override on any ancestor recolours its subtree.
+  --lit-glow: color-mix(in srgb, var(--lit) 55%, transparent);
+  --lit-fill: color-mix(in srgb, var(--lit) 88%, #000);
+  // Text in the highlight colour has to stay readable: darker on the light keys, lighter on the
+  // dark readout screens. tests/a11y.mjs checks every preset.
+  --lit-ink: color-mix(in srgb, var(--lit) var(--lit-ink-mix), var(--lit-ink-end));
+  --lit-screen: color-mix(in srgb, var(--lit) 75%, #fff);
+}
+
+@each $name, $color in $lit-presets {
+  [data-lit="#{$name}"] { --lit: #{$color}; }
+}
+
+[hidden] { display: none !important; }

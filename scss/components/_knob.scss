@@ -1,0 +1,181 @@
+@use "../abstracts" as *;
+@use "fader";
+
+// Without JS a knob is just its range input. Dress it as a fader instead of the browser default.
+.knob:not(.is-enhanced) > input[type="range"] {
+  @extend .fader;
+  width: 10rem;
+}
+
+// Knobs: an extruded metal cap in a round well, with a rotating knurled ring and index mark.
+// Without JS the native range input shows. With JS (.is-enhanced) the input is hidden
+// visually but stays focusable, so the keyboard and screen readers still drive it.
+.knob-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 1rem 2rem;
+}
+
+.knob {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+
+  > label { @include label-caps; }
+
+  &.is-enhanced > input { @include visually-hidden; }
+
+  &__dial {
+    --a: -135deg;
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 10.5rem;
+    height: 10.5rem;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+
+    &:active { cursor: grabbing; }
+  }
+
+  &__well {
+    display: grid;
+    padding: 6px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
+    @include well-shadow(3px, 5px, 0.14);
+
+    .knob.is-enhanced > input:focus-visible ~ .knob__dial & { @include focus-ring(4px); }
+
+    @include forced-colors {
+      box-shadow: none;
+      border: 2px solid ButtonText;
+      transform: none;
+    }
+  }
+
+  &__cap {
+    position: relative;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background: conic-gradient(from 30deg, var(--metal-1), var(--metal-2), var(--metal-3), var(--metal-4), var(--metal-1));
+    transform: translateY(-2px);
+    box-shadow: raised-shadow(2px, $drop: 4px, $blur: 9px);
+
+    @include forced-colors {
+      box-shadow: none;
+      border: 2px solid ButtonText;
+      transform: none;
+    }
+  }
+
+  // Turns with the value; the cap and dish stay put so the light doesn't spin.
+  &__face {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    transform: rotate(var(--a));
+
+    .knob.is-stepped & {
+      transition: transform 140ms cubic-bezier(0.3, 1.7, 0.5, 1);
+
+      @include reduced-motion { transition: none; }
+    }
+
+    // knurled ring
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: repeating-conic-gradient(var(--knurl) 0 2deg, transparent 2deg 6deg);
+      -webkit-mask: radial-gradient(closest-side, transparent 74%, #000 76%);
+      mask: radial-gradient(closest-side, transparent 74%, #000 76%);
+    }
+
+    // index mark
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 6px;
+      width: 5px;
+      height: 15px;
+      margin-left: -2.5px;
+      border-radius: 3px;
+      background: var(--accent);
+      box-shadow: 0 0 6px rgba(255, 122, 61, 0.6), inset 0 -1px 1px shade(0.25);
+
+      @include forced-colors {
+        forced-color-adjust: none;
+        background: Highlight;
+        box-shadow: none;
+      }
+    }
+  }
+
+  &__dish {
+    position: absolute;
+    inset: 24%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--dish-1), var(--dish-2) 55%, var(--dish-3));
+    box-shadow:
+      inset 0 2px 4px shade(0.25),
+      inset 0 -1px 0 var(--lip),
+      0 1px 0 tint(0.9);
+
+    @include forced-colors {
+      box-shadow: none;
+      border: 2px solid ButtonText;
+      transform: none;
+    }
+  }
+
+  &__tick {
+    @include tick-mark;
+    left: 50%;
+    top: 50%;
+    margin: -3.5px 0 0 -1px;
+    transform: rotate(var(--t)) translateY(-3.6rem);
+
+    &.is-lit {
+      background: var(--lit);
+      box-shadow: 0 0 5px var(--lit-glow);
+
+      @include forced-colors {
+        forced-color-adjust: none;
+        background: Highlight;
+        box-shadow: none;
+      }
+    }
+
+    @include forced-colors {
+      background: ButtonText;
+      box-shadow: none;
+    }
+  }
+
+  &__tick-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--ink-soft);
+    // Pushed out to the dial's edge, then turned back upright.
+    transform: translate(-50%, -50%) rotate(var(--t)) translateY(-4.6rem) rotate(calc(var(--t) * -1));
+    cursor: pointer; // clicking a label turns the knob to it
+
+    &:hover { color: var(--ink); }
+
+    &.is-active {
+      color: var(--ink);
+      font-weight: 800;
+    }
+  }
+}

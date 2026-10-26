@@ -1,0 +1,32 @@
+@use "../abstracts" as *;
+
+// A fieldset that groups controls.
+.panel {
+  min-width: 0; // a <fieldset> otherwise refuses to shrink below its widest content
+  margin: 0 0 1.25rem;
+  padding: 1rem 1.25rem 1.25rem;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(180deg, var(--surface-top), var(--surface-bottom));
+  box-shadow:
+    inset 0 1px 0 var(--lip),
+    inset 0 -1px 0 shade(0.06),
+    0 1px 2px shade(0.08);
+
+  // The soft edge disappears in high-contrast modes, so draw one.
+  @include forced-colors { border: 1px solid CanvasText; }
+
+  legend {
+    padding: 0 0.5rem;
+    @include label-caps(0.75rem, 600);
+  }
+}
+
+.well-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+
+  & + & { margin-top: 1rem; }
+}

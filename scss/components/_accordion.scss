@@ -1,0 +1,80 @@
+@use "../abstracts" as *;
+
+// Accordion: native <details>/<summary> inside a .accordion wrapper. Each summary is a key;
+// opening latches it down and turns the chevron. Items that share a name open one at a time.
+//
+//   <div class="accordion">
+//     <details class="accordion__item" name="faq" open>
+//       <summary><span class="well"><span class="key">…</span></span></summary>
+//       <div class="accordion__body">…</div>
+//     </details>
+//   </div>
+.accordion {
+  display: grid;
+  gap: 1rem;
+
+  // Room above it, whatever it follows (a note, a control, another group).
+  * + & { margin-top: 1.25rem; }
+
+  &__item {
+    > summary {
+      display: block;
+      list-style: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+
+      &::-webkit-details-marker { display: none; }
+
+      .well { display: flex; }
+
+      .key {
+        flex: 1;
+        justify-content: start;
+        padding: 0 1.2rem;
+        font-weight: 600;
+      }
+
+      &:focus-visible {
+        outline: none;
+
+        .key { @include focus-ring(3px); }
+      }
+
+      &:active .key {
+        transform: translateY(0);
+        box-shadow: pressed-shadow;
+        @include press-speed;
+      }
+    }
+
+    &[open] {
+      > summary .key { @include latched; }
+
+      // Pressing an open one still pushes it all the way down.
+      > summary:active .key {
+        transform: translateY(0);
+        box-shadow: pressed-shadow;
+      }
+
+      .icon--chevron { transform: rotate(90deg); }
+
+      &::details-content { block-size: auto; }
+    }
+
+    // Height animates between closed and open where the browser supports ::details-content.
+    &::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition: block-size 250ms ease-out, content-visibility 250ms allow-discrete;
+
+      @include reduced-motion { transition: none; }
+    }
+  }
+
+  &__body {
+    padding: 0.75rem 1.25rem 0.25rem;
+    color: var(--ink-soft);
+
+    p { margin: 0; }
+  }
+}

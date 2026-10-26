@@ -1,0 +1,129 @@
+// Regenerates the README screenshots from the live demo: npm run screenshots
+// Needs Chrome (set CHROME_PATH if it isn't in the default macOS location).
+
+import puppeteer from 'puppeteer-core';
+import { pathToFileURL } from 'node:url';
+import { mkdirSync } from 'node:fs';
+import path from 'node:path';
+
+const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const out = path.join(root, 'docs', 'screenshots');
+mkdirSync(out, { recursive: true });
+const url = (file, query = '') => pathToFileURL(path.join(root, file)).href + query;
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+const browser = await puppeteer.launch({
+  executablePath: process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  headless: 'new',
+  args: ['--no-sandbox'],
+});
+const page = await browser.newPage();
+await page.setViewport({ width: 860, height: 900, deviceScaleFactor: 2 });
+await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]); // no half-finished frames
+
+const open = async (file, query) => {
+  await page.goto(url(file, query));
+  await wait(700);
+  // Keep the floating toggle and the collapsed HTML keys out of the shots.
+  await page.addStyleTag({ content: '.jsbar > .well, .themebar, .snippet:not([open]) { display: none !important; }' });
+};
+
+// A screenshot of whatever the given elements cover, with a little room for shadows.
+const rect = (handle) => handle.evaluate((n) => { const r = n.getBoundingClientRect(); return { x: r.left + scrollX, y: r.top + scrollY, r: r.right + scrollX, b: r.bottom + scrollY }; });
+const shoot = async (name, handles, pad = 14) => {
+  const rs = await Promise.all(handles.map(rect));
+  const x = Math.max(0, Math.min(...rs.map((r) => r.x)) - pad);
+  const y = Math.max(0, Math.min(...rs.map((r) => r.y)) - pad);
+  const clip = { x, y, width: Math.max(...rs.map((r) => r.r)) + pad - x, height: Math.max(...rs.map((r) => r.b)) + pad - y };
+  await page.screenshot({ path: path.join(out, `${name}.png`), clip, captureBeyondViewport: true });
+  console.log(`  ${name}.png  ${Math.round(clip.width)}x${Math.round(clip.height)}`);
+};
+const panel = (legend) => page.evaluateHandle((text) => [...document.querySelectorAll('.panel')].find((p) => p.querySelector('legend')?.textContent.trim() === text), legend);
+const section = (id) => page.$(`section[aria-labelledby="${id}"]`);
+
+console.log('Demo page');
+await open('index.html');
+
+// hero: the title and the first controls, without the page settings and install notes
+await page.addStyleTag({ content: '.panel.needs-js, section[aria-labelledby="install"] { display: none !important; }' });
+await shoot('hero', [await page.$('h1'), await panel('Mode')], 24);
+
+await shoot('keys', [await panel('Keys'), await panel('Icon keys')]);
+await shoot('radios', [await panel('Mode'), await panel('Channel'), await panel('Align')]);
+await shoot('faders', [await panel('Faders'), await panel('Min and max')]);
+await shoot('knobs', [await panel('Output'), await panel('Options')]);
+await shoot('rotary', [await panel('Range')]);
+await shoot('accordion', [await section('accordion')], 4);
+await shoot('code', [await panel('Code block')]);
+await page.click('#pause-motion');          // freeze the motion for a steady frame
+await shoot('loader', [await panel('Spinner and progress')]);
+await page.click('#pause-motion');
+
+// the date range, with the calendar open and a range chosen
+await (await page.$('section[aria-labelledby="dates"] .daterange button[popovertarget]')).evaluate((b) => b.scrollIntoView({ block: 'center' }));
+await page.click('section[aria-labelledby="dates"] .daterange button[popovertarget]');
+await wait(400);
+const pop = await page.$('section[aria-labelledby="dates"] .daterange__pop');
+await (await pop.$('[data-date="2026-11-04"]')).click();
+await (await pop.$('[data-date="2026-11-12"]')).click();
+await page.mouse.move(2, 2);
+await wait(200);
+// hide the page content around the calendar so the shot is just the component
+await page.addStyleTag({ content: 'section[aria-labelledby="dates"] > .note, section[aria-labelledby="dates"] > .panel:nth-of-type(n+2), section[aria-labelledby="dates"] ~ section, section[aria-labelledby="dates"] > .snippet { visibility: hidden !important; }' });
+await shoot('date-range', [await panel('Stay, two months'), pop], 18);
+await page.keyboard.press('Escape');
+
+// the HTML key opened to show how something is written
+await (await panel('Keys')).evaluate((n) => n.scrollIntoView({ block: 'center' }));
+const keysPanel = await panel('Keys');
+const htmlKey = await keysPanel.evaluateHandle((n) => n.nextElementSibling);
+await htmlKey.evaluate((d) => { d.open = true; });
+await wait(300);
+await (await (await htmlKey.$$('.snippet__tabs label'))[1]).click();
+await wait(200);
+await shoot('html-key', [keysPanel, htmlKey]);
+
+// the dialog
+await page.evaluate(() => document.querySelector('[commandfor="settings"]').scrollIntoView({ block: 'center' }));
+await page.click('[commandfor="settings"]');
+await wait(500);
+await page.screenshot({ path: path.join(out, 'dialog.png'), clip: await page.evaluate(() => { const r = document.querySelector('#settings').getBoundingClientRect(); return { x: r.x + scrollX - 30, y: r.y + scrollY - 30, width: r.width + 60, height: r.height + 60 }; }) });
+console.log('  dialog.png');
+await page.keyboard.press('Escape');
+
+// highlight colours
+console.log('Themes page');
+await open('docs/themes.html');
+await shoot('themes', [await page.$('.themes')], 16);
+
+// without JavaScript, and in Windows High Contrast
+console.log('Dark theme');
+await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }, { name: 'prefers-color-scheme', value: 'dark' }]);
+await open('index.html');
+await page.addStyleTag({ content: '.panel.needs-js, section[aria-labelledby="install"] { display: none !important; }' });
+await shoot('hero-dark', [await page.$('h1'), await panel('Mode')], 24);
+await shoot('radios-dark', [await panel('Mode'), await panel('Channel'), await panel('Align')]);
+await shoot('faders-dark', [await panel('Faders'), await panel('Min and max')]);
+await shoot('knobs-dark', [await panel('Output'), await panel('Options')]);
+await page.click('#pause-motion');
+await shoot('loader-dark', [await panel('Spinner and progress')]);
+
+// the Auto / Light / Dark control, top right of the page
+await page.addStyleTag({ content: '.themebar { display: block !important; }' });
+await page.evaluate(() => scrollTo(0, 0));
+await page.screenshot({ path: path.join(out, 'theme-control.png'), clip: { x: 860 - 190, y: 0, width: 190, height: 74 } });
+console.log('  theme-control.png');
+await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }, { name: 'prefers-color-scheme', value: 'light' }]);
+
+console.log('Without JavaScript');
+await open('index.html', '?js=off');
+await page.addStyleTag({ content: '.jsbar > .note { display: none !important; }' });
+await shoot('no-js', [await panel('Faders'), await panel('Output')]);
+
+console.log('Forced colours');
+await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }, { name: 'forced-colors', value: 'active' }]);
+await open('index.html');
+await shoot('forced-colors', [await panel('Mode'), await panel('Faders')]);
+
+await browser.close();
+console.log('Done: docs/screenshots');

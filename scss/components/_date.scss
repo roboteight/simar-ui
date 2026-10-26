@@ -1,0 +1,184 @@
+@use "../abstracts" as *;
+
+// Date range: native date inputs as LCD fields, plus a calendar popover.
+.daterange {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem 1.25rem;
+
+  &__field {
+    display: grid;
+    gap: 0.35rem;
+
+    input[type="date"] {
+      color-scheme: dark;
+      padding: 0.55rem 0.75rem;
+      border: 0;
+      font: 600 0.95rem/1.2 $mono;
+      @include lcd-screen(8px);
+
+      &:focus-visible { @include focus-ring(2px); }
+    }
+  }
+
+  &.is-enhanced input::-webkit-calendar-picker-indicator { display: none; }
+
+  &__tools {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  // The calendar. Fixed to the viewport and positioned under the component by script.
+  &__pop {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    padding: 1rem;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 16px);
+    overflow: auto;
+    @include surface(20px, 0 24px 50px -12px shade(0.35));
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 150ms ease-out, transform 150ms ease-out, overlay 150ms allow-discrete, display 150ms allow-discrete;
+
+    &:popover-open { opacity: 1; transform: none; }
+
+    @starting-style {
+      &:popover-open {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+    }
+
+    @include reduced-motion { transition: none; }
+  }
+}
+
+.cal {
+  &__months {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  &__head {
+    display: grid;
+    grid-template-columns: 3rem 1fr 3rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .key--sq {
+    min-width: 2.25rem;
+    width: 2.25rem;
+    min-height: 2.25rem;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 2.4rem);
+    row-gap: 2px;
+  }
+
+  &__dow {
+    padding-bottom: 0.25rem;
+    text-align: center;
+    @include label-caps(0.7rem, 700, 0.06em);
+  }
+
+  &__foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+}
+
+// A day. Flat until pointed at, when it rises into a key.
+.day {
+  position: relative;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  font: 600 0.9rem/1 inherit;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform $release $ease, box-shadow $release $ease;
+
+  &:not(.is-start):not(.is-end):hover:not(:disabled) {
+    background: linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
+    transform: translateY(-2px);
+    box-shadow:
+      inset 1px 1px 0 var(--cap-edge-light),
+      inset -1px -1px 0 var(--cap-edge-dark),
+      0 2px 0 $wall-near,
+      0 3px 4px shade(0.14);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+    box-shadow: pressed-shadow(4px, 0.15);
+    transition-duration: $press;
+  }
+
+  // Days between the ends, and the preview while choosing an end.
+  &.is-range {
+    border-radius: 0;
+    background: color-mix(in srgb, var(--lit) 22%, transparent);
+  }
+
+  &.is-preview:not(.is-start):not(.is-end) {
+    border-radius: 0;
+    background: color-mix(in srgb, var(--lit) 12%, transparent);
+  }
+
+  // The ends of a range are flat blocks of the highlight colour, not keys.
+  &.is-start,
+  &.is-end,
+  &.is-start:active:not(:disabled),
+  &.is-end:active:not(:disabled) {
+    transform: none;
+    background: var(--lit-fill);
+    color: color-mix(in srgb, var(--lit) 12%, #000);
+    font-weight: 800;
+    box-shadow: none;
+  }
+
+  // and sit flush against the band between them.
+  &.is-range-start { border-radius: 10px 0 0 10px; }
+  &.is-range-end { border-radius: 0 10px 10px 0; }
+
+  &.is-today::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--ink-soft);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible { @include focus-ring(1px); }
+
+  @include reduced-motion { transition: none; }
+}

@@ -1,0 +1,84 @@
+@use "../abstracts" as *;
+
+// Page chrome for the demo site. Not part of the library.
+:root { --page: whitesmoke; }
+[data-theme="dark"] { --page: #141518; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --page: #141518; }
+}
+
+// The floating toggles sit over the page, so keep focused controls scrolled clear of them.
+html { scroll-padding-block: 4.5rem 5rem; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+main {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 3rem 1rem 5rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+
+  .version {
+    margin-left: 0.25rem;
+    padding: 0.1em 0.5em;
+    border-radius: 999px;
+    background: var(--hairline);
+    color: var(--ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    vertical-align: middle;
+  }
+}
+
+h2 {
+  margin: 3rem 0 0.25rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+header p,
+.note {
+  margin: 0.25rem 0 1.25rem;
+  color: var(--ink-soft);
+}
+
+code {
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  background: var(--hairline);
+  color: var(--ink);
+  font-size: 0.9em;
+}
+
+// Anything that needs the script is hidden until the script has run (it sets data-js="on"),
+// which is also what makes it disappear in the "JS off" view.
+html:not([data-js="on"]) .needs-js { display: none; }
+
+// docs/themes.html: the highlight presets side by side.
+.themes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+
+  .panel { margin: 0; }
+}
+
+.loader-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
