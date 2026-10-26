@@ -479,6 +479,14 @@ tests/      accessibility tests
 index.html  the demo and documentation page
 ```
 
+## Contributing
+
+Contributions are welcome, and every change to the library has to come with tests at the same standard as the rest of the project (a check enforces it on pull requests). See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## How it's made
+
+simar-ui is designed and directed by Chris Simari and built with AI assistance (Claude, by Anthropic). Chris chose the look, the scope and the rules, and reviewed the work as it went. The accessibility, keyboard, contrast and layout claims in this README are backed by the tests in `tests/`, which run on every build, so they don't depend on who or what wrote the code. If you find something wrong, please [open an issue](https://github.com/roboteight/simar-ui/issues).
+
 ## License
 
 [MIT](LICENSE), free for any use. Icons are from [Lucide](https://lucide.dev) (ISC), see [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).

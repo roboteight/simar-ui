@@ -272,3 +272,15 @@ html:not([data-js="on"]) .needs-js { display: none; }
 
 // The spinner style picker is a short control, not a full-width bar.
 #spinner-demo .field { max-width: 22rem; }
+
+// The page footer: who made it, in one line.
+.sitefoot {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 6rem;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+
+  p { margin: 0; }
+  @media print { padding-bottom: 1rem; }
+}

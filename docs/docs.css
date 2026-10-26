@@ -296,6 +296,22 @@ html:not([data-js=on]) .needs-js {
   max-width: 22rem;
 }
 
+.sitefoot {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 6rem;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+.sitefoot p {
+  margin: 0;
+}
+@media print {
+  .sitefoot {
+    padding-bottom: 1rem;
+  }
+}
+
 .jsbar .note {
   margin: 0 0 1.5rem;
 }
