@@ -541,6 +541,28 @@ await wait(100);
 const ac3 = await acNow();
 !ac3.open && ac3.value === 'po' ? pass('Esc closes the list and keeps what was typed') : fail(`esc: ${JSON.stringify(ac3)}`);
 
+// ---- header and search ----------------------------------------------------------------------------
+console.log('\nHeader and in-page search');
+for (const width of [1280, 375]) {
+  await open(width);
+  const head = await page.evaluate(() => { const h = document.querySelector('header.topbar'); const input = document.querySelector('#site-search'); const r = h.getBoundingClientRect(); return { banner: getComputedStyle(h).position, search: !!input.closest('search'), label: !!document.querySelector('label[for="site-search"]'), groups: document.querySelectorAll('#site-index option').length, buttons: [...h.querySelectorAll('input[name="theme"]')].length, overflow: document.documentElement.scrollWidth > innerWidth + 1, h: r.height }; });
+  head.banner === 'sticky' && head.search && head.label && head.groups > 20 && head.buttons === 3 && !head.overflow ? pass(`${width}px: a sticky header holds a labelled search (${head.groups} entries) and the three appearance keys`) : fail(`${width}px header: ${JSON.stringify(head)}`);
+}
+await open(1280);
+await page.waitForFunction(() => document.querySelector('#site-search')?.getAttribute('role') === 'combobox');
+await page.keyboard.down('Control');
+await page.keyboard.press('KeyK');
+await page.keyboard.up('Control');
+(await page.evaluate(() => document.activeElement.id)) === 'site-search' ? pass('Ctrl+K focuses the search (a modifier key, so typing never triggers it)') : fail('Ctrl+K did not focus the search');
+await page.keyboard.type('tab', { delay: 30 });
+await wait(250);
+const sr = await page.evaluate(() => { const lists = [...document.querySelectorAll('.suggest')]; const l = lists.find((n) => n.matches(':popover-open')); return { items: l ? [...l.children].map((c) => c.textContent) : [], status: document.querySelector('#site-search').parentNode.querySelector('.suggest__status').textContent }; });
+sr.items.some((t) => t.startsWith('Tabs')) && /suggestion/.test(sr.status) ? pass('typing lists matching sections and announces the count') : fail(`results: ${JSON.stringify(sr)}`);
+await page.keyboard.press('Enter');
+await wait(1500);
+const nav = await page.evaluate(() => ({ hash: location.hash, focus: document.activeElement.id, value: document.querySelector('#site-search').value }));
+nav.hash === '#tabs' && nav.focus === 'tabs' && nav.value === '' ? pass('Enter goes to the section, moves focus to its heading and clears the search') : fail(`navigate: ${JSON.stringify(nav)}`);
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

@@ -1033,7 +1033,7 @@
       const datalist = document.getElementById(input.getAttribute("list"));
       if (!datalist) continue;
       const id = `simar-suggest-${++suggestions}`;
-      const all = [...datalist.options].map((o) => ({ value: o.value, label: o.label && o.label !== o.value ? o.label : "" }));
+      const all = [...datalist.options].map((o) => ({ value: o.value, label: o.label && o.label !== o.value ? o.label : "", keywords: o.dataset.keywords ?? "" }));
       const label = input.id ? document.querySelector(`label[for="${input.id}"]`) : null;
       const list = el("ul", "picker__list suggest", input.closest('main, dialog, [role="dialog"], [popover]') ?? document.body);
       list.id = `${id}-list`;
@@ -1078,7 +1078,7 @@
       };
       const render = () => {
         const query = input.value.trim().toLowerCase();
-        shown = all.filter((o) => !query || `${o.value} ${o.label}`.toLowerCase().includes(query)).sort((a, b) => Number(b.value.toLowerCase().startsWith(query)) - Number(a.value.toLowerCase().startsWith(query))).slice(0, 8);
+        shown = all.filter((o) => !query || `${o.value} ${o.label} ${o.keywords}`.toLowerCase().includes(query)).sort((a, b) => Number(b.value.toLowerCase().startsWith(query)) - Number(a.value.toLowerCase().startsWith(query))).slice(0, 8);
         list.replaceChildren();
         shown.forEach((o, i) => {
           const item = el("li", "picker__option", list);
@@ -1128,9 +1128,9 @@
           e.preventDefault();
           const n = shown.length;
           highlight(e.key === "ArrowDown" ? (active + 1) % n : (active - 1 + n) % n);
-        } else if (e.key === "Enter" && isOpen() && active >= 0) {
+        } else if (e.key === "Enter" && isOpen() && (active >= 0 || input.dataset.autocomplete === "first")) {
           e.preventDefault();
-          choose(active);
+          choose(Math.max(active, 0));
         } else if (e.key === "Escape" && isOpen()) {
           e.preventDefault();
           close();

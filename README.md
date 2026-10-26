@@ -54,7 +54,7 @@ Write the native markup, or use short tags that expand into it:
 
 The tags are replaced with real inputs, so values submit with their form and `input` / `change` events work as usual. Tags need JavaScript; the native markup doesn't. For markup added after page load, call `SimarUI.init(element)`.
 
-Open `index.html` for the live demo, with a contents list that floats on the left (on smaller screens it folds into an icon on the left edge that opens a drawer) and a settings tab on the right edge that appears once you scroll past Page settings: every component has an **HTML** key that shows exactly how it was added to the page, with the tag form and JavaScript examples.
+Open `index.html` for the live demo, with a contents list that floats on the left (on smaller screens it folds into an icon on the left edge that opens a drawer) a sticky header with in-page search (Ctrl or Cmd + K) and the light, dark and auto keys, and a settings tab on the right edge that appears once you scroll past Page settings: every component has an **HTML** key that shows exactly how it was added to the page, with the tag form and JavaScript examples.
 
 ## What's inside
 

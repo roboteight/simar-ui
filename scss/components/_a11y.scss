@@ -6,3 +6,6 @@
   outline: 3px dashed #d9230f;
   outline-offset: 3px;
 }
+
+// Text for screen readers only.
+.visually-hidden { @include visually-hidden; }

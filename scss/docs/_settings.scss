@@ -23,27 +23,72 @@
 }
 
 // Theme control (Auto, Light, Dark), top right.
-.themebar {
-  position: fixed;
-  top: max(1rem, env(safe-area-inset-top));
-  right: max(1rem, env(safe-area-inset-right));
-  z-index: 20;
+// The header: the name, the search and the appearance keys. It sticks to the top, and on a phone the
+// name gives way to the search.
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: max(0.5rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) 0.5rem max(1rem, env(safe-area-inset-left));
+  background: color-mix(in srgb, var(--page) 88%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 var(--hairline-strong);
 
-  // On a phone the floating bar would sit over the content: let it scroll away with the page.
-  @media (max-width: 40rem) { position: absolute; }
+  &__brand {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    color: var(--ink);
+    font: 700 1.05rem var(--font-heading);
+    letter-spacing: -0.01em;
+    text-decoration: none;
 
-  [role="radiogroup"] {
-    display: flex;
-    gap: 0.5rem;
+    &:focus-visible { @include focus-ring(2px); border-radius: 4px; }
+    @media (max-width: 36rem) { display: none; }
   }
+
+  &__search {
+    flex: 1 1 auto;
+    max-width: 26rem;
+    margin-inline: auto 0;
+  }
+
+  &__field {
+    position: relative;
+    display: block;
+
+    .input { padding-left: 2.5rem; min-height: 2.5rem; padding-block: 0.4rem; }
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: 0.8rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: -0.55rem;
+    color: var(--ink-soft);
+    filter: none;
+    pointer-events: none;
+  }
+
+  @media print { display: none; }
+}
+
+.themebar {
+  flex: none;
+
+  [role="radiogroup"] { display: flex; gap: 0.5rem; }
 
   .key {
     min-width: 0;
     min-height: 2.5rem;
     width: 2.5rem;
   }
-
-  @media print { display: none; }
 }
 
 .setting {

@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="dist/simar-ui.css">
   <link rel="stylesheet" href="docs/docs.css">
 </head>
-<body>
+<body id="top">
   <!-- Icons: Lucide (https://lucide.dev), ISC license, see THIRD_PARTY_LICENSES.md -->
   <svg xmlns="http://www.w3.org/2000/svg" hidden>
     <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10" /><path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></symbol>
@@ -47,13 +47,24 @@
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>
   </svg>
-  <aside class="themebar needs-js" aria-label="Appearance">
+  <header class="topbar">
+    <a class="topbar__brand" href="#top">simar-ui</a>
+    <search class="topbar__search needs-js" hidden>
+      <label class="visually-hidden" for="site-search">Search the docs</label>
+      <span class="topbar__field">
+        <svg class="icon topbar__icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <input class="input" id="site-search" type="search" list="site-index" data-autocomplete="first" placeholder="Search components" autocomplete="off" aria-keyshortcuts="Control+K Meta+K">
+      </span>
+      <datalist id="site-index"></datalist>
+    </search>
+    <div class="themebar needs-js" role="group" aria-label="Appearance">
   <div role="radiogroup" aria-label="Theme">
     <label class="well"><input type="radio" name="theme" value="auto" data-tooltip="Auto, follow the system" aria-label="Auto, follow the system" checked><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-monitor"/></svg></span></label>
     <label class="well"><input type="radio" name="theme" value="light" data-tooltip="Light" aria-label="Light"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span></label>
     <label class="well"><input type="radio" name="theme" value="dark" data-tooltip="Dark" aria-label="Dark"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></span></label>
   </div>
-  </aside>
+    </div>
+  </header>
   <button type="button" class="key key--sq toc-toggle needs-js" aria-label="Contents" aria-expanded="false" aria-controls="toc-nav" hidden><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg></button>
   <nav class="toc" id="toc-nav" aria-label="On this page">
     <p class="toc__title">On this page</p>

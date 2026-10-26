@@ -65,7 +65,7 @@
 
   // async = false keeps these in order: snippets must read the markup before the library
   // expands tags or builds controls.
-  for (const src of ['docs/snippets.js', 'dist/simar-ui.js', 'docs/page.js']) {
+  for (const src of ['docs/snippets.js', 'docs/search.js', 'dist/simar-ui.js', 'docs/page.js']) {
     const script = document.createElement('script');
     script.src = src;
     script.async = false;
