@@ -177,6 +177,43 @@ for (const form of document.querySelectorAll('form[data-demo-form]')) {
   });
 }
 
+// Contents drawer: below 76rem the list folds into a drawer opened from an icon on the left edge.
+// Without JavaScript it simply stays above the page. Esc closes it and returns focus to the icon,
+// choosing a link closes it, and so does moving focus out of it.
+const tocNav = document.querySelector('.toc');
+const tocToggle = document.querySelector('.toc-toggle');
+if (tocNav && tocToggle) {
+  const narrow = matchMedia('(max-width: 75.99rem)');
+  const setTocOpen = (open) => {
+    tocNav.hidden = !open;
+    tocToggle.setAttribute('aria-expanded', String(open));
+  };
+  const apply = () => {
+    tocNav.classList.toggle('toc--drawer', narrow.matches);
+    tocToggle.hidden = !narrow.matches;
+    if (narrow.matches) setTocOpen(false);
+    else { tocNav.hidden = false; tocToggle.setAttribute('aria-expanded', 'false'); }
+  };
+  narrow.addEventListener('change', apply);
+  apply();
+  tocToggle.addEventListener('click', () => setTocOpen(tocNav.hidden));
+  const inDrawer = () => tocNav.classList.contains('toc--drawer');
+  tocNav.addEventListener('click', (e) => { if (inDrawer() && e.target.closest('a')) setTocOpen(false); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !inDrawer() || tocNav.hidden) return;
+    setTocOpen(false);
+    tocToggle.focus();
+  });
+  let tocPressing = false;
+  for (const part of [tocNav, tocToggle]) part.addEventListener('pointerdown', () => { tocPressing = true; });
+  addEventListener('pointerup', () => setTimeout(() => { tocPressing = false; }));
+  document.addEventListener('focusout', (e) => {
+    if (!inDrawer() || tocNav.hidden || tocPressing) return;
+    if (tocNav.contains(e.relatedTarget) || e.relatedTarget === tocToggle) return;
+    if (tocNav.contains(e.target)) setTocOpen(false);
+  });
+}
+
 // Table of contents: mark the link for the section being read with aria-current="location".
 // The links themselves are plain anchors and work without any of this.
 const toc = document.querySelector('.toc');

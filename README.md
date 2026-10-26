@@ -54,7 +54,7 @@ Write the native markup, or use short tags that expand into it:
 
 The tags are replaced with real inputs, so values submit with their form and `input` / `change` events work as usual. Tags need JavaScript; the native markup doesn't. For markup added after page load, call `SimarUI.init(element)`.
 
-Open `index.html` for the live demo, with a contents list that floats on the left: every component has an **HTML** key that shows exactly how it was added to the page, with the tag form and JavaScript examples.
+Open `index.html` for the live demo, with a contents list that floats on the left (on smaller screens it folds into an icon on the left edge that opens a drawer) and a settings tab on the right edge that appears once you scroll past Page settings: every component has an **HTML** key that shows exactly how it was added to the page, with the tag form and JavaScript examples.
 
 ## What's inside
 
@@ -291,7 +291,7 @@ A terminal-style block: monospace text on a dark screen under a title bar, with 
 
 ## Themes
 
-A theme is one file in `scss/themes/` (`_default.scss`): the design tokens for light and dark, the highlight presets (`data-lit`, including the Material palette), the color of each button variant (`key--primary`, `--secondary`, `--success`, `--danger`, `--warning`, `--info`, `--light`, `--dark`) and whole-page palettes (`data-palette="indigo"`, `teal`, `rose`, `amber`, `forest`, `ocean`), which retint every surface and bring their own highlight and button colors. This is the first theme; more will follow, and a new one is a copy of that file with new values.
+All of the styling is a theme, and this is the first one: the components describe structure and read their colors, fonts and shadows from tokens, so more looks can be added without touching them. A theme is one file in `scss/themes/` (`_default.scss`): the design tokens for light and dark, the highlight presets (`data-lit`, including the Material palette), the color of each button variant (`key--primary`, `--secondary`, `--success`, `--danger`, `--warning`, `--info`, `--light`, `--dark`) and whole-page palettes (`data-palette="indigo"`, `teal`, `rose`, `amber`, `forest`, `ocean`), which retint every surface and bring their own highlight and button colors. This is the first theme; more will follow, and a new one is a copy of that file with new values.
 
 ## Light and dark
 
@@ -299,7 +299,7 @@ simar-ui follows the system setting. To choose, put `data-theme="dark"` or `data
 
 <img src="docs/screenshots/theme-control.png" alt="The Auto, Light and Dark theme control" width="190">
 
-The demo page's contents list floats in the left margin on wide screens (and sits above the page on narrow ones), marking the section you're reading:
+The demo page's contents list floats in the left margin on wide screens, marking the section you're reading. Below 76rem it folds into an icon that floats on the left edge and opens a drawer (Esc closes it, and so does choosing a link). Without JavaScript it simply sits above the page. A matching settings icon on the right edge opens Theme, Highlight and Font once you've scrolled past the Page settings panel:
 
 <img src="docs/screenshots/toc.png" alt="The floating table of contents" width="420">
 

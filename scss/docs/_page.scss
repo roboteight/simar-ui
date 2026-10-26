@@ -136,6 +136,19 @@ html:not([data-js="on"]) .needs-js { display: none; }
   margin-bottom: 1.25rem;
 }
 
+// The list as a column of links with a bar beside the current one: the floating and drawer forms.
+@mixin toc-list {
+  .toc__groups ul { display: block; }
+
+  a {
+    display: block;
+    border-left: 3px solid transparent;
+    border-radius: 0 8px 8px 0;
+
+    &[aria-current="location"] { border-left-color: var(--lit-ink); }
+  }
+}
+
 // Table of contents, in groups like Bootstrap's docs navigation. A set of chips above the page on
 // narrow screens; on wide ones it floats in the left margin, clear of the content, and scrolls
 // itself so the current section stays in view.
@@ -203,20 +216,46 @@ html:not([data-js="on"]) .needs-js { display: none; }
     padding: 0 0.25rem 0 0;
     overflow-y: auto;
 
-    &__groups ul { display: block; }
-
-    a {
-      display: block;
-      border-left: 3px solid transparent;
-      border-radius: 0 8px 8px 0;
-
-      &[aria-current="location"] { border-left-color: var(--lit-ink); }
-    }
+    @include toc-list;
   }
 
-  @media print { display: none; }
+  // On smaller screens, with JavaScript, the list folds into a drawer that opens from an icon on the
+  // left edge (the script adds this class, and opens and closes it). Without JavaScript it stays
+  // above the page as chips.
+  &--drawer {
+    position: fixed;
+    top: 36%;
+    left: 3.6rem;
+    z-index: 21;
+    width: min(19rem, calc(100vw - 4.5rem));
+    max-height: calc(64vh - 1rem);
+    margin: 0;
+    padding: 1rem 0.75rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    @include surface(18px, 0 18px 40px -12px shade(0.4));
+
+    @include toc-list;
+    @media print { display: none; }
+  }
 }
 
+// The icon that opens the drawer: a tab on the left edge, mirroring the settings tab on the right.
+.toc-toggle {
+  position: fixed;
+  top: 36%;
+  left: 0;
+  z-index: 21;
+  width: 2.9rem;
+  min-width: 0;
+  height: 3.4rem;
+  min-height: 0;
+  padding: 0;
+  border-radius: 0 14px 14px 0;
+
+  @media (min-width: 76rem) { display: none; }
+  @media print { display: none; }
+}
 // Jumping to a section lands it clear of the floating buttons, and glides only if motion is welcome.
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }

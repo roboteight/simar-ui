@@ -206,7 +206,7 @@ html:not([data-js=on]) .needs-js {
     padding: 0 0.25rem 0 0;
     overflow-y: auto;
   }
-  .toc__groups ul {
+  .toc .toc__groups ul {
     display: block;
   }
   .toc a {
@@ -218,8 +218,59 @@ html:not([data-js=on]) .needs-js {
     border-left-color: var(--lit-ink);
   }
 }
+.toc--drawer {
+  position: fixed;
+  top: 36%;
+  left: 3.6rem;
+  z-index: 21;
+  width: min(19rem, 100vw - 4.5rem);
+  max-height: calc(64vh - 1rem);
+  margin: 0;
+  padding: 1rem 0.75rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 0;
+  border-radius: 18px;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
+  box-shadow: 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k)), transparent);
+}
+.toc--drawer .toc__groups ul {
+  display: block;
+}
+.toc--drawer a {
+  display: block;
+  border-left: 3px solid transparent;
+  border-radius: 0 8px 8px 0;
+}
+.toc--drawer a[aria-current=location] {
+  border-left-color: var(--lit-ink);
+}
 @media print {
-  .toc {
+  .toc--drawer {
+    display: none;
+  }
+}
+
+.toc-toggle {
+  position: fixed;
+  top: 36%;
+  left: 0;
+  z-index: 21;
+  width: 2.9rem;
+  min-width: 0;
+  height: 3.4rem;
+  min-height: 0;
+  padding: 0;
+  border-radius: 0 14px 14px 0;
+}
+@media (min-width: 76rem) {
+  .toc-toggle {
+    display: none;
+  }
+}
+@media print {
+  .toc-toggle {
     display: none;
   }
 }

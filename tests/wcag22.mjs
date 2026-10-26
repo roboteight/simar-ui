@@ -411,6 +411,36 @@ await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
 await wait(300);
 !(await tabState()).shown ? pass('goes away again at the top') : fail('the tab stayed after returning to the top');
 
+// ---- the contents drawer ------------------------------------------------------------------------
+console.log('\nContents drawer (below 76rem)');
+await open(1024);
+const tocState = () => page.evaluate(() => ({ drawer: document.querySelector('.toc').classList.contains('toc--drawer'), shown: !document.querySelector('.toc').hidden, expanded: document.querySelector('.toc-toggle').getAttribute('aria-expanded'), onToggle: document.activeElement.classList.contains('toc-toggle') }));
+const t0 = await tocState();
+t0.drawer && !t0.shown && t0.expanded === 'false' ? pass('folds into an icon with the list closed') : fail(`start: ${JSON.stringify(t0)}`);
+const tInfo = await page.$eval('.toc-toggle', (b) => ({ text: b.textContent.trim(), name: b.getAttribute('aria-label'), controls: b.getAttribute('aria-controls'), w: b.getBoundingClientRect().width, h: b.getBoundingClientRect().height, left: b.getBoundingClientRect().left }));
+tInfo.text === '' && tInfo.name === 'Contents' && tInfo.controls === 'toc-nav' && tInfo.w >= 24 && tInfo.h >= 24 && tInfo.left === 0 ? pass(`floats on the left edge, named "${tInfo.name}", ${Math.round(tInfo.w)}x${Math.round(tInfo.h)}px`) : fail(`toggle: ${JSON.stringify(tInfo)}`);
+await page.click('.toc-toggle');
+await wait(200);
+const t1 = await tocState();
+t1.shown && t1.expanded === 'true' ? pass('opens, and aria-expanded says so') : fail(`open: ${JSON.stringify(t1)}`);
+await page.keyboard.press('Escape');
+await wait(150);
+const t2 = await tocState();
+!t2.shown && t2.onToggle ? pass('Esc closes it and returns focus to the icon') : fail(`esc: ${JSON.stringify(t2)}`);
+await page.focus('.toc-toggle');
+await page.keyboard.press('Enter');
+await wait(150);
+(await tocState()).shown ? pass('the keyboard opens it') : fail('Enter did not open it');
+await page.keyboard.press('Tab');
+await page.keyboard.press('Enter');
+await wait(500);
+const t3 = await tocState();
+!t3.shown ? pass('choosing a link closes it and goes to the section') : fail(`link: ${JSON.stringify(t3)}`);
+await page.setViewport({ width: 1400, height: 800 });
+await wait(200);
+const t4 = await page.evaluate(() => ({ drawer: document.querySelector('.toc').classList.contains('toc--drawer'), nav: !document.querySelector('.toc').hidden, icon: getComputedStyle(document.querySelector('.toc-toggle')).display }));
+!t4.drawer && t4.nav && t4.icon === 'none' ? pass('wide screens keep the list in the margin, with no icon') : fail(`wide: ${JSON.stringify(t4)}`);
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);
