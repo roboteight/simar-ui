@@ -286,9 +286,13 @@ if (tokenPreview) {
 // most cases, but a control that is already partly in view when focus reaches it can be left under the header.
 const stickyHeader = document.querySelector('header.topbar');
 if (stickyHeader) {
+  // Only for keyboard focus: moving the page while a mouse button is down would lose the click.
+  let byKeyboard = false;
+  addEventListener('keydown', () => { byKeyboard = true; }, true);
+  addEventListener('pointerdown', () => { byKeyboard = false; }, true);
   document.addEventListener('focusin', (event) => {
     const target = event.target;
-    if (!(target instanceof Element) || stickyHeader.contains(target) || target.closest('dialog, [popover]')) return;
+    if (!byKeyboard || !(target instanceof Element) || stickyHeader.contains(target) || target.closest('dialog, [popover]')) return;
     // After the browser's own scroll-into-view, which runs once the focus events have finished.
     requestAnimationFrame(() => {
       const gap = target.getBoundingClientRect().top - stickyHeader.getBoundingClientRect().bottom;

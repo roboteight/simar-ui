@@ -46,12 +46,16 @@ const panel = async (legend) => {
 };
 const section = (id) => page.$(`section[aria-labelledby="${id}"]`);
 
+const heroStyle = '.panel.needs-js, main > section:not([aria-labelledby="buttons"]), main > h2.group, main > .jsbar { display: none !important; }';
 console.log('Demo page');
 await open('index.html');
 
 // hero: the title and the first controls, without the page settings and install notes
-await page.addStyleTag({ content: '.panel.needs-js, section[aria-labelledby="install"] { display: none !important; }' });
-await shoot('hero', [await page.$('h1'), await panel('Mode')], 24);
+await page.addStyleTag({ content: heroStyle });
+await shoot('hero', [await page.$('h1'), await panel('Keys')], 24);
+await page.reload();
+await wait(700);
+await page.addStyleTag({ content: '.jsbar > .well, .themebar, .snippet:not([open]) { display: none !important; }' });
 
 await shoot('keys', [await panel('Keys'), await panel('Icon keys')]);
 await shoot('radios', [await panel('Mode'), await panel('Channel'), await panel('Align')]);
@@ -175,8 +179,11 @@ await shoot('themes', [await page.$('.themes')], 16);
 console.log('Dark theme');
 await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }, { name: 'prefers-color-scheme', value: 'dark' }]);
 await open('index.html');
-await page.addStyleTag({ content: '.panel.needs-js, section[aria-labelledby="install"] { display: none !important; }' });
-await shoot('hero-dark', [await page.$('h1'), await panel('Mode')], 24);
+await page.addStyleTag({ content: heroStyle });
+await shoot('hero-dark', [await page.$('h1'), await panel('Keys')], 24);
+await page.reload();
+await wait(700);
+await page.addStyleTag({ content: '.jsbar > .well, .themebar, .snippet:not([open]) { display: none !important; }' });
 await shoot('radios-dark', [await panel('Mode'), await panel('Channel'), await panel('Align')]);
 await shoot('checks-dark', [await panel('Checkboxes'), await panel('Switches')]);
 await shoot('faders-dark', [await panel('Faders'), await panel('Min and max')]);

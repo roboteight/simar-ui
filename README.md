@@ -112,7 +112,7 @@ A standalone `<hr>`: a thin line that marks a change of topic. Add `divider` (in
 
 #### Embed
 
-A responsive frame for content you don't control the size of: an `<iframe>` (a map, a video player, a document), an `<embed>`, an `<object>`, a `<canvas>` or a `<video>`. It keeps an aspect ratio (16:9, or `embed--4x3`, `embed--1x1`, `embed--21x9`, or any ratio with `--embed-ratio`) and scales with its container, so it never overflows a phone. An `<iframe>` must have a `title`, which is its name for a screen reader.
+A responsive frame for content you don't control the size of: an `<iframe>` (a map, a video player, a document), an `<embed>`, an `<object>`, a `<canvas>` or a `<video>`. It keeps an aspect ratio (16:9, or `embed--4x3`, `embed--1x1`, `embed--21x9`, or any ratio with `--embed-ratio`) and scales with its container, so it never overflows a phone. An `<iframe>` must have a `title`, which is its name for a screen reader. When keyboard focus moves into the frame the embed draws a focus ring (the page's own CSS can't see focus inside a frame, so the script marks it).
 
 ```html
 <div class="embed embed--4x3">
@@ -678,7 +678,7 @@ Every color and size is a CSS custom property, so you can restyle without touchi
 | `popovertarget`, `.menu__list` | dropdown menu | A native popover; the script adds the menu roles and keys |
 | `select[data-picker]` | select | A list that can show moving artwork (see the spinner picker) |
 
-Haptics use the browser's Vibration API, so there is nothing to install. It works on Android browsers; iOS Safari doesn't support it and the calls are skipped.
+Haptics use the browser's Vibration API, so there is nothing to install. It works on Android browsers; iOS Safari doesn't support it and the calls are skipped. They are wired once for the whole page rather than per component: every button, summary and link drawn as a key clicks, radios, checkboxes and switches click when they change, selects tick, and range inputs (faders and knobs) tick as they move. `data-haptic` on any element changes or turns off everything inside it.
 
 ## Accessibility
 

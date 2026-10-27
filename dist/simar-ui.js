@@ -616,6 +616,18 @@
       });
     }
   };
+  var enhanceEmbeds = (claim) => {
+    for (const embed of claim(".embed")) {
+      const frame = embed.querySelector(":scope > iframe, :scope > embed, :scope > object");
+      if (!frame) continue;
+      const sync = () => embed.classList.toggle("is-focused", document.activeElement === frame);
+      addEventListener("blur", () => setTimeout(sync));
+      addEventListener("focus", sync);
+      document.addEventListener("focusin", sync);
+      frame.addEventListener("focus", sync);
+      frame.addEventListener("blur", sync);
+    }
+  };
   var enhanceSideMenus = (claim) => {
     for (const menu of claim("[data-side-menu]")) {
       const toggle = menu.querySelector(".side-menu__toggle");
@@ -1663,10 +1675,11 @@
   };
   var listenForHaptics = () => {
     document.addEventListener("click", (e) => {
-      if (e.target.closest("button, summary")) haptic(e.target, "click");
+      if (e.target.closest("button, summary, a.key")) haptic(e.target, "click");
     });
     document.addEventListener("change", (e) => {
-      if (e.target.matches('input[type="radio"]')) haptic(e.target, "click");
+      if (e.target.matches('input[type="radio"], input[type="checkbox"]')) haptic(e.target, "click");
+      else if (e.target.matches("select")) haptic(e.target, "tick");
     });
     document.addEventListener("input", (e) => {
       if (e.target.matches('input[type="range"]')) haptic(e.target, "tick");
@@ -1706,6 +1719,7 @@
     enhanceChecks(claim);
     enhanceTabs(claim);
     enhanceSideMenus(claim);
+    enhanceEmbeds(claim);
     enhanceMenus(claim);
     enhanceAlerts(claim);
     enhanceTables(claim);

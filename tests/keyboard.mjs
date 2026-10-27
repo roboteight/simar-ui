@@ -51,11 +51,13 @@ const indicator = async () => {
       const h = Math.max(0, Math.min(r.bottom, fixed.bottom) - Math.max(r.top, fixed.top));
       covered = Math.max(covered, (w * h) / Math.max(1, r.width * r.height));
     }
-    return { name, covered, x: r.x + scrollX - 14, y: r.y + scrollY - 14, width: r.width + 28, height: r.height + 28 };
+    // Fully on screen with its margin: a plain screenshot is enough (the beyond-viewport mode is unreliable near the end of a long page).
+    const inView = r.top >= 14 && r.bottom + 14 <= innerHeight && r.left >= 14 && r.right + 14 <= innerWidth;
+    return { name, covered, inView, x: r.x + scrollX - 14, y: r.y + scrollY - 14, width: r.width + 28, height: r.height + 28 };
   });
   if (!target) return { ok: true, name: '(body)' };
   const clip = { x: Math.max(0, target.x), y: Math.max(0, target.y), width: Math.min(target.width, 960), height: Math.min(target.height, 700) };
-  const png = PNG.sync.read(await page.screenshot({ clip, captureBeyondViewport: true }));
+  const png = PNG.sync.read(await page.screenshot({ clip, captureBeyondViewport: !target.inView }));
   let hits = 0;
   for (let i = 0; i < png.data.length; i += 4) {
     if (RING.every((c, k) => Math.abs(png.data[i + k] - c) < 14)) hits++;

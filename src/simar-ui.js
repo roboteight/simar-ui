@@ -368,6 +368,24 @@ const enhanceDialogs = (claim) => {
   }
 };
 
+// ---- Embeds ----------------------------------------------------------------------------
+
+// A frame (an iframe, embed or object) takes keyboard focus as a tab stop, but once focus is inside the frame's
+// own page nothing in this page's CSS can tell (:focus, :focus-within and :focus-visible are all false on it), so
+// the frame would show no focus ring. Mark the embed while its frame is the active element, and the CSS draws it.
+const enhanceEmbeds = (claim) => {
+  for (const embed of claim('.embed')) {
+    const frame = embed.querySelector(':scope > iframe, :scope > embed, :scope > object');
+    if (!frame) continue;
+    const sync = () => embed.classList.toggle('is-focused', document.activeElement === frame);
+    addEventListener('blur', () => setTimeout(sync));
+    addEventListener('focus', sync);
+    document.addEventListener('focusin', sync);
+    frame.addEventListener('focus', sync);
+    frame.addEventListener('blur', sync);
+  }
+};
+
 // ---- Side menu -------------------------------------------------------------------------
 
 // A tab on the screen edge that opens a panel beside it (a disclosure, not a modal). The tab carries
@@ -1478,10 +1496,13 @@ const haptic = (target, kind) => {
 // Registered once, on the document, so they also cover markup added later.
 const listenForHaptics = () => {
   document.addEventListener('click', (e) => {
-    if (e.target.closest('button, summary')) haptic(e.target, 'click');
+    // Buttons and summaries, and links drawn as keys (a floating button, a page link).
+    if (e.target.closest('button, summary, a.key')) haptic(e.target, 'click');
   });
   document.addEventListener('change', (e) => {
-    if (e.target.matches('input[type="radio"]')) haptic(e.target, 'click');
+    // Radios, checkboxes and switches click; choosing from a select ticks.
+    if (e.target.matches('input[type="radio"], input[type="checkbox"]')) haptic(e.target, 'click');
+    else if (e.target.matches('select')) haptic(e.target, 'tick');
   });
   document.addEventListener('input', (e) => {
     if (e.target.matches('input[type="range"]')) haptic(e.target, 'tick');
@@ -1531,6 +1552,7 @@ const init = (scope = document) => {
   enhanceChecks(claim);
   enhanceTabs(claim);
   enhanceSideMenus(claim);
+  enhanceEmbeds(claim);
   enhanceMenus(claim);
   enhanceAlerts(claim);
   enhanceTables(claim);

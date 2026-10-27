@@ -5337,6 +5337,14 @@ video.media {
   height: 100%;
   border: 0;
 }
+.embed:focus-within, .embed.is-focused {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+.embed > :focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
+}
 .embed--16x9 {
   --embed-ratio: 16 / 9;
 }
