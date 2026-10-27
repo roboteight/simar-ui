@@ -1,15 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 150" role="img" aria-labelledby="t">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 150" role="img" aria-labelledby="t">
   <title id="t">simar-ui</title>
-  <g fill="#e9ebef" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="104" letter-spacing="-2">
-    <text x="14" y="112" textLength="284" lengthAdjust="spacing">simar</text>
-    <text x="496" y="112" textLength="92" lengthAdjust="spacing">ui</text>
+  <g transform="translate(6 8) scale(2.1)">
+    <path d="M9 13Q32 4 55 13L53 33Q51 49 32 60Q13 49 11 33Z" fill="#e9ebef"/>
+    <path d="M13 21L30 26M51 21L34 26" stroke="#16171a" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+    <path d="M15 28L28 30.5L26 34L16 32.5ZM49 28L36 30.5L38 34L48 32.5Z" fill="#36d27a"/>
+    <path d="M32 29L27.5 42H36.5Z" fill="none" stroke="#16171a" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M17 38Q23 46 29.5 47M47 38Q41 46 34.5 47" stroke="#16171a" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M21 49Q32 55 43 49" stroke="#16171a" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+    <path d="M25 50.6V53M29 51.6V54.4M32 52V54.8M35 51.6V54.4M39 50.6V53" stroke="#16171a" stroke-width="1.5" stroke-linecap="round"/>
   </g>
-  <!-- a katana in place of the hyphen: wrapped handle, guard, then a gently curved blade with a lit edge -->
-  <g>
-    <rect x="312" y="80" width="42" height="15" rx="6.5" fill="#e9ebef"/>
-    <path d="M323 80l7 15M334 80l7 15M345 80l6 12" stroke="#16171a" stroke-width="1.7" stroke-linecap="round" opacity=".55"/>
-    <rect x="353" y="72" width="9" height="31" rx="4.5" fill="#e9ebef"/>
-    <path d="M362 81C404 79 446 74 482 60C458 87 412 97 362 95Z" fill="#e9ebef"/>
-    <path d="M372 92C410 91 440 84 464 71" fill="none" stroke="#36d27a" stroke-width="2.4" stroke-linecap="round"/>
+  <g fill="#e9ebef" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="104" letter-spacing="-2">
+    <text x="156" y="112" textLength="416" lengthAdjust="spacing">simar-ui</text>
   </g>
 </svg>
