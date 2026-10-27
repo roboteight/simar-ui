@@ -47,43 +47,21 @@ if ('vibrate' in navigator) {
   for (const id of ['haptics-note', 'haptics-note-tab']) document.getElementById(id).hidden = false;
 }
 
-// The settings tab appears once the Page settings panel has scrolled out of view above, and goes
-// again when you return to it. Esc closes the drawer and returns to the tab, and so does moving
-// focus out of it.
-const settingsTab = document.querySelector('.settings-tab');
-if (settingsTab) {
-  const toggle = settingsTab.querySelector('.settings-tab__toggle');
-  const drawer = settingsTab.querySelector('.settings-tab__drawer');
+// The settings side menu (the side-menu component) appears once the Page settings panel has scrolled out of view
+// above, and goes again when you return to it. The component itself opens and closes the panel.
+const settingsMenu = document.getElementById('settings-menu');
+if (settingsMenu) {
   const original = document.getElementById('page-settings');
-  const setOpen = (open) => {
-    drawer.hidden = !open;
-    toggle.setAttribute('aria-expanded', String(open));
-  };
   let queued = false;
   const check = () => {
     queued = false;
     const past = original.getBoundingClientRect().bottom < 0;
-    if (!past) setOpen(false);
-    settingsTab.hidden = !past;
+    if (!past) settingsMenu.dispatchEvent(new Event('side-menu:close'));
+    settingsMenu.hidden = !past;
   };
   const queue = () => { if (!queued) { queued = true; requestAnimationFrame(check); } };
   addEventListener('scroll', queue, { passive: true });
   addEventListener('resize', queue);
-  toggle.addEventListener('click', () => setOpen(drawer.hidden));
-  settingsTab.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape' || drawer.hidden) return;
-    setOpen(false);
-    toggle.focus();
-  });
-  // Pressing a label inside the drawer moves focus to nowhere for a moment before the click lands, so
-  // don't treat that as leaving.
-  let pressing = false;
-  settingsTab.addEventListener('pointerdown', () => { pressing = true; });
-  addEventListener('pointerup', () => setTimeout(() => { pressing = false; }));
-  settingsTab.addEventListener('focusout', (e) => {
-    if (pressing || settingsTab.contains(e.relatedTarget)) return;
-    setOpen(false);
-  });
   check();
 }
 
@@ -188,43 +166,6 @@ for (const form of document.querySelectorAll('form[data-demo-form]')) {
     sent.hidden = true;
     form.hidden = false;
     form.querySelector('input, select, textarea')?.focus();
-  });
-}
-
-// Contents drawer: below 76rem the list folds into a drawer opened from an icon on the left edge.
-// Without JavaScript it simply stays above the page. Esc closes it and returns focus to the icon,
-// choosing a link closes it, and so does moving focus out of it.
-const tocNav = document.querySelector('.toc');
-const tocToggle = document.querySelector('.toc-toggle');
-if (tocNav && tocToggle) {
-  const narrow = matchMedia('(max-width: 75.99rem)');
-  const setTocOpen = (open) => {
-    tocNav.hidden = !open;
-    tocToggle.setAttribute('aria-expanded', String(open));
-  };
-  const apply = () => {
-    tocNav.classList.toggle('toc--drawer', narrow.matches);
-    tocToggle.hidden = !narrow.matches;
-    if (narrow.matches) setTocOpen(false);
-    else { tocNav.hidden = false; tocToggle.setAttribute('aria-expanded', 'false'); }
-  };
-  narrow.addEventListener('change', apply);
-  apply();
-  tocToggle.addEventListener('click', () => setTocOpen(tocNav.hidden));
-  const inDrawer = () => tocNav.classList.contains('toc--drawer');
-  tocNav.addEventListener('click', (e) => { if (inDrawer() && e.target.closest('a')) setTocOpen(false); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape' || !inDrawer() || tocNav.hidden) return;
-    setTocOpen(false);
-    tocToggle.focus();
-  });
-  let tocPressing = false;
-  for (const part of [tocNav, tocToggle]) part.addEventListener('pointerdown', () => { tocPressing = true; });
-  addEventListener('pointerup', () => setTimeout(() => { tocPressing = false; }));
-  document.addEventListener('focusout', (e) => {
-    if (!inDrawer() || tocNav.hidden || tocPressing) return;
-    if (tocNav.contains(e.relatedTarget) || e.relatedTarget === tocToggle) return;
-    if (tocNav.contains(e.target)) setTocOpen(false);
   });
 }
 

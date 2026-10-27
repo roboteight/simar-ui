@@ -72,82 +72,86 @@
       <span class="select"><select class="input" id="appearance" name="theme" data-tooltip="Appearance: Auto follows your device"><option value="auto" selected>Auto</option><option value="light">Light</option><option value="dark">Dark</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
     </div>
   </header>
-  <button type="button" class="key key--sq toc-toggle needs-js" aria-label="Contents" aria-expanded="false" aria-controls="toc-nav" hidden><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg></button>
-  <nav class="toc" id="toc-nav" aria-label="On this page">
-    <p class="toc__title">On this page</p>
-    <ul class="toc__groups">
-      <li>
-        <span class="toc__group">Getting started</span>
-        <ul>
-        <li><a href="#install">Install</a></li>
-        <li><a href="#tags">Declarative tags</a></li>
-        <li><a href="#accessibility">Accessibility</a></li>
-        </ul>
-      </li>
-      <li>
-        <span class="toc__group">Customize</span>
-        <ul>
-        <li><a href="#theming">Theme and color</a></li>
-        <li><a href="#tokens">Design tokens</a></li>
-        <li><a href="#config">Configuration</a></li>
-        </ul>
-      </li>
-      <li>
-        <span class="toc__group">Content</span>
-        <ul>
-        <li><a href="#cards">Card</a></li>
-        <li><a href="#code">Code</a></li>
-        <li><a href="#layout">Layout and breakpoints</a></li>
-        <li><a href="#lists">Lists</a></li>
-        <li><a href="#media">Media</a></li>
-        <li><a href="#quotes">Quotes</a></li>
-        <li><a href="#blurbs">Text blurbs</a></li>
-        <li><a href="#timelines">Timeline</a></li>
-        <li><a href="#typography">Typography</a></li>
-        </ul>
-      </li>
-      <li>
-        <span class="toc__group">Forms</span>
-        <ul>
-        <li><a href="#checks">Checkboxes and switches</a></li>
-        <li><a href="#datalist">Datalist and autocomplete</a></li>
-        <li><a href="#dates">Date range</a></li>
-        <li><a href="#form-control">Form control</a></li>
-        <li><a href="#input-group">Input group</a></li>
-        <li><a href="#knobs">Knobs</a></li>
-        <li><a href="#radios">Radio buttons</a></li>
-        <li><a href="#ranges">Range pickers</a></li>
-        <li><a href="#selects">Select</a></li>
-        <li><a href="#validation">Validation</a></li>
-        </ul>
-      </li>
-      <li>
-        <span class="toc__group">Components</span>
-        <ul>
-        <li><a href="#accordion">Accordion</a></li>
-        <li><a href="#alerts">Alerts and toasts</a></li>
-        <li><a href="#badges">Badge</a></li>
-        <li><a href="#breadcrumbs">Breadcrumb</a></li>
-        <li><a href="#key-groups">Button group</a></li>
-        <li><a href="#buttons">Buttons</a></li>
-        <li><a href="#charts">Charts</a></li>
-        <li><a href="#confirms">Confirmation dialog</a></li>
-        <li><a href="#dialogs">Dialog</a></li>
-        <li><a href="#menus">Dropdown menu</a></li>
-        <li><a href="#meters">Meter</a></li>
-        <li><a href="#pagination">Pagination</a></li>
-        <li><a href="#progress">Progress</a></li>
-        <li><a href="#spinners">Spinners</a></li>
-        <li><a href="#tables">Table</a></li>
-        <li><a href="#tabs">Tabs</a></li>
-        <li><a href="#tooltips">Tooltips</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
-  <main>
+  <div class="side-menu side-menu--start side-menu--docked" data-side-menu data-close-on-select>
+    <button type="button" class="key key--sq side-menu__toggle" id="toc-toggle" aria-label="Contents" aria-expanded="false" aria-controls="toc-nav"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg></button>
+    <nav class="toc side-menu__panel" id="toc-nav" aria-label="On this page">
+      <p class="toc__title">On this page</p>
+      <ul class="toc__groups">
+        <li>
+          <span class="toc__group">Getting started</span>
+          <ul>
+          <li><a href="#install">Install</a></li>
+          <li><a href="#tags">Declarative tags</a></li>
+          <li><a href="#accessibility">Accessibility</a></li>
+          </ul>
+        </li>
+        <li>
+          <span class="toc__group">Customize</span>
+          <ul>
+          <li><a href="#theming">Theme and color</a></li>
+          <li><a href="#tokens">Design tokens</a></li>
+          <li><a href="#config">Configuration</a></li>
+          </ul>
+        </li>
+        <li>
+          <span class="toc__group">Content</span>
+          <ul>
+          <li><a href="#cards">Card</a></li>
+          <li><a href="#code">Code</a></li>
+          <li><a href="#layout">Layout and breakpoints</a></li>
+          <li><a href="#lists">Lists</a></li>
+          <li><a href="#media">Media</a></li>
+          <li><a href="#quotes">Quotes</a></li>
+          <li><a href="#blurbs">Text blurbs</a></li>
+          <li><a href="#timelines">Timeline</a></li>
+          <li><a href="#typography">Typography</a></li>
+          </ul>
+        </li>
+        <li>
+          <span class="toc__group">Forms</span>
+          <ul>
+          <li><a href="#checks">Checkboxes and switches</a></li>
+          <li><a href="#datalist">Datalist and autocomplete</a></li>
+          <li><a href="#dates">Date range</a></li>
+          <li><a href="#form-control">Form control</a></li>
+          <li><a href="#input-group">Input group</a></li>
+          <li><a href="#knobs">Knobs</a></li>
+          <li><a href="#radios">Radio buttons</a></li>
+          <li><a href="#ranges">Range pickers</a></li>
+          <li><a href="#selects">Select</a></li>
+          <li><a href="#validation">Validation</a></li>
+          </ul>
+        </li>
+        <li>
+          <span class="toc__group">Components</span>
+          <ul>
+          <li><a href="#accordion">Accordion</a></li>
+          <li><a href="#alerts">Alerts and toasts</a></li>
+          <li><a href="#badges">Badge</a></li>
+          <li><a href="#breadcrumbs">Breadcrumb</a></li>
+          <li><a href="#key-groups">Button group</a></li>
+          <li><a href="#buttons">Buttons</a></li>
+          <li><a href="#charts">Charts</a></li>
+          <li><a href="#confirms">Confirmation dialog</a></li>
+          <li><a href="#dialogs">Dialog</a></li>
+          <li><a href="#menus">Dropdown menu</a></li>
+        <li><a href="#fabs">Floating button</a></li>
+          <li><a href="#meters">Meter</a></li>
+          <li><a href="#pagination">Pagination</a></li>
+          <li><a href="#progress">Progress</a></li>
+        <li><a href="#side-menus">Side menu</a></li>
+          <li><a href="#spinners">Spinners</a></li>
+          <li><a href="#tables">Table</a></li>
+          <li><a href="#tabs">Tabs</a></li>
+          <li><a href="#tooltips">Tooltips</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <main class="fab-space">
     <div class="jsbar">
-      <span class="well"><a class="key" id="js-toggle" href="?js=off">Turn JS off</a></span>
+      <span class="well fab"><a class="key" id="js-toggle" href="?js=off">Turn JS off</a></span>
       <p class="note" id="js-note" hidden></p>
       <noscript><p class="note">JavaScript is disabled in this browser, so this is the plain HTML fallback: native controls, styled by CSS alone.</p></noscript>
     </div>
@@ -2004,6 +2008,36 @@
         </script>
       </fieldset>
     </section>
+    <section aria-labelledby="fabs">
+      <h3 id="fabs">Floating button</h3>
+      <p class="note">A key fixed to a corner of the screen, reachable from anywhere on the page: the "Turn JS off" button in this page's corner is one. Put a <code>.key</code> in a <code>.well</code> with the <code>fab</code> class. Bottom end is the default; <code>fab--start</code> moves it to the other side and <code>fab--top</code> to the top. <code>fab--round</code> makes an icon-only one, which needs an <code>aria-label</code>. It clears the notch and home bar on a phone, is hidden in print, and, because it floats over content, give the page <code>fab-space</code> so it never covers the last of the content on a small screen. The boxes below keep each one inside the demo.</p>
+
+      <fieldset class="panel">
+        <legend>Floating button</legend>
+        <div class="fixed-preview" role="group" aria-label="Preview of floating buttons">
+          <span class="well fab fab--top fab--start"><a class="key" href="#fabs">Back to top</a></span>
+          <span class="well fab fab--start"><button type="button" class="key key--round" aria-label="Share"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg></button></span>
+          <span class="well fab"><button type="button" class="key key--accent"><svg class="icon icon--lead" aria-hidden="true"><use href="#i-plus"/></svg>Compose</button></span>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <!-- an extended floating button: an icon and a label -->
+          <span class="well fab">
+            <button type="button" class="key key--accent">
+              <svg class="icon icon--lead" aria-hidden="true"><use href="#i-plus"/></svg>Compose
+            </button>
+          </span>
+
+          <!-- a round, icon-only one in the other corner; the aria-label is its name -->
+          <span class="well fab fab--start fab--round">
+            <button type="button" class="key key--round" aria-label="Share">…</button>
+          </span>
+
+          <!-- room at the bottom of the page -->
+          <main class="fab-space">…</main>
+        </script>
+      </fieldset>
+    </section>
+
     <section aria-labelledby="meters">
       <h3 id="meters">Meter</h3>
       <p class="note">A native <code>&lt;meter&gt;</code>: a gauge for a known quantity, as opposed to <code>&lt;progress&gt;</code>, which is work being done. The browser decides good, middling or poor from <code>low</code>, <code>high</code> and <code>optimum</code>, and the fill tells them apart by pattern (solid, striped, dotted) as well as color.</p>
@@ -2088,6 +2122,53 @@
 
           // Freeze the motion (WCAG 2.2.2): any ancestor works.
           document.querySelector('#progress-demo').setAttribute('data-paused', '');
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="side-menus">
+      <h3 id="side-menus">Side menu</h3>
+      <p class="note">A tab on the edge of the screen that opens a panel beside it, for options or navigation that should be one press away without taking room. This page's contents list (left) and settings (right) are side menus. It is a disclosure, not a modal: the tab is a button with <code>aria-expanded</code> and <code>aria-controls</code>, Esc closes the panel and returns focus to the tab, and so does moving focus out of it. Without JavaScript the panel simply shows in the page, in reading order. <code>side-menu--start</code> puts it on the left edge, <code>side-menu--docked</code> keeps the panel open as a column from the xl breakpoint up, and <code>data-close-on-select</code> closes it when a link inside is chosen.</p>
+
+      <fieldset class="panel">
+        <legend>Side menu</legend>
+        <div class="fixed-preview" role="group" aria-label="Preview of side menus">
+          <aside class="side-menu side-menu--start" data-side-menu data-close-on-select aria-label="Sections">
+            <button type="button" class="key key--sq side-menu__toggle" aria-label="Sections" aria-expanded="false" aria-controls="demo-menu-start"><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg></button>
+            <nav class="panel side-menu__panel" id="demo-menu-start" aria-label="Sections">
+              <p class="side-menu__title">Sections</p>
+              <ul class="list list--plain" role="list">
+                <li><a href="#side-menus">Overview</a></li>
+                <li><a href="#side-menus">Settings</a></li>
+                <li><a href="#side-menus">Help</a></li>
+              </ul>
+            </nav>
+          </aside>
+          <aside class="side-menu side-menu--end" data-side-menu aria-label="Options">
+            <button type="button" class="key key--sq side-menu__toggle" aria-label="Options" aria-expanded="false" aria-controls="demo-menu-end"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></button>
+            <div class="panel side-menu__panel" id="demo-menu-end">
+              <p class="side-menu__title">Options</p>
+              <label class="check"><span class="well"><input type="checkbox" name="demo-notify" checked><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></span></span><span class="check__text">Notifications</span></label>
+            </div>
+          </aside>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <aside class="side-menu side-menu--end" data-side-menu aria-label="Options">
+            <button type="button" class="key key--sq side-menu__toggle"
+                    aria-label="Options" aria-expanded="false" aria-controls="options">
+              <svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>
+            </button>
+            <div class="panel side-menu__panel" id="options">
+              <p class="side-menu__title">Options</p>
+              …
+            </div>
+          </aside>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          // Open or close one from your own code with events on the element.
+          const menu = document.querySelector('[data-side-menu]');
+          menu.dispatchEvent(new Event('side-menu:open'));
+          menu.dispatchEvent(new Event('side-menu:close'));
         </script>
       </fieldset>
     </section>
@@ -2210,10 +2291,10 @@
       </fieldset>
     </section>
   </main>
-  <aside class="settings-tab needs-js" aria-label="Page settings" hidden>
-    <button type="button" class="key key--sq settings-tab__toggle" aria-label="Page settings" aria-expanded="false" aria-controls="settings-drawer"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></button>
-    <div class="panel settings-tab__drawer" id="settings-drawer" data-haptic="off" hidden>
-      <p class="settings-tab__title">Page settings</p>
+  <aside class="side-menu side-menu--end needs-js" id="settings-menu" data-side-menu aria-label="Page settings" hidden>
+    <button type="button" class="key key--sq side-menu__toggle" id="settings-toggle" aria-label="Page settings" aria-expanded="false" aria-controls="settings-drawer"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></button>
+    <div class="panel side-menu__panel" id="settings-drawer" data-haptic="off" hidden>
+      <p class="side-menu__title">Page settings</p>
       <div class="setting"><div class="field"><label for="theme-select-tab">Theme</label><span class="select"><select class="input" id="theme-select-tab" name="palette-tab"><option value="">Default</option><option value="indigo">Indigo</option><option value="teal">Teal</option><option value="rose">Rose</option><option value="amber">Amber</option><option value="forest">Forest</option><option value="ocean">Ocean</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span></div></div>
       <div class="setting"><div class="field"><label for="style-select-tab">Style</label><span class="select"><select class="input" id="style-select-tab" name="style-tab"><option value="">Flat (default)</option><option value="classic">Classic</option><option value="soft">Soft</option><option value="crisp">Crisp</option><option value="line">Line</option><option value="round">Round</option><option value="deep">Deep</option><option value="brutal">Brutal</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span></div></div>
       <div class="setting"><div class="field"><label for="lit-select-tab">Highlight</label><span class="select"><select class="input" id="lit-select-tab" name="lit-select-tab"><option value="">Theme default</option><option value="green">Green</option><option value="blue">Blue</option><option value="amber">Amber</option><option value="red">Red</option><option value="violet">Violet</option><option value="deep-orange">Deep orange</option><option value="orange">Orange</option><option value="yellow">Yellow</option><option value="lime">Lime</option><option value="light-green">Light green</option><option value="teal">Teal</option><option value="cyan">Cyan</option><option value="light-blue">Light blue</option><option value="indigo">Indigo</option><option value="deep-purple">Deep purple</option><option value="purple">Purple</option><option value="pink">Pink</option><option value="brown">Brown</option><option value="blue-grey">Blue grey</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span></div></div>

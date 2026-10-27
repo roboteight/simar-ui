@@ -1,0 +1,47 @@
+@use "../abstracts" as *;
+
+// Floating button: a key fixed to a corner of the screen, reachable from anywhere on the page. Put a .key in a
+// .well with the .fab class (an extended one holds an icon and a label: <svg class="icon icon--lead"> then the
+// text). Bottom end is the default; fab--start moves it to the other side and fab--top to the top. It clears
+// the notch and home bar on phones (safe-area insets), is hidden in print, and its key keeps a 24px or larger
+// target. Because it floats over content, give the page room at the bottom with .fab-space, so on a small
+// screen it never covers the last of the content.
+//
+//   <span class="well fab"><button type="button" class="key key--accent">Compose</button></span>
+//   <span class="well fab fab--start"><a class="key" href="#top">Back to top</a></span>
+.fab {
+  position: fixed;
+  z-index: 20;
+  inset-block-end: max(1rem, env(safe-area-inset-bottom));
+  inset-inline-end: max(1rem, env(safe-area-inset-right));
+
+  .key {
+    min-width: 0;
+    min-height: var(--fab-size, 2.5rem);
+    padding: 0 1.1rem;
+    font-size: 0.85rem;
+  }
+
+  &--start {
+    inset-inline-end: auto;
+    inset-inline-start: max(1rem, env(safe-area-inset-left));
+  }
+
+  &--top {
+    inset-block-end: auto;
+    inset-block-start: max(1rem, env(safe-area-inset-top));
+  }
+
+  // A round, icon-only one: its name is the aria-label.
+  &--round .key {
+    width: var(--fab-size, 3.5rem);
+    min-height: var(--fab-size, 3.5rem);
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  @media print { display: none; }
+}
+
+// Room at the bottom of a page that has a floating button.
+.fab-space { padding-block-end: 5rem; }

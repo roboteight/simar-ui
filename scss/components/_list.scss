@@ -61,6 +61,12 @@
     dt { color: var(--ink-soft); }
     dd { color: var(--ink); }
 
+    // A colon between the term and its detail, drawn by CSS with empty alt text so it is not read out.
+    dt::after {
+      content: ":";
+      content: ":" / "";
+    }
+
     @media (max-width: 35.99rem) {
       grid-template-columns: 1fr;
       gap: 0;
@@ -73,6 +79,7 @@
     display: block;
 
     dt { color: var(--ink); }
+    dt::after { content: none; }
     dd { margin: 0 0 var(--_gap); color: var(--ink-soft); }
     dd:last-child { margin-bottom: 0; }
   }

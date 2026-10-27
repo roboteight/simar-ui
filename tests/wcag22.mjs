@@ -420,26 +420,26 @@ formNodes.find((n) => n.role === 'progressbar' && /uploading/i.test(n.name ?? ''
 // ---- the settings tab -------------------------------------------------------------------------
 console.log('\nSettings tab (an icon-only disclosure)');
 await open(1280);
-const tabState = () => page.evaluate(() => ({ shown: !document.querySelector('.settings-tab').hidden, open: !document.querySelector('.settings-tab__drawer').hidden }));
+const tabState = () => page.evaluate(() => ({ shown: !document.querySelector('#settings-menu').hidden, open: !document.querySelector('#settings-drawer').hidden }));
 const tabAtTop = await tabState();
 !tabAtTop.shown ? pass('hidden while the Page settings panel is on screen') : fail('the tab is showing at the top of the page');
 await page.evaluate(() => scrollTo({ top: 1400, behavior: 'instant' }));
 await wait(300);
 (await tabState()).shown ? pass('appears once the panel has scrolled past') : fail('the tab did not appear after scrolling past');
-const toggleInfo = await page.$eval('.settings-tab__toggle', (b) => ({ text: b.textContent.trim(), name: b.getAttribute('aria-label'), expanded: b.getAttribute('aria-expanded'), controls: b.getAttribute('aria-controls'), w: b.getBoundingClientRect().width, h: b.getBoundingClientRect().height }));
+const toggleInfo = await page.$eval('#settings-toggle', (b) => ({ text: b.textContent.trim(), name: b.getAttribute('aria-label'), expanded: b.getAttribute('aria-expanded'), controls: b.getAttribute('aria-controls'), w: b.getBoundingClientRect().width, h: b.getBoundingClientRect().height }));
 toggleInfo.text === '' && toggleInfo.name === 'Page settings' && toggleInfo.controls === 'settings-drawer' && toggleInfo.w >= 24 && toggleInfo.h >= 24
   ? pass(`has no visible word but is named "${toggleInfo.name}", with aria-controls and a ${Math.round(toggleInfo.w)}x${Math.round(toggleInfo.h)}px target`) : fail(`toggle: ${JSON.stringify(toggleInfo)}`);
-await page.click('.settings-tab__toggle');
+await page.click('#settings-toggle');
 await wait(200);
-const opened = await page.$eval('.settings-tab__toggle', (b) => b.getAttribute('aria-expanded'));
+const opened = await page.$eval('#settings-toggle', (b) => b.getAttribute('aria-expanded'));
 (await tabState()).open && opened === 'true' ? pass('opens, and aria-expanded says so') : fail('the drawer did not open');
 await page.select('#lit-select-tab', 'violet');
 await wait(200);
-const synced = await page.evaluate(() => ({ lit: document.documentElement.dataset.lit, top: document.querySelector('input[name="lit"]:checked').value, stillOpen: !document.querySelector('.settings-tab__drawer').hidden }));
+const synced = await page.evaluate(() => ({ lit: document.documentElement.dataset.lit, top: document.querySelector('input[name="lit"]:checked').value, stillOpen: !document.querySelector('#settings-drawer').hidden }));
 synced.lit === 'violet' && synced.top === 'violet' && synced.stillOpen ? pass('the highlight dropdown changes it, and the panel at the top follows') : fail(`swatch: ${JSON.stringify(synced)}`);
 await page.keyboard.press('Escape');
 await wait(150);
-const afterEsc2 = await page.evaluate(() => ({ open: !document.querySelector('.settings-tab__drawer').hidden, onToggle: document.activeElement.classList.contains('settings-tab__toggle') }));
+const afterEsc2 = await page.evaluate(() => ({ open: !document.querySelector('#settings-drawer').hidden, onToggle: document.activeElement.id === 'settings-toggle' }));
 !afterEsc2.open && afterEsc2.onToggle ? pass('Esc closes it and returns focus to the tab') : fail(`after Esc: ${JSON.stringify(afterEsc2)}`);
 await page.keyboard.press('Enter');
 await wait(150);
@@ -453,14 +453,14 @@ await wait(300);
 !(await tabState()).shown ? pass('goes away again at the top') : fail('the tab stayed after returning to the top');
 
 // ---- the contents drawer ------------------------------------------------------------------------
-console.log('\nContents drawer (below 76rem)');
+console.log('\nContents side menu (below 75rem)');
 await open(1024);
-const tocState = () => page.evaluate(() => ({ drawer: document.querySelector('.toc').classList.contains('toc--drawer'), shown: !document.querySelector('.toc').hidden, expanded: document.querySelector('.toc-toggle').getAttribute('aria-expanded'), onToggle: document.activeElement.classList.contains('toc-toggle') }));
+const tocState = () => page.evaluate(() => ({ drawer: getComputedStyle(document.querySelector('#toc-toggle')).display !== 'none', shown: !document.querySelector('.toc').hidden, expanded: document.querySelector('#toc-toggle').getAttribute('aria-expanded'), onToggle: document.activeElement.classList.contains('toc-toggle') }));
 const t0 = await tocState();
 t0.drawer && !t0.shown && t0.expanded === 'false' ? pass('folds into an icon with the list closed') : fail(`start: ${JSON.stringify(t0)}`);
-const tInfo = await page.$eval('.toc-toggle', (b) => ({ text: b.textContent.trim(), name: b.getAttribute('aria-label'), controls: b.getAttribute('aria-controls'), w: b.getBoundingClientRect().width, h: b.getBoundingClientRect().height, left: b.getBoundingClientRect().left }));
+const tInfo = await page.$eval('#toc-toggle', (b) => ({ text: b.textContent.trim(), name: b.getAttribute('aria-label'), controls: b.getAttribute('aria-controls'), w: b.getBoundingClientRect().width, h: b.getBoundingClientRect().height, left: b.getBoundingClientRect().left }));
 tInfo.text === '' && tInfo.name === 'Contents' && tInfo.controls === 'toc-nav' && tInfo.w >= 24 && tInfo.h >= 24 && tInfo.left === 0 ? pass(`floats on the left edge, named "${tInfo.name}", ${Math.round(tInfo.w)}x${Math.round(tInfo.h)}px`) : fail(`toggle: ${JSON.stringify(tInfo)}`);
-await page.click('.toc-toggle');
+await page.click('#toc-toggle');
 await wait(200);
 const t1 = await tocState();
 t1.shown && t1.expanded === 'true' ? pass('opens, and aria-expanded says so') : fail(`open: ${JSON.stringify(t1)}`);
@@ -468,7 +468,7 @@ await page.keyboard.press('Escape');
 await wait(150);
 const t2 = await tocState();
 !t2.shown && t2.onToggle ? pass('Esc closes it and returns focus to the icon') : fail(`esc: ${JSON.stringify(t2)}`);
-await page.focus('.toc-toggle');
+await page.focus('#toc-toggle');
 await page.keyboard.press('Enter');
 await wait(150);
 (await tocState()).shown ? pass('the keyboard opens it') : fail('Enter did not open it');
@@ -479,7 +479,7 @@ const t3 = await tocState();
 !t3.shown ? pass('choosing a link closes it and goes to the section') : fail(`link: ${JSON.stringify(t3)}`);
 await page.setViewport({ width: 1400, height: 800 });
 await wait(200);
-const t4 = await page.evaluate(() => ({ drawer: document.querySelector('.toc').classList.contains('toc--drawer'), nav: !document.querySelector('.toc').hidden, icon: getComputedStyle(document.querySelector('.toc-toggle')).display }));
+const t4 = await page.evaluate(() => ({ drawer: getComputedStyle(document.querySelector('#toc-toggle')).display !== 'none', nav: !document.querySelector('.toc').hidden, icon: getComputedStyle(document.querySelector('#toc-toggle')).display }));
 !t4.drawer && t4.nav && t4.icon === 'none' ? pass('wide screens keep the list in the margin, with no icon') : fail(`wide: ${JSON.stringify(t4)}`);
 
 // ---- responsive grid ----------------------------------------------------------------------------
@@ -1107,6 +1107,54 @@ const ls = await page.evaluate(() => {
 });
 ls.items && ls.inline && ls.stacked ? pass('a description list puts each term beside its detail, and list--stacked puts the detail underneath') : fail(`list layout: ${JSON.stringify(ls)}`);
 ls.divided && ls.marker ? pass('a divided list draws a line between items and keeps role="list"; the markers use the theme color') : fail(`list parts: ${JSON.stringify(ls)}`);
+
+// ---- floating button and side menu ----------------------------------------------------------------
+console.log('\nFloating button and side menu');
+await open(1280);
+const fb = await page.evaluate(() => {
+  const real = document.querySelector('.jsbar .fab .key');
+  const demo = [...document.querySelectorAll('section[aria-labelledby="fabs"] .fixed-preview .fab')];
+  const box = document.querySelector('section[aria-labelledby="fabs"] .fixed-preview').getBoundingClientRect();
+  return {
+    real: getComputedStyle(real.closest('.fab')).position === 'fixed',
+    n: demo.length,
+    inside: demo.every((f) => { const r = f.getBoundingClientRect(); return r.left >= box.left && r.right <= box.right && r.top >= box.top && r.bottom <= box.bottom; }),
+    corners: demo.map((f) => f.className.replace('well fab', '').trim()).join('|'),
+    named: demo.every((f) => { const k = f.querySelector('.key'); return k.textContent.trim() || k.getAttribute('aria-label'); }),
+    size: demo.every((f) => { const r = f.querySelector('.key').getBoundingClientRect(); return r.width >= 24 && r.height >= 24; }),
+    space: getComputedStyle(document.querySelector('main')).paddingBottom,
+  };
+});
+fb.real && fb.n === 3 && fb.inside && fb.named && fb.size ? pass('a floating button is fixed to its corner, named, at least 24px, and stays inside its box in the demo') : fail(`floating button: ${JSON.stringify(fb)}`);
+parseFloat(fb.space) >= 80 ? pass('the page keeps room at the bottom (fab-space) so a floating button never covers the last content') : fail(`fab-space: ${fb.space}`);
+await page.$eval('section[aria-labelledby="side-menus"] .fixed-preview', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+const sm = '#demo-menu-end';
+const smToggle = 'section[aria-labelledby="side-menus"] [aria-controls="demo-menu-end"]';
+const smState = () => page.evaluate((sel, panel) => ({ expanded: document.querySelector(sel).getAttribute('aria-expanded'), hidden: document.querySelector(panel).hidden }), smToggle, sm);
+const s0 = await smState();
+s0.expanded === 'false' && s0.hidden ? pass('a side menu starts closed, with aria-expanded="false" on its tab') : fail(`side menu start: ${JSON.stringify(s0)}`);
+await page.click(smToggle);
+const s1 = await smState();
+s1.expanded === 'true' && !s1.hidden ? pass('pressing the tab opens the panel and aria-expanded says so') : fail(`side menu open: ${JSON.stringify(s1)}`);
+await page.keyboard.press('Escape');
+const s2 = await page.evaluate((sel, panel) => ({ hidden: document.querySelector(panel).hidden, onTab: document.activeElement === document.querySelector(sel) }), smToggle, sm);
+s2.hidden && s2.onTab ? pass('Esc closes it and returns focus to the tab') : fail(`side menu Esc: ${JSON.stringify(s2)}`);
+await page.focus(smToggle);
+await page.keyboard.press('Enter');
+await page.keyboard.press('Tab');
+await page.keyboard.press('Tab');
+await page.keyboard.press('Tab');
+await wait(150);
+(await smState()).hidden ? pass('it closes when focus moves out of it') : fail('the side menu stayed open after focus left');
+await open(1280, '?js=off');
+const nojs = await page.evaluate(() => { const m = document.querySelector('section[aria-labelledby="side-menus"] [data-side-menu]'); return { panel: m.querySelector('.side-menu__panel').getBoundingClientRect().height > 0, toggle: getComputedStyle(m.querySelector('.side-menu__toggle')).display === 'none', static: getComputedStyle(m).position !== 'fixed' }; });
+nojs.panel && nojs.toggle && nojs.static ? pass('with JavaScript off a side menu is just its content in the page, with no tab') : fail(`side menu without JS: ${JSON.stringify(nojs)}`);
+await open(1400);
+const docked = await page.evaluate(() => ({ nav: !document.querySelector('#toc-nav').hidden, toggle: getComputedStyle(document.querySelector('#toc-toggle')).display }));
+await page.setViewport({ width: 1100, height: 800 });
+await wait(250);
+const folded = await page.evaluate(() => ({ nav: !document.querySelector('#toc-nav').hidden, toggle: getComputedStyle(document.querySelector('#toc-toggle')).display, expanded: document.querySelector('#toc-toggle').getAttribute('aria-expanded') }));
+docked.nav && docked.toggle === 'none' && !folded.nav && folded.toggle !== 'none' && folded.expanded === 'false' ? pass('a docked side menu is an open column at xl and up, and a tab with a closed panel below') : fail(`docked: ${JSON.stringify({ docked, folded })}`);
 
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');

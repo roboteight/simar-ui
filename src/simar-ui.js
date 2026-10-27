@@ -368,6 +368,49 @@ const enhanceDialogs = (claim) => {
   }
 };
 
+// ---- Side menu -------------------------------------------------------------------------
+
+// A tab on the screen edge that opens a panel beside it (a disclosure, not a modal). The tab carries
+// aria-expanded and aria-controls; Esc closes the panel and returns focus to the tab, and so does moving focus
+// out of it. data-close-on-select closes it when a link inside is chosen. side-menu--docked keeps the panel open
+// as a column from 75rem up. A page can also open or close one with the "side-menu:open" and "side-menu:close"
+// events on the element. Without the script the panel is just content in the page.
+const enhanceSideMenus = (claim) => {
+  for (const menu of claim('[data-side-menu]')) {
+    const toggle = menu.querySelector('.side-menu__toggle');
+    const panel = menu.querySelector('.side-menu__panel');
+    if (!toggle || !panel) continue;
+    const docked = menu.classList.contains('side-menu--docked') ? matchMedia('(min-width: 75rem)') : null;
+    const isDocked = () => Boolean(docked?.matches);
+    const set = (open) => {
+      panel.hidden = !open && !isDocked();
+      toggle.setAttribute('aria-expanded', String(!panel.hidden && !isDocked()));
+    };
+    menu.classList.add('is-enhanced');
+    set(false);
+    docked?.addEventListener('change', () => set(false));
+    toggle.addEventListener('click', () => set(panel.hidden));
+    menu.addEventListener('side-menu:open', () => set(true));
+    menu.addEventListener('side-menu:close', () => set(false));
+    menu.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || panel.hidden || isDocked()) return;
+      set(false);
+      toggle.focus();
+    });
+    if (menu.hasAttribute('data-close-on-select')) {
+      panel.addEventListener('click', (e) => { if (e.target.closest('a') && !isDocked()) set(false); });
+    }
+    // Pressing a label inside moves focus to nowhere for a moment before the click lands: not leaving.
+    let pressing = false;
+    menu.addEventListener('pointerdown', () => { pressing = true; });
+    addEventListener('pointerup', () => setTimeout(() => { pressing = false; }));
+    menu.addEventListener('focusout', (e) => {
+      if (pressing || isDocked() || panel.hidden || menu.contains(e.relatedTarget)) return;
+      set(false);
+    });
+  }
+};
+
 // ---- Date ranges -----------------------------------------------------------------------
 
 // Two native date inputs stay the source of truth; the calendar is a popover.
@@ -1487,6 +1530,7 @@ const init = (scope = document) => {
   enhanceCode(claim);
   enhanceChecks(claim);
   enhanceTabs(claim);
+  enhanceSideMenus(claim);
   enhanceMenus(claim);
   enhanceAlerts(claim);
   enhanceTables(claim);

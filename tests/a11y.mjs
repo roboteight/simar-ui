@@ -223,7 +223,7 @@ const suite = async (theme) => {
   // the settings drawer open
   await page.evaluate(() => scrollTo({ top: 1400, behavior: 'instant' }));
   await wait(300);
-  await page.click('.settings-tab__toggle');
+  await page.click('#settings-toggle');
   await wait(300);
   add(await run(`${t}, settings drawer open`));
   total += await gradientContrast(`${t}, settings drawer open`);

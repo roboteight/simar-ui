@@ -80,8 +80,8 @@ const addCode = (unit, { isSection }) => {
 
 document.querySelectorAll('main > section:not([aria-labelledby="config"])').forEach((section) => {
   // Each panel of controls is a component; a section with no panels is one component itself.
-  // (Some sit inside a <form>, so look at all of them, but not the ones inside the dialog.)
-  const panels = [...section.querySelectorAll('.panel')].filter((panel) => !panel.closest('dialog'));
+  // (Some sit inside a <form>, so look at all of them, but not the ones inside a dialog or a side menu.)
+  const panels = [...section.querySelectorAll('.panel')].filter((panel) => !panel.closest('dialog, .side-menu'));
   panels.forEach((panel) => addCode(panel, { isSection: false }));
   if (!panels.length) addCode(section, { isSection: true });
 });

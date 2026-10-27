@@ -616,6 +616,46 @@
       });
     }
   };
+  var enhanceSideMenus = (claim) => {
+    for (const menu of claim("[data-side-menu]")) {
+      const toggle = menu.querySelector(".side-menu__toggle");
+      const panel = menu.querySelector(".side-menu__panel");
+      if (!toggle || !panel) continue;
+      const docked = menu.classList.contains("side-menu--docked") ? matchMedia("(min-width: 75rem)") : null;
+      const isDocked = () => Boolean(docked?.matches);
+      const set = (open) => {
+        panel.hidden = !open && !isDocked();
+        toggle.setAttribute("aria-expanded", String(!panel.hidden && !isDocked()));
+      };
+      menu.classList.add("is-enhanced");
+      set(false);
+      docked?.addEventListener("change", () => set(false));
+      toggle.addEventListener("click", () => set(panel.hidden));
+      menu.addEventListener("side-menu:open", () => set(true));
+      menu.addEventListener("side-menu:close", () => set(false));
+      menu.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape" || panel.hidden || isDocked()) return;
+        set(false);
+        toggle.focus();
+      });
+      if (menu.hasAttribute("data-close-on-select")) {
+        panel.addEventListener("click", (e) => {
+          if (e.target.closest("a") && !isDocked()) set(false);
+        });
+      }
+      let pressing = false;
+      menu.addEventListener("pointerdown", () => {
+        pressing = true;
+      });
+      addEventListener("pointerup", () => setTimeout(() => {
+        pressing = false;
+      }));
+      menu.addEventListener("focusout", (e) => {
+        if (pressing || isDocked() || panel.hidden || menu.contains(e.relatedTarget)) return;
+        set(false);
+      });
+    }
+  };
   var pad = (n) => String(n).padStart(2, "0");
   var iso = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   var parseISO = (text) => {
@@ -1665,6 +1705,7 @@
     enhanceCode(claim);
     enhanceChecks(claim);
     enhanceTabs(claim);
+    enhanceSideMenus(claim);
     enhanceMenus(claim);
     enhanceAlerts(claim);
     enhanceTables(claim);

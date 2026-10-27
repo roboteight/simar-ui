@@ -67,7 +67,7 @@ Open `index.html` for the live demo, with a contents list that floats on the lef
 
 ## What's inside
 
-**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, confirmation dialog, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Charts:** line, bar, pie and donut (optional add-on). **Content:** typography, quotes, text blurbs, media, cards, timeline, lists, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
+**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, confirmation dialog, dialog, dropdown menu, floating button, meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Charts:** line, bar, pie and donut (optional add-on). **Content:** typography, quotes, text blurbs, media, cards, timeline, lists, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
 
 The demo page and its contents list follow Bootstrap's docs order: Getting started, Customize, Content, Forms, then Components, with similar items together.
 
@@ -370,6 +370,26 @@ A few related keys joined edge to edge in one well. Give the group a `role` and 
   <button type="button" class="key" aria-pressed="true">Bold</button>
   <button type="button" class="key" aria-pressed="false">Italic</button>
 </div>
+```
+
+#### Floating button
+
+A key fixed to a corner of the screen, reachable from anywhere on the page. Put a `.key` in a `.well` with the `fab` class. Bottom end is the default; `fab--start` moves it to the other side and `fab--top` to the top; `fab--round` makes an icon-only one, which needs an `aria-label`. It clears the notch and home bar on a phone, is hidden in print, and its key keeps a target of 24px or more. Because it floats over content, give the page `fab-space` so on a small screen it never covers the last of the content. The "Turn JS off" button on the demo page is one. Token: `--fab-size`.
+
+```html
+<span class="well fab"><button type="button" class="key key--accent">Compose</button></span>
+```
+
+#### Side menu
+
+A tab on the edge of the screen that opens a panel beside it, for options or navigation that should be one press away without taking room. It is a disclosure, not a modal: the tab is a button with `aria-expanded` and `aria-controls`, Esc closes the panel and returns focus to the tab, and so does moving focus out of it. Without JavaScript the panel is just content in the page. `side-menu--start` puts it on the left edge, `side-menu--docked` keeps the panel open as a column from the xl breakpoint (75rem) up, and `data-close-on-select` closes it when a link inside is chosen. Open or close one from code with the `side-menu:open` and `side-menu:close` events. The demo page's contents list and settings are both side menus. Tokens: `--side-menu-radius`, `--side-menu-width`.
+
+```html
+<aside class="side-menu side-menu--end" data-side-menu aria-label="Options">
+  <button type="button" class="key key--sq side-menu__toggle"
+          aria-label="Options" aria-expanded="false" aria-controls="options">…</button>
+  <div class="panel side-menu__panel" id="options">…</div>
+</aside>
 ```
 
 #### Dropdown menu

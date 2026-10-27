@@ -210,7 +210,7 @@ html:not([data-js="on"]) .needs-js { display: none; }
   }
 
   // Wide enough that the content leaves room on the left: float it there.
-  @media (min-width: 76rem) {
+  @media (min-width: 75rem) {
     position: fixed;
     top: 5.5rem;
     left: max(1rem, calc((100vw - 44rem) / 2 - 14rem));
@@ -223,43 +223,18 @@ html:not([data-js="on"]) .needs-js { display: none; }
     @include toc-list;
   }
 
-  // On smaller screens, with JavaScript, the list folds into a drawer that opens from an icon on the
-  // left edge (the script adds this class, and opens and closes it). Without JavaScript it stays
-  // above the page as chips.
-  &--drawer {
-    position: fixed;
-    top: 36%;
-    left: 3.6rem;
-    z-index: 21;
-    width: min(19rem, calc(100vw - 4.5rem));
-    max-height: calc(64vh - 1rem);
-    margin: 0;
-    padding: 1rem 0.75rem;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    @include surface(18px, 0 18px 40px -12px shade(0.4));
-
-    @include toc-list;
-    @media print { display: none; }
+  // Below xl, with JavaScript, the list is the panel of a side menu (the side-menu component) that opens from a
+  // tab on the left edge. Without JavaScript it stays above the page as chips.
+  @media (max-width: 74.99rem) {
+    .side-menu.is-enhanced > & {
+      margin-block: 0;
+      padding: 1rem 0.75rem;
+      @include surface(var(--radius-lg), 0 18px 40px -12px shade(0.4));
+      @include toc-list;
+    }
   }
 }
 
-// The icon that opens the drawer: a tab on the left edge, mirroring the settings tab on the right.
-.toc-toggle {
-  position: fixed;
-  top: 36%;
-  left: 0;
-  z-index: 21;
-  width: 2.9rem;
-  min-width: 0;
-  height: 3.4rem;
-  min-height: 0;
-  padding: 0;
-  border-radius: 0 14px 14px 0;
-
-  @media (min-width: 76rem) { display: none; }
-  @media print { display: none; }
-}
 // Jumping to a section lands it clear of the floating buttons, and glides only if motion is welcome.
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
@@ -308,4 +283,19 @@ html:not([data-js="on"]) .needs-js { display: none; }
   border-radius: var(--radius-lg);
   background: var(--page);
   box-shadow: 0 0 0 1px var(--hairline-strong);
+}
+
+// A box that holds fixed-position demos (floating buttons, side menus): a transformed box is the containing
+// block for fixed descendants, so they sit inside it instead of in the corner of the screen.
+.fixed-preview {
+  position: relative;
+  height: 18rem;
+  transform: translateZ(0);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--page);
+  box-shadow: 0 0 0 1px var(--hairline-strong);
+
+  // The demos are positioned against this box, so the real viewport-based limits are relaxed here.
+  .side-menu__panel { max-height: 14rem; }
 }
