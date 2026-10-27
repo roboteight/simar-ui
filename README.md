@@ -63,64 +63,149 @@ Write the native markup, or use short tags that expand into it:
 
 The tags are replaced with real inputs, so values submit with their form and `input` / `change` events work as usual. Tags need JavaScript; the native markup doesn't. For markup added after page load, call `SimarUI.init(element)`.
 
-Open `index.html` for the live demo, with a contents list that floats on the left (on smaller screens it folds into an icon on the left edge that opens a drawer) a sticky header with in-page search (Ctrl or Cmd + K) and the light, dark and auto keys, and a settings tab on the right edge that appears once you scroll past Page settings: every component has an **HTML** key that shows exactly how it was added to the page, with the tag form and JavaScript examples.
+Open `index.html` for the live demo: a contents list that floats on the left (below 75rem it folds into a side menu on the left edge), a sticky header with in-page search (Ctrl or Cmd + K) and an Appearance dropdown (Auto, Light, Dark), and a settings side menu on the right edge that appears once you scroll past Page settings. Every component has an **HTML** key that shows exactly how it was added to the page, with the tag form and JavaScript examples.
 
 ## What's inside
 
-**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, confirmation dialog, dialog, dropdown menu, floating button, meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Charts:** line, bar, pie and donut (optional add-on). **Content:** typography, quotes, text blurbs, media, cards, timeline, lists, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
+**Content:** card, code, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
-The demo page and its contents list follow Bootstrap's docs order: Getting started, Customize, Content, Forms, then Components, with similar items together.
+The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
+
+### Content
+
+#### Card
+
+A self-contained block: an `<article>` with an optional image, a heading and words, and a footer for actions. Every part is optional. Lay cards in a `blurb-grid` and they wrap to fit. To make the whole card a link, put one `<a class="card__link">` inside the heading: a click anywhere follows it, while a keyboard and a screen reader meet a single link named by the heading. Buttons and links in the footer stay separate.
+
+<img src="docs/screenshots/cards.png" alt="Three cards: one with an image whose heading is a link, one with a Follow button and a Details link, and a text-only card" width="640">
+
+```html
+<article class="card">
+  <img class="card__media" src="poster.jpg" alt="" width="1200" height="675" loading="lazy">
+  <div class="card__body">
+    <h4 class="card__title"><a class="card__link" href="/laurie">Laurie Strode</a></h4>
+    <p class="card__text">A few words.</p>
+  </div>
+</article>
+```
+
+#### Code
+
+A terminal-style block: monospace text on a dark screen, with a title bar when it has a label, with line numbers and a copy button. The numbers are skipped by screen readers and aren't copied; the block can be scrolled by keyboard.
+
+<img src="docs/screenshots/html-key.png" alt="The HTML key opened to show how a component is written" width="640">
+
+```html
+<simar-code lang="html"><template><button class="key">Push</button></template></simar-code>
+```
+
+#### Layout and breakpoints
+
+Responsive behavior borrowed from [Bootstrap](https://getbootstrap.com/docs/5.3/layout/grid/): a `container`, a 12-column `row` of `col-*` items, and `d-*` display helpers that change at five mobile-first breakpoints (`sm` 36rem, `md` 48rem, `lg` 62rem, `xl` 75rem, `xxl` 87.5rem, in `rem` so they follow the reader's text size). The class names will be familiar; the code is our own, and uses CSS grid.
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4">One</div>
+    <div class="col-12 col-md-6 col-lg-4">Two</div>
+    <div class="col-12 col-lg-4">Three</div>
+  </div>
+</div>
+<span class="d-md-none">Shown below md</span>
+```
+
+#### Lists
+
+Native `<ul>`, `<ol>` and `<dl>`, styled. A bare list is left to the browser, so add `list`. The markers take the theme's highlight color and nested lists indent. A description list puts each term beside its detail (`list--stacked` puts the detail underneath, and on a phone they stack). `list--divided` draws a line between items, like a list group. `list--plain` drops the markers; give a plain or divided list `role="list"`, because Safari with VoiceOver stops announcing a list once its markers are gone. Tokens: `--list-gap`, `--list-marker`.
+
+```html
+<ul class="list"><li>Joey Ramone</li><li>Dee Dee Ramone</li></ul>
+
+<ul class="list list--divided" role="list"><li>Ellen Ripley</li><li>Laurie Strode</li></ul>
+
+<dl class="list"><dt>Band</dt><dd>Black Flag</dd><dt>Singer</dt><dd>Henry Rollins</dd></dl>
+```
+
+#### Media
+
+Images, video and audio on the native elements. Put `media` on a `<figure>` and its picture scales down to fit, keeps its shape and gets the same rim as other surfaces; `media--16x9`, `media--4x3` and `media--1x1` crop to a fixed shape. Give every image its `width` and `height` (so the page doesn't jump while it loads) and an `alt` that says what it shows. Video and audio keep the browser's own controls, which a keyboard and screen reader can use; the library does not add captions, so supply a `<track>` or a transcript for any recording.
+
+<img src="docs/screenshots/media.png" alt="A night scene of a house under a moon, shown at 16:9 and cropped to a square, with captions, above an audio player" width="640">
+
+```html
+<figure class="media media--16x9">
+  <img src="poster.jpg" alt="Deborah Harry on stage under red light" width="1200" height="675" loading="lazy">
+  <figcaption>Blondie at CBGB, 1977.</figcaption>
+</figure>
+```
+
+#### Quotes
+
+A `<blockquote>` in a `<figure class="quote">`, with who said it in the `<figcaption>`. Add `quote--pull` for a pull quote.
+
+<img src="docs/screenshots/quotes.png" alt="A block quote with a colored bar and a centered pull quote" width="640">
+
+```html
+<figure class="quote">
+  <blockquote><p>Buy the ticket, take the ride.</p></blockquote>
+  <figcaption><cite>Hunter S. Thompson</cite>, Fear and Loathing in Las Vegas</figcaption>
+</figure>
+```
+
+#### Text blurbs
+
+A short block with a small label, a title and a few words. Put several in a `blurb-grid` and they wrap to fit the window; `blurb--inset` sinks one into the page.
+
+<img src="docs/screenshots/blurbs.png" alt="Three text blurbs side by side" width="640">
+
+#### Timeline
+
+Events or steps in order, as a native `<ol>`, so a screen reader says how many there are. Each entry has a dot on a thin rail, in the style of the depth rail on the case studies at chrissimari.com. The state is in the shape of the dot, not only its color: a filled dot is done, a glowing ring (`aria-current="step"`) is now, and a hollow ring (`timeline__item--upcoming`) is still to come. It is vertical by default; `timeline--horizontal` runs it left to right from the md breakpoint up and stacks on a phone, so it never needs sideways scrolling. Tokens: `--timeline-dot`, `--timeline-rail`, `--timeline-gap`.
+
+<img src="docs/screenshots/timeline.png" alt="A vertical timeline of three evenings events, and a horizontal delivery timeline with two done steps, a current one and an upcoming one" width="640">
+
+```html
+<ol class="timeline timeline--horizontal" aria-label="Delivery">
+  <li class="timeline__item">
+    <time class="timeline__time" datetime="2026-10-24">24 Oct</time>
+    <h4 class="timeline__title">Ordered <span class="visually-hidden">(completed)</span></h4>
+  </li>
+  <li class="timeline__item" aria-current="step">
+    <time class="timeline__time" datetime="2026-10-27">27 Oct</time>
+    <h4 class="timeline__title">Shipped <span class="visually-hidden">(current step)</span></h4>
+  </li>
+  <li class="timeline__item timeline__item--upcoming">
+    <time class="timeline__time" datetime="2026-10-29">29 Oct</time>
+    <h4 class="timeline__title">Delivered <span class="visually-hidden">(upcoming)</span></h4>
+  </li>
+</ol>
+```
+
+#### Typography
+
+Headings, display type, a lead paragraph and running text. Use the classes anywhere (`.h1` to `.h6`, `.display-1` to `.display-3`, `.lead`), or wrap text in `.prose` to style the plain elements inside it (links, lists, `mark`, `kbd`, `abbr`, `hr`). Sizes scale with the window, so they fit a phone.
+
+<img src="docs/screenshots/typography.png" alt="Headings one to six, display type, a lead paragraph and body text" width="640">
+
+```html
+<h1 class="display-1">Display</h1>
+<div class="prose">
+  <p class="lead">What this page is about.</p>
+  <p>Text with a <a href="/">link</a>, <mark>a mark</mark> and <kbd>Ctrl</kbd> + <kbd>K</kbd>.</p>
+</div>
+```
+
+**Fonts.** The page's own (system) fonts are the default and nothing is downloaded. Set `data-font="sans"`, `"serif"` or `"both"` (serif headings, sans text) on `<html>` to use Inter and Source Serif 4 from Google Fonts; load them yourself with a `<link>` (the demo page does it the first time you pick one). Code always uses a monospace font (JetBrains Mono, then the system's). To use your own fonts, set three tokens:
+
+```css
+:root {
+  --font-body: "Your Sans", system-ui, sans-serif;
+  --font-heading: "Your Serif", Georgia, serif;
+  --font-mono: "Your Mono", ui-monospace, monospace;
+}
+```
 
 ### Forms
-
-#### Form control
-
-Text-like fields sunk into the panel, like the well a key sits in. One class, `.input`, covers text, email, password, search, tel, url, number, the date and time types, file, textarea and select. Every field has a real `<label>`; a hint and an error are linked to it with `aria-describedby`; a required field is flagged in words.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/form-control-dark.png">
-  <img src="docs/screenshots/form-control.png" alt="Text fields and a textarea" width="640">
-</picture>
-
-```html
-<simar-input label="Email" type="email" name="email" required
-             hint="Used only for receipts." error="Enter an email like name@chrissimari.com"></simar-input>
-<simar-textarea label="Message" name="message" rows="4" maxlength="200"></simar-textarea>
-```
-
-<img src="docs/screenshots/date-time.png" alt="Date and time fields, a file field and a color field" width="640">
-
-Color has a readout beside it, so the color is never the only way to know what's picked.
-
-#### Select
-
-Native `<select>`, so the list that opens is the browser's own: accessible, searchable by typing, and following the theme. Wrap a single select to get the chevron; a multiple select is a list box; `<datalist>` gives a text field native suggestions.
-
-<img src="docs/screenshots/select.png" alt="Single selects with a chevron, a multiple select list box and a field with suggestions" width="640">
-
-```html
-<simar-select label="Size" name="size">
-  <simar-option value="s">Small</simar-option>
-  <simar-option value="m" selected>Medium</simar-option>
-</simar-select>
-```
-
-#### Datalist and autocomplete
-
-A text field with suggestions: add `list` to an input and point it at a `<datalist>`. It stays a plain input, so anything can still be typed, and the browser shows matches as you type. The list is drawn by the browser, so it follows light and dark but not the rest of the theme. It works on text, search, email, url, number, date, time and color fields.
-
-<img src="docs/screenshots/datalist.png" alt="City, website, quantity and color fields that offer suggestions" width="640">
-
-For a themed list that filters as you type, add `data-autocomplete`. The datalist stays as the fallback without JavaScript; with it, a listbox appears under the field with the matching part in bold. It follows the ARIA editable combobox pattern: focus stays in the field, the arrow keys move, Enter picks, Esc closes, and a live region says how many suggestions there are.
-
-<img src="docs/screenshots/autocomplete.png" alt="A country field with United Kingdom and United States suggested" width="460">
-
-```html
-<simar-input label="Country" name="country" suggest>
-  <simar-option value="Argentina"></simar-option>
-  <simar-option value="Australia"></simar-option>
-</simar-input>
-```
 
 #### Checks and radios
 
@@ -143,6 +228,63 @@ Beveled caps that sit in a recessed well. They go down quickly and ease back up,
 </simar-keys>
 <simar-checkbox label="Send me the newsletter" name="news" checked></simar-checkbox>
 <simar-switch label="Notifications" name="notify"></simar-switch>
+```
+
+#### Datalist and autocomplete
+
+A text field with suggestions: add `list` to an input and point it at a `<datalist>`. It stays a plain input, so anything can still be typed, and the browser shows matches as you type. The list is drawn by the browser, so it follows light and dark but not the rest of the theme. It works on text, search, email, url, number, date, time and color fields.
+
+<img src="docs/screenshots/datalist.png" alt="City, website, quantity and color fields that offer suggestions" width="640">
+
+For a themed list that filters as you type, add `data-autocomplete`. The datalist stays as the fallback without JavaScript; with it, a listbox appears under the field with the matching part in bold. It follows the ARIA editable combobox pattern: focus stays in the field, the arrow keys move, Enter picks, Esc closes, and a live region says how many suggestions there are.
+
+<img src="docs/screenshots/autocomplete.png" alt="A country field with United Kingdom and United States suggested" width="460">
+
+```html
+<simar-input label="Country" name="country" suggest>
+  <simar-option value="Argentina"></simar-option>
+  <simar-option value="Australia"></simar-option>
+</simar-input>
+```
+
+#### Date range
+
+Two native date inputs stay the source of truth, so typing, `min`/`max` and form submission all work. A calendar opens as a native popover: click a start day, then an end day.
+
+<img src="docs/screenshots/date-range.png" alt="A two-month calendar with a range selected" width="640">
+
+```html
+<simar-date-range name="stay" from="2026-11-02" to="2026-11-09" min="2026-10-26" months="2" max-span="14"></simar-date-range>
+```
+
+#### Form control
+
+Text-like fields sunk into the panel, like the well a key sits in. One class, `.input`, covers text, email, password, search, tel, url, number, the date and time types, file, textarea and select. Every field has a real `<label>`; a hint and an error are linked to it with `aria-describedby`; a required field is flagged in words.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/form-control-dark.png">
+  <img src="docs/screenshots/form-control.png" alt="Text fields and a textarea" width="640">
+</picture>
+
+```html
+<simar-input label="Email" type="email" name="email" required
+             hint="Used only for receipts." error="Enter an email like name@chrissimari.com"></simar-input>
+<simar-textarea label="Message" name="message" rows="4" maxlength="200"></simar-textarea>
+```
+
+<img src="docs/screenshots/date-time.png" alt="Date and time fields, a file field and a color field" width="640">
+
+Color has a readout beside it, so the color is never the only way to know what's picked.
+
+#### Input group
+
+A field with a control attached: a number with a key on each side, a password with a show/hide button. Both stay real inputs. The keys are added by the script, announce the new value, and without JavaScript you get the plain native field. The number field follows the ARIA spinbutton pattern in the script too, because browsers differ on whether the arrow keys step a number field: Up and Down step by one, Page Up and Page Down by ten, and min and max are kept.
+
+<img src="docs/screenshots/input-group.png" alt="A number stepper and a password field with a reveal button" width="640">
+
+```html
+<simar-number label="Quantity" name="qty" min="1" max="10" value="2"></simar-number>
+<simar-input label="Password" type="password" name="password" reveal></simar-input>
 ```
 
 #### Range
@@ -169,25 +311,17 @@ Knobs: drag up or right, hold Shift for fine control, double-click to reset, use
 <simar-knob label="Volume" max="11" step="1" value="7" ticks="12"></simar-knob>
 ```
 
-#### Date range
+#### Select
 
-Two native date inputs stay the source of truth, so typing, `min`/`max` and form submission all work. A calendar opens as a native popover: click a start day, then an end day.
+Native `<select>`, so the list that opens is the browser's own: accessible, searchable by typing, and following the theme. Wrap a single select to get the chevron; a multiple select is a list box; `<datalist>` gives a text field native suggestions.
 
-<img src="docs/screenshots/date-range.png" alt="A two-month calendar with a range selected" width="640">
-
-```html
-<simar-date-range name="stay" from="2026-11-02" to="2026-11-09" min="2026-10-26" months="2" max-span="14"></simar-date-range>
-```
-
-#### Input group
-
-A field with a control attached: a number with a key on each side, a password with a show/hide button. Both stay real inputs. The keys are added by the script, announce the new value, and without JavaScript you get the plain native field. The number field follows the ARIA spinbutton pattern in the script too, because browsers differ on whether the arrow keys step a number field: Up and Down step by one, Page Up and Page Down by ten, and min and max are kept.
-
-<img src="docs/screenshots/input-group.png" alt="A number stepper and a password field with a reveal button" width="640">
+<img src="docs/screenshots/select.png" alt="Single selects with a chevron, a multiple select list box and a field with suggestions" width="640">
 
 ```html
-<simar-number label="Quantity" name="qty" min="1" max="10" value="2"></simar-number>
-<simar-input label="Password" type="password" name="password" reveal></simar-input>
+<simar-select label="Size" name="size">
+  <simar-option value="s">Small</simar-option>
+  <simar-option value="m" selected>Medium</simar-option>
+</simar-select>
 ```
 
 #### Validation
@@ -231,62 +365,6 @@ The icons come from [Lucide](https://lucide.dev), a free set of clean outline ic
 ```
 
 
-#### Confirmation dialog
-
-A short question and two actions, for something that is hard to undo or that sends something out. It is a `<dialog>` with `role="alertdialog"` (the WAI-ARIA alert dialog pattern), named by its title and described by its message. Focus starts on the safe action (`autofocus` on Cancel), Esc and a click outside both cancel (the result reads "dismissed"), Tab stays in the dialog, and focus returns to the button that opened it. The action says what it does ("Delete draft", not "OK").
-
-<img src="docs/screenshots/confirm-dialog.png" alt="A confirmation: Delete this draft? with Cancel and a red Delete draft key" width="420">
-
-```html
-<dialog id="confirm" class="sheet sheet--confirm" role="alertdialog"
-        aria-labelledby="confirm-title" aria-describedby="confirm-text">
-  <form method="dialog">
-    <div class="sheet__body">
-      <h3 class="sheet__title" id="confirm-title">Delete this draft?</h3>
-      <p class="sheet__text" id="confirm-text">This cannot be undone.</p>
-    </div>
-    <footer class="sheet__actions">
-      <button class="key" value="cancel" autofocus>Cancel</button>
-      <button class="key key--danger" value="deleted">Delete draft</button>
-    </footer>
-  </form>
-</dialog>
-```
-
-#### Meter, progress and spinners
-
-`<meter>` for a known quantity (a gauge), `<progress>` for work being done, and a spinner. The meter's fill is told apart by pattern as well as color: solid is good, striped is middling, dotted is poor. Motion stops with `prefers-reduced-motion`, and `data-paused` freezes it.
-
-<img src="docs/screenshots/meter.png" alt="Three meters: solid green, striped amber and dotted red" width="640">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/progress-dark.png">
-  <img src="docs/screenshots/progress.png" alt="A progress bar and an indeterminate bar" width="640">
-</picture>
-
-<img src="docs/screenshots/spinners.png" alt="A spinner style picker showing the active spinner" width="640">
-
-Four spinner styles, all SVG so they stay crisp on any background: `ticks` (default), `ring`, `dots` and `bars`. Pick one with `variant` on the tag or a `spinner--ring` class.
-
-```html
-<simar-meter label="Battery" value="85" low="20" high="50" optimum="100"></simar-meter>
-<simar-loader label="Uploading" value="64" max="100"></simar-loader>
-<simar-spinner label="Loading results" variant="ring"></simar-spinner>
-```
-
-#### Tabs
-
-Write each tab as a headed section. Without JavaScript they stack under their headings; with it the headings become traditional tabs, close together and rounded on top, with the selected one joined to its panel, and one panel shows at a time. Left and Right arrows, Home and End move between tabs (the ARIA tabs pattern).
-
-<img src="docs/screenshots/tabs.png" alt="A row of three tabs with the middle one selected, and its panel below" width="640">
-
-```html
-<simar-tabs label="Project">
-  <simar-tab title="Overview">The summary.</simar-tab>
-  <simar-tab title="Details" selected>The details.</simar-tab>
-</simar-tabs>
-```
-
 #### Alerts and toasts
 
 An alert is a banner in the page with an icon, a title and some words, so the kind of message never depends on color alone: `info`, `success`, `warning` and `danger`. Add `data-dismissible` for a close button. A toast is the same banner shown for a few seconds in a live region, so it is announced without moving focus. It waits while the pointer or focus is on it, can always be dismissed (Esc too), and an error interrupts while the others wait their turn.
@@ -309,38 +387,6 @@ A small label for a status or a count. It always has words (or a number with hid
 ```html
 <simar-badge variant="success">Paid</simar-badge>
 <button type="button" class="key">Inbox <span class="badge badge--count">3<span class="visually-hidden"> unread</span></span></button>
-```
-
-#### Table
-
-A native `<table>` with a `<caption>` and `<th scope>`, in a `.table-wrap` that scrolls sideways on a narrow screen (the wrapper takes keyboard focus). `table--striped`, `table--hover`, and `data-sortable` with `data-sort` on headers for sorting: the script adds the buttons and keeps `aria-sort` on one column.
-
-<img src="docs/screenshots/table.png" alt="A sortable table of orders with status badges" width="640">
-
-```html
-<div class="table-wrap" role="region" aria-labelledby="cap" tabindex="0">
-  <table class="table table--hover" data-sortable>
-    <caption id="cap">Recent orders</caption>
-    <thead><tr><th scope="col" data-sort>Order</th><th scope="col" class="num" data-sort>Total</th></tr></thead>
-    <tbody><tr><th scope="row">#1042</th><td class="num">$120.00</td></tr></tbody>
-  </table>
-</div>
-```
-
-#### Pagination
-
-Page links in a `<nav>` with its own label. They are real links, so they work without JavaScript. The current page has `aria-current="page"` and stays latched; Previous and Next carry `rel="prev"` and `rel="next"`, and one that can't be used is `aria-disabled="true"`.
-
-<img src="docs/screenshots/pagination.png" alt="Previous, pages 1 to 3, a gap, page 12 and Next, with page 2 current" width="640">
-
-```html
-<nav class="pagination" aria-label="Orders pages">
-  <ul class="pagination__list">
-    <li><a class="key" href="?page=1" rel="prev">Previous</a></li>
-    <li><a class="key" href="?page=2" aria-label="Page 2, current page" aria-current="page">2</a></li>
-    <li><a class="key" href="?page=3" rel="next">Next</a></li>
-  </ul>
-</nav>
 ```
 
 #### Breadcrumb
@@ -372,140 +418,6 @@ A few related keys joined edge to edge in one well. Give the group a `role` and 
 </div>
 ```
 
-#### Floating button
-
-A key fixed to a corner of the screen, reachable from anywhere on the page. Put a `.key` in a `.well` with the `fab` class. Bottom end is the default; `fab--start` moves it to the other side and `fab--top` to the top; `fab--round` makes an icon-only one, which needs an `aria-label`. It clears the notch and home bar on a phone, is hidden in print, and its key keeps a target of 24px or more. Because it floats over content, give the page `fab-space` so on a small screen it never covers the last of the content. The "Turn JS off" button on the demo page is one. Token: `--fab-size`.
-
-```html
-<span class="well fab"><button type="button" class="key key--accent">Compose</button></span>
-```
-
-#### Side menu
-
-A tab on the edge of the screen that opens a panel beside it, for options or navigation that should be one press away without taking room. It is a disclosure, not a modal: the tab is a button with `aria-expanded` and `aria-controls`, Esc closes the panel and returns focus to the tab, and so does moving focus out of it. Without JavaScript the panel is just content in the page. `side-menu--start` puts it on the left edge, `side-menu--docked` keeps the panel open as a column from the xl breakpoint (75rem) up, and `data-close-on-select` closes it when a link inside is chosen. Open or close one from code with the `side-menu:open` and `side-menu:close` events. The demo page's contents list and settings are both side menus. Tokens: `--side-menu-radius`, `--side-menu-width`.
-
-```html
-<aside class="side-menu side-menu--end" data-side-menu aria-label="Options">
-  <button type="button" class="key key--sq side-menu__toggle"
-          aria-label="Options" aria-expanded="false" aria-controls="options">…</button>
-  <div class="panel side-menu__panel" id="options">…</div>
-</aside>
-```
-
-#### Dropdown menu
-
-A button that opens a list of actions or links. It is a native `popover`, so it opens, closes and dismisses with no JavaScript; the script adds the menu roles and the keys from the ARIA menu button pattern (Enter, Space and the arrows open it, arrows, Home, End and letters move, Esc returns focus to the button, Tab leaves).
-
-<img src="docs/screenshots/menu.png" alt="An Actions button with its menu open: Edit, Duplicate, Export, Archive and Delete" width="460">
-
-```html
-<simar-menu label="Actions">
-  <simar-menu-item>Edit</simar-menu-item>
-  <simar-menu-item href="/export">Export</simar-menu-item>
-  <simar-menu-separator></simar-menu-separator>
-  <simar-menu-item danger>Delete</simar-menu-item>
-</simar-menu>
-```
-
-#### Tooltips
-
-Add `data-tooltip="Text"` to a button, link or radio key. It shows on mouse hover and on keyboard focus, Esc dismisses it, and you can move the pointer onto it (WCAG 1.4.13). Icon-only keys with an `aria-label` get theirs as a tooltip automatically; opt one out with `data-tooltip=""`.
-
-<img src="docs/screenshots/tooltip.png" alt="A tooltip above a Save key" width="460">
-
-```html
-<button type="button" class="key" aria-label="Settings" data-tooltip="Settings">…</button>
-<simar-button tooltip="Saves a copy to this device">Save</simar-button>
-```
-
-Keep the `aria-label` in the markup: a tooltip needs JavaScript, a label doesn't. The library warns if a control's only name is its tooltip.
-
-### Content
-
-#### Typography
-
-Headings, display type, a lead paragraph and running text. Use the classes anywhere (`.h1` to `.h6`, `.display-1` to `.display-3`, `.lead`), or wrap text in `.prose` to style the plain elements inside it (links, lists, `mark`, `kbd`, `abbr`, `hr`). Sizes scale with the window, so they fit a phone.
-
-<img src="docs/screenshots/typography.png" alt="Headings one to six, display type, a lead paragraph and body text" width="640">
-
-```html
-<h1 class="display-1">Display</h1>
-<div class="prose">
-  <p class="lead">What this page is about.</p>
-  <p>Text with a <a href="/">link</a>, <mark>a mark</mark> and <kbd>Ctrl</kbd> + <kbd>K</kbd>.</p>
-</div>
-```
-
-**Fonts.** The page's own (system) fonts are the default and nothing is downloaded. Set `data-font="sans"`, `"serif"` or `"both"` (serif headings, sans text) on `<html>` to use Inter and Source Serif 4 from Google Fonts; load them yourself with a `<link>` (the demo page does it the first time you pick one). Code always uses a monospace font (JetBrains Mono, then the system's). To use your own fonts, set three tokens:
-
-```css
-:root {
-  --font-body: "Your Sans", system-ui, sans-serif;
-  --font-heading: "Your Serif", Georgia, serif;
-  --font-mono: "Your Mono", ui-monospace, monospace;
-}
-```
-
-#### Quotes
-
-A `<blockquote>` in a `<figure class="quote">`, with who said it in the `<figcaption>`. Add `quote--pull` for a pull quote.
-
-<img src="docs/screenshots/quotes.png" alt="A block quote with a colored bar and a centered pull quote" width="640">
-
-```html
-<figure class="quote">
-  <blockquote><p>Buy the ticket, take the ride.</p></blockquote>
-  <figcaption><cite>Hunter S. Thompson</cite>, Fear and Loathing in Las Vegas</figcaption>
-</figure>
-```
-
-#### Text blurbs
-
-A short block with a small label, a title and a few words. Put several in a `blurb-grid` and they wrap to fit the window; `blurb--inset` sinks one into the page.
-
-<img src="docs/screenshots/blurbs.png" alt="Three text blurbs side by side" width="640">
-
-#### Lists
-
-Native `<ul>`, `<ol>` and `<dl>`, styled. A bare list is left to the browser, so add `list`. The markers take the theme's highlight color and nested lists indent. A description list puts each term beside its detail (`list--stacked` puts the detail underneath, and on a phone they stack). `list--divided` draws a line between items, like a list group. `list--plain` drops the markers; give a plain or divided list `role="list"`, because Safari with VoiceOver stops announcing a list once its markers are gone. Tokens: `--list-gap`, `--list-marker`.
-
-```html
-<ul class="list"><li>Joey Ramone</li><li>Dee Dee Ramone</li></ul>
-
-<ul class="list list--divided" role="list"><li>Ellen Ripley</li><li>Laurie Strode</li></ul>
-
-<dl class="list"><dt>Band</dt><dd>Black Flag</dd><dt>Singer</dt><dd>Henry Rollins</dd></dl>
-```
-
-#### Media
-
-Images, video and audio on the native elements. Put `media` on a `<figure>` and its picture scales down to fit, keeps its shape and gets the same rim as other surfaces; `media--16x9`, `media--4x3` and `media--1x1` crop to a fixed shape. Give every image its `width` and `height` (so the page doesn't jump while it loads) and an `alt` that says what it shows. Video and audio keep the browser's own controls, which a keyboard and screen reader can use; the library does not add captions, so supply a `<track>` or a transcript for any recording.
-
-<img src="docs/screenshots/media.png" alt="A night scene of a house under a moon, shown at 16:9 and cropped to a square, with captions, above an audio player" width="640">
-
-```html
-<figure class="media media--16x9">
-  <img src="poster.jpg" alt="Deborah Harry on stage under red light" width="1200" height="675" loading="lazy">
-  <figcaption>Blondie at CBGB, 1977.</figcaption>
-</figure>
-```
-
-#### Card
-
-A self-contained block: an `<article>` with an optional image, a heading and words, and a footer for actions. Every part is optional. Lay cards in a `blurb-grid` and they wrap to fit. To make the whole card a link, put one `<a class="card__link">` inside the heading: a click anywhere follows it, while a keyboard and a screen reader meet a single link named by the heading. Buttons and links in the footer stay separate.
-
-<img src="docs/screenshots/cards.png" alt="Three cards: one with an image whose heading is a link, one with a Follow button and a Details link, and a text-only card" width="640">
-
-```html
-<article class="card">
-  <img class="card__media" src="poster.jpg" alt="" width="1200" height="675" loading="lazy">
-  <div class="card__body">
-    <h4 class="card__title"><a class="card__link" href="/laurie">Laurie Strode</a></h4>
-    <p class="card__text">A few words.</p>
-  </div>
-</article>
-```
-
 #### Charts
 
 A chart is a figure whose data is a native `<table>`. The table is the accessible version, so it works with no script and no chart library. With the optional charts add-on (`dist/simar-ui-charts.min.js`) it is drawn as a **line, bar, pie or donut** chart in SVG by [Chartist](https://chartist.dev) (MIT; load it first, it is not bundled), styled with our theme tokens so it follows light, dark, palettes and styles. The chart is an image named by its title and described by a short summary (`data-summary` to write your own). Each series has its own color, a dash pattern and a legend entry, so color is never the only clue, and the table moves into a "Data table" disclosure that opens from the keyboard. The eight series colors (`--chart-1` to `--chart-8`) are in the theme file and are tested at 3:1 against the panel in light and dark.
@@ -526,53 +438,141 @@ A chart is a figure whose data is a native `<table>`. The table is the accessibl
 </figure>
 ```
 
-#### Timeline
+#### Confirmation dialog
 
-Events or steps in order, as a native `<ol>`, so a screen reader says how many there are. Each entry has a dot on a thin rail, in the style of the depth rail on the case studies at chrissimari.com. The state is in the shape of the dot, not only its color: a filled dot is done, a glowing ring (`aria-current="step"`) is now, and a hollow ring (`timeline__item--upcoming`) is still to come. It is vertical by default; `timeline--horizontal` runs it left to right from the md breakpoint up and stacks on a phone, so it never needs sideways scrolling. Tokens: `--timeline-dot`, `--timeline-rail`, `--timeline-gap`.
+A short question and two actions, for something that is hard to undo or that sends something out. It is a `<dialog>` with `role="alertdialog"` (the WAI-ARIA alert dialog pattern), named by its title and described by its message. Focus starts on the safe action (`autofocus` on Cancel), Esc and a click outside both cancel (the result reads "dismissed"), Tab stays in the dialog, and focus returns to the button that opened it. The action says what it does ("Delete draft", not "OK").
 
-<img src="docs/screenshots/timeline.png" alt="A vertical timeline of three evenings events, and a horizontal delivery timeline with two done steps, a current one and an upcoming one" width="640">
+<img src="docs/screenshots/confirm-dialog.png" alt="A confirmation: Delete this draft? with Cancel and a red Delete draft key" width="420">
 
 ```html
-<ol class="timeline timeline--horizontal" aria-label="Delivery">
-  <li class="timeline__item">
-    <time class="timeline__time" datetime="2026-10-24">24 Oct</time>
-    <h4 class="timeline__title">Ordered <span class="visually-hidden">(completed)</span></h4>
-  </li>
-  <li class="timeline__item" aria-current="step">
-    <time class="timeline__time" datetime="2026-10-27">27 Oct</time>
-    <h4 class="timeline__title">Shipped <span class="visually-hidden">(current step)</span></h4>
-  </li>
-  <li class="timeline__item timeline__item--upcoming">
-    <time class="timeline__time" datetime="2026-10-29">29 Oct</time>
-    <h4 class="timeline__title">Delivered <span class="visually-hidden">(upcoming)</span></h4>
-  </li>
-</ol>
+<dialog id="confirm" class="sheet sheet--confirm" role="alertdialog"
+        aria-labelledby="confirm-title" aria-describedby="confirm-text">
+  <form method="dialog">
+    <div class="sheet__body">
+      <h3 class="sheet__title" id="confirm-title">Delete this draft?</h3>
+      <p class="sheet__text" id="confirm-text">This cannot be undone.</p>
+    </div>
+    <footer class="sheet__actions">
+      <button class="key" value="cancel" autofocus>Cancel</button>
+      <button class="key key--danger" value="deleted">Delete draft</button>
+    </footer>
+  </form>
+</dialog>
 ```
 
-#### Layout and breakpoints
+#### Dropdown menu
 
-Responsive behavior borrowed from [Bootstrap](https://getbootstrap.com/docs/5.3/layout/grid/): a `container`, a 12-column `row` of `col-*` items, and `d-*` display helpers that change at five mobile-first breakpoints (`sm` 36rem, `md` 48rem, `lg` 62rem, `xl` 75rem, `xxl` 87.5rem, in `rem` so they follow the reader's text size). The class names will be familiar; the code is our own, and uses CSS grid.
+A button that opens a list of actions or links. It is a native `popover`, so it opens, closes and dismisses with no JavaScript; the script adds the menu roles and the keys from the ARIA menu button pattern (Enter, Space and the arrows open it, arrows, Home, End and letters move, Esc returns focus to the button, Tab leaves).
+
+<img src="docs/screenshots/menu.png" alt="An Actions button with its menu open: Edit, Duplicate, Export, Archive and Delete" width="460">
 
 ```html
-<div class="container">
-  <div class="row">
-    <div class="col-12 col-md-6 col-lg-4">One</div>
-    <div class="col-12 col-md-6 col-lg-4">Two</div>
-    <div class="col-12 col-lg-4">Three</div>
-  </div>
+<simar-menu label="Actions">
+  <simar-menu-item>Edit</simar-menu-item>
+  <simar-menu-item href="/export">Export</simar-menu-item>
+  <simar-menu-separator></simar-menu-separator>
+  <simar-menu-item danger>Delete</simar-menu-item>
+</simar-menu>
+```
+
+#### Floating button
+
+A key fixed to a corner of the screen, reachable from anywhere on the page. Put a `.key` in a `.well` with the `fab` class. Bottom end is the default; `fab--start` moves it to the other side and `fab--top` to the top; `fab--round` makes an icon-only one, which needs an `aria-label`. It clears the notch and home bar on a phone, is hidden in print, and its key keeps a target of 24px or more. Because it floats over content, give the page `fab-space` so on a small screen it never covers the last of the content. The "Turn JS off" button on the demo page is one. Token: `--fab-size`.
+
+```html
+<span class="well fab"><button type="button" class="key key--accent">Compose</button></span>
+```
+
+#### Meter, progress and spinners
+
+`<meter>` for a known quantity (a gauge), `<progress>` for work being done, and a spinner. The meter's fill is told apart by pattern as well as color: solid is good, striped is middling, dotted is poor. Motion stops with `prefers-reduced-motion`, and `data-paused` freezes it.
+
+<img src="docs/screenshots/meter.png" alt="Three meters: solid green, striped amber and dotted red" width="640">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/progress-dark.png">
+  <img src="docs/screenshots/progress.png" alt="A progress bar and an indeterminate bar" width="640">
+</picture>
+
+<img src="docs/screenshots/spinners.png" alt="A spinner style picker showing the active spinner" width="640">
+
+Four spinner styles, all SVG so they stay crisp on any background: `ticks` (default), `ring`, `dots` and `bars`. Pick one with `variant` on the tag or a `spinner--ring` class.
+
+```html
+<simar-meter label="Battery" value="85" low="20" high="50" optimum="100"></simar-meter>
+<simar-loader label="Uploading" value="64" max="100"></simar-loader>
+<simar-spinner label="Loading results" variant="ring"></simar-spinner>
+```
+
+#### Pagination
+
+Page links in a `<nav>` with its own label. They are real links, so they work without JavaScript. The current page has `aria-current="page"` and stays latched; Previous and Next carry `rel="prev"` and `rel="next"`, and one that can't be used is `aria-disabled="true"`.
+
+<img src="docs/screenshots/pagination.png" alt="Previous, pages 1 to 3, a gap, page 12 and Next, with page 2 current" width="640">
+
+```html
+<nav class="pagination" aria-label="Orders pages">
+  <ul class="pagination__list">
+    <li><a class="key" href="?page=1" rel="prev">Previous</a></li>
+    <li><a class="key" href="?page=2" aria-label="Page 2, current page" aria-current="page">2</a></li>
+    <li><a class="key" href="?page=3" rel="next">Next</a></li>
+  </ul>
+</nav>
+```
+
+#### Side menu
+
+A tab on the edge of the screen that opens a panel beside it, for options or navigation that should be one press away without taking room. It is a disclosure, not a modal: the tab is a button with `aria-expanded` and `aria-controls`, Esc closes the panel and returns focus to the tab, and so does moving focus out of it. Without JavaScript the panel is just content in the page. `side-menu--start` puts it on the left edge, `side-menu--docked` keeps the panel open as a column from the xl breakpoint (75rem) up, and `data-close-on-select` closes it when a link inside is chosen. Open or close one from code with the `side-menu:open` and `side-menu:close` events. The demo page's contents list and settings are both side menus. Tokens: `--side-menu-radius`, `--side-menu-width`.
+
+```html
+<aside class="side-menu side-menu--end" data-side-menu aria-label="Options">
+  <button type="button" class="key key--sq side-menu__toggle"
+          aria-label="Options" aria-expanded="false" aria-controls="options">…</button>
+  <div class="panel side-menu__panel" id="options">…</div>
+</aside>
+```
+
+#### Table
+
+A native `<table>` with a `<caption>` and `<th scope>`, in a `.table-wrap` that scrolls sideways on a narrow screen (the wrapper takes keyboard focus). `table--striped`, `table--hover`, and `data-sortable` with `data-sort` on headers for sorting: the script adds the buttons and keeps `aria-sort` on one column.
+
+<img src="docs/screenshots/table.png" alt="A sortable table of orders with status badges" width="640">
+
+```html
+<div class="table-wrap" role="region" aria-labelledby="cap" tabindex="0">
+  <table class="table table--hover" data-sortable>
+    <caption id="cap">Recent orders</caption>
+    <thead><tr><th scope="col" data-sort>Order</th><th scope="col" class="num" data-sort>Total</th></tr></thead>
+    <tbody><tr><th scope="row">#1042</th><td class="num">$120.00</td></tr></tbody>
+  </table>
 </div>
-<span class="d-md-none">Shown below md</span>
 ```
 
-#### Code
+#### Tabs
 
-A terminal-style block: monospace text on a dark screen, with a title bar when it has a label, with line numbers and a copy button. The numbers are skipped by screen readers and aren't copied; the block can be scrolled by keyboard.
+Write each tab as a headed section. Without JavaScript they stack under their headings; with it the headings become traditional tabs, close together and rounded on top, with the selected one joined to its panel, and one panel shows at a time. Left and Right arrows, Home and End move between tabs (the ARIA tabs pattern).
 
-<img src="docs/screenshots/html-key.png" alt="The HTML key opened to show how a component is written" width="640">
+<img src="docs/screenshots/tabs.png" alt="A row of three tabs with the middle one selected, and its panel below" width="640">
 
 ```html
-<simar-code lang="html"><template><button class="key">Push</button></template></simar-code>
+<simar-tabs label="Project">
+  <simar-tab title="Overview">The summary.</simar-tab>
+  <simar-tab title="Details" selected>The details.</simar-tab>
+</simar-tabs>
 ```
+
+#### Tooltips
+
+Add `data-tooltip="Text"` to a button, link or radio key. It shows on mouse hover and on keyboard focus, Esc dismisses it, and you can move the pointer onto it (WCAG 1.4.13). Icon-only keys with an `aria-label` get theirs as a tooltip automatically; opt one out with `data-tooltip=""`.
+
+<img src="docs/screenshots/tooltip.png" alt="A tooltip above a Save key" width="460">
+
+```html
+<button type="button" class="key" aria-label="Settings" data-tooltip="Settings">…</button>
+<simar-button tooltip="Saves a copy to this device">Save</simar-button>
+```
+
+Keep the `aria-label` in the markup: a tooltip needs JavaScript, a label doesn't. The library warns if a control's only name is its tooltip.
 
 ## Themes
 
