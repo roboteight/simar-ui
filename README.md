@@ -67,7 +67,7 @@ Open `index.html` for the live demo, with a contents list that floats on the lef
 
 ## What's inside
 
-**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Content:** typography, quotes, text blurbs, media, cards, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
+**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, confirmation dialog, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Content:** typography, quotes, text blurbs, media, cards, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
 
 The demo page and its contents list follow Bootstrap's docs order: Getting started, Customize, Content, Forms, then Components, with similar items together.
 
@@ -226,6 +226,29 @@ A native `<details>` accordion, keys (`<button class="key">`, also on submit and
 <simar-accordion name="faq">
   <simar-item title="What is it?" open>A set of form controls.</simar-item>
 </simar-accordion>
+```
+
+
+#### Confirmation dialog
+
+A short question and two actions, for something that is hard to undo or that sends something out. It is a `<dialog>` with `role="alertdialog"` (the WAI-ARIA alert dialog pattern), named by its title and described by its message. Focus starts on the safe action (`autofocus` on Cancel), Esc and a click outside both cancel (the result reads "dismissed"), Tab stays in the dialog, and focus returns to the button that opened it. The action says what it does ("Delete draft", not "OK").
+
+<img src="docs/screenshots/confirm-dialog.png" alt="A confirmation: Delete this draft? with Cancel and a red Delete draft key" width="420">
+
+```html
+<dialog id="confirm" class="sheet sheet--confirm" role="alertdialog"
+        aria-labelledby="confirm-title" aria-describedby="confirm-text">
+  <form method="dialog">
+    <div class="sheet__body">
+      <h3 class="sheet__title" id="confirm-title">Delete this draft?</h3>
+      <p class="sheet__text" id="confirm-text">This cannot be undone.</p>
+    </div>
+    <footer class="sheet__actions">
+      <button class="key" value="cancel" autofocus>Cancel</button>
+      <button class="key key--danger" value="deleted">Delete draft</button>
+    </footer>
+  </form>
+</dialog>
 ```
 
 #### Meter, progress and spinners
@@ -619,7 +642,7 @@ index.html  the demo and documentation page
 
 ## Roadmap
 
-Next: confirmation dialog, timeline (horizontal and vertical), floating button, side menu, charts and graphs (our own styling over an existing library), suggested flows, tags and chips, avatar, list group, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
+Next: timeline (horizontal and vertical), floating button, side menu, charts and graphs (our own styling over an existing library), suggested flows, tags and chips, avatar, list group, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
 
 ## Contributing
 

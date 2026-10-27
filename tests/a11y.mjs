@@ -170,6 +170,15 @@ const suite = async (theme) => {
   total += await gradientContrast(`${t}, dialog open`);
   await page.keyboard.press('Escape');
 
+  // confirmation dialog open
+  await page.evaluate(() => document.querySelector('[commandfor="confirm-delete"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.click('[commandfor="confirm-delete"]');
+  await wait(400);
+  add(await run(`${t}, confirmation dialog open`));
+  total += await gradientContrast(`${t}, confirmation dialog open`);
+  await page.keyboard.press('Escape');
+  await wait(300);
+
   // a tooltip showing (keyboard focus on an icon key)
   await page.evaluate(() => document.querySelector('#tooltip-demo button[data-tooltip="Settings"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
   await page.keyboard.press('Tab');

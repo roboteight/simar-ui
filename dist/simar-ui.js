@@ -609,7 +609,7 @@
       });
       dialog.addEventListener("close", () => {
         if (!out) return;
-        const how = dialog.returnValue;
+        const how = dialog.returnValue || "dismissed";
         const form = dialog.querySelector("form");
         const values = form && !["", "cancel", "dismissed"].includes(how) ? [...new FormData(form).values()] : [];
         out.value = values.length ? `${how}: ${values.join(", ")}` : how;

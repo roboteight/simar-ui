@@ -124,6 +124,7 @@
         <li><a href="#buttons">Buttons</a></li>
         <li><a href="#key-groups">Button group</a></li>
         <li><a href="#dialogs">Dialog</a></li>
+        <li><a href="#confirms">Confirmation dialog</a></li>
         <li><a href="#alerts">Alerts and toasts</a></li>
         <li><a href="#badges">Badge</a></li>
         <li><a href="#breadcrumbs">Breadcrumb</a></li>
@@ -1495,6 +1496,74 @@
 
       dialog.showModal();
       </script>
+    </section>
+
+    <section aria-labelledby="confirms">
+      <h3 id="confirms">Confirmation dialog</h3>
+      <p class="note">A short question and two actions, for something that is hard to undo or that sends something out. It is a <code>&lt;dialog&gt;</code> with <code>role="alertdialog"</code>, named by its title and described by its message. Focus starts on the safe action (<code>autofocus</code> on Cancel), Esc and a click outside both cancel, and the action says what it does: "Delete draft", not "OK".</p>
+
+      <fieldset class="panel">
+        <legend>Confirmation dialog</legend>
+        <div class="well-row">
+          <span class="well"><button type="button" class="key key--danger" command="show-modal" commandfor="confirm-delete" data-dialog-open="confirm-delete">Delete draft</button></span>
+          <output class="lcd" for="confirm-delete">closed</output>
+        </div>
+        <div class="well-row">
+          <span class="well"><button type="button" class="key key--accent" command="show-modal" commandfor="confirm-send" data-dialog-open="confirm-send">Send newsletter</button></span>
+          <output class="lcd" for="confirm-send">closed</output>
+        </div>
+
+        <dialog id="confirm-delete" class="sheet sheet--confirm" role="alertdialog" aria-labelledby="confirm-delete-title" aria-describedby="confirm-delete-text">
+          <form method="dialog">
+            <div class="sheet__body">
+              <h3 class="sheet__title" id="confirm-delete-title">Delete this draft?</h3>
+              <p class="sheet__text" id="confirm-delete-text">"Ramones setlist, 1978" will be deleted for good. This cannot be undone.</p>
+            </div>
+            <footer class="sheet__actions">
+              <span class="well"><button class="key" value="cancel" autofocus>Cancel</button></span>
+              <span class="well"><button class="key key--danger" value="deleted">Delete draft</button></span>
+            </footer>
+          </form>
+        </dialog>
+
+        <dialog id="confirm-send" class="sheet sheet--confirm" role="alertdialog" aria-labelledby="confirm-send-title" aria-describedby="confirm-send-text">
+          <form method="dialog">
+            <div class="sheet__body">
+              <h3 class="sheet__title" id="confirm-send-title">Send to 1,204 people?</h3>
+              <p class="sheet__text">The newsletter goes to everyone on the list, and a sent email cannot be recalled.</p>
+            </div>
+            <footer class="sheet__actions">
+              <span class="well"><button class="key" value="cancel" autofocus>Not yet</button></span>
+              <span class="well"><button class="key key--accent" value="sent">Send newsletter</button></span>
+            </footer>
+          </form>
+        </dialog>
+        <script type="text/plain" data-example="HTML">
+          <button type="button" command="show-modal" commandfor="confirm">Delete draft</button>
+
+          <dialog id="confirm" class="sheet sheet--confirm" role="alertdialog"
+                  aria-labelledby="confirm-title" aria-describedby="confirm-text">
+            <form method="dialog">
+              <div class="sheet__body">
+                <h3 class="sheet__title" id="confirm-title">Delete this draft?</h3>
+                <p class="sheet__text" id="confirm-text">This cannot be undone.</p>
+              </div>
+              <footer class="sheet__actions">
+                <!-- focus starts on the safe choice -->
+                <button class="key" value="cancel" autofocus>Cancel</button>
+                <button class="key key--danger" value="deleted">Delete draft</button>
+              </footer>
+            </form>
+          </dialog>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          // The dialog's returnValue says which button closed it ("dismissed" for Esc or a click outside).
+          const dialog = document.querySelector('#confirm');
+          dialog.addEventListener('close', () => {
+            if (dialog.returnValue === 'deleted') deleteDraft();
+          });
+        </script>
+      </fieldset>
     </section>
 
     <section aria-labelledby="alerts">

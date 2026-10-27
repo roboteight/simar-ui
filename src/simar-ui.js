@@ -358,7 +358,9 @@ const enhanceDialogs = (claim) => {
     dialog.addEventListener('cancel', () => { dialog.returnValue = 'dismissed'; });
     dialog.addEventListener('close', () => {
       if (!out) return;
-      const how = dialog.returnValue;
+      // Esc straight after opening closes it without a cancel event (browsers only send one once you have
+      // interacted with the dialog), so no button ever set a value: that is a dismissal too.
+      const how = dialog.returnValue || 'dismissed';
       const form = dialog.querySelector('form');
       const values = form && !['', 'cancel', 'dismissed'].includes(how) ? [...new FormData(form).values()] : [];
       out.value = values.length ? `${how}: ${values.join(', ')}` : how;

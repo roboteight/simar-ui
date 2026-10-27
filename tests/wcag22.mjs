@@ -834,6 +834,48 @@ const swc = await page.evaluate(async () => {
 const swBad = Object.keys(swc).filter((k) => k.endsWith('-on')).filter((on) => { const off = swc[on.replace('-on', '-off')], o = swc[on]; return !(o.w === off.w && o.h === off.h && o.radius === off.radius && o.shadow && o.w > 14); });
 swBad.length === 0 ? pass('the switch cap keeps its size, round shape and raised look when turned on, in four styles (never just the dot)') : fail(`switch cap: ${swBad.join(', ')} ${JSON.stringify(swc)}`);
 
+// ---- confirmation dialog --------------------------------------------------------------------------
+console.log('\nConfirmation dialog');
+await open(1280);
+const confirmUi = async (id) => {
+  const trigger = `[data-dialog-open="${id}"]`;
+  await page.$eval(trigger, (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.click(trigger);
+  await wait(350);
+  return page.evaluate((id) => {
+    const d = document.getElementById(id);
+    const ref = (attr) => { const t = document.getElementById(d.getAttribute(attr)); return t ? t.textContent.trim().length > 0 : false; };
+    return { open: d.open, role: d.getAttribute('role'), named: ref('aria-labelledby'), described: ref('aria-describedby'), focus: document.activeElement.value, inside: d.contains(document.activeElement) };
+  }, id);
+};
+const cd1 = await confirmUi('confirm-delete');
+cd1.open && cd1.role === 'alertdialog' && cd1.named && cd1.described ? pass('the confirmation is an alertdialog named by its title and described by its message') : fail(`confirm markup: ${JSON.stringify(cd1)}`);
+cd1.inside && cd1.focus === 'cancel' ? pass('focus starts on the safe action, Cancel') : fail(`confirm focus: ${JSON.stringify(cd1)}`);
+const trapped = [];
+// The page behind a modal is inert, so Tab either stays in the dialog or goes out to the browser's own UI (focus on <body>); it never lands on the page.
+for (let i = 0; i < 4; i++) { await page.keyboard.press('Tab'); trapped.push(await page.evaluate(() => document.activeElement === document.body || !!document.activeElement.closest('#confirm-delete'))); }
+trapped.every(Boolean) ? pass('Tab never reaches the page behind the open confirmation') : fail(`Tab reached the page behind the dialog: ${trapped}`);
+await page.focus('#confirm-delete button[value="cancel"]');
+await page.keyboard.press('Escape');
+await wait(300);
+const esc = await page.evaluate(() => ({ open: document.getElementById('confirm-delete').open, how: document.querySelector('output[for="confirm-delete"]').value, back: document.activeElement.getAttribute('data-dialog-open') }));
+!esc.open && esc.how === 'dismissed' && esc.back === 'confirm-delete' ? pass('Esc cancels ("dismissed") and focus returns to the button that opened it') : fail(`confirm Esc: ${JSON.stringify(esc)}`);
+await confirmUi('confirm-delete');
+await page.click('#confirm-delete button[value="deleted"]');
+await wait(300);
+(await page.$eval('output[for="confirm-delete"]', (o) => o.value)) === 'deleted' ? pass('the destructive action closes it with its own value ("deleted")') : fail('confirm action value');
+const cd2 = await confirmUi('confirm-send');
+cd2.open && cd2.focus === 'cancel' && cd2.role === 'alertdialog' && cd2.named && cd2.described === false ? pass('a dialog with no separate description is still named, and starts on the safe action') : fail(`confirm 2: ${JSON.stringify(cd2)}`);
+await page.keyboard.press('Escape');
+await wait(250);
+await page.setViewport({ width: 320, height: 700 });
+await confirmUi('confirm-delete');
+const confirmNarrow = await page.evaluate(() => { const r = document.getElementById('confirm-delete').getBoundingClientRect(); return { fits: r.left >= 0 && r.right <= innerWidth, page: document.documentElement.scrollWidth <= innerWidth + 1 }; });
+confirmNarrow.fits && confirmNarrow.page ? pass('the confirmation fits a 320px screen') : fail(`confirm at 320px: ${JSON.stringify(confirmNarrow)}`);
+await page.keyboard.press('Escape');
+await wait(250);
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

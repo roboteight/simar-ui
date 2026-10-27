@@ -155,6 +155,14 @@ await page.screenshot({ path: path.join(out, 'dialog.png'), clip: await page.eva
 console.log('  dialog.png');
 await page.keyboard.press('Escape');
 
+// the confirmation dialog
+await page.evaluate(() => document.querySelector('[commandfor="confirm-delete"]').scrollIntoView({ block: 'center' }));
+await page.click('[commandfor="confirm-delete"]');
+await wait(500);
+await page.screenshot({ path: path.join(out, 'confirm-dialog.png'), clip: await page.evaluate(() => { const r = document.querySelector('#confirm-delete').getBoundingClientRect(); return { x: r.x + scrollX - 30, y: r.y + scrollY - 30, width: r.width + 60, height: r.height + 60 }; }) });
+console.log('  confirm-dialog.png');
+await page.keyboard.press('Escape');
+
 // highlight colours
 console.log('Themes page');
 await open('docs/themes.html');
