@@ -235,11 +235,16 @@ if (toc) {
   const links = [...toc.querySelectorAll('a[href^="#"]')];
   const targets = links.map((a) => [document.getElementById(a.getAttribute('href').slice(1)), a]).filter(([heading]) => heading);
   let queued = false;
+  // A link you pick is the current one straight away and stays so until you scroll yourself, because the
+  // section can't always scroll to the top (near the end of the page), and the reading position alone would
+  // then pick a different one.
+  let picked = null;
   const spy = () => {
     queued = false;
     // The last heading that has reached the upper part of the screen is the current section.
     let current = targets[0]?.[1];
     for (const [heading, link] of targets) if (heading.getBoundingClientRect().top <= innerHeight * 0.3) current = link;
+    if (picked) current = picked;
     for (const link of links) {
       if (link === current) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
@@ -253,6 +258,11 @@ if (toc) {
     }
   };
   const queue = () => { if (!queued) { queued = true; requestAnimationFrame(spy); } };
+  for (const link of links) link.addEventListener('click', () => { picked = link; queue(); });
+  const unpick = () => { if (picked) { picked = null; queue(); } };
+  addEventListener('wheel', unpick, { passive: true });
+  addEventListener('touchmove', unpick, { passive: true });
+  addEventListener('keydown', (e) => { if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key) && !toc.contains(document.activeElement)) unpick(); });
   addEventListener('scroll', queue, { passive: true });
   addEventListener('resize', queue);
   spy();
@@ -329,4 +339,19 @@ if (tokenPreview) {
   // A different style changes the starting values.
   for (const select of document.querySelectorAll('#style-select, #style-select-tab')) select.addEventListener('change', () => requestAnimationFrame(readDefaults));
   readDefaults();
+}
+
+// Keep the focused control clear of the sticky header (WCAG 2.4.11, Focus Not Obscured). scroll-padding handles
+// most cases, but a control that is already partly in view when focus reaches it can be left under the header.
+const stickyHeader = document.querySelector('header.topbar');
+if (stickyHeader) {
+  document.addEventListener('focusin', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element) || stickyHeader.contains(target) || target.closest('dialog, [popover]')) return;
+    // After the browser's own scroll-into-view, which runs once the focus events have finished.
+    requestAnimationFrame(() => {
+      const gap = target.getBoundingClientRect().top - stickyHeader.getBoundingClientRect().bottom;
+      if (gap < 12) scrollBy({ top: gap - 24, behavior: 'instant' });
+    });
+  });
 }

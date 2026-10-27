@@ -95,28 +95,28 @@
       <li>
         <span class="toc__group">Content</span>
         <ul>
-        <li><a href="#typography">Typography</a></li>
+        <li><a href="#cards">Card</a></li>
+        <li><a href="#code">Code</a></li>
+        <li><a href="#layout">Layout and breakpoints</a></li>
+        <li><a href="#media">Media</a></li>
         <li><a href="#quotes">Quotes</a></li>
         <li><a href="#blurbs">Text blurbs</a></li>
-        <li><a href="#media">Media</a></li>
-        <li><a href="#cards">Card</a></li>
         <li><a href="#timelines">Timeline</a></li>
-        <li><a href="#layout">Layout and breakpoints</a></li>
-        <li><a href="#code">Code</a></li>
+        <li><a href="#typography">Typography</a></li>
         </ul>
       </li>
       <li>
         <span class="toc__group">Forms</span>
         <ul>
-        <li><a href="#form-control">Form control</a></li>
-        <li><a href="#selects">Select</a></li>
-        <li><a href="#datalist">Datalist and autocomplete</a></li>
         <li><a href="#checks">Checkboxes and switches</a></li>
+        <li><a href="#datalist">Datalist and autocomplete</a></li>
+        <li><a href="#dates">Date range</a></li>
+        <li><a href="#form-control">Form control</a></li>
+        <li><a href="#input-group">Input group</a></li>
+        <li><a href="#knobs">Knobs</a></li>
         <li><a href="#radios">Radio buttons</a></li>
         <li><a href="#ranges">Range pickers</a></li>
-        <li><a href="#knobs">Knobs</a></li>
-        <li><a href="#dates">Date range</a></li>
-        <li><a href="#input-group">Input group</a></li>
+        <li><a href="#selects">Select</a></li>
         <li><a href="#validation">Validation</a></li>
         </ul>
       </li>
@@ -124,17 +124,17 @@
         <span class="toc__group">Components</span>
         <ul>
         <li><a href="#accordion">Accordion</a></li>
-        <li><a href="#buttons">Buttons</a></li>
-        <li><a href="#key-groups">Button group</a></li>
-        <li><a href="#dialogs">Dialog</a></li>
-        <li><a href="#confirms">Confirmation dialog</a></li>
         <li><a href="#alerts">Alerts and toasts</a></li>
         <li><a href="#badges">Badge</a></li>
         <li><a href="#breadcrumbs">Breadcrumb</a></li>
-        <li><a href="#menus">Dropdown menu</a></li>
+        <li><a href="#key-groups">Button group</a></li>
+        <li><a href="#buttons">Buttons</a></li>
         <li><a href="#charts">Charts</a></li>
-        <li><a href="#pagination">Pagination</a></li>
+        <li><a href="#confirms">Confirmation dialog</a></li>
+        <li><a href="#dialogs">Dialog</a></li>
+        <li><a href="#menus">Dropdown menu</a></li>
         <li><a href="#meters">Meter</a></li>
+        <li><a href="#pagination">Pagination</a></li>
         <li><a href="#progress">Progress</a></li>
         <li><a href="#spinners">Spinners</a></li>
         <li><a href="#tables">Table</a></li>
@@ -445,59 +445,160 @@
     </section>
 
     <h2 class="group" id="content">Content</h2>
-    <section aria-labelledby="typography">
-      <h3 id="typography">Typography</h3>
-      <p class="note">Headings, display type, a lead paragraph, running text and inline marks. Use the classes anywhere (<code>.h1</code> to <code>.h6</code>, <code>.display-1</code> to <code>.display-3</code>, <code>.lead</code>), or wrap text in <code>.prose</code> to style the plain elements inside it. Keep the real heading levels in order on a page; the classes only change how a heading looks. Sizes scale with the window, so they fit a phone.</p>
+    <section aria-labelledby="cards">
+      <h3 id="cards">Card</h3>
+      <p class="note">A self-contained block of content: an <code>&lt;article&gt;</code> with an optional image, a heading and words, and a footer for actions. Lay cards in a <code>blurb-grid</code> and they wrap to fit. To make the whole card a link, put one link with <code>card__link</code> in the heading: a click anywhere on the card follows it, but a keyboard and a screen reader still meet a single link named by the heading. Buttons in the footer stay separate.</p>
 
       <fieldset class="panel">
-        <legend>Headings</legend>
-        <p class="h1">Heading 1</p>
-        <p class="h2">Heading 2</p>
-        <p class="h3">Heading 3</p>
-        <p class="h4">Heading 4</p>
-        <p class="h5">Heading 5</p>
-        <p class="h6">Heading 6</p>
-        <script type="text/plain" data-example="HTML">
-          <h1>Heading 1</h1>
-          <h2 class="h3">An h2 that looks like an h3</h2>
-          <p class="h4">Not a heading in the outline, styled like one</p>
-        </script>
-      </fieldset>
-
-      <fieldset class="panel">
-        <legend>Display</legend>
-        <p class="display-1">Display 1</p>
-        <p class="display-2">Display 2</p>
-        <p class="display-3">Display 3</p>
-        <script type="text/plain" data-example="HTML">
-          <h1 class="display-1">Display 1</h1>
-        </script>
-      </fieldset>
-
-      <fieldset class="panel">
-        <legend>Text</legend>
-        <div class="prose">
-          <p class="lead">A lead paragraph is a little larger and lighter. Use it for the sentence that says what a page is about.</p>
-          <p>Body text sits at a comfortable measure of about 65 characters, with room between the lines. It can carry a <a href="#typography">link</a>, some <mark>highlighted words</mark>, an <abbr title="HyperText Markup Language">HTML</abbr> abbreviation, <small>small print</small>, <del>deleted</del> and <ins>inserted</ins> text, and H<sub>2</sub>O or x<sup>2</sup>. Press <kbd>Ctrl</kbd> + <kbd>K</kbd> for the shortcut.</p>
-          <ul>
-            <li>Unordered list item</li>
-            <li>Another, with a longer line that wraps onto a second row so you can see how the marker lines up</li>
-          </ul>
-          <ol>
-            <li>First step</li>
-            <li>Second step</li>
-          </ol>
-          <hr>
-          <dl>
-            <dt>Term</dt>
-            <dd>What it means.</dd>
-          </dl>
+        <legend>Cards</legend>
+        <div class="blurb-grid">
+          <article class="card">
+            <img class="card__media" src="docs/media/haddonfield-night.svg" alt="" width="1200" height="675" loading="lazy">
+            <div class="card__body">
+              <p class="card__eyebrow">Linked card</p>
+              <h4 class="card__title"><a class="card__link" href="#cards">Haddonfield at night</a></h4>
+              <p class="card__text">The whole card is one link, named by its heading.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__body">
+              <p class="card__eyebrow">With actions</p>
+              <h4 class="card__title">Ellen Ripley</h4>
+              <p class="card__text">Warrant officer, Nostromo. The footer holds separate controls.</p>
+            </div>
+            <div class="card__footer">
+              <button class="key" type="button">Follow</button>
+              <a href="#cards">Details</a>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__body">
+              <h4 class="card__title">Text only</h4>
+              <p class="card__text">Every part is optional, so a card can be just a heading and a few words.</p>
+            </div>
+          </article>
         </div>
         <script type="text/plain" data-example="HTML">
-          <div class="prose">
-            <p class="lead">What this page is about.</p>
-            <p>Text with a <a href="/">link</a>, <mark>a mark</mark> and <kbd>Ctrl</kbd> + <kbd>K</kbd>.</p>
+          <article class="card">
+            <img class="card__media" src="poster.jpg" alt="" width="1200" height="675" loading="lazy">
+            <div class="card__body">
+              <h4 class="card__title"><a class="card__link" href="/laurie">Laurie Strode</a></h4>
+              <p class="card__text">A few words.</p>
+            </div>
+          </article>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="code">
+      <h3 id="code">Code</h3>
+      <p class="note">Show code with an optional label and a copy button. The block scrolls and takes keyboard focus, so long lines stay readable without a mouse.</p>
+
+      <fieldset class="panel">
+        <legend>Code block</legend>
+        <figure class="code">
+          <figcaption class="code__label">HTML</figcaption>
+          <div class="code__body"><pre tabindex="0"><code>&lt;span class="well"&gt;
+  &lt;button type="button" class="key"&gt;Push&lt;/button&gt;
+&lt;/span&gt;</code></pre></div>
+        </figure>
+        <script type="text/plain" data-example="Tag">
+          <!-- Put the code in a <template> to write it unescaped -->
+          <simar-code lang="html">
+            <template>
+              <span class="well">
+                <button type="button" class="key">Push</button>
+              </span>
+            </template>
+          </simar-code>
+
+          <!-- Plain text works too. label overrides the caption; nocopy removes the button -->
+          <simar-code lang="css" label="Theme" nocopy>:root { --lit: #ff4d6d; }</simar-code>
+        </script>
+        <script type="text/plain" data-example="Style">
+          .code {
+            --code-bg: #1b2430;    /* block background */
+            --code-ink: #e6edf3;   /* text and the copy icon */
+            --code-max: 20rem;     /* tallest it gets before it scrolls */
+          }
+        </script>
+      </fieldset>
+    </section>
+
+        <section aria-labelledby="layout">
+      <h3 id="layout">Layout and breakpoints</h3>
+      <p class="note">Mobile first, like Bootstrap: a class with no breakpoint applies everywhere, and one with a breakpoint (<code>md</code>) applies from that width up. The breakpoints are <code>sm</code> 36rem, <code>md</code> 48rem, <code>lg</code> 62rem, <code>xl</code> 75rem and <code>xxl</code> 87.5rem (576, 768, 992, 1200 and 1400px at the default size), and they are in <code>rem</code>, so they follow the reader's text size. Resize the window to see the columns below change. The class names and breakpoint approach are borrowed from <a href="https://getbootstrap.com/docs/5.3/layout/grid/">Bootstrap</a>, so they will feel familiar.</p>
+
+      <fieldset class="panel">
+        <legend>Grid</legend>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-4"><div class="blurb blurb--inset"><p class="blurb__eyebrow">col-12 col-md-6 col-lg-4</p><p class="blurb__text">Full width on a phone, half from md, a third from lg.</p></div></div>
+          <div class="col-12 col-md-6 col-lg-4"><div class="blurb blurb--inset"><p class="blurb__eyebrow">col-12 col-md-6 col-lg-4</p><p class="blurb__text">The columns wrap onto new rows by themselves.</p></div></div>
+          <div class="col-12 col-md-12 col-lg-4"><div class="blurb blurb--inset"><p class="blurb__eyebrow">col-12 col-lg-4</p><p class="blurb__text">Twelve columns in a row; the gap is <code>--gap</code>.</p></div></div>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-4">One</div>
+              <div class="col-12 col-md-6 col-lg-4">Two</div>
+              <div class="col-12 col-lg-4">Three</div>
+            </div>
           </div>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Show and hide</legend>
+        <div class="row">
+          <div class="col-12"><p class="blurb__text">You are looking at a <strong class="d-md-none">phone-sized</strong><strong class="d-none d-md-inline d-lg-none">tablet-sized</strong><strong class="d-none d-lg-inline">desktop-sized</strong> window.</p></div>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <span class="d-md-none">Shown below md</span>
+          <span class="d-none d-md-inline">Shown from md up</span>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="media">
+      <h3 id="media">Media</h3>
+      <p class="note">Images, video and audio on the native elements. Put <code>media</code> on a <code>&lt;figure&gt;</code> and its picture scales down to fit, keeps its shape and gets the same rim as other surfaces. Give every image its <code>width</code> and <code>height</code> so the page does not jump as it loads, and an <code>alt</code> that says what it shows. Add <code>media--16x9</code>, <code>media--4x3</code> or <code>media--1x1</code> to crop to a fixed shape. Video and audio keep the browser's own controls, which a keyboard and screen reader can use; a recording also needs captions or a transcript.</p>
+
+      <fieldset class="panel">
+        <legend>Media</legend>
+        <div class="row">
+          <div class="col-12 col-md-7">
+            <figure class="media media--16x9">
+              <img src="docs/media/haddonfield-night.svg" alt="A house on a hill under a full moon, one window lit" width="1200" height="675" loading="lazy">
+              <figcaption>Haddonfield at night, 16:9.</figcaption>
+            </figure>
+          </div>
+          <div class="col-12 col-md-5">
+            <figure class="media media--1x1">
+              <img src="docs/media/haddonfield-night.svg" alt="The same house, cropped to a square" width="1200" height="675" loading="lazy">
+              <figcaption>Cropped to a square.</figcaption>
+            </figure>
+          </div>
+        </div>
+        <figure class="media">
+          <figcaption id="tone-cap">A 440 Hz test tone, two seconds long.</figcaption>
+          <audio controls src="docs/media/tone-a440.wav" aria-labelledby="tone-cap"></audio>
+          <details>
+            <summary>Transcript</summary>
+            <p>A single steady tone, the note A above middle C, that fades out after two seconds.</p>
+          </details>
+        </figure>
+        <script type="text/plain" data-example="HTML">
+          <figure class="media media--16x9">
+            <img src="poster.jpg" alt="Deborah Harry on stage under red light" width="1200" height="675" loading="lazy">
+            <figcaption>Blondie at CBGB, 1977.</figcaption>
+          </figure>
+
+          <figure class="media">
+            <video controls width="1280" height="720" poster="poster.jpg">
+              <source src="show.mp4" type="video/mp4">
+              <track kind="captions" src="show.en.vtt" srclang="en" label="English" default>
+            </video>
+          </figure>
         </script>
       </fieldset>
     </section>
@@ -566,95 +667,6 @@
               <p class="blurb__text">A few words.</p>
             </div>
           </div>
-        </script>
-      </fieldset>
-    </section>
-
-    <section aria-labelledby="media">
-      <h3 id="media">Media</h3>
-      <p class="note">Images, video and audio on the native elements. Put <code>media</code> on a <code>&lt;figure&gt;</code> and its picture scales down to fit, keeps its shape and gets the same rim as other surfaces. Give every image its <code>width</code> and <code>height</code> so the page does not jump as it loads, and an <code>alt</code> that says what it shows. Add <code>media--16x9</code>, <code>media--4x3</code> or <code>media--1x1</code> to crop to a fixed shape. Video and audio keep the browser's own controls, which a keyboard and screen reader can use; a recording also needs captions or a transcript.</p>
-
-      <fieldset class="panel">
-        <legend>Media</legend>
-        <div class="row">
-          <div class="col-12 col-md-7">
-            <figure class="media media--16x9">
-              <img src="docs/media/haddonfield-night.svg" alt="A house on a hill under a full moon, one window lit" width="1200" height="675" loading="lazy">
-              <figcaption>Haddonfield at night, 16:9.</figcaption>
-            </figure>
-          </div>
-          <div class="col-12 col-md-5">
-            <figure class="media media--1x1">
-              <img src="docs/media/haddonfield-night.svg" alt="The same house, cropped to a square" width="1200" height="675" loading="lazy">
-              <figcaption>Cropped to a square.</figcaption>
-            </figure>
-          </div>
-        </div>
-        <figure class="media">
-          <figcaption id="tone-cap">A 440 Hz test tone, two seconds long.</figcaption>
-          <audio controls src="docs/media/tone-a440.wav" aria-labelledby="tone-cap"></audio>
-          <details>
-            <summary>Transcript</summary>
-            <p>A single steady tone, the note A above middle C, that fades out after two seconds.</p>
-          </details>
-        </figure>
-        <script type="text/plain" data-example="HTML">
-          <figure class="media media--16x9">
-            <img src="poster.jpg" alt="Deborah Harry on stage under red light" width="1200" height="675" loading="lazy">
-            <figcaption>Blondie at CBGB, 1977.</figcaption>
-          </figure>
-
-          <figure class="media">
-            <video controls width="1280" height="720" poster="poster.jpg">
-              <source src="show.mp4" type="video/mp4">
-              <track kind="captions" src="show.en.vtt" srclang="en" label="English" default>
-            </video>
-          </figure>
-        </script>
-      </fieldset>
-    </section>
-
-    <section aria-labelledby="cards">
-      <h3 id="cards">Card</h3>
-      <p class="note">A self-contained block of content: an <code>&lt;article&gt;</code> with an optional image, a heading and words, and a footer for actions. Lay cards in a <code>blurb-grid</code> and they wrap to fit. To make the whole card a link, put one link with <code>card__link</code> in the heading: a click anywhere on the card follows it, but a keyboard and a screen reader still meet a single link named by the heading. Buttons in the footer stay separate.</p>
-
-      <fieldset class="panel">
-        <legend>Cards</legend>
-        <div class="blurb-grid">
-          <article class="card">
-            <img class="card__media" src="docs/media/haddonfield-night.svg" alt="" width="1200" height="675" loading="lazy">
-            <div class="card__body">
-              <p class="card__eyebrow">Linked card</p>
-              <h4 class="card__title"><a class="card__link" href="#cards">Haddonfield at night</a></h4>
-              <p class="card__text">The whole card is one link, named by its heading.</p>
-            </div>
-          </article>
-          <article class="card">
-            <div class="card__body">
-              <p class="card__eyebrow">With actions</p>
-              <h4 class="card__title">Ellen Ripley</h4>
-              <p class="card__text">Warrant officer, Nostromo. The footer holds separate controls.</p>
-            </div>
-            <div class="card__footer">
-              <button class="key" type="button">Follow</button>
-              <a href="#cards">Details</a>
-            </div>
-          </article>
-          <article class="card">
-            <div class="card__body">
-              <h4 class="card__title">Text only</h4>
-              <p class="card__text">Every part is optional, so a card can be just a heading and a few words.</p>
-            </div>
-          </article>
-        </div>
-        <script type="text/plain" data-example="HTML">
-          <article class="card">
-            <img class="card__media" src="poster.jpg" alt="" width="1200" height="675" loading="lazy">
-            <div class="card__body">
-              <h4 class="card__title"><a class="card__link" href="/laurie">Laurie Strode</a></h4>
-              <p class="card__text">A few words.</p>
-            </div>
-          </article>
         </script>
       </fieldset>
     </section>
@@ -741,76 +753,213 @@
       </fieldset>
     </section>
 
-    <section aria-labelledby="layout">
-      <h3 id="layout">Layout and breakpoints</h3>
-      <p class="note">Mobile first, like Bootstrap: a class with no breakpoint applies everywhere, and one with a breakpoint (<code>md</code>) applies from that width up. The breakpoints are <code>sm</code> 36rem, <code>md</code> 48rem, <code>lg</code> 62rem, <code>xl</code> 75rem and <code>xxl</code> 87.5rem (576, 768, 992, 1200 and 1400px at the default size), and they are in <code>rem</code>, so they follow the reader's text size. Resize the window to see the columns below change. The class names and breakpoint approach are borrowed from <a href="https://getbootstrap.com/docs/5.3/layout/grid/">Bootstrap</a>, so they will feel familiar.</p>
+    <section aria-labelledby="typography">
+      <h3 id="typography">Typography</h3>
+      <p class="note">Headings, display type, a lead paragraph, running text and inline marks. Use the classes anywhere (<code>.h1</code> to <code>.h6</code>, <code>.display-1</code> to <code>.display-3</code>, <code>.lead</code>), or wrap text in <code>.prose</code> to style the plain elements inside it. Keep the real heading levels in order on a page; the classes only change how a heading looks. Sizes scale with the window, so they fit a phone.</p>
 
       <fieldset class="panel">
-        <legend>Grid</legend>
-        <div class="row">
-          <div class="col-12 col-md-6 col-lg-4"><div class="blurb blurb--inset"><p class="blurb__eyebrow">col-12 col-md-6 col-lg-4</p><p class="blurb__text">Full width on a phone, half from md, a third from lg.</p></div></div>
-          <div class="col-12 col-md-6 col-lg-4"><div class="blurb blurb--inset"><p class="blurb__eyebrow">col-12 col-md-6 col-lg-4</p><p class="blurb__text">The columns wrap onto new rows by themselves.</p></div></div>
-          <div class="col-12 col-md-12 col-lg-4"><div class="blurb blurb--inset"><p class="blurb__eyebrow">col-12 col-lg-4</p><p class="blurb__text">Twelve columns in a row; the gap is <code>--gap</code>.</p></div></div>
+        <legend>Headings</legend>
+        <p class="h1">Heading 1</p>
+        <p class="h2">Heading 2</p>
+        <p class="h3">Heading 3</p>
+        <p class="h4">Heading 4</p>
+        <p class="h5">Heading 5</p>
+        <p class="h6">Heading 6</p>
+        <script type="text/plain" data-example="HTML">
+          <h1>Heading 1</h1>
+          <h2 class="h3">An h2 that looks like an h3</h2>
+          <p class="h4">Not a heading in the outline, styled like one</p>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Display</legend>
+        <p class="display-1">Display 1</p>
+        <p class="display-2">Display 2</p>
+        <p class="display-3">Display 3</p>
+        <script type="text/plain" data-example="HTML">
+          <h1 class="display-1">Display 1</h1>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Text</legend>
+        <div class="prose">
+          <p class="lead">A lead paragraph is a little larger and lighter. Use it for the sentence that says what a page is about.</p>
+          <p>Body text sits at a comfortable measure of about 65 characters, with room between the lines. It can carry a <a href="#typography">link</a>, some <mark>highlighted words</mark>, an <abbr title="HyperText Markup Language">HTML</abbr> abbreviation, <small>small print</small>, <del>deleted</del> and <ins>inserted</ins> text, and H<sub>2</sub>O or x<sup>2</sup>. Press <kbd>Ctrl</kbd> + <kbd>K</kbd> for the shortcut.</p>
+          <ul>
+            <li>Unordered list item</li>
+            <li>Another, with a longer line that wraps onto a second row so you can see how the marker lines up</li>
+          </ul>
+          <ol>
+            <li>First step</li>
+            <li>Second step</li>
+          </ol>
+          <hr>
+          <dl>
+            <dt>Term</dt>
+            <dd>What it means.</dd>
+          </dl>
         </div>
         <script type="text/plain" data-example="HTML">
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-6 col-lg-4">One</div>
-              <div class="col-12 col-md-6 col-lg-4">Two</div>
-              <div class="col-12 col-lg-4">Three</div>
-            </div>
+          <div class="prose">
+            <p class="lead">What this page is about.</p>
+            <p>Text with a <a href="/">link</a>, <mark>a mark</mark> and <kbd>Ctrl</kbd> + <kbd>K</kbd>.</p>
           </div>
         </script>
       </fieldset>
+    </section>
+
+<h2 class="group" id="forms">Forms</h2>
+
+    <section aria-labelledby="checks">
+      <h3 id="checks">Checkboxes and switches</h3>
+      <p class="note">Native <code>&lt;input type="checkbox"&gt;</code>. Checking latches the key down and lights its check mark; a switch is a checkbox with <code>role="switch"</code> and a cap that slides. Neither relies on color alone: the check mark and the cap's position carry the state.</p>
 
       <fieldset class="panel">
-        <legend>Show and hide</legend>
-        <div class="row">
-          <div class="col-12"><p class="blurb__text">You are looking at a <strong class="d-md-none">phone-sized</strong><strong class="d-none d-md-inline d-lg-none">tablet-sized</strong><strong class="d-none d-lg-inline">desktop-sized</strong> window.</p></div>
+        <legend>Checkboxes</legend>
+        <div class="check-list">
+          <label class="check"><span class="well"><input type="checkbox" name="newsletter" checked><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Newsletter</span></label>
+          <label class="check"><span class="well"><input type="checkbox" name="reminders"><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Reminders</span></label>
+          <label class="check"><span class="well"><input type="checkbox" name="everything" data-indeterminate><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Everything</span></label>
+          <label class="check"><span class="well"><input type="checkbox" name="unavailable" disabled><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Unavailable</span></label>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-checkbox label="Send me the newsletter" name="news" checked></simar-checkbox>
+          <simar-checkbox label="Remind me before it expires" name="remind"></simar-checkbox>
+
+          <!-- a mixed state, as for a "select all" above a partly chosen list -->
+          <simar-checkbox label="Select all" name="all" indeterminate></simar-checkbox>
+          <simar-checkbox label="Not available" name="na" disabled></simar-checkbox>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const all = document.querySelector('[name="all"]');
+
+          // The mixed state is a property (not an attribute): set it from code, or with
+          // data-indeterminate. Pressing the box clears it, like any native checkbox.
+          all.indeterminate = true;
+          all.addEventListener('change', () => console.log(all.checked));
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Switches</legend>
+        <div class="check-list">
+          <label class="check"><span class="well switch"><input type="checkbox" role="switch" name="notify" checked><span class="key key--round"></span></span><span class="check__text">Notifications</span></label>
+          <label class="check"><span class="well switch"><input type="checkbox" role="switch" name="sidebar"><span class="key key--round"></span></span><span class="check__text">Dark sidebar</span></label>
+          <label class="check"><span class="well switch"><input type="checkbox" role="switch" name="offline" disabled><span class="key key--round"></span></span><span class="check__text">Offline mode</span></label>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-switch label="Notifications" name="notify" checked></simar-switch>
+          <simar-switch label="Dark sidebar" name="sidebar"></simar-switch>
+          <simar-switch label="Offline mode" name="offline" disabled></simar-switch>
+        </script>
+      </fieldset>
+    </section>
+    <section aria-labelledby="datalist">
+      <h3 id="datalist">Datalist and autocomplete</h3>
+      <p class="note">A text field with suggestions: add <code>list</code> to an input and point it at a <code>&lt;datalist&gt;</code> of <code>&lt;option&gt;</code>s. The field stays a plain input, so anything can still be typed, and the browser shows the matching suggestions as you type. The suggestion list is drawn by the browser (so it follows light and dark but not the rest of the theme), and it works on text, search, email, url, number, date, time and color fields. If a browser has no <code>list</code> support, it is just the field. For a themed list that filters as you type, add <code>data-autocomplete</code> (see Autocomplete below).</p>
+
+      <fieldset class="panel">
+        <legend>Suggestions</legend>
+        <div class="field-grid">
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="dl-city">City</label></div>
+            <input class="input" id="dl-city" name="city" list="dl-cities" placeholder="Start typing a city" autocomplete="off">
+            <datalist id="dl-cities"><option value="Lisbon"><option value="Lima"><option value="London"><option value="Los Angeles"><option value="Lyon"></datalist>
+          </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="dl-site">Website</label></div>
+            <input class="input" id="dl-site" name="site" type="url" list="dl-sites" placeholder="https://" autocomplete="off">
+            <datalist id="dl-sites"><option value="https://chrissimari.com" label="Chris Simari"><option value="https://github.com/roboteight/simar-ui" label="simar-ui on GitHub"></datalist>
+          </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="dl-qty">Quantity</label></div>
+            <input class="input" id="dl-qty" name="qty" type="number" list="dl-qtys" min="1" max="100" placeholder="1 to 100">
+            <datalist id="dl-qtys"><option value="1"><option value="6"><option value="12"><option value="24"></datalist>
+          </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="dl-color">Brand color</label></div>
+            <input class="input color" id="dl-color" name="brand" type="color" list="dl-colors" value="#5c6bc0">
+            <datalist id="dl-colors"><option value="#5c6bc0"><option value="#00a896"><option value="#e91e63"><option value="#ffa000"></datalist>
+          </div>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-input label="City" name="city">
+            <simar-option value="Lisbon"></simar-option>
+            <simar-option value="Lima"></simar-option>
+          </simar-input>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <label for="city">City</label>
+          <input class="input" id="city" name="city" list="cities" autocomplete="off">
+          <datalist id="cities">
+            <option value="Lisbon">
+            <option value="Lima">
+          </datalist>
+        </script>
+      </fieldset>
+      <fieldset class="panel">
+        <legend>Autocomplete</legend>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="ac-country">Country</label></div>
+          <input class="input" id="ac-country" name="country" list="ac-countries" data-autocomplete placeholder="Start typing a country">
+          <datalist id="ac-countries"><option value="Argentina"><option value="Australia"><option value="Austria"><option value="Belgium"><option value="Brazil"><option value="Canada"><option value="Chile"><option value="China"><option value="Colombia"><option value="Denmark"><option value="Egypt"><option value="Finland"><option value="France"><option value="Germany"><option value="Greece"><option value="India"><option value="Ireland"><option value="Italy"><option value="Japan"><option value="Kenya"><option value="Mexico"><option value="Netherlands"><option value="New Zealand"><option value="Nigeria"><option value="Norway"><option value="Peru"><option value="Poland"><option value="Portugal"><option value="Spain"><option value="Sweden"><option value="Switzerland"><option value="United Kingdom"><option value="United States"></datalist>
+          <p class="field__hint">As you type, matching countries appear in a list. Use the up and down arrows, then Enter.</p>
         </div>
         <script type="text/plain" data-example="HTML">
-          <span class="d-md-none">Shown below md</span>
-          <span class="d-none d-md-inline">Shown from md up</span>
+          <label for="country">Country</label>
+          <input class="input" id="country" list="countries" data-autocomplete>
+          <datalist id="countries">
+            <option value="Argentina">
+            <option value="Australia">
+          </datalist>
+        </script>
+        <script type="text/plain" data-example="Tag">
+          <simar-input label="Country" name="country" suggest>
+            <simar-option value="Argentina"></simar-option>
+            <simar-option value="Australia"></simar-option>
+          </simar-input>
         </script>
       </fieldset>
     </section>
-
-    <section aria-labelledby="code">
-      <h3 id="code">Code</h3>
-      <p class="note">Show code with an optional label and a copy button. The block scrolls and takes keyboard focus, so long lines stay readable without a mouse.</p>
+    <section aria-labelledby="dates">
+      <h3 id="dates">Date range</h3>
+      <p class="note">Two native <code>&lt;input type="date"&gt;</code> fields stay the source of truth, so typing, <code>min</code>/<code>max</code> and form submission all work. With JS, the calendar button opens a range picker: click a start day, then an end day.</p>
 
       <fieldset class="panel">
-        <legend>Code block</legend>
-        <figure class="code">
-          <figcaption class="code__label">HTML</figcaption>
-          <div class="code__body"><pre tabindex="0"><code>&lt;span class="well"&gt;
-  &lt;button type="button" class="key"&gt;Push&lt;/button&gt;
-&lt;/span&gt;</code></pre></div>
-        </figure>
-        <script type="text/plain" data-example="Tag">
-          <!-- Put the code in a <template> to write it unescaped -->
-          <simar-code lang="html">
-            <template>
-              <span class="well">
-                <button type="button" class="key">Push</button>
-              </span>
-            </template>
-          </simar-code>
-
-          <!-- Plain text works too. label overrides the caption; nocopy removes the button -->
-          <simar-code lang="css" label="Theme" nocopy>:root { --lit: #ff4d6d; }</simar-code>
+        <legend>Stay, two months</legend>
+        <div class="daterange" data-daterange data-months="2" data-first-day="1">
+          <label class="daterange__field"><span class="field__label">Check in</span><input type="date" name="checkin" value="2026-11-02" min="2026-10-26"></label>
+          <label class="daterange__field"><span class="field__label">Check out</span><input type="date" name="checkout" value="2026-11-09" min="2026-10-26" max="2027-03-31"></label>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <simar-date-range name="stay" from="2026-11-02" to="2026-11-09"
+                            min="2026-10-26" max="2027-03-31" months="2" first-day="1"></simar-date-range>
         </script>
-        <script type="text/plain" data-example="Style">
-          .code {
-            --code-bg: #1b2430;    /* block background */
-            --code-ink: #e6edf3;   /* text and the copy icon */
-            --code-max: 20rem;     /* tallest it gets before it scrolls */
-          }
+        <script type="text/plain" data-example="JavaScript">
+          const from = document.querySelector('[name="stay-from"]');
+          const to = document.querySelector('[name="stay-to"]');
+
+          // The date inputs are the source of truth. "change" fires when either end moves,
+          // typed or picked in the calendar. Values are YYYY-MM-DD.
+          to.addEventListener('change', () => console.log(from.value, to.value));
         </script>
       </fieldset>
-    </section>
 
-    <h2 class="group" id="forms">Forms</h2>
+      <fieldset class="panel">
+        <legend>Booking, up to 7 days</legend>
+        <div class="daterange" data-daterange data-max-span="7" data-lit="blue">
+          <label class="daterange__field"><span class="field__label">From</span><input type="date" name="from" min="2026-10-26"></label>
+          <label class="daterange__field"><span class="field__label">To</span><input type="date" name="to" min="2026-10-26"></label>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <!-- max-span limits the range in days; lit recolours just this component -->
+          <simar-date-range name="booking" from-label="Arrive" to-label="Leave"
+                            min="2026-10-26" max-span="7" lit="blue"></simar-date-range>
+        </script>
+      </fieldset>
+        </section>
 
     <section aria-labelledby="form-control">
       <h3 id="form-control">Form control</h3>
@@ -919,166 +1068,118 @@
       </fieldset>
     </section>
 
-    <section aria-labelledby="selects">
-      <h3 id="selects">Select</h3>
-      <p class="note">Native <code>&lt;select&gt;</code>, so the list that opens is the browser's own: accessible, searchable by typing, and following the theme. Wrap a single select to get the chevron; a multiple select is a list box.</p>
+    <section aria-labelledby="input-group">
+      <h3 id="input-group">Input group</h3>
+      <p class="note">A field with a control attached. Both stay real inputs, so typing and the keyboard work as usual; the keys are for the mouse and touch, and are added by the script. Without JavaScript you get the plain field.</p>
 
       <fieldset class="panel">
-        <legend>Select</legend>
-        <div class="field-grid">
+        <legend>Number stepper</legend>
         <div class="field">
-          <div class="field__head"><label class="field__label" for="s-size">Size</label></div>
-          <span class="select"><select class="input" id="s-size" name="size"><option>Small</option><option selected>Medium</option><option>Large</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
-        </div>
-        <div class="field">
-          <div class="field__head"><label class="field__label" for="s-city">City</label></div>
-          <span class="select"><select class="input" id="s-city" name="city"><optgroup label="Europe"><option>Lisbon</option><option>Paris</option></optgroup><optgroup label="Americas"><option>Lima</option><option>Toronto</option></optgroup></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
-        </div>
-        <div class="field">
-          <div class="field__head"><label class="field__label" for="s-input">Input devices</label></div>
-          <select class="input" id="s-input" name="devices" multiple><option selected>Keyboard</option><option>Mouse</option><option selected>Pen</option><option>Touch</option></select>
-        </div>
-          <div class="field">
-            <div class="field__head"><label class="field__label" for="s-list">Suggestions</label></div>
-            <input class="input" id="s-list" name="place" list="places" placeholder="Start typing a city" autocomplete="off">
-            <datalist id="places"><option value="Lisbon"><option value="Lima"><option value="London"><option value="Los Angeles"></datalist>
-          </div>
+          <div class="field__head"><label class="field__label" for="g-qty">Quantity</label></div>
+          <div class="stepper"><span class="well"><button type="button" class="key key--sq" aria-label="Decrease" aria-controls="g-qty" data-step="-1"><svg class="icon" aria-hidden="true"><use href="#i-minus"/></svg></button></span><input class="input" id="g-qty" name="qty" type="number" min="1" max="10" value="2" aria-describedby="g-qty-hint"><span class="well"><button type="button" class="key key--sq" aria-label="Increase" aria-controls="g-qty" data-step="1"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></button></span></div>
+          <p class="field__hint" id="g-qty-hint">Between 1 and 10. Up and Down arrows step by 1, Page Up and Page Down by 10.</p>
         </div>
         <script type="text/plain" data-example="Tag">
-          <simar-select label="Size" name="size">
-            <simar-option value="s">Small</simar-option>
-            <simar-option value="m" selected>Medium</simar-option>
-            <simar-option value="l">Large</simar-option>
-          </simar-select>
-
-          <!-- groups, and multiple for a list box -->
-          <simar-select label="City" name="city">
-            <simar-group label="Europe"><simar-option>Lisbon</simar-option><simar-option>Paris</simar-option></simar-group>
-            <simar-group label="Americas"><simar-option>Lima</simar-option></simar-group>
-          </simar-select>
-          <simar-select label="Devices" name="devices" multiple>…</simar-select>
+          <simar-number label="Quantity" name="qty" min="1" max="10" value="2"
+                        hint="Between 1 and 10."></simar-number>
         </script>
-        <script type="text/plain" data-example="Suggestions">
-          <!-- a text field with a native list of suggestions -->
-          <input class="input" id="place" list="places">
-          <datalist id="places">
-            <option value="Lisbon">
-            <option value="Lima">
-          </datalist>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Password</legend>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="g-pass">Password</label></div>
+          <span class="input-reveal"><input class="input" id="g-pass" name="password" type="password" autocomplete="new-password" minlength="8"><button type="button" class="input-reveal__button" aria-label="Show password" aria-pressed="false" aria-controls="g-pass" data-reveal><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg></button></span>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-input label="Password" type="password" name="password" reveal
+                       autocomplete="new-password" minlength="8"></simar-input>
         </script>
       </fieldset>
     </section>
-    <section aria-labelledby="datalist">
-      <h3 id="datalist">Datalist and autocomplete</h3>
-      <p class="note">A text field with suggestions: add <code>list</code> to an input and point it at a <code>&lt;datalist&gt;</code> of <code>&lt;option&gt;</code>s. The field stays a plain input, so anything can still be typed, and the browser shows the matching suggestions as you type. The suggestion list is drawn by the browser (so it follows light and dark but not the rest of the theme), and it works on text, search, email, url, number, date, time and color fields. If a browser has no <code>list</code> support, it is just the field. For a themed list that filters as you type, add <code>data-autocomplete</code> (see Autocomplete below).</p>
+
+    <section aria-labelledby="knobs">
+      <h3 id="knobs">Knobs</h3>
+      <p class="note">Drag up or right to turn up, hold Shift for fine control, double-click to reset. Arrow keys, Home/End and the mouse wheel (when focused) work too. Without JS these are plain range sliders.</p>
 
       <fieldset class="panel">
-        <legend>Suggestions</legend>
-        <div class="field-grid">
-          <div class="field">
-            <div class="field__head"><label class="field__label" for="dl-city">City</label></div>
-            <input class="input" id="dl-city" name="city" list="dl-cities" placeholder="Start typing a city" autocomplete="off">
-            <datalist id="dl-cities"><option value="Lisbon"><option value="Lima"><option value="London"><option value="Los Angeles"><option value="Lyon"></datalist>
+        <legend>Output</legend>
+        <div class="knob-row">
+          <div class="knob" data-knob>
+            <input type="range" id="volume" min="0" max="11" step="1" value="7" data-ticks="12">
+            <label for="volume">Volume</label>
           </div>
-          <div class="field">
-            <div class="field__head"><label class="field__label" for="dl-site">Website</label></div>
-            <input class="input" id="dl-site" name="site" type="url" list="dl-sites" placeholder="https://" autocomplete="off">
-            <datalist id="dl-sites"><option value="https://chrissimari.com" label="Chris Simari"><option value="https://github.com/roboteight/simar-ui" label="simar-ui on GitHub"></datalist>
-          </div>
-          <div class="field">
-            <div class="field__head"><label class="field__label" for="dl-qty">Quantity</label></div>
-            <input class="input" id="dl-qty" name="qty" type="number" list="dl-qtys" min="1" max="100" placeholder="1 to 100">
-            <datalist id="dl-qtys"><option value="1"><option value="6"><option value="12"><option value="24"></datalist>
-          </div>
-          <div class="field">
-            <div class="field__head"><label class="field__label" for="dl-color">Brand color</label></div>
-            <input class="input color" id="dl-color" name="brand" type="color" list="dl-colors" value="#5c6bc0">
-            <datalist id="dl-colors"><option value="#5c6bc0"><option value="#00a896"><option value="#e91e63"><option value="#ffa000"></datalist>
+          <div class="knob" data-knob>
+            <input type="range" id="reverb" min="0" max="100" step="1" value="30" data-unit="%">
+            <label for="reverb">Reverb</label>
           </div>
         </div>
-        <script type="text/plain" data-example="Tag">
-          <simar-input label="City" name="city">
-            <simar-option value="Lisbon"></simar-option>
-            <simar-option value="Lima"></simar-option>
-          </simar-input>
-        </script>
-        <script type="text/plain" data-example="HTML">
-          <label for="city">City</label>
-          <input class="input" id="city" name="city" list="cities" autocomplete="off">
-          <datalist id="cities">
-            <option value="Lisbon">
-            <option value="Lima">
-          </datalist>
-        </script>
-      </fieldset>
-      <fieldset class="panel">
-        <legend>Autocomplete</legend>
-        <div class="field">
-          <div class="field__head"><label class="field__label" for="ac-country">Country</label></div>
-          <input class="input" id="ac-country" name="country" list="ac-countries" data-autocomplete placeholder="Start typing a country">
-          <datalist id="ac-countries"><option value="Argentina"><option value="Australia"><option value="Austria"><option value="Belgium"><option value="Brazil"><option value="Canada"><option value="Chile"><option value="China"><option value="Colombia"><option value="Denmark"><option value="Egypt"><option value="Finland"><option value="France"><option value="Germany"><option value="Greece"><option value="India"><option value="Ireland"><option value="Italy"><option value="Japan"><option value="Kenya"><option value="Mexico"><option value="Netherlands"><option value="New Zealand"><option value="Nigeria"><option value="Norway"><option value="Peru"><option value="Poland"><option value="Portugal"><option value="Spain"><option value="Sweden"><option value="Switzerland"><option value="United Kingdom"><option value="United States"></datalist>
-          <p class="field__hint">As you type, matching countries appear in a list. Use the up and down arrows, then Enter.</p>
-        </div>
-        <script type="text/plain" data-example="HTML">
-          <label for="country">Country</label>
-          <input class="input" id="country" list="countries" data-autocomplete>
-          <datalist id="countries">
-            <option value="Argentina">
-            <option value="Australia">
-          </datalist>
-        </script>
-        <script type="text/plain" data-example="Tag">
-          <simar-input label="Country" name="country" suggest>
-            <simar-option value="Argentina"></simar-option>
-            <simar-option value="Australia"></simar-option>
-          </simar-input>
-        </script>
-      </fieldset>
-    </section>
-    <section aria-labelledby="checks">
-      <h3 id="checks">Checkboxes and switches</h3>
-      <p class="note">Native <code>&lt;input type="checkbox"&gt;</code>. Checking latches the key down and lights its check mark; a switch is a checkbox with <code>role="switch"</code> and a cap that slides. Neither relies on color alone: the check mark and the cap's position carry the state.</p>
-
-      <fieldset class="panel">
-        <legend>Checkboxes</legend>
-        <div class="check-list">
-          <label class="check"><span class="well"><input type="checkbox" name="newsletter" checked><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Newsletter</span></label>
-          <label class="check"><span class="well"><input type="checkbox" name="reminders"><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Reminders</span></label>
-          <label class="check"><span class="well"><input type="checkbox" name="everything" data-indeterminate><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Everything</span></label>
-          <label class="check"><span class="well"><input type="checkbox" name="unavailable" disabled><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Unavailable</span></label>
-        </div>
-        <script type="text/plain" data-example="Tag">
-          <simar-checkbox label="Send me the newsletter" name="news" checked></simar-checkbox>
-          <simar-checkbox label="Remind me before it expires" name="remind"></simar-checkbox>
-
-          <!-- a mixed state, as for a "select all" above a partly chosen list -->
-          <simar-checkbox label="Select all" name="all" indeterminate></simar-checkbox>
-          <simar-checkbox label="Not available" name="na" disabled></simar-checkbox>
+              <script type="text/plain" data-example="Tag">
+          <simar-knob label="Volume" name="volume" max="11" step="1" value="7" ticks="12"></simar-knob>
+          <simar-knob label="Reverb" name="reverb" value="30" unit="%"></simar-knob>
         </script>
         <script type="text/plain" data-example="JavaScript">
-          const all = document.querySelector('[name="all"]');
+          const volume = document.querySelector('[name="volume"]');
+          volume.addEventListener('input', () => console.log(volume.value));
 
-          // The mixed state is a property (not an attribute): set it from code, or with
-          // data-indeterminate. Pressing the box clears it, like any native checkbox.
-          all.indeterminate = true;
-          all.addEventListener('change', () => console.log(all.checked));
+          // Turn the knob from code. The input event redraws it.
+          volume.value = 9;
+          volume.dispatchEvent(new Event('input', { bubbles: true }));
         </script>
       </fieldset>
 
       <fieldset class="panel">
-        <legend>Switches</legend>
-        <div class="check-list">
-          <label class="check"><span class="well switch"><input type="checkbox" role="switch" name="notify" checked><span class="key key--round"></span></span><span class="check__text">Notifications</span></label>
-          <label class="check"><span class="well switch"><input type="checkbox" role="switch" name="sidebar"><span class="key key--round"></span></span><span class="check__text">Dark sidebar</span></label>
-          <label class="check"><span class="well switch"><input type="checkbox" role="switch" name="offline" disabled><span class="key key--round"></span></span><span class="check__text">Offline mode</span></label>
+        <legend>Options</legend>
+        <div class="knob-row">
+          <div class="knob" data-knob>
+            <input type="range" id="tone" min="0" max="3" step="1" value="1" data-labels="Flat,Warm,Bright,Punch">
+            <label for="tone">Tone</label>
+          </div>
+          <div class="knob" data-knob>
+            <input type="range" id="source" min="0" max="4" step="1" value="1" data-labels="Mic,Line,Phono,Aux,Tape">
+            <label for="source">Source</label>
+          </div>
         </div>
-        <script type="text/plain" data-example="Tag">
-          <simar-switch label="Notifications" name="notify" checked></simar-switch>
-          <simar-switch label="Dark sidebar" name="sidebar"></simar-switch>
-          <simar-switch label="Offline mode" name="offline" disabled></simar-switch>
+              <script type="text/plain" data-example="Tag">
+          <!-- labels makes a stepped selector: it clicks into each position,
+               and clicking a label jumps straight to it -->
+          <simar-knob label="Tone" name="tone" max="3" step="1" value="1" labels="Flat,Warm,Bright,Punch"></simar-knob>
+          <simar-knob label="Source" name="source" max="4" step="1" value="1" labels="Mic,Line,Phono,Aux,Tape"></simar-knob>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const tone = document.querySelector('[name="tone"]');
+          const names = ['Flat', 'Warm', 'Bright', 'Punch'];
+
+          tone.addEventListener('change', () => console.log(names[tone.value]));
         </script>
       </fieldset>
-    </section>
+
+      <fieldset class="panel">
+        <legend>Range</legend>
+        <div class="knob-row">
+          <div class="rknob" data-range-knob role="group" aria-labelledby="band-label" data-unit="%">
+            <input type="range" aria-label="Band low" min="0" max="100" step="1" value="25">
+            <input type="range" aria-label="Band high" min="0" max="100" step="1" value="70">
+            <span class="rknob__label" id="band-label">Band</span>
+          </div>
+          <div class="rknob" data-range-knob role="group" aria-labelledby="comfort-label" data-unit="°">
+            <input type="range" aria-label="Comfort low" min="10" max="30" step="1" value="18">
+            <input type="range" aria-label="Comfort high" min="10" max="30" step="1" value="24">
+            <span class="rknob__label" id="comfort-label">Comfort</span>
+          </div>
+        </div>
+              <script type="text/plain" data-example="Tag">
+          <simar-range-knob label="Band" name="band" low="25" high="70" unit="%"></simar-range-knob>
+          <simar-range-knob label="Comfort" name="comfort" min="10" max="30" low="18" high="24" unit="°"></simar-range-knob>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          // Two inputs again: <name>-low and <name>-high.
+          const low = document.querySelector('[name="band-low"]');
+          const high = document.querySelector('[name="band-high"]');
+          low.addEventListener('input', () => console.log(low.value, high.value));
+        </script>
+      </fieldset>
+        </section>
     <section aria-labelledby="radios">
       <h3 id="radios">Radio buttons</h3>
       <p class="note">Native radios, set into the panel. The checked key stays pressed in and lit.</p>
@@ -1209,156 +1310,55 @@
         </script>
       </fieldset>
         </section>
-    <section aria-labelledby="knobs">
-      <h3 id="knobs">Knobs</h3>
-      <p class="note">Drag up or right to turn up, hold Shift for fine control, double-click to reset. Arrow keys, Home/End and the mouse wheel (when focused) work too. Without JS these are plain range sliders.</p>
+    <section aria-labelledby="selects">
+      <h3 id="selects">Select</h3>
+      <p class="note">Native <code>&lt;select&gt;</code>, so the list that opens is the browser's own: accessible, searchable by typing, and following the theme. Wrap a single select to get the chevron; a multiple select is a list box.</p>
 
       <fieldset class="panel">
-        <legend>Output</legend>
-        <div class="knob-row">
-          <div class="knob" data-knob>
-            <input type="range" id="volume" min="0" max="11" step="1" value="7" data-ticks="12">
-            <label for="volume">Volume</label>
-          </div>
-          <div class="knob" data-knob>
-            <input type="range" id="reverb" min="0" max="100" step="1" value="30" data-unit="%">
-            <label for="reverb">Reverb</label>
-          </div>
-        </div>
-              <script type="text/plain" data-example="Tag">
-          <simar-knob label="Volume" name="volume" max="11" step="1" value="7" ticks="12"></simar-knob>
-          <simar-knob label="Reverb" name="reverb" value="30" unit="%"></simar-knob>
-        </script>
-        <script type="text/plain" data-example="JavaScript">
-          const volume = document.querySelector('[name="volume"]');
-          volume.addEventListener('input', () => console.log(volume.value));
-
-          // Turn the knob from code. The input event redraws it.
-          volume.value = 9;
-          volume.dispatchEvent(new Event('input', { bubbles: true }));
-        </script>
-      </fieldset>
-
-      <fieldset class="panel">
-        <legend>Options</legend>
-        <div class="knob-row">
-          <div class="knob" data-knob>
-            <input type="range" id="tone" min="0" max="3" step="1" value="1" data-labels="Flat,Warm,Bright,Punch">
-            <label for="tone">Tone</label>
-          </div>
-          <div class="knob" data-knob>
-            <input type="range" id="source" min="0" max="4" step="1" value="1" data-labels="Mic,Line,Phono,Aux,Tape">
-            <label for="source">Source</label>
-          </div>
-        </div>
-              <script type="text/plain" data-example="Tag">
-          <!-- labels makes a stepped selector: it clicks into each position,
-               and clicking a label jumps straight to it -->
-          <simar-knob label="Tone" name="tone" max="3" step="1" value="1" labels="Flat,Warm,Bright,Punch"></simar-knob>
-          <simar-knob label="Source" name="source" max="4" step="1" value="1" labels="Mic,Line,Phono,Aux,Tape"></simar-knob>
-        </script>
-        <script type="text/plain" data-example="JavaScript">
-          const tone = document.querySelector('[name="tone"]');
-          const names = ['Flat', 'Warm', 'Bright', 'Punch'];
-
-          tone.addEventListener('change', () => console.log(names[tone.value]));
-        </script>
-      </fieldset>
-
-      <fieldset class="panel">
-        <legend>Range</legend>
-        <div class="knob-row">
-          <div class="rknob" data-range-knob role="group" aria-labelledby="band-label" data-unit="%">
-            <input type="range" aria-label="Band low" min="0" max="100" step="1" value="25">
-            <input type="range" aria-label="Band high" min="0" max="100" step="1" value="70">
-            <span class="rknob__label" id="band-label">Band</span>
-          </div>
-          <div class="rknob" data-range-knob role="group" aria-labelledby="comfort-label" data-unit="°">
-            <input type="range" aria-label="Comfort low" min="10" max="30" step="1" value="18">
-            <input type="range" aria-label="Comfort high" min="10" max="30" step="1" value="24">
-            <span class="rknob__label" id="comfort-label">Comfort</span>
-          </div>
-        </div>
-              <script type="text/plain" data-example="Tag">
-          <simar-range-knob label="Band" name="band" low="25" high="70" unit="%"></simar-range-knob>
-          <simar-range-knob label="Comfort" name="comfort" min="10" max="30" low="18" high="24" unit="°"></simar-range-knob>
-        </script>
-        <script type="text/plain" data-example="JavaScript">
-          // Two inputs again: <name>-low and <name>-high.
-          const low = document.querySelector('[name="band-low"]');
-          const high = document.querySelector('[name="band-high"]');
-          low.addEventListener('input', () => console.log(low.value, high.value));
-        </script>
-      </fieldset>
-        </section>
-    <section aria-labelledby="dates">
-      <h3 id="dates">Date range</h3>
-      <p class="note">Two native <code>&lt;input type="date"&gt;</code> fields stay the source of truth, so typing, <code>min</code>/<code>max</code> and form submission all work. With JS, the calendar button opens a range picker: click a start day, then an end day.</p>
-
-      <fieldset class="panel">
-        <legend>Stay, two months</legend>
-        <div class="daterange" data-daterange data-months="2" data-first-day="1">
-          <label class="daterange__field"><span class="field__label">Check in</span><input type="date" name="checkin" value="2026-11-02" min="2026-10-26"></label>
-          <label class="daterange__field"><span class="field__label">Check out</span><input type="date" name="checkout" value="2026-11-09" min="2026-10-26" max="2027-03-31"></label>
-        </div>
-              <script type="text/plain" data-example="Tag">
-          <simar-date-range name="stay" from="2026-11-02" to="2026-11-09"
-                            min="2026-10-26" max="2027-03-31" months="2" first-day="1"></simar-date-range>
-        </script>
-        <script type="text/plain" data-example="JavaScript">
-          const from = document.querySelector('[name="stay-from"]');
-          const to = document.querySelector('[name="stay-to"]');
-
-          // The date inputs are the source of truth. "change" fires when either end moves,
-          // typed or picked in the calendar. Values are YYYY-MM-DD.
-          to.addEventListener('change', () => console.log(from.value, to.value));
-        </script>
-      </fieldset>
-
-      <fieldset class="panel">
-        <legend>Booking, up to 7 days</legend>
-        <div class="daterange" data-daterange data-max-span="7" data-lit="blue">
-          <label class="daterange__field"><span class="field__label">From</span><input type="date" name="from" min="2026-10-26"></label>
-          <label class="daterange__field"><span class="field__label">To</span><input type="date" name="to" min="2026-10-26"></label>
-        </div>
-              <script type="text/plain" data-example="Tag">
-          <!-- max-span limits the range in days; lit recolours just this component -->
-          <simar-date-range name="booking" from-label="Arrive" to-label="Leave"
-                            min="2026-10-26" max-span="7" lit="blue"></simar-date-range>
-        </script>
-      </fieldset>
-        </section>
-
-    <section aria-labelledby="input-group">
-      <h3 id="input-group">Input group</h3>
-      <p class="note">A field with a control attached. Both stay real inputs, so typing and the keyboard work as usual; the keys are for the mouse and touch, and are added by the script. Without JavaScript you get the plain field.</p>
-
-      <fieldset class="panel">
-        <legend>Number stepper</legend>
+        <legend>Select</legend>
+        <div class="field-grid">
         <div class="field">
-          <div class="field__head"><label class="field__label" for="g-qty">Quantity</label></div>
-          <div class="stepper"><span class="well"><button type="button" class="key key--sq" aria-label="Decrease" aria-controls="g-qty" data-step="-1"><svg class="icon" aria-hidden="true"><use href="#i-minus"/></svg></button></span><input class="input" id="g-qty" name="qty" type="number" min="1" max="10" value="2" aria-describedby="g-qty-hint"><span class="well"><button type="button" class="key key--sq" aria-label="Increase" aria-controls="g-qty" data-step="1"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></button></span></div>
-          <p class="field__hint" id="g-qty-hint">Between 1 and 10. Up and Down arrows step by 1, Page Up and Page Down by 10.</p>
+          <div class="field__head"><label class="field__label" for="s-size">Size</label></div>
+          <span class="select"><select class="input" id="s-size" name="size"><option>Small</option><option selected>Medium</option><option>Large</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
+        </div>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="s-city">City</label></div>
+          <span class="select"><select class="input" id="s-city" name="city"><optgroup label="Europe"><option>Lisbon</option><option>Paris</option></optgroup><optgroup label="Americas"><option>Lima</option><option>Toronto</option></optgroup></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
+        </div>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="s-input">Input devices</label></div>
+          <select class="input" id="s-input" name="devices" multiple><option selected>Keyboard</option><option>Mouse</option><option selected>Pen</option><option>Touch</option></select>
+        </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="s-list">Suggestions</label></div>
+            <input class="input" id="s-list" name="place" list="places" placeholder="Start typing a city" autocomplete="off">
+            <datalist id="places"><option value="Lisbon"><option value="Lima"><option value="London"><option value="Los Angeles"></datalist>
+          </div>
         </div>
         <script type="text/plain" data-example="Tag">
-          <simar-number label="Quantity" name="qty" min="1" max="10" value="2"
-                        hint="Between 1 and 10."></simar-number>
-        </script>
-      </fieldset>
+          <simar-select label="Size" name="size">
+            <simar-option value="s">Small</simar-option>
+            <simar-option value="m" selected>Medium</simar-option>
+            <simar-option value="l">Large</simar-option>
+          </simar-select>
 
-      <fieldset class="panel">
-        <legend>Password</legend>
-        <div class="field">
-          <div class="field__head"><label class="field__label" for="g-pass">Password</label></div>
-          <span class="input-reveal"><input class="input" id="g-pass" name="password" type="password" autocomplete="new-password" minlength="8"><button type="button" class="input-reveal__button" aria-label="Show password" aria-pressed="false" aria-controls="g-pass" data-reveal><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg></button></span>
-        </div>
-        <script type="text/plain" data-example="Tag">
-          <simar-input label="Password" type="password" name="password" reveal
-                       autocomplete="new-password" minlength="8"></simar-input>
+          <!-- groups, and multiple for a list box -->
+          <simar-select label="City" name="city">
+            <simar-group label="Europe"><simar-option>Lisbon</simar-option><simar-option>Paris</simar-option></simar-group>
+            <simar-group label="Americas"><simar-option>Lima</simar-option></simar-group>
+          </simar-select>
+          <simar-select label="Devices" name="devices" multiple>…</simar-select>
+        </script>
+        <script type="text/plain" data-example="Suggestions">
+          <!-- a text field with a native list of suggestions -->
+          <input class="input" id="place" list="places">
+          <datalist id="places">
+            <option value="Lisbon">
+            <option value="Lima">
+          </datalist>
         </script>
       </fieldset>
     </section>
-
     <section aria-labelledby="validation">
       <h3 id="validation">Validation</h3>
       <p class="note">Add <code>data-validate</code> to a form and the browser's pop-up bubbles are replaced with messages in the page: words and an icon under each field, linked with <code>aria-describedby</code>, a summary announced at the top, and focus sent to the first problem. Try submitting this one empty.</p>
@@ -1462,6 +1462,151 @@
       document.querySelector('.accordion__item').open = true;
       </script>
     </section>
+    <section aria-labelledby="alerts">
+      <h3 id="alerts">Alerts and toasts</h3>
+      <p class="note">An alert is a banner in the page with an icon, a title and some words, so the kind of message never depends on color alone. Add <code>data-dismissible</code> for a close button. A toast is the same banner shown for a few seconds in a live region, so it is announced without moving focus. It waits while the pointer or focus is on it, can always be dismissed (Esc too), and an error interrupts while the others wait their turn. Call <code>SimarUI.toast("Saved", { variant: "success" })</code>, or put <code>data-toast</code> on a button.</p>
+
+      <fieldset class="panel">
+        <legend>Alerts</legend>
+        <div class="alert-stack">
+          <div class="alert alert--info" role="status" data-dismissible><svg class="icon alert__icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert__body"><p class="alert__title">Heads up</p><p class="alert__text">Alerts are announced politely when they appear.</p></div></div>
+          <div class="alert alert--success" role="status" data-dismissible><svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-check"/></svg><div class="alert__body"><p class="alert__title">Saved</p><p class="alert__text">Your changes are in.</p></div></div>
+          <div class="alert alert--warning" role="status"><svg class="icon alert__icon" aria-hidden="true"><use href="#i-triangle-alert"/></svg><div class="alert__body"><p class="alert__title">Almost full</p><p class="alert__text">You have used 90% of your storage.</p></div></div>
+          <div class="alert alert--danger" role="alert"><svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-alert"/></svg><div class="alert__body"><p class="alert__title">Payment failed</p><p class="alert__text">Check the card number and try again.</p></div></div>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-alert variant="success" title="Saved" dismissible>Your changes are in.</simar-alert>
+          <simar-alert variant="danger" title="Payment failed">Check the card number.</simar-alert>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <div class="alert alert--success" role="status" data-dismissible>
+            <svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-check"/></svg>
+            <div class="alert__body"><p class="alert__title">Saved</p><p class="alert__text">Your changes are in.</p></div>
+          </div>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel needs-js">
+        <legend>Toasts</legend>
+        <div class="well-row">
+          <span class="well"><button type="button" class="key" data-toast="Your changes are in." data-toast-variant="success">Success</button></span>
+          <span class="well"><button type="button" class="key" data-toast="A new version is available.">Info</button></span>
+          <span class="well"><button type="button" class="key" data-toast="You have used 90% of your storage." data-toast-variant="warning">Warning</button></span>
+          <span class="well"><button type="button" class="key" data-toast="Check the card number and try again." data-toast-variant="danger" data-toast-title="Payment failed">Error</button></span>
+          <span class="well"><button type="button" class="key" data-toast="This one stays until you close it." data-duration="0">Stays</button></span>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <button type="button" class="key" data-toast="Your changes are in." data-toast-variant="success">Save</button>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          SimarUI.toast("Your changes are in.", { variant: "success", duration: 6000 });
+        </script>
+      </fieldset>
+    </section>
+    <section aria-labelledby="badges">
+      <h3 id="badges">Badge</h3>
+      <p class="note">A small label for a status or a count. It always has words, or a number with hidden words after it, so the kind never depends on color alone; the dot is decoration. Use <code>badge--info</code>, <code>--success</code>, <code>--warning</code> or <code>--danger</code>, and <code>badge--count</code> for a number.</p>
+
+      <fieldset class="panel">
+        <legend>Badges</legend>
+        <div class="well-row">
+          <span class="badge">Draft</span>
+          <span class="badge badge--info">New</span>
+          <span class="badge badge--success">Paid</span>
+          <span class="badge badge--warning">Pending</span>
+          <span class="badge badge--danger">Overdue</span>
+          <span class="well"><button type="button" class="key">Inbox <span class="badge badge--count">3<span class="visually-hidden"> unread</span></span></button></span>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-badge variant="success">Paid</simar-badge>
+          <simar-badge count variant="info">3<span class="visually-hidden"> unread</span></simar-badge>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <span class="badge badge--success">Paid</span>
+          <button type="button" class="key">Inbox <span class="badge badge--count">3<span class="visually-hidden"> unread</span></span></button>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="breadcrumbs">
+      <h3 id="breadcrumbs">Breadcrumb</h3>
+      <p class="note">Where you are in the site: an ordered list of links in a labelled <code>&lt;nav&gt;</code>. The last item is the current page, plain text with <code>aria-current="page"</code>. The slashes are drawn by CSS with empty alt text, so a screen reader hears a list of links, not punctuation. Long names wrap instead of overflowing.</p>
+
+      <fieldset class="panel">
+        <legend>Breadcrumb</legend>
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            <li><a href="#breadcrumbs">Home</a></li>
+            <li><a href="#breadcrumbs">Components</a></li>
+            <li><a href="#breadcrumbs">Navigation and wayfinding for very long section names</a></li>
+            <li aria-current="page">Breadcrumb</li>
+          </ol>
+        </nav>
+        <script type="text/plain" data-example="HTML">
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb">
+              <li><a href="/">Home</a></li>
+              <li><a href="/components">Components</a></li>
+              <li aria-current="page">Breadcrumb</li>
+            </ol>
+          </nav>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="key-groups">
+      <h3 id="key-groups">Button group</h3>
+      <p class="note">A few related keys joined edge to edge in one well. Give the <code>key-group</code> a <code>role</code> and an <code>aria-label</code> so a screen reader says what the group is for. Use it for actions, for toggles (<code>aria-pressed</code>, which your script flips) or, with native radios, for choosing one. Only the two ends are rounded, and each key keeps its own states: the selected one stays latched.</p>
+
+      <fieldset class="panel">
+        <legend>Button group</legend>
+        <div class="well-row">
+          <div class="well key-group" role="group" aria-label="Edit">
+            <button type="button" class="key">Cut</button>
+            <button type="button" class="key">Copy</button>
+            <button type="button" class="key">Paste</button>
+          </div>
+          <div class="well key-group" role="group" aria-label="Text style" data-toggle-group>
+            <button type="button" class="key" aria-pressed="true">Bold</button>
+            <button type="button" class="key" aria-pressed="false">Italic</button>
+            <button type="button" class="key" aria-pressed="false">Underline</button>
+          </div>
+        </div>
+        <div class="well-row">
+          <div class="well key-group" role="radiogroup" aria-label="Size">
+            <label class="key-group__item"><input type="radio" name="kg-size" value="s"><span class="key">Small</span></label>
+            <label class="key-group__item"><input type="radio" name="kg-size" value="m" checked><span class="key">Medium</span></label>
+            <label class="key-group__item"><input type="radio" name="kg-size" value="l"><span class="key">Large</span></label>
+            <label class="key-group__item"><input type="radio" name="kg-size" value="x" disabled><span class="key">Extra large</span></label>
+          </div>
+          <div class="well key-group key-group--vertical" role="group" aria-label="Align">
+            <button type="button" class="key">Left</button>
+            <button type="button" class="key">Center</button>
+            <button type="button" class="key">Right</button>
+          </div>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <div class="well key-group" role="group" aria-label="Text style">
+            <button type="button" class="key" aria-pressed="true">Bold</button>
+            <button type="button" class="key" aria-pressed="false">Italic</button>
+          </div>
+
+          <div class="well key-group" role="radiogroup" aria-label="Size">
+            <label class="key-group__item"><input type="radio" name="size" value="s"><span class="key">Small</span></label>
+            <label class="key-group__item"><input type="radio" name="size" value="m" checked><span class="key">Medium</span></label>
+          </div>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          // Toggle buttons: flip aria-pressed. (Radios need no script; the browser does it.)
+          document.querySelectorAll('.key-group [aria-pressed]').forEach((key) => {
+            key.addEventListener('click', () => {
+              key.setAttribute('aria-pressed', String(key.getAttribute('aria-pressed') !== 'true'));
+            });
+          });
+        </script>
+      </fieldset>
+    </section>
+
     <section aria-labelledby="buttons">
       <h3 id="buttons">Buttons</h3>
       <p class="note">Beveled and extruded. Press and hold to see the cap travel.</p>
@@ -1571,119 +1716,57 @@
         </script>
       </fieldset>
     </section>
-    <section aria-labelledby="key-groups">
-      <h3 id="key-groups">Button group</h3>
-      <p class="note">A few related keys joined edge to edge in one well. Give the <code>key-group</code> a <code>role</code> and an <code>aria-label</code> so a screen reader says what the group is for. Use it for actions, for toggles (<code>aria-pressed</code>, which your script flips) or, with native radios, for choosing one. Only the two ends are rounded, and each key keeps its own states: the selected one stays latched.</p>
+    <section aria-labelledby="charts">
+      <h3 id="charts">Charts</h3>
+      <p class="note">A chart is a figure whose data is a native <code>&lt;table&gt;</code>. The table is the accessible version, so it works with no script. With the optional charts add-on it is drawn as a line, bar, pie or donut chart, named by its title and described by a short summary, and the table moves into a "Data table" disclosure for everyone to read. Each series has its own color, a dash pattern and a legend entry, so color is never the only clue. The drawing is done by <a href="https://chartist.dev">Chartist</a> (MIT), styled with our theme tokens, so charts follow light, dark, palettes and styles.</p>
 
       <fieldset class="panel">
-        <legend>Button group</legend>
-        <div class="well-row">
-          <div class="well key-group" role="group" aria-label="Edit">
-            <button type="button" class="key">Cut</button>
-            <button type="button" class="key">Copy</button>
-            <button type="button" class="key">Paste</button>
-          </div>
-          <div class="well key-group" role="group" aria-label="Text style" data-toggle-group>
-            <button type="button" class="key" aria-pressed="true">Bold</button>
-            <button type="button" class="key" aria-pressed="false">Italic</button>
-            <button type="button" class="key" aria-pressed="false">Underline</button>
-          </div>
-        </div>
-        <div class="well-row">
-          <div class="well key-group" role="radiogroup" aria-label="Size">
-            <label class="key-group__item"><input type="radio" name="kg-size" value="s"><span class="key">Small</span></label>
-            <label class="key-group__item"><input type="radio" name="kg-size" value="m" checked><span class="key">Medium</span></label>
-            <label class="key-group__item"><input type="radio" name="kg-size" value="l"><span class="key">Large</span></label>
-            <label class="key-group__item"><input type="radio" name="kg-size" value="x" disabled><span class="key">Extra large</span></label>
-          </div>
-          <div class="well key-group key-group--vertical" role="group" aria-label="Align">
-            <button type="button" class="key">Left</button>
-            <button type="button" class="key">Center</button>
-            <button type="button" class="key">Right</button>
-          </div>
-        </div>
-        <script type="text/plain" data-example="HTML">
-          <div class="well key-group" role="group" aria-label="Text style">
-            <button type="button" class="key" aria-pressed="true">Bold</button>
-            <button type="button" class="key" aria-pressed="false">Italic</button>
-          </div>
-
-          <div class="well key-group" role="radiogroup" aria-label="Size">
-            <label class="key-group__item"><input type="radio" name="size" value="s"><span class="key">Small</span></label>
-            <label class="key-group__item"><input type="radio" name="size" value="m" checked><span class="key">Medium</span></label>
-          </div>
-        </script>
-        <script type="text/plain" data-example="JavaScript">
-          // Toggle buttons: flip aria-pressed. (Radios need no script; the browser does it.)
-          document.querySelectorAll('.key-group [aria-pressed]').forEach((key) => {
-            key.addEventListener('click', () => {
-              key.setAttribute('aria-pressed', String(key.getAttribute('aria-pressed') !== 'true'));
-            });
-          });
-        </script>
+        <legend>Line chart</legend>
+        <figure class="chart" data-chart="line">
+          <figcaption class="chart__title">Rehearsals per month</figcaption>
+          <table class="table"><caption class="visually-hidden">Rehearsals per month, by band</caption><thead><tr><th scope="col">Month</th><th scope="col">Ramones</th><th scope="col">Blondie</th></tr></thead><tbody><tr><th scope="row">Jan</th><td>12</td><td>8</td></tr><tr><th scope="row">Feb</th><td>14</td><td>11</td></tr><tr><th scope="row">Mar</th><td>9</td><td>13</td></tr><tr><th scope="row">Apr</th><td>16</td><td>10</td></tr><tr><th scope="row">May</th><td>18</td><td>14</td></tr><tr><th scope="row">Jun</th><td>15</td><td>17</td></tr></tbody></table>
+        </figure>
       </fieldset>
-    </section>
 
-    <section aria-labelledby="dialogs">
-      <h3 id="dialogs">Dialog</h3>
-      <p class="note">A native <code>&lt;dialog&gt;</code> opened as a modal. Esc, a click on the backdrop, or any button in the form closes it.</p>
-
-      <div class="well-row">
-        <span class="well"><button type="button" class="key" command="show-modal" commandfor="settings" data-dialog-open="settings">Open dialog</button></span>
-        <output class="lcd" for="settings">closed</output>
+      <div class="row">
+        <div class="col-12 col-md-7">
+          <fieldset class="panel">
+            <legend>Bar chart</legend>
+            <figure class="chart" data-chart="bar">
+              <figcaption class="chart__title">Records sold, in thousands</figcaption>
+              <table class="table"><caption class="visually-hidden">Records sold in thousands, by band</caption><thead><tr><th scope="col">Band</th><th scope="col">Records sold</th></tr></thead><tbody><tr><th scope="row">Ramones</th><td>120</td></tr><tr><th scope="row">Blondie</th><td>200</td></tr><tr><th scope="row">Misfits</th><td>80</td></tr><tr><th scope="row">Bad Brains</th><td>65</td></tr></tbody></table>
+            </figure>
+          </fieldset>
+        </div>
+        <div class="col-12 col-md-5">
+          <fieldset class="panel">
+            <legend>Donut chart</legend>
+            <figure class="chart" data-chart="donut" data-summary="Donut chart of practice hours: guitar 45, bass 25, drums 30. The data is in the table below.">
+              <figcaption class="chart__title">Practice hours</figcaption>
+              <table class="table"><caption class="visually-hidden">Practice hours by instrument</caption><thead><tr><th scope="col">Instrument</th><th scope="col">Hours</th></tr></thead><tbody><tr><th scope="row">Guitar</th><td>45</td></tr><tr><th scope="row">Bass</th><td>25</td></tr><tr><th scope="row">Drums</th><td>30</td></tr></tbody></table>
+            </figure>
+          </fieldset>
+        </div>
       </div>
 
-      <dialog id="settings" class="sheet" aria-labelledby="settings-title">
-        <form method="dialog">
-          <header class="sheet__head">
-            <h3 id="settings-title">Output settings</h3>
-            <span class="well"><button class="key key--sq" value="cancel" aria-label="Close" formnovalidate><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></span>
-          </header>
-
-          <fieldset class="panel">
-            <legend>Monitor</legend>
-            <div class="well-row">
-              <label class="well"><input type="radio" name="monitor" value="speakers" checked><span class="key">Speakers</span></label>
-              <label class="well"><input type="radio" name="monitor" value="phones"><span class="key">Phones</span></label>
-            </div>
-          </fieldset>
-
-          <div class="field">
-            <div class="field__head"><label class="field__label" for="sheet-volume">Volume</label></div>
-            <input class="fader" id="sheet-volume" name="volume" type="range" min="0" max="100" value="60" data-unit="%">
-          </div>
-
-          <footer class="sheet__actions">
-            <span class="well"><button class="key" value="cancel" formnovalidate>Cancel</button></span>
-            <span class="well"><button class="key key--accent" value="save">Save</button></span>
-          </footer>
-        </form>
-      </dialog>
-              <script type="text/plain" data-example="HTML">
-      <!-- No JavaScript needed to open it, where invoker commands are supported -->
-      <button type="button" command="show-modal" commandfor="settings">Open</button>
-
-      <dialog id="settings" class="sheet" aria-labelledby="settings-title">
-        <form method="dialog">
-          <h3 id="settings-title">Settings</h3>
-          <!-- any button in a method="dialog" form closes it, returning its value -->
-          <button value="cancel">Cancel</button>
-          <button value="save">Save</button>
-        </form>
-      </dialog>
-
-      <!-- optional: shows how the dialog was closed -->
-      <output for="settings"></output>
+      <script type="text/plain" data-example="HTML">
+        <figure class="chart" data-chart="line">
+          <figcaption class="chart__title">Rehearsals per month</figcaption>
+          <table class="table">
+            <caption class="visually-hidden">Rehearsals per month, by band</caption>
+            <thead><tr><th scope="col">Month</th><th scope="col">Ramones</th><th scope="col">Blondie</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Jan</th><td>12</td><td>8</td></tr>
+              <tr><th scope="row">Feb</th><td>14</td><td>11</td></tr>
+            </tbody>
+          </table>
+        </figure>
       </script>
-      <script type="text/plain" data-example="JavaScript">
-      const dialog = document.getElementById('settings');
-
-      dialog.addEventListener('close', () => {
-        // "save", "cancel", or "dismissed" (Esc or a click on the backdrop)
-        console.log(dialog.returnValue, new FormData(dialog.querySelector('form')));
-      });
-
-      dialog.showModal();
+      <script type="text/plain" data-example="Setup">
+        <!-- the add-on needs Chartist loaded first -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chartist@2/dist/chartist.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/chartist@2/dist/chartist.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/roboteight/simar-ui@1/dist/simar-ui-charts.min.js"></script>
       </script>
     </section>
 
@@ -1755,210 +1838,67 @@
       </fieldset>
     </section>
 
-    <section aria-labelledby="alerts">
-      <h3 id="alerts">Alerts and toasts</h3>
-      <p class="note">An alert is a banner in the page with an icon, a title and some words, so the kind of message never depends on color alone. Add <code>data-dismissible</code> for a close button. A toast is the same banner shown for a few seconds in a live region, so it is announced without moving focus. It waits while the pointer or focus is on it, can always be dismissed (Esc too), and an error interrupts while the others wait their turn. Call <code>SimarUI.toast("Saved", { variant: "success" })</code>, or put <code>data-toast</code> on a button.</p>
+    <section aria-labelledby="dialogs">
+      <h3 id="dialogs">Dialog</h3>
+      <p class="note">A native <code>&lt;dialog&gt;</code> opened as a modal. Esc, a click on the backdrop, or any button in the form closes it.</p>
 
-      <fieldset class="panel">
-        <legend>Alerts</legend>
-        <div class="alert-stack">
-          <div class="alert alert--info" role="status" data-dismissible><svg class="icon alert__icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert__body"><p class="alert__title">Heads up</p><p class="alert__text">Alerts are announced politely when they appear.</p></div></div>
-          <div class="alert alert--success" role="status" data-dismissible><svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-check"/></svg><div class="alert__body"><p class="alert__title">Saved</p><p class="alert__text">Your changes are in.</p></div></div>
-          <div class="alert alert--warning" role="status"><svg class="icon alert__icon" aria-hidden="true"><use href="#i-triangle-alert"/></svg><div class="alert__body"><p class="alert__title">Almost full</p><p class="alert__text">You have used 90% of your storage.</p></div></div>
-          <div class="alert alert--danger" role="alert"><svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-alert"/></svg><div class="alert__body"><p class="alert__title">Payment failed</p><p class="alert__text">Check the card number and try again.</p></div></div>
-        </div>
-        <script type="text/plain" data-example="Tag">
-          <simar-alert variant="success" title="Saved" dismissible>Your changes are in.</simar-alert>
-          <simar-alert variant="danger" title="Payment failed">Check the card number.</simar-alert>
-        </script>
-        <script type="text/plain" data-example="HTML">
-          <div class="alert alert--success" role="status" data-dismissible>
-            <svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-check"/></svg>
-            <div class="alert__body"><p class="alert__title">Saved</p><p class="alert__text">Your changes are in.</p></div>
-          </div>
-        </script>
-      </fieldset>
-
-      <fieldset class="panel needs-js">
-        <legend>Toasts</legend>
-        <div class="well-row">
-          <span class="well"><button type="button" class="key" data-toast="Your changes are in." data-toast-variant="success">Success</button></span>
-          <span class="well"><button type="button" class="key" data-toast="A new version is available.">Info</button></span>
-          <span class="well"><button type="button" class="key" data-toast="You have used 90% of your storage." data-toast-variant="warning">Warning</button></span>
-          <span class="well"><button type="button" class="key" data-toast="Check the card number and try again." data-toast-variant="danger" data-toast-title="Payment failed">Error</button></span>
-          <span class="well"><button type="button" class="key" data-toast="This one stays until you close it." data-duration="0">Stays</button></span>
-        </div>
-        <script type="text/plain" data-example="HTML">
-          <button type="button" class="key" data-toast="Your changes are in." data-toast-variant="success">Save</button>
-        </script>
-        <script type="text/plain" data-example="JavaScript">
-          SimarUI.toast("Your changes are in.", { variant: "success", duration: 6000 });
-        </script>
-      </fieldset>
-    </section>
-    <section aria-labelledby="badges">
-      <h3 id="badges">Badge</h3>
-      <p class="note">A small label for a status or a count. It always has words, or a number with hidden words after it, so the kind never depends on color alone; the dot is decoration. Use <code>badge--info</code>, <code>--success</code>, <code>--warning</code> or <code>--danger</code>, and <code>badge--count</code> for a number.</p>
-
-      <fieldset class="panel">
-        <legend>Badges</legend>
-        <div class="well-row">
-          <span class="badge">Draft</span>
-          <span class="badge badge--info">New</span>
-          <span class="badge badge--success">Paid</span>
-          <span class="badge badge--warning">Pending</span>
-          <span class="badge badge--danger">Overdue</span>
-          <span class="well"><button type="button" class="key">Inbox <span class="badge badge--count">3<span class="visually-hidden"> unread</span></span></button></span>
-        </div>
-        <script type="text/plain" data-example="Tag">
-          <simar-badge variant="success">Paid</simar-badge>
-          <simar-badge count variant="info">3<span class="visually-hidden"> unread</span></simar-badge>
-        </script>
-        <script type="text/plain" data-example="HTML">
-          <span class="badge badge--success">Paid</span>
-          <button type="button" class="key">Inbox <span class="badge badge--count">3<span class="visually-hidden"> unread</span></span></button>
-        </script>
-      </fieldset>
-    </section>
-
-    <section aria-labelledby="tables">
-      <h3 id="tables">Table</h3>
-      <p class="note">A native <code>&lt;table&gt;</code> with a <code>&lt;caption&gt;</code> and <code>&lt;th scope&gt;</code>. Wrap it in <code>.table-wrap</code> so it scrolls sideways on a narrow screen; the wrapper takes keyboard focus so the scrolling works without a mouse. Add <code>table--striped</code> or <code>table--hover</code>, and <code>data-sortable</code> with <code>data-sort</code> on the headers for sorting (the script adds the buttons and <code>aria-sort</code>).</p>
-
-      <fieldset class="panel">
-        <legend>Table</legend>
-        <div class="table-wrap" role="region" aria-labelledby="orders-cap" tabindex="0">
-          <table class="table table--hover" data-sortable>
-            <caption id="orders-cap">Recent orders. Sortable by order, customer, total and status.</caption>
-            <thead><tr><th scope="col" data-sort>Order</th><th scope="col" data-sort>Customer</th><th scope="col" class="num" data-sort>Total</th><th scope="col" data-sort>Status</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">#1042</th><td>Darby Crash</td><td class="num">$120.00</td><td><span class="badge badge--success">Paid</span></td></tr>
-              <tr><th scope="row">#1043</th><td>Deborah Harry</td><td class="num">$48.50</td><td><span class="badge badge--warning">Pending</span></td></tr>
-              <tr><th scope="row">#1044</th><td>Iggy Pop</td><td class="num">$1,310.00</td><td><span class="badge badge--danger">Overdue</span></td></tr>
-              <tr><th scope="row">#1045</th><td>Joey Ramone</td><td class="num">$9.99</td><td><span class="badge badge--success">Paid</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <script type="text/plain" data-example="HTML">
-          <div class="table-wrap" role="region" aria-labelledby="cap" tabindex="0">
-            <table class="table table--hover" data-sortable>
-              <caption id="cap">Recent orders</caption>
-              <thead><tr><th scope="col" data-sort>Order</th><th scope="col" class="num" data-sort>Total</th></tr></thead>
-              <tbody><tr><th scope="row">#1042</th><td class="num">$120.00</td></tr></tbody>
-            </table>
-          </div>
-        </script>
-      </fieldset>
-    </section>
-
-    <section aria-labelledby="charts">
-      <h3 id="charts">Charts</h3>
-      <p class="note">A chart is a figure whose data is a native <code>&lt;table&gt;</code>. The table is the accessible version, so it works with no script. With the optional charts add-on it is drawn as a line, bar, pie or donut chart, named by its title and described by a short summary, and the table moves into a "Data table" disclosure for everyone to read. Each series has its own color, a dash pattern and a legend entry, so color is never the only clue. The drawing is done by <a href="https://chartist.dev">Chartist</a> (MIT), styled with our theme tokens, so charts follow light, dark, palettes and styles.</p>
-
-      <fieldset class="panel">
-        <legend>Line chart</legend>
-        <figure class="chart" data-chart="line">
-          <figcaption class="chart__title">Rehearsals per month</figcaption>
-          <table class="table"><caption class="visually-hidden">Rehearsals per month, by band</caption><thead><tr><th scope="col">Month</th><th scope="col">Ramones</th><th scope="col">Blondie</th></tr></thead><tbody><tr><th scope="row">Jan</th><td>12</td><td>8</td></tr><tr><th scope="row">Feb</th><td>14</td><td>11</td></tr><tr><th scope="row">Mar</th><td>9</td><td>13</td></tr><tr><th scope="row">Apr</th><td>16</td><td>10</td></tr><tr><th scope="row">May</th><td>18</td><td>14</td></tr><tr><th scope="row">Jun</th><td>15</td><td>17</td></tr></tbody></table>
-        </figure>
-      </fieldset>
-
-      <div class="row">
-        <div class="col-12 col-md-7">
-          <fieldset class="panel">
-            <legend>Bar chart</legend>
-            <figure class="chart" data-chart="bar">
-              <figcaption class="chart__title">Records sold, in thousands</figcaption>
-              <table class="table"><caption class="visually-hidden">Records sold in thousands, by band</caption><thead><tr><th scope="col">Band</th><th scope="col">Records sold</th></tr></thead><tbody><tr><th scope="row">Ramones</th><td>120</td></tr><tr><th scope="row">Blondie</th><td>200</td></tr><tr><th scope="row">Misfits</th><td>80</td></tr><tr><th scope="row">Bad Brains</th><td>65</td></tr></tbody></table>
-            </figure>
-          </fieldset>
-        </div>
-        <div class="col-12 col-md-5">
-          <fieldset class="panel">
-            <legend>Donut chart</legend>
-            <figure class="chart" data-chart="donut" data-summary="Donut chart of practice hours: guitar 45, bass 25, drums 30. The data is in the table below.">
-              <figcaption class="chart__title">Practice hours</figcaption>
-              <table class="table"><caption class="visually-hidden">Practice hours by instrument</caption><thead><tr><th scope="col">Instrument</th><th scope="col">Hours</th></tr></thead><tbody><tr><th scope="row">Guitar</th><td>45</td></tr><tr><th scope="row">Bass</th><td>25</td></tr><tr><th scope="row">Drums</th><td>30</td></tr></tbody></table>
-            </figure>
-          </fieldset>
-        </div>
+      <div class="well-row">
+        <span class="well"><button type="button" class="key" command="show-modal" commandfor="settings" data-dialog-open="settings">Open dialog</button></span>
+        <output class="lcd" for="settings">closed</output>
       </div>
 
-      <script type="text/plain" data-example="HTML">
-        <figure class="chart" data-chart="line">
-          <figcaption class="chart__title">Rehearsals per month</figcaption>
-          <table class="table">
-            <caption class="visually-hidden">Rehearsals per month, by band</caption>
-            <thead><tr><th scope="col">Month</th><th scope="col">Ramones</th><th scope="col">Blondie</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">Jan</th><td>12</td><td>8</td></tr>
-              <tr><th scope="row">Feb</th><td>14</td><td>11</td></tr>
-            </tbody>
-          </table>
-        </figure>
+      <dialog id="settings" class="sheet" aria-labelledby="settings-title">
+        <form method="dialog">
+          <header class="sheet__head">
+            <h3 id="settings-title">Output settings</h3>
+            <span class="well"><button class="key key--sq" value="cancel" aria-label="Close" formnovalidate><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></span>
+          </header>
+
+          <fieldset class="panel">
+            <legend>Monitor</legend>
+            <div class="well-row">
+              <label class="well"><input type="radio" name="monitor" value="speakers" checked><span class="key">Speakers</span></label>
+              <label class="well"><input type="radio" name="monitor" value="phones"><span class="key">Phones</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="sheet-volume">Volume</label></div>
+            <input class="fader" id="sheet-volume" name="volume" type="range" min="0" max="100" value="60" data-unit="%">
+          </div>
+
+          <footer class="sheet__actions">
+            <span class="well"><button class="key" value="cancel" formnovalidate>Cancel</button></span>
+            <span class="well"><button class="key key--accent" value="save">Save</button></span>
+          </footer>
+        </form>
+      </dialog>
+              <script type="text/plain" data-example="HTML">
+      <!-- No JavaScript needed to open it, where invoker commands are supported -->
+      <button type="button" command="show-modal" commandfor="settings">Open</button>
+
+      <dialog id="settings" class="sheet" aria-labelledby="settings-title">
+        <form method="dialog">
+          <h3 id="settings-title">Settings</h3>
+          <!-- any button in a method="dialog" form closes it, returning its value -->
+          <button value="cancel">Cancel</button>
+          <button value="save">Save</button>
+        </form>
+      </dialog>
+
+      <!-- optional: shows how the dialog was closed -->
+      <output for="settings"></output>
       </script>
-      <script type="text/plain" data-example="Setup">
-        <!-- the add-on needs Chartist loaded first -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chartist@2/dist/chartist.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/chartist@2/dist/chartist.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/roboteight/simar-ui@1/dist/simar-ui-charts.min.js"></script>
+      <script type="text/plain" data-example="JavaScript">
+      const dialog = document.getElementById('settings');
+
+      dialog.addEventListener('close', () => {
+        // "save", "cancel", or "dismissed" (Esc or a click on the backdrop)
+        console.log(dialog.returnValue, new FormData(dialog.querySelector('form')));
+      });
+
+      dialog.showModal();
       </script>
-    </section>
-
-    <section aria-labelledby="pagination">
-      <h3 id="pagination">Pagination</h3>
-      <p class="note">Page links in a <code>&lt;nav&gt;</code> with its own label. They are real links, so they work without JavaScript. The current page has <code>aria-current="page"</code> and stays latched; Previous and Next carry <code>rel="prev"</code> and <code>rel="next"</code>, and one that can't be used is <code>aria-disabled="true"</code> (and has no <code>href</code>).</p>
-
-      <fieldset class="panel">
-        <legend>Pagination</legend>
-        <nav class="pagination" aria-label="Orders pages">
-          <ul class="pagination__list">
-            <li><a class="key" href="#pagination" rel="prev">Previous</a></li>
-            <li><a class="key" href="#pagination" aria-label="Page 1">1</a></li>
-            <li><a class="key" href="#pagination" aria-label="Page 2, current page" aria-current="page">2</a></li>
-            <li><a class="key" href="#pagination" aria-label="Page 3">3</a></li>
-            <li><span class="pagination__gap" aria-hidden="true">&hellip;</span></li>
-            <li><a class="key" href="#pagination" aria-label="Page 12">12</a></li>
-            <li><a class="key" href="#pagination" rel="next">Next</a></li>
-          </ul>
-        </nav>
-        <script type="text/plain" data-example="HTML">
-          <nav class="pagination" aria-label="Orders pages">
-            <ul class="pagination__list">
-              <li><a class="key" href="?page=1" rel="prev">Previous</a></li>
-              <li><a class="key" href="?page=1" aria-label="Page 1">1</a></li>
-              <li><a class="key" href="?page=2" aria-label="Page 2, current page" aria-current="page">2</a></li>
-              <li><a class="key" href="?page=3" rel="next">Next</a></li>
-            </ul>
-          </nav>
-        </script>
-      </fieldset>
-    </section>
-
-    <section aria-labelledby="breadcrumbs">
-      <h3 id="breadcrumbs">Breadcrumb</h3>
-      <p class="note">Where you are in the site: an ordered list of links in a labelled <code>&lt;nav&gt;</code>. The last item is the current page, plain text with <code>aria-current="page"</code>. The slashes are drawn by CSS with empty alt text, so a screen reader hears a list of links, not punctuation. Long names wrap instead of overflowing.</p>
-
-      <fieldset class="panel">
-        <legend>Breadcrumb</legend>
-        <nav aria-label="Breadcrumb">
-          <ol class="breadcrumb">
-            <li><a href="#breadcrumbs">Home</a></li>
-            <li><a href="#breadcrumbs">Components</a></li>
-            <li><a href="#breadcrumbs">Navigation and wayfinding for very long section names</a></li>
-            <li aria-current="page">Breadcrumb</li>
-          </ol>
-        </nav>
-        <script type="text/plain" data-example="HTML">
-          <nav aria-label="Breadcrumb">
-            <ol class="breadcrumb">
-              <li><a href="/">Home</a></li>
-              <li><a href="/components">Components</a></li>
-              <li aria-current="page">Breadcrumb</li>
-            </ol>
-          </nav>
-        </script>
-      </fieldset>
     </section>
 
     <section aria-labelledby="menus">
@@ -2026,6 +1966,36 @@
       </fieldset>
     </section>
 
+    <section aria-labelledby="pagination">
+      <h3 id="pagination">Pagination</h3>
+      <p class="note">Page links in a <code>&lt;nav&gt;</code> with its own label. They are real links, so they work without JavaScript. The current page has <code>aria-current="page"</code> and stays latched; Previous and Next carry <code>rel="prev"</code> and <code>rel="next"</code>, and one that can't be used is <code>aria-disabled="true"</code> (and has no <code>href</code>).</p>
+
+      <fieldset class="panel">
+        <legend>Pagination</legend>
+        <nav class="pagination" aria-label="Orders pages">
+          <ul class="pagination__list">
+            <li><a class="key" href="#pagination" rel="prev">Previous</a></li>
+            <li><a class="key" href="#pagination" aria-label="Page 1">1</a></li>
+            <li><a class="key" href="#pagination" aria-label="Page 2, current page" aria-current="page">2</a></li>
+            <li><a class="key" href="#pagination" aria-label="Page 3">3</a></li>
+            <li><span class="pagination__gap" aria-hidden="true">&hellip;</span></li>
+            <li><a class="key" href="#pagination" aria-label="Page 12">12</a></li>
+            <li><a class="key" href="#pagination" rel="next">Next</a></li>
+          </ul>
+        </nav>
+        <script type="text/plain" data-example="HTML">
+          <nav class="pagination" aria-label="Orders pages">
+            <ul class="pagination__list">
+              <li><a class="key" href="?page=1" rel="prev">Previous</a></li>
+              <li><a class="key" href="?page=1" aria-label="Page 1">1</a></li>
+              <li><a class="key" href="?page=2" aria-label="Page 2, current page" aria-current="page">2</a></li>
+              <li><a class="key" href="?page=3" rel="next">Next</a></li>
+            </ul>
+          </nav>
+        </script>
+      </fieldset>
+    </section>
+
     <section aria-labelledby="progress">
       <h3 id="progress">Progress</h3>
       <p class="note">A native <code>&lt;progress&gt;</code>: it works without JavaScript and is announced as a progress bar. Leave off <code>value</code> when the length isn't known. Motion stops with <code>prefers-reduced-motion</code>, and <code>data-paused</code> freezes it.</p>
@@ -2084,6 +2054,36 @@
         </script>
       </fieldset>
     </section>
+    <section aria-labelledby="tables">
+      <h3 id="tables">Table</h3>
+      <p class="note">A native <code>&lt;table&gt;</code> with a <code>&lt;caption&gt;</code> and <code>&lt;th scope&gt;</code>. Wrap it in <code>.table-wrap</code> so it scrolls sideways on a narrow screen; the wrapper takes keyboard focus so the scrolling works without a mouse. Add <code>table--striped</code> or <code>table--hover</code>, and <code>data-sortable</code> with <code>data-sort</code> on the headers for sorting (the script adds the buttons and <code>aria-sort</code>).</p>
+
+      <fieldset class="panel">
+        <legend>Table</legend>
+        <div class="table-wrap" role="region" aria-labelledby="orders-cap" tabindex="0">
+          <table class="table table--hover" data-sortable>
+            <caption id="orders-cap">Recent orders. Sortable by order, customer, total and status.</caption>
+            <thead><tr><th scope="col" data-sort>Order</th><th scope="col" data-sort>Customer</th><th scope="col" class="num" data-sort>Total</th><th scope="col" data-sort>Status</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">#1042</th><td>Darby Crash</td><td class="num">$120.00</td><td><span class="badge badge--success">Paid</span></td></tr>
+              <tr><th scope="row">#1043</th><td>Deborah Harry</td><td class="num">$48.50</td><td><span class="badge badge--warning">Pending</span></td></tr>
+              <tr><th scope="row">#1044</th><td>Iggy Pop</td><td class="num">$1,310.00</td><td><span class="badge badge--danger">Overdue</span></td></tr>
+              <tr><th scope="row">#1045</th><td>Joey Ramone</td><td class="num">$9.99</td><td><span class="badge badge--success">Paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <div class="table-wrap" role="region" aria-labelledby="cap" tabindex="0">
+            <table class="table table--hover" data-sortable>
+              <caption id="cap">Recent orders</caption>
+              <thead><tr><th scope="col" data-sort>Order</th><th scope="col" class="num" data-sort>Total</th></tr></thead>
+              <tbody><tr><th scope="row">#1042</th><td class="num">$120.00</td></tr></tbody>
+            </table>
+          </div>
+        </script>
+      </fieldset>
+    </section>
+
     <section aria-labelledby="tabs">
       <h3 id="tabs">Tabs</h3>
       <p class="note">Write each tab as a headed section. Without JavaScript they simply stack under their headings; with it, the headings become a row of keys and one panel shows at a time. Arrow keys, Home and End move between tabs, and the selected tab stays latched. Add <code>data-selected</code> to open on a different tab.</p>

@@ -73,6 +73,8 @@ let sameRun = 0;
 let trapped = false;
 for (; stops < 700; stops++) {
   await page.keyboard.press('Tab');
+  // Let the page settle: it moves a control that landed under the sticky header on the next frame.
+  await new Promise((r) => setTimeout(r, 60));
   // <body> means focus has left the page's last control.
   const state = await page.evaluate(() => {
     const same = window.__prev === document.activeElement;

@@ -59,6 +59,12 @@ $heading-sizes: (
   font-weight: 300;
 }
 
+// A link: a bare <a> is left to the browser, so put .link on it (links inside .prose get it too). It is the
+// theme's highlight color in a heavier weight with no underline until hover or focus; link--underline keeps
+// the underline on.
+.link { @include link; }
+.link--underline { text-decoration-line: underline; }
+
 .prose {
   max-width: 65ch;
   line-height: 1.65;
@@ -80,16 +86,7 @@ $heading-sizes: (
   dt { font-weight: 600; }
   dd { margin: 0 0 0.6em; color: var(--ink-soft); }
 
-  a {
-    color: var(--ink);
-    text-decoration: underline;
-    text-decoration-color: var(--lit-ink);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.2em;
-
-    &:hover { text-decoration-color: currentColor; }
-    &:focus-visible { @include focus-ring(2px); border-radius: 2px; }
-  }
+  a:not([class]) { @include link; }
 
   hr {
     height: 0;

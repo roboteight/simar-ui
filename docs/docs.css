@@ -104,6 +104,29 @@ ul.plain li {
   margin: 0.4rem 0;
 }
 
+main a:not([class]) {
+  color: var(--link-color, var(--lit-ink));
+  font-weight: var(--link-weight, 600);
+  text-decoration: none;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+main a:not([class]):hover {
+  text-decoration-line: underline;
+}
+main a:not([class]):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+  text-decoration-line: underline;
+}
+@media (forced-colors: active) {
+  main a:not([class]) {
+    color: LinkText;
+    text-decoration-line: underline;
+  }
+}
+
 main a:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;

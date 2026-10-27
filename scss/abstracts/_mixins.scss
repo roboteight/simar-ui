@@ -126,6 +126,22 @@
   box-shadow: ring(), 0 0 0 1px var(--hairline), $shadow;
 }
 
+// A themed link: the highlight's ink color in a heavier weight, no underline until it is hovered or has focus.
+// The weight is the cue besides color (WCAG 1.4.1), and in forced-colors mode it is underlined always.
+// Set --link-color or --link-weight to change it; link--underline keeps the underline on.
+@mixin link {
+  color: var(--link-color, var(--lit-ink));
+  font-weight: var(--link-weight, 600);
+  text-decoration: none;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+
+  &:hover { text-decoration-line: underline; }
+  &:focus-visible { @include focus-ring(2px); border-radius: 2px; text-decoration-line: underline; }
+
+  @include forced-colors { color: LinkText; text-decoration-line: underline; }
+}
+
 // A small tick mark: knob dials and fader marks.
 @mixin tick-mark {
   position: absolute;

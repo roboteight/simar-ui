@@ -984,6 +984,32 @@ for (const theme of ['light', 'dark']) {
   const low = colors.series.map((c, i) => [i + 1, Math.min(...colors.panel.map((p) => ratio(c, p)))]).filter(([, r]) => r < 3);
   low.length === 0 ? pass(`all eight series colors are at least 3:1 against the panel in ${theme}`) : fail(`${theme} series below 3:1: ${low.map(([i, r]) => `chart-${i} ${r.toFixed(2)}`).join(', ')}`);
 }
+// the colors follow the theme: every highlight and palette keeps all eight series at 3:1, in light and dark
+const themeLow = [];
+for (const theme of ['light', 'dark']) {
+  await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: theme }]);
+  await page.reload();
+  await wait(400);
+  const sets = await page.evaluate(async (names) => {
+    const ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true }); ctx.canvas.width = ctx.canvas.height = 1;
+    const rgb = (css) => { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = css; ctx.fillRect(0, 0, 1, 1); return [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3); };
+    const fig = document.querySelector('figure.chart'); const out = [];
+    for (const [kind, name] of names) {
+      const root = document.documentElement;
+      if (kind === 'lit') root.dataset.lit = name; else root.dataset.palette = name;
+      await new Promise((r) => setTimeout(r, 30));
+      const cs = getComputedStyle(fig);
+      out.push({ name: `${kind} ${name}`, series: [1, 2, 3, 4, 5, 6, 7, 8].map((n) => rgb(cs.getPropertyValue(`--chart-${n}`).trim())), panel: [rgb(cs.getPropertyValue('--sheet-top').trim()), rgb(cs.getPropertyValue('--sheet-bottom').trim())] });
+      delete root.dataset.lit; delete root.dataset.palette;
+    }
+    return out;
+  }, [['lit', 'blue'], ['lit', 'amber'], ['lit', 'red'], ['lit', 'violet'], ['lit', 'yellow'], ['lit', 'lime'], ['lit', 'cyan'], ['lit', 'pink'], ['lit', 'brown'], ['lit', 'blue-grey'], ['palette', 'indigo'], ['palette', 'teal'], ['palette', 'rose'], ['palette', 'amber'], ['palette', 'forest'], ['palette', 'ocean']]);
+  for (const set of sets) {
+    const worst = Math.min(...set.series.flatMap((c) => set.panel.map((p) => ratio(c, p))));
+    if (worst < 3) themeLow.push(`${theme} ${set.name} ${worst.toFixed(2)}`);
+  }
+}
+themeLow.length === 0 ? pass('chart colors follow the highlight and palette and stay at least 3:1 against the panel for every preset, in light and dark') : fail(`chart colors under 3:1: ${themeLow.join(', ')}`);
 await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }]);
 await open(1280, '?js=off');
 const plain = await page.evaluate(() => ({ svg: document.querySelectorAll('figure.chart svg').length, tables: [...document.querySelectorAll('figure.chart table')].every((t) => t.getBoundingClientRect().height > 0) }));
@@ -1041,6 +1067,26 @@ await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' 
 await open(375);
 const phone = await page.evaluate(() => { const ol = document.querySelectorAll('section[aria-labelledby="timelines"] ol.timeline')[1]; const tops = [...ol.children].map((li) => Math.round(li.getBoundingClientRect().top)); return { stacked: tops.every((t, i, a) => i === 0 || t > a[i - 1]), page: document.documentElement.scrollWidth <= innerWidth + 1 }; });
 phone.stacked && phone.page ? pass('on a phone the horizontal timeline stacks, with no sideways scrolling') : fail(`timeline at 375px: ${JSON.stringify(phone)}`);
+
+// ---- links ----------------------------------------------------------------------------------------
+console.log('\nLinks');
+await open(1280);
+const lk = await page.evaluate(() => {
+  const a = document.querySelector('section[aria-labelledby="charts"] .note a');
+  const cs = getComputedStyle(a);
+  return { color: cs.color, weight: +cs.fontWeight, line: cs.textDecorationLine, link: getComputedStyle(document.documentElement).getPropertyValue('--lit-ink') };
+});
+lk.color !== 'rgb(0, 0, 238)' && lk.weight >= 600 && lk.line === 'none' ? pass('a plain link uses the theme color in a heavier weight, not the default blue, and is not underlined at rest') : fail(`link style: ${JSON.stringify(lk)}`);
+await page.$eval('section[aria-labelledby="charts"] .note a', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.hover('section[aria-labelledby="charts"] .note a');
+(await page.$eval('section[aria-labelledby="charts"] .note a', (n) => getComputedStyle(n).textDecorationLine)) === 'underline' ? pass('it is underlined on hover') : fail('the link is not underlined on hover');
+await page.mouse.move(5, 5);
+await keyboardFocus('section[aria-labelledby="charts"] .note a');
+const fl = await page.$eval('section[aria-labelledby="charts"] .note a', (n) => ({ line: getComputedStyle(n).textDecorationLine, outline: getComputedStyle(n).outlineStyle }));
+fl.line === 'underline' && fl.outline !== 'none' ? pass('and on keyboard focus, along with the focus ring') : fail(`link focus: ${JSON.stringify(fl)}`);
+await page.emulateMediaFeatures([{ name: 'forced-colors', value: 'active' }]);
+(await page.$eval('section[aria-labelledby="charts"] .note a', (n) => getComputedStyle(n).textDecorationLine)) === 'underline' ? pass('in forced-colors mode links are always underlined') : fail('links are not underlined in forced-colors mode');
+await page.emulateMediaFeatures([{ name: 'forced-colors', value: 'none' }]);
 
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');

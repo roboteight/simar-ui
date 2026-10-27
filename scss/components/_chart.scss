@@ -45,6 +45,21 @@
 
   &__canvas { min-width: 0; }
 
+  // Where the browser supports relative colors, the series colors come from the theme's own highlight, so a
+  // chart matches the page: the first series is the highlight's ink color (readable on the panel in light
+  // and dark, by the same rule as every lit text), and the rest turn its hue in 45 degree steps at the same
+  // lightness, so they stay as readable. Elsewhere the fixed set in the theme file is used.
+  @supports (color: oklch(from red l c h)) {
+    --chart-1: var(--lit-ink);
+    --chart-2: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 45));
+    --chart-3: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 90));
+    --chart-4: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 135));
+    --chart-5: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 180));
+    --chart-6: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 225));
+    --chart-7: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 270));
+    --chart-8: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 315));
+  }
+
   // Line series are told apart by a dash pattern as well as a color.
   .ct-series-b { --ct-line-dasharray: 8 5; }
   .ct-series-c { --ct-line-dasharray: 2 4; }

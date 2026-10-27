@@ -2249,6 +2249,33 @@
   font-weight: 300;
 }
 
+.link {
+  color: var(--link-color, var(--lit-ink));
+  font-weight: var(--link-weight, 600);
+  text-decoration: none;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+.link:hover {
+  text-decoration-line: underline;
+}
+.link:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+  text-decoration-line: underline;
+}
+@media (forced-colors: active) {
+  .link {
+    color: LinkText;
+    text-decoration-line: underline;
+  }
+}
+
+.link--underline {
+  text-decoration-line: underline;
+}
+
 .prose {
   max-width: 65ch;
   line-height: 1.65;
@@ -2283,20 +2310,27 @@
   margin: 0 0 0.6em;
   color: var(--ink-soft);
 }
-.prose a {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--lit-ink);
+.prose a:not([class]) {
+  color: var(--link-color, var(--lit-ink));
+  font-weight: var(--link-weight, 600);
+  text-decoration: none;
   text-decoration-thickness: 2px;
   text-underline-offset: 0.2em;
 }
-.prose a:hover {
-  text-decoration-color: currentColor;
+.prose a:not([class]):hover {
+  text-decoration-line: underline;
 }
-.prose a:focus-visible {
+.prose a:not([class]):focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
   border-radius: 2px;
+  text-decoration-line: underline;
+}
+@media (forced-colors: active) {
+  .prose a:not([class]) {
+    color: LinkText;
+    text-decoration-line: underline;
+  }
 }
 .prose hr {
   height: 0;
@@ -5396,6 +5430,18 @@ video.media {
 }
 .chart__canvas {
   min-width: 0;
+}
+@supports (color: oklch(from red l c h)) {
+  .chart {
+    --chart-1: var(--lit-ink);
+    --chart-2: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 45));
+    --chart-3: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 90));
+    --chart-4: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 135));
+    --chart-5: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 180));
+    --chart-6: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 225));
+    --chart-7: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 270));
+    --chart-8: oklch(from var(--lit-ink) l max(c, 0.13) calc(h + 315));
+  }
 }
 .chart .ct-series-b {
   --ct-line-dasharray: 8 5;
