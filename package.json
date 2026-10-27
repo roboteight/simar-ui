@@ -1,6 +1,6 @@
 {
   "name": "simar-ui",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Custom-styled form controls built on native HTML elements. Beveled keys, faders, knobs, date ranges. Configured with HTML attributes.",
   "license": "MIT",
   "repository": {
