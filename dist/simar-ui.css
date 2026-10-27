@@ -265,6 +265,7 @@
   --chart-6: #d2621c;
   --chart-7: #b8479f;
   --chart-8: #6e8b1f;
+  --map-tile-filter: none;
 }
 
 [data-theme=dark] {
@@ -342,6 +343,7 @@
   --chart-6: #e68544;
   --chart-7: #dd78c4;
   --chart-8: #93b03c;
+  --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -420,6 +422,7 @@
     --chart-6: #e68544;
     --chart-7: #dd78c4;
     --chart-8: #93b03c;
+    --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
   }
 }
 :root {
@@ -562,6 +565,7 @@
   --chart-6: #d2621c;
   --chart-7: #b8479f;
   --chart-8: #6e8b1f;
+  --map-tile-filter: none;
   --lit: #5c6bc0;
   --key-primary-top: rgb(64.8431372549%, 68.0784313725%, 86.4117647059%);
   --key-primary-bottom: rgb(75.7098039216%, 77.9450980392%, 90.6117647059%);
@@ -649,6 +653,7 @@
     --chart-6: #e68544;
     --chart-7: #dd78c4;
     --chart-8: #93b03c;
+    --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
     --lit: #5c6bc0;
     --key-primary-top: rgb(64.8431372549%, 68.0784313725%, 86.4117647059%);
     --key-primary-bottom: rgb(75.7098039216%, 77.9450980392%, 90.6117647059%);
@@ -735,6 +740,7 @@
   --chart-6: #e68544;
   --chart-7: #dd78c4;
   --chart-8: #93b03c;
+  --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
   --lit: #5c6bc0;
   --key-primary-top: rgb(64.8431372549%, 68.0784313725%, 86.4117647059%);
   --key-primary-bottom: rgb(75.7098039216%, 77.9450980392%, 90.6117647059%);
@@ -821,6 +827,7 @@
   --chart-6: #d2621c;
   --chart-7: #b8479f;
   --chart-8: #6e8b1f;
+  --map-tile-filter: none;
   --lit: #00a896;
   --key-primary-top: rgb(45%, 81.2352941176%, 77.3529411765%);
   --key-primary-bottom: rgb(62%, 87.0352941176%, 84.3529411765%);
@@ -908,6 +915,7 @@
     --chart-6: #e68544;
     --chart-7: #dd78c4;
     --chart-8: #93b03c;
+    --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
     --lit: #00a896;
     --key-primary-top: rgb(45%, 81.2352941176%, 77.3529411765%);
     --key-primary-bottom: rgb(62%, 87.0352941176%, 84.3529411765%);
@@ -994,6 +1002,7 @@
   --chart-6: #e68544;
   --chart-7: #dd78c4;
   --chart-8: #93b03c;
+  --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
   --lit: #00a896;
   --key-primary-top: rgb(45%, 81.2352941176%, 77.3529411765%);
   --key-primary-bottom: rgb(62%, 87.0352941176%, 84.3529411765%);
@@ -1080,6 +1089,7 @@
   --chart-6: #d2621c;
   --chart-7: #b8479f;
   --chart-8: #6e8b1f;
+  --map-tile-filter: none;
   --lit: #e91e63;
   --key-primary-top: rgb(95.2549019608%, 51.4705882353%, 66.3529411765%);
   --key-primary-bottom: rgb(96.7215686275%, 66.4705882353%, 76.7529411765%);
@@ -1167,6 +1177,7 @@
     --chart-6: #e68544;
     --chart-7: #dd78c4;
     --chart-8: #93b03c;
+    --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
     --lit: #e91e63;
     --key-primary-top: rgb(95.2549019608%, 51.4705882353%, 66.3529411765%);
     --key-primary-bottom: rgb(96.7215686275%, 66.4705882353%, 76.7529411765%);
@@ -1253,6 +1264,7 @@
   --chart-6: #e68544;
   --chart-7: #dd78c4;
   --chart-8: #93b03c;
+  --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
   --lit: #e91e63;
   --key-primary-top: rgb(95.2549019608%, 51.4705882353%, 66.3529411765%);
   --key-primary-bottom: rgb(96.7215686275%, 66.4705882353%, 76.7529411765%);
@@ -1339,6 +1351,7 @@
   --chart-6: #d2621c;
   --chart-7: #b8479f;
   --chart-8: #6e8b1f;
+  --map-tile-filter: none;
   --lit: #ffa000;
   --key-primary-top: rgb(100%, 79.5098039216%, 45%);
   --key-primary-bottom: rgb(100%, 85.8431372549%, 62%);
@@ -1426,6 +1439,7 @@
     --chart-6: #e68544;
     --chart-7: #dd78c4;
     --chart-8: #93b03c;
+    --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
     --lit: #ffa000;
     --key-primary-top: rgb(100%, 79.5098039216%, 45%);
     --key-primary-bottom: rgb(100%, 85.8431372549%, 62%);
@@ -1512,6 +1526,7 @@
   --chart-6: #e68544;
   --chart-7: #dd78c4;
   --chart-8: #93b03c;
+  --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
   --lit: #ffa000;
   --key-primary-top: rgb(100%, 79.5098039216%, 45%);
   --key-primary-bottom: rgb(100%, 85.8431372549%, 62%);
@@ -1598,6 +1613,7 @@
   --chart-6: #d2621c;
   --chart-7: #b8479f;
   --chart-8: #6e8b1f;
+  --map-tile-filter: none;
   --lit: #43a047;
   --key-primary-top: rgb(59.4509803922%, 79.5098039216%, 60.3137254902%);
   --key-primary-bottom: rgb(71.9843137255%, 85.8431372549%, 72.5803921569%);
@@ -1685,6 +1701,7 @@
     --chart-6: #e68544;
     --chart-7: #dd78c4;
     --chart-8: #93b03c;
+    --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
     --lit: #43a047;
     --key-primary-top: rgb(59.4509803922%, 79.5098039216%, 60.3137254902%);
     --key-primary-bottom: rgb(71.9843137255%, 85.8431372549%, 72.5803921569%);
@@ -1771,6 +1788,7 @@
   --chart-6: #e68544;
   --chart-7: #dd78c4;
   --chart-8: #93b03c;
+  --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
   --lit: #43a047;
   --key-primary-top: rgb(59.4509803922%, 79.5098039216%, 60.3137254902%);
   --key-primary-bottom: rgb(71.9843137255%, 85.8431372549%, 72.5803921569%);
@@ -1857,6 +1875,7 @@
   --chart-6: #d2621c;
   --chart-7: #b8479f;
   --chart-8: #6e8b1f;
+  --map-tile-filter: none;
   --lit: #039be5;
   --key-primary-top: rgb(45.6470588235%, 78.431372549%, 94.3921568627%);
   --key-primary-bottom: rgb(62.4470588235%, 85.0980392157%, 96.1254901961%);
@@ -1944,6 +1963,7 @@
     --chart-6: #e68544;
     --chart-7: #dd78c4;
     --chart-8: #93b03c;
+    --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
     --lit: #039be5;
     --key-primary-top: rgb(45.6470588235%, 78.431372549%, 94.3921568627%);
     --key-primary-bottom: rgb(62.4470588235%, 85.0980392157%, 96.1254901961%);
@@ -2030,6 +2050,7 @@
   --chart-6: #e68544;
   --chart-7: #dd78c4;
   --chart-8: #93b03c;
+  --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
   --lit: #039be5;
   --key-primary-top: rgb(45.6470588235%, 78.431372549%, 94.3921568627%);
   --key-primary-bottom: rgb(62.4470588235%, 85.0980392157%, 96.1254901961%);
@@ -5645,6 +5666,175 @@ hr.divider {
   }
 }
 
+.map {
+  margin: 0;
+  min-width: 0;
+}
+.map__title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.map__frame {
+  position: relative;
+}
+.map__canvas {
+  height: var(--map-height, 22rem);
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--map-radius, var(--radius-lg));
+  background: var(--well-top);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline-strong);
+  font: inherit;
+  color: var(--ink);
+}
+.map__canvas .leaflet-tile-pane {
+  filter: var(--map-tile-filter, none);
+}
+@media (forced-colors: active) {
+  .map__canvas {
+    box-shadow: none;
+    border: 1px solid CanvasText;
+  }
+}
+.map .map__canvas.leaflet-container:focus-visible {
+  outline: 0;
+}
+.map .map__canvas::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1100;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.map .map__canvas.leaflet-container:focus-visible::after {
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
+}
+.map__controls {
+  position: absolute;
+  inset-block-start: 0.75rem;
+  inset-inline-end: 0.75rem;
+  z-index: 2;
+  display: grid;
+  justify-items: end;
+  gap: 0.5rem;
+}
+.map__controls .key {
+  min-width: 0;
+}
+.map__pan {
+  display: grid;
+  grid-template: "up up" "left right" "down down"/auto auto;
+  gap: 0.25rem;
+  padding: 0.35rem;
+  border-radius: var(--well-radius, var(--radius));
+  background: color-mix(in srgb, var(--sheet-top) 90%, transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline-strong);
+}
+.map__pan .key {
+  min-height: 2.25rem;
+  width: 2.25rem;
+}
+.map__pan-up {
+  grid-area: up;
+  justify-self: center;
+}
+.map__pan-left {
+  grid-area: left;
+}
+.map__pan-right {
+  grid-area: right;
+}
+.map__pan-down {
+  grid-area: down;
+  justify-self: center;
+}
+.map .map__pin {
+  color: var(--map-pin, var(--lit-ink));
+  background: none;
+  border: 0;
+}
+.map .map__pin .icon {
+  width: 2rem;
+  height: 2rem;
+  fill: currentColor;
+  stroke: #fff;
+  stroke-width: 1.6;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
+}
+.map .map__pin:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 0;
+  border-radius: 8px;
+}
+@media (forced-colors: active) {
+  .map .map__pin {
+    color: CanvasText;
+  }
+  .map .map__pin .icon {
+    stroke: Canvas;
+  }
+}
+.map .leaflet-popup-content-wrapper {
+  border-radius: var(--map-radius, var(--radius-lg));
+  background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
+  color: var(--ink);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline-strong), 0 8px 20px -8px rgba(0, 0, 0, 0.4);
+}
+.map .leaflet-popup-tip {
+  background: var(--sheet-bottom);
+  box-shadow: none;
+}
+.map .leaflet-popup-content {
+  margin: 0.85rem 1rem;
+  font: inherit;
+  line-height: 1.45;
+}
+.map .leaflet-popup-content p {
+  margin: 0.25rem 0 0;
+  color: var(--ink-soft);
+}
+.map .leaflet-container a.leaflet-popup-close-button {
+  color: var(--ink-soft);
+}
+.map .leaflet-container a.leaflet-popup-close-button:hover {
+  color: var(--ink);
+}
+.map .leaflet-control-attribution {
+  background: color-mix(in srgb, var(--sheet-top) 88%, transparent);
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+}
+.map .leaflet-control-attribution a {
+  color: var(--lit-ink);
+  text-decoration: underline;
+}
+.map .map__places {
+  margin: 1.25rem 0 0;
+}
+.map__place-name {
+  margin: 0 0 0.15rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+.map__place-text {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.map__place-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 0.5rem;
+}
+
 .timeline {
   --_dot: var(--timeline-dot, 0.95rem);
   --_rail: var(--timeline-rail, 2px);
@@ -6663,7 +6853,7 @@ hr.divider {
   margin: 0;
   padding: 0 1rem;
   background: color-mix(in srgb, var(--code-bg) 90%, #fff);
-  color: #c5cbd6;
+  color: color-mix(in srgb, var(--code-color, var(--lit-screen)) 78%, #fff);
   font: 600 0.72rem/1 var(--font-mono);
   letter-spacing: 0.04em;
   text-transform: lowercase;
@@ -6685,7 +6875,7 @@ hr.divider {
   max-height: var(--code-max, 28rem);
   overflow: auto;
   background: var(--code-bg);
-  color: var(--code-ink);
+  color: var(--code-color, var(--lit-screen));
   font: 0.8rem/1.6 var(--font-mono);
   tab-size: 2;
 }
@@ -6724,7 +6914,7 @@ hr.divider {
   width: var(--code-gutter, 2ch);
   padding: 0 1.25rem 0 1rem;
   text-align: right;
-  color: #99a1ae;
+  color: color-mix(in srgb, var(--code-color, var(--lit-screen)) 62%, var(--code-bg));
   background: var(--code-bg);
   user-select: none;
   -webkit-user-select: none;
@@ -6747,8 +6937,8 @@ hr.divider {
   border: 0;
   border-radius: var(--key-radius, var(--radius));
   background: none;
-  color: var(--code-ink);
-  opacity: 0.75;
+  color: var(--code-color, var(--lit-screen));
+  opacity: 0.8;
   cursor: pointer;
 }
 .code__copy:hover {

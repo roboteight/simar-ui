@@ -16,6 +16,7 @@
     try { const y = localStorage.getItem('simar-ui:style'); if (['basic', 'brutal', 'classic', 'crisp', 'deep', 'line', 'round', 'soft'].includes(y)) document.documentElement.dataset.style = y; } catch {}
     try { const t = localStorage.getItem('simar-ui:theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch {}
   </script>
+  <link rel="stylesheet" href="docs/vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="dist/simar-ui.css">
   <link rel="stylesheet" href="docs/vendor/chartist.min.css">
   <link rel="stylesheet" href="docs/docs.css">
@@ -51,6 +52,9 @@
     <symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" /></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="M12 5v14" /></symbol>
     <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>
+    <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></symbol>
+    <symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6" /></symbol>
+    <symbol id="i-locate-fixed" viewBox="0 0 24 24"><line x1="2" x2="5" y1="12" y2="12" /><line x1="19" x2="22" y1="12" y2="12" /><line x1="12" x2="12" y1="2" y2="5" /><line x1="12" x2="12" y1="19" y2="22" /><circle cx="12" cy="12" r="7" /><circle cx="12" cy="12" r="3" /></symbol>
     <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" x2="12" y1="8" y2="12" /><line x1="12" x2="12.01" y1="16" y2="16" /></symbol>
     <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m17 8-5-5-5 5" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></symbol>
@@ -139,6 +143,7 @@
           <li><a href="#dialogs">Dialog</a></li>
           <li><a href="#menus">Dropdown menu</a></li>
         <li><a href="#fabs">Floating button</a></li>
+        <li><a href="#maps">Map</a></li>
           <li><a href="#meters">Meter</a></li>
           <li><a href="#pagination">Pagination</a></li>
           <li><a href="#progress">Progress</a></li>
@@ -1871,8 +1876,8 @@
       <script type="text/plain" data-example="Setup">
         <!-- the add-on needs Chartist loaded first -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chartist@2/dist/chartist.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/chartist@2/dist/chartist.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/roboteight/simar-ui@1/dist/simar-ui-charts.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartist@2/dist/chartist.min.js"><\/script>
+        <script src="https://cdn.jsdelivr.net/gh/roboteight/simar-ui@1/dist/simar-ui-charts.min.js"><\/script>
       </script>
     </section>
 
@@ -2071,6 +2076,59 @@
 
           <!-- room at the bottom of the page -->
           <main class="fab-space">…</main>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="maps">
+      <h3 id="maps">Map</h3>
+      <p class="note">A map whose data is a list of places. The list is the accessible version and works with no script: each place has a link out to OpenStreetMap. With the optional maps add-on the places are also pins on a map, drawn by <a href="https://leafletjs.com">Leaflet</a> (BSD-2-Clause) on OpenStreetMap tiles. The map is a labelled region: arrow keys move it and plus and minus zoom. The pins are real buttons. The zoom, pan and show-all keys are our own, so dragging is never the only way to move it, and each place in the list gets a "Show on map" button. The mouse wheel keeps scrolling the page, and on a touch screen one finger scrolls the page too. In the dark theme the tiles are darkened.</p>
+
+      <fieldset class="panel">
+        <legend>Map</legend>
+        <figure class="map" data-map data-zoom="14">
+          <figcaption class="map__title">Downtown New York clubs of the 1970s</figcaption>
+          <ul class="map__places list list--divided" role="list">
+            <li data-lat="40.7254" data-lng="-73.9915">
+              <h4 class="map__place-name">CBGB</h4>
+              <p class="map__place-text">A club on the Bowery that hosted the Ramones and Blondie in the 1970s.</p>
+              <div class="map__place-actions"><a href="https://www.openstreetmap.org/?mlat=40.7254&amp;mlon=-73.9915#map=17/40.7254/-73.9915">Open CBGB in OpenStreetMap</a></div>
+            </li>
+            <li data-lat="40.7364" data-lng="-73.9890">
+              <h4 class="map__place-name">Max's Kansas City</h4>
+              <p class="map__place-text">A club on Park Avenue South at the heart of the 1970s New York scene.</p>
+              <div class="map__place-actions"><a href="https://www.openstreetmap.org/?mlat=40.7364&amp;mlon=-73.9890#map=17/40.7364/-73.9890">Open Max's Kansas City in OpenStreetMap</a></div>
+            </li>
+            <li data-lat="40.7186" data-lng="-74.0037">
+              <h4 class="map__place-name">Mudd Club</h4>
+              <p class="map__place-text">A TriBeCa club on White Street that opened in 1978.</p>
+              <div class="map__place-actions"><a href="https://www.openstreetmap.org/?mlat=40.7186&amp;mlon=-74.0037#map=17/40.7186/-74.0037">Open Mudd Club in OpenStreetMap</a></div>
+            </li>
+          </ul>
+        </figure>
+        <script type="text/plain" data-example="HTML">
+          <figure class="map" data-map data-zoom="14">
+            <figcaption class="map__title">Venues</figcaption>
+            <ul class="map__places list list--divided" role="list">
+              <li data-lat="40.7254" data-lng="-73.9915">
+                <h4 class="map__place-name">CBGB</h4>
+                <p class="map__place-text">A club on the Bowery.</p>
+                <div class="map__place-actions">
+                  <a href="https://www.openstreetmap.org/?mlat=40.7254&amp;mlon=-73.9915#map=17/40.7254/-73.9915">Open in OpenStreetMap</a>
+                </div>
+              </li>
+            </ul>
+          </figure>
+        </script>
+        <script type="text/plain" data-example="Setup">
+          <!-- the add-on needs Leaflet loaded first -->
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+          <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"><\/script>
+          <script src="https://cdn.jsdelivr.net/gh/roboteight/simar-ui@1/dist/simar-ui-maps.min.js"><\/script>
+
+          <!-- another tile provider: data-tiles and data-attribution on the figure -->
+          <figure class="map" data-map data-tiles="https://tiles.example.com/{z}/{x}/{y}.png"
+                  data-attribution="&copy; Example Maps">…</figure>
         </script>
       </fieldset>
     </section>

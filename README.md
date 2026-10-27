@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -504,6 +504,25 @@ A key fixed to a corner of the screen, reachable from anywhere on the page. Put 
 <span class="well fab"><button type="button" class="key key--accent">Compose</button></span>
 ```
 
+#### Map
+
+A map whose data is a list of places. The list is the accessible version and works with no script: each place has a link out to OpenStreetMap. With the optional maps add-on (`dist/simar-ui-maps.min.js`) the places are also pins on a map drawn by [Leaflet](https://leafletjs.com) (BSD-2-Clause; load it first, it is not bundled) on OpenStreetMap tiles. The map is a labelled region: the arrow keys move it and plus and minus zoom. The pins are real buttons with names, and the zoom, show-all and pan keys are our own, so dragging is never the only way to move it. Each place in the list gets a "Show on map" button that opens it and puts focus on its pin. The mouse wheel keeps scrolling the page, one finger on a touch screen scrolls the page too, animation is off under reduced motion, and in the dark theme the tiles are darkened. The map shows the OpenStreetMap credit. Tiles come from OpenStreetMap by default, whose [usage policy](https://operations.osmfoundation.org/policies/tiles/) suits light use: point `data-tiles` and `data-attribution` at your own or a commercial provider for more. Tokens: `--map-height`, `--map-radius`, `--map-pin`, `--map-tile-filter`.
+
+```html
+<figure class="map" data-map data-zoom="14">
+  <figcaption class="map__title">Venues</figcaption>
+  <ul class="map__places list list--divided" role="list">
+    <li data-lat="40.7254" data-lng="-73.9915">
+      <h4 class="map__place-name">CBGB</h4>
+      <p class="map__place-text">A club on the Bowery.</p>
+      <div class="map__place-actions">
+        <a href="https://www.openstreetmap.org/?mlat=40.7254&amp;mlon=-73.9915#map=17/40.7254/-73.9915">Open in OpenStreetMap</a>
+      </div>
+    </li>
+  </ul>
+</figure>
+```
+
 #### Meter, progress and spinners
 
 `<meter>` for a known quantity (a gauge), `<progress>` for work being done, and a spinner. The meter's fill is told apart by pattern as well as color: solid is good, striped is middling, dotted is poor. Motion stops with `prefers-reduced-motion`, and `data-paused` freezes it.
@@ -758,7 +777,7 @@ index.html  the demo and documentation page
 
 ## Roadmap
 
-Next: floating button, side menu, more chart types, suggested flows, tags and chips, avatar, list group, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
+Next: check list, sticky bars (top and bottom, and table headers and footers), carousel and photo gallery, an icon dropdown, a Material set (bottom navigation, top app bar, bottom sheet, chips, search bar, time picker), suggested flows, more chart types, avatar, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
 
 ## Contributing
 

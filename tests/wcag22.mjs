@@ -43,7 +43,7 @@ console.log('\nReflow at 320px (a 1280px screen at 400% zoom)');
 await open(320);
 const reflow = await page.evaluate(() => {
   const limit = document.documentElement.clientWidth;
-  const scrollers = (n) => n.closest('pre, .ref-scroll, .table-wrap, .code__body, .snippet__tabs, .daterange__pop'); // may scroll on their own
+  const scrollers = (n) => n.closest('pre, .ref-scroll, .table-wrap, .code__body, .snippet__tabs, .daterange__pop, .map__canvas'); // may scroll, or are clipped, on their own
   const wide = [...document.body.querySelectorAll('*')]
     .filter((n) => !n.closest('svg, [hidden], .needs-js:not(:root *)') && !scrollers(n) && n.getBoundingClientRect().width)
     .filter((n) => n.getBoundingClientRect().right > limit + 1)
@@ -1167,6 +1167,58 @@ em.hr ? pass('the divider is a real <hr>') : fail('the divider is not an hr');
 await open(320);
 const emNarrow = await page.evaluate(() => { const e = document.querySelector('section[aria-labelledby="embeds"] .embed').getBoundingClientRect(); return { fits: e.right <= innerWidth, page: document.documentElement.scrollWidth <= innerWidth + 1 }; });
 emNarrow.fits && emNarrow.page ? pass('an embed shrinks to a 320px screen') : fail(`embed at 320px: ${JSON.stringify(emNarrow)}`);
+
+// ---- map ------------------------------------------------------------------------------------------
+console.log('\nMap');
+await open(1280);
+await wait(800);
+const mp = await page.evaluate(() => {
+  const fig = document.querySelector('figure.map'); const canvas = fig.querySelector('.map__canvas');
+  const text = (id) => document.getElementById(id)?.textContent.trim() ?? '';
+  const pins = [...fig.querySelectorAll('.map__pin')];
+  const btns = [...fig.querySelectorAll('.map__controls button')];
+  return {
+    region: canvas.getAttribute('role') === 'region' && !!canvas.getAttribute('aria-label'),
+    help: text(canvas.getAttribute('aria-describedby')).length > 20,
+    pins: pins.length,
+    pinsNamed: pins.every((p) => p.getAttribute('aria-label') && p.tabIndex === 0 && p.getAttribute('role') === 'button'),
+    controls: btns.length >= 7 && btns.every((b) => b.getAttribute('aria-label')),
+    groups: [...fig.querySelectorAll('.map__controls [role="group"]')].every((g) => g.getAttribute('aria-label')),
+    show: [...fig.querySelectorAll('.map__places button')].length === 3,
+    links: [...fig.querySelectorAll('.map__places a')].every((a) => /openstreetmap\.org/.test(a.href)),
+    wheel: fig.simarMap.scrollWheelZoom.enabled(),
+    credit: !!fig.querySelector('.leaflet-control-attribution a[href*="openstreetmap.org/copyright"]'),
+    sizes: btns.every((b) => { const r = b.getBoundingClientRect(); return r.width >= 24 && r.height >= 24; }),
+  };
+});
+mp.region && mp.help && mp.pins === 3 && mp.pinsNamed ? pass('the map is a named region with a hidden description; its three pins are named buttons and tab stops') : fail(`map structure: ${JSON.stringify(mp)}`);
+mp.controls && mp.groups && mp.sizes ? pass('zoom, show-all and the four pan keys are named buttons (24px or larger), in named groups') : fail(`map controls: ${JSON.stringify(mp)}`);
+mp.show && mp.links && !mp.wheel && mp.credit ? pass('each place has a link out and a Show on map button; the wheel does not zoom; the OpenStreetMap credit is shown') : fail(`map places: ${JSON.stringify(mp)}`);
+const zoomBefore = await page.evaluate(() => { const m = document.querySelector('figure.map').simarMap; const c = m.getCenter(); return { z: m.getZoom(), lat: c.lat }; });
+await page.$eval('figure.map [aria-label="Zoom in"]', (b) => b.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.click('figure.map [aria-label="Zoom in"]');
+await wait(500);
+await page.click('figure.map [aria-label="Move up"]');
+await wait(500);
+const zoomAfter = await page.evaluate(() => { const m = document.querySelector('figure.map').simarMap; const c = m.getCenter(); return { z: m.getZoom(), lat: c.lat, said: document.querySelector('figure.map [role="status"]').textContent }; });
+zoomAfter.z === zoomBefore.z + 1 && zoomAfter.lat > zoomBefore.lat && /Zoom level/.test(zoomAfter.said) ? pass('the zoom and pan keys move the map without dragging, and the new zoom level is announced') : fail(`map keys: ${JSON.stringify({ zoomBefore, zoomAfter })}`);
+await page.click('figure.map .map__places li:nth-child(2) button');
+await wait(500);
+const mapShown = await page.evaluate(() => ({ popup: !!document.querySelector('figure.map .leaflet-popup'), onPin: document.activeElement.classList.contains('map__pin') && document.activeElement.getAttribute('aria-label') === "Max's Kansas City" }));
+mapShown.popup && mapShown.onPin ? pass('Show on map opens the place and puts focus on its pin') : fail(`show on map: ${JSON.stringify(mapShown)}`);
+await page.keyboard.press('Escape');
+await wait(250);
+(await page.evaluate(() => !document.querySelector('figure.map .leaflet-popup'))) ? pass('Esc closes the open place') : fail('Esc did not close the popup');
+// An example that contains a closing script tag would end early and leave real script elements in the page.
+const stray = await page.evaluate(() => ({ scripts: [...document.querySelectorAll('main script[src]')].map((n) => n.src), maps: document.querySelectorAll('main figure.map').length, charts: document.querySelectorAll('main figure.chart').length }));
+stray.scripts.length === 0 && stray.maps === 1 && stray.charts === 3 ? pass('no code example leaks real script tags or extra components into the page') : fail(`leaked example markup: ${JSON.stringify(stray)}`);
+await open(1280, '?js=off');
+const nomap = await page.evaluate(() => ({ canvas: document.querySelectorAll('figure.map .leaflet-container').length, places: [...document.querySelectorAll('figure.map .map__places li')].every((li) => li.getBoundingClientRect().height > 0 && li.querySelector('a[href]')) }));
+nomap.canvas === 0 && nomap.places ? pass('with JavaScript off the map is its list of places, each with a link to OpenStreetMap') : fail(`map without JS: ${JSON.stringify(nomap)}`);
+await open(320);
+await wait(800);
+const narrowMap = await page.evaluate(() => { const c = document.querySelector('figure.map .map__canvas').getBoundingClientRect(); return { fits: c.right <= innerWidth && c.left >= 0, page: document.documentElement.scrollWidth <= innerWidth + 1, controlsIn: [...document.querySelectorAll('figure.map .map__controls button')].every((b) => { const r = b.getBoundingClientRect(); return r.right <= c.right + 1 && r.bottom <= c.bottom + 1; }) }; });
+narrowMap.fits && narrowMap.page && narrowMap.controlsIn ? pass('the map and its controls fit a 320px screen') : fail(`map at 320px: ${JSON.stringify(narrowMap)}`);
 
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');

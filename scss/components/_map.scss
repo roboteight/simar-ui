@@ -1,0 +1,139 @@
+@use "../abstracts" as *;
+
+// Map: a figure whose data is a list of places. The list is the accessible version and the no-script fallback
+// (each place has a link out to OpenStreetMap). With the optional maps add-on (dist/simar-ui-maps.js, which draws
+// with Leaflet, https://leafletjs.com, BSD-2-Clause, on OpenStreetMap tiles) the places are also pins on a map
+// with our own zoom, pan and show-all keys.
+//
+//   <figure class="map" data-map data-zoom="13">
+//     <figcaption class="map__title">Venues</figcaption>
+//     <ul class="map__places list list--divided" role="list">
+//       <li data-lat="40.7254" data-lng="-73.9915">
+//         <h4 class="map__place-name">CBGB</h4>
+//         <p class="map__place-text">A club on the Bowery.</p>
+//         <div class="map__place-actions"><a href="https://www.openstreetmap.org/?mlat=40.7254&amp;mlon=-73.9915#map=17/40.7254/-73.9915">Open in OpenStreetMap</a></div>
+//       </li>
+//     </ul>
+//   </figure>
+//
+// Tokens: --map-height (the map's height), --map-radius, --map-pin (the pin color), --map-tile-filter (set in the
+// theme file: the tiles are darkened in the dark theme).
+.map {
+  margin: 0;
+  min-width: 0;
+
+  &__title {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  &__frame { position: relative; }
+
+  // isolation keeps Leaflet's panes (it uses z-index up to 700) from reaching over a sticky header or a menu.
+  &__canvas {
+    height: var(--map-height, 22rem);
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: var(--map-radius, var(--radius-lg));
+    background: var(--well-top);
+    box-shadow: ring(), 0 0 0 1px var(--hairline-strong);
+    font: inherit;
+    color: var(--ink);
+
+    .leaflet-tile-pane { filter: var(--map-tile-filter, none); }
+
+    @include forced-colors { box-shadow: none; border: 1px solid CanvasText; }
+  }
+
+  // The focus ring goes on a layer above Leaflet's panes (they paint over a plain outline on the map itself).
+  .map__canvas.leaflet-container:focus-visible { outline: 0; }
+  .map__canvas::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1100;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .map__canvas.leaflet-container:focus-visible::after { @include focus-ring(-3px); }
+
+  &__controls {
+    position: absolute;
+    inset-block-start: 0.75rem;
+    inset-inline-end: 0.75rem;
+    z-index: 2;
+    display: grid;
+    justify-items: end;
+    gap: 0.5rem;
+
+    .key { min-width: 0; }
+  }
+
+  // The four pan keys as a cross.
+  &__pan {
+    display: grid;
+    grid-template: "up up" "left right" "down down" / auto auto;
+    gap: 0.25rem;
+    padding: 0.35rem;
+    border-radius: var(--well-radius, var(--radius));
+    background: color-mix(in srgb, var(--sheet-top) 90%, transparent);
+    box-shadow: ring(), 0 0 0 1px var(--hairline-strong);
+
+    .key { min-height: 2.25rem; width: 2.25rem; }
+    &-up { grid-area: up; justify-self: center; }
+    &-left { grid-area: left; }
+    &-right { grid-area: right; }
+    &-down { grid-area: down; justify-self: center; }
+  }
+
+  // A pin: the place's marker, a real button. Filled in the highlight color with a white edge, so it shows on
+  // any tile.
+  .map__pin {
+    color: var(--map-pin, var(--lit-ink));
+    background: none;
+    border: 0;
+
+    .icon {
+      width: 2rem;
+      height: 2rem;
+      fill: currentColor;
+      stroke: #fff;
+      stroke-width: 1.6;
+      filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
+    }
+
+    &:focus-visible { @include focus-ring(0); border-radius: 8px; }
+    @include forced-colors { color: CanvasText; .icon { stroke: Canvas; } }
+  }
+
+  // A popup: a small sheet in the theme's surface.
+  .leaflet-popup-content-wrapper {
+    border-radius: var(--map-radius, var(--radius-lg));
+    background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
+    color: var(--ink);
+    box-shadow: ring(), 0 0 0 1px var(--hairline-strong), 0 8px 20px -8px rgba(0, 0, 0, 0.4);
+  }
+  .leaflet-popup-tip { background: var(--sheet-bottom); box-shadow: none; }
+  .leaflet-popup-content { margin: 0.85rem 1rem; font: inherit; line-height: 1.45; }
+  .leaflet-popup-content p { margin: 0.25rem 0 0; color: var(--ink-soft); }
+  .leaflet-container a.leaflet-popup-close-button { color: var(--ink-soft); }
+  .leaflet-container a.leaflet-popup-close-button:hover { color: var(--ink); }
+
+  // The credit line OpenStreetMap asks for: small, readable, with underlined links.
+  .leaflet-control-attribution {
+    background: color-mix(in srgb, var(--sheet-top) 88%, transparent);
+    color: var(--ink-soft);
+    font-size: 0.72rem;
+    a { color: var(--lit-ink); text-decoration: underline; }
+  }
+
+  // The places beneath the map.
+  // (.map .map__places: a bare .list margin would otherwise win and the first place would touch the map)
+  .map__places { margin: 1.25rem 0 0; }
+  &__place-name { margin: 0 0 0.15rem; font-family: var(--font-heading); font-size: 1rem; line-height: 1.3; }
+  &__place-text { margin: 0; color: var(--ink-soft); line-height: 1.5; }
+  &__place-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; margin-top: 0.5rem; }
+}

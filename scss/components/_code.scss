@@ -1,7 +1,8 @@
 @use "../abstracts" as *;
 
 // Code: a terminal-style window. It has an optional title bar with the label, monospace text on a
-// dark screen, and a copy button.
+// dark screen, and a copy button. The text is the theme's highlight color on the dark screen (green by default,
+// from --lit-screen, which is always bright enough on a dark background); set --code-color to use another.
 //
 //   <figure class="code">
 //     <figcaption class="code__label">HTML</figcaption>
@@ -28,7 +29,8 @@ $bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
     margin: 0;
     padding: 0 1rem;
     background: $bar;
-    color: #c5cbd6;
+    // A little brighter than the code: the bar is lighter than the screen, and every highlight must stay at 4.5:1 on it.
+    color: color-mix(in srgb, var(--code-color, var(--lit-screen)) 78%, #fff);
     font: 600 0.72rem/1 $mono;
     letter-spacing: 0.04em;
     text-transform: lowercase;
@@ -44,7 +46,7 @@ $bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
     max-height: var(--code-max, 28rem);
     overflow: auto;
     background: var(--code-bg);
-    color: var(--code-ink);
+    color: var(--code-color, var(--lit-screen));
     font: 0.8rem/1.6 $mono;
     tab-size: 2;
 
@@ -84,7 +86,7 @@ $bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
     width: var(--code-gutter, 2ch);
     padding: 0 1.25rem 0 1rem; // padding, not margin: the sticky background has to cover the gap too
     text-align: right;
-    color: #99a1ae;
+    color: color-mix(in srgb, var(--code-color, var(--lit-screen)) 62%, var(--code-bg));
     background: var(--code-bg);
     user-select: none;
     -webkit-user-select: none;
@@ -108,8 +110,8 @@ $bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
     border: 0;
     border-radius: var(--key-radius, var(--radius));
     background: none;
-    color: var(--code-ink);
-    opacity: 0.75;
+    color: var(--code-color, var(--lit-screen));
+    opacity: 0.8;
     cursor: pointer;
 
     &:hover { opacity: 1; }

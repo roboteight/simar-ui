@@ -156,6 +156,9 @@ $key-colors: (
   --chart-6: #d2621c;
   --chart-7: #b8479f;
   --chart-8: #6e8b1f;
+
+  // Map tiles are drawn light; in the dark theme they are darkened to sit with the page.
+  --map-tile-filter: none;
 }
 
 @mixin dark($hue: null, $sat: null) {
@@ -243,6 +246,7 @@ $key-colors: (
   --chart-6: #e68544;
   --chart-7: #dd78c4;
   --chart-8: #93b03c;
+  --map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.88);
 }
 
 

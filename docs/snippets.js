@@ -42,7 +42,8 @@ const addCode = (unit, { isSection }) => {
       : dedentOuter(copy.outerHTML);
     if (code.trim()) tabs.push({ label: 'HTML', code });
   }
-  for (const example of examples) tabs.push({ label: example.dataset.example, code: dedent(example.textContent) });
+  // A closing script tag inside an example would end the example early, so an example writes it as <\/script>.
+  for (const example of examples) tabs.push({ label: example.dataset.example, code: dedent(example.textContent).replaceAll('<\\/script>', '</script>') });
   if (!tabs.length) return;
 
   const id = blocks++;

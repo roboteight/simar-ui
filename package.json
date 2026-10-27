@@ -30,6 +30,7 @@
     "./css/min": "./dist/simar-ui.min.css",
     "./js/min": "./dist/simar-ui.min.js",
     "./charts": "./dist/simar-ui-charts.min.js",
+    "./maps": "./dist/simar-ui-maps.min.js",
     "./icons.svg": "./dist/simar-ui-icons.svg",
     "./scss": "./scss/simar-ui.scss",
     "./package.json": "./package.json"
@@ -43,7 +44,7 @@
   "scripts": {
     "build": "npm run build:css && npm run build:js && npm run build:docs",
     "build:css": "sass --no-source-map --style=expanded scss/simar-ui.scss dist/simar-ui.css && sass --no-source-map --style=compressed scss/simar-ui.scss dist/simar-ui.min.css",
-    "build:js": "esbuild src/simar-ui.js --bundle --loader:.svg=text --format=iife --outfile=dist/simar-ui.js && esbuild src/simar-ui.js --bundle --loader:.svg=text --format=iife --minify --outfile=dist/simar-ui.min.js && esbuild src/charts.js --bundle --format=iife --outfile=dist/simar-ui-charts.js && esbuild src/charts.js --bundle --format=iife --minify --outfile=dist/simar-ui-charts.min.js && cp src/icons.svg dist/simar-ui-icons.svg",
+    "build:js": "esbuild src/simar-ui.js --bundle --loader:.svg=text --format=iife --outfile=dist/simar-ui.js && esbuild src/simar-ui.js --bundle --loader:.svg=text --format=iife --minify --outfile=dist/simar-ui.min.js && esbuild src/charts.js --bundle --format=iife --outfile=dist/simar-ui-charts.js && esbuild src/charts.js --bundle --format=iife --minify --outfile=dist/simar-ui-charts.min.js && esbuild src/maps.js --bundle --format=iife --outfile=dist/simar-ui-maps.js && esbuild src/maps.js --bundle --format=iife --minify --outfile=dist/simar-ui-maps.min.js && cp src/icons.svg dist/simar-ui-icons.svg",
     "build:docs": "sass --no-source-map --style=expanded scss/docs.scss docs/docs.css",
     "dev": "sass --watch --no-source-map scss/simar-ui.scss:dist/simar-ui.css scss/docs.scss:docs/docs.css",
     "dev:js": "esbuild src/simar-ui.js --bundle --loader:.svg=text --format=iife --outfile=dist/simar-ui.js --watch",
