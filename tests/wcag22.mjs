@@ -775,6 +775,17 @@ await page.select('#style-select', 'round');
 await page.select('#style-select', '');
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- code block gutter ----------------------------------------------------------------------------
+console.log('\nCode gutter');
+await open(1280);
+const gut = await page.evaluate(() => {
+  const pre = [...document.querySelectorAll('.code pre')].find((p) => p.querySelector('.code__line') && p.scrollWidth > p.clientWidth);
+  if (!pre) return { none: true };
+  const line = pre.querySelector('.code__line');
+  const b = getComputedStyle(line, '::before'); return { pad: getComputedStyle(pre).paddingLeft, gutter: b.paddingLeft, gap: b.paddingRight, margin: b.marginRight, sticky: b.position };
+});
+gut.none ? pass('(no code block wide enough to scroll sideways on this page, so the gutter check is skipped)') : gut.pad === '0px' && gut.sticky === 'sticky' && parseFloat(gut.gutter) >= 16 && parseFloat(gut.gap) >= 16 && gut.margin === '0px' ? pass('the sticky line numbers carry the left padding and the gap, so scrolled code cannot show beside them') : fail(`code gutter: ${JSON.stringify(gut)}`);
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

@@ -69,6 +69,10 @@ $bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
   // selectable, so copying gives just the code. The gutter stays put when the code scrolls sideways.
   pre { counter-reset: code-line; }
 
+  // With line numbers the left padding moves into the gutter, so the sticky numbers cover the whole
+  // strip and scrolled code can't show through beside them.
+  pre:has(.code__line) { padding-left: 0; }
+
   &__line::before {
     content: counter(code-line);
     content: counter(code-line) / "";
@@ -78,7 +82,7 @@ $bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
     left: 0;
     box-sizing: content-box;
     width: var(--code-gutter, 2ch);
-    margin-right: 1.25rem;
+    padding: 0 1.25rem 0 1rem; // padding, not margin: the sticky background has to cover the gap too
     text-align: right;
     color: #99a1ae;
     background: var(--code-bg);

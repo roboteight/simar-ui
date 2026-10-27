@@ -5834,6 +5834,9 @@ video.media {
 .code pre {
   counter-reset: code-line;
 }
+.code pre:has(.code__line) {
+  padding-left: 0;
+}
 .code__line::before {
   content: counter(code-line);
   content: counter(code-line)/"";
@@ -5843,7 +5846,7 @@ video.media {
   left: 0;
   box-sizing: content-box;
   width: var(--code-gutter, 2ch);
-  margin-right: 1.25rem;
+  padding: 0 1.25rem 0 1rem;
   text-align: right;
   color: #99a1ae;
   background: var(--code-bg);
