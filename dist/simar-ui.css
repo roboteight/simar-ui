@@ -1,4 +1,156 @@
 @charset "UTF-8";
+:root[data-style=classic],
+[data-style=classic] {
+  --radius: 14px;
+  --radius-lg: 18px;
+  --depth: 1;
+  --travel: 2px;
+  --bevel: 1px;
+  --cap-drop: 3px;
+  --cap-blur: 6px;
+  --ring-w: 0px;
+  --ring-mix: 15%;
+  --wall-ink: 0%;
+  --wall-far-mix: 100%;
+  --elev-y: 6px;
+  --elev-blur: 14px;
+  --elev-spread: -8px;
+  --elev-a: 30%;
+}
+
+:root[data-style=flat],
+[data-style=flat] {
+  --radius: 4px;
+  --radius-lg: 4px;
+  --depth: 1;
+  --travel: 1px;
+  --bevel: 1px;
+  --cap-drop: 1px;
+  --cap-blur: 2px;
+  --ring-w: 0px;
+  --ring-mix: 15%;
+  --wall-ink: 0%;
+  --wall-far-mix: 0%;
+  --elev-y: 1px;
+  --elev-blur: 2px;
+  --elev-spread: 0px;
+  --elev-a: 8%;
+}
+
+:root[data-style=soft],
+[data-style=soft] {
+  --radius: 12px;
+  --radius-lg: 20px;
+  --depth: 0.7;
+  --travel: 0px;
+  --bevel: 0px;
+  --cap-drop: 4px;
+  --cap-blur: 12px;
+  --ring-w: 0px;
+  --ring-mix: 15%;
+  --wall-ink: 0%;
+  --wall-far-mix: 0%;
+  --elev-y: 8px;
+  --elev-blur: 24px;
+  --elev-spread: -4px;
+  --elev-a: 14%;
+}
+
+:root[data-style=crisp],
+[data-style=crisp] {
+  --radius: 8px;
+  --radius-lg: 12px;
+  --depth: 0.5;
+  --travel: 1px;
+  --bevel: 0px;
+  --cap-drop: 1px;
+  --cap-blur: 2px;
+  --ring-w: 1px;
+  --ring-mix: 22%;
+  --wall-ink: 0%;
+  --wall-far-mix: 0%;
+  --elev-y: 1px;
+  --elev-blur: 3px;
+  --elev-spread: 0px;
+  --elev-a: 10%;
+}
+
+:root[data-style=line],
+[data-style=line] {
+  --radius: 6px;
+  --radius-lg: 10px;
+  --depth: 0;
+  --travel: 0px;
+  --bevel: 0px;
+  --cap-drop: 0px;
+  --cap-blur: 0px;
+  --ring-w: 1.5px;
+  --ring-mix: 60%;
+  --wall-ink: 0%;
+  --wall-far-mix: 0%;
+  --elev-y: 0px;
+  --elev-blur: 0px;
+  --elev-spread: 0px;
+  --elev-a: 0%;
+}
+
+:root[data-style=round],
+[data-style=round] {
+  --radius: 20px;
+  --radius-lg: 28px;
+  --depth: 0.8;
+  --travel: 1px;
+  --bevel: 1px;
+  --cap-drop: 2px;
+  --cap-blur: 5px;
+  --ring-w: 0px;
+  --ring-mix: 15%;
+  --wall-ink: 0%;
+  --wall-far-mix: 0%;
+  --elev-y: 4px;
+  --elev-blur: 12px;
+  --elev-spread: -2px;
+  --elev-a: 12%;
+}
+
+:root[data-style=deep],
+[data-style=deep] {
+  --radius: 8px;
+  --radius-lg: 14px;
+  --depth: 1.6;
+  --travel: 4px;
+  --bevel: 1px;
+  --cap-drop: 4px;
+  --cap-blur: 10px;
+  --ring-w: 0px;
+  --ring-mix: 15%;
+  --wall-ink: 0%;
+  --wall-far-mix: 100%;
+  --elev-y: 10px;
+  --elev-blur: 22px;
+  --elev-spread: -6px;
+  --elev-a: 22%;
+}
+
+:root[data-style=brutal],
+[data-style=brutal] {
+  --radius: 0px;
+  --radius-lg: 0px;
+  --depth: 0;
+  --travel: 4px;
+  --bevel: 0px;
+  --cap-drop: 0px;
+  --cap-blur: 0px;
+  --ring-w: 2px;
+  --ring-mix: 100%;
+  --wall-ink: 100%;
+  --wall-far-mix: 0%;
+  --elev-y: 0px;
+  --elev-blur: 0px;
+  --elev-spread: 0px;
+  --elev-a: 0%;
+}
+
 @property --k-top {
   syntax: "<color>";
   inherits: false;
@@ -29,7 +181,7 @@
   --lip: #fff;
   --scrim: rgba(40, 44, 52, 0.35);
   --cap-top: #fdfdfd;
-  --cap-bottom: #dcdee2;
+  --cap-bottom: #e9ebee;
   --cap-edge-light: #ffffff;
   --cap-edge-dark: #d6d9de;
   --wall-near: #cdd1d7;
@@ -98,7 +250,7 @@
   --lip: rgba(255, 255, 255, 0.07);
   --scrim: rgba(0, 0, 0, 0.6);
   --cap-top: #4f535d;
-  --cap-bottom: #3c3f47;
+  --cap-bottom: #464a53;
   --cap-edge-light: rgba(255, 255, 255, 0.22);
   --cap-edge-dark: #2a2c32;
   --wall-near: #25272c;
@@ -168,7 +320,7 @@
     --lip: rgba(255, 255, 255, 0.07);
     --scrim: rgba(0, 0, 0, 0.6);
     --cap-top: #4f535d;
-    --cap-bottom: #3c3f47;
+    --cap-bottom: #464a53;
     --cap-edge-light: rgba(255, 255, 255, 0.22);
     --cap-edge-dark: #2a2c32;
     --wall-near: #25272c;
@@ -222,8 +374,21 @@
   --lit: #36d27a;
   --accent: #ff7a3d;
   --accent-top: #ffa070;
-  --travel: 2px;
-  --radius: 14px;
+  --radius: 4px;
+  --radius-lg: 4px;
+  --depth: 1;
+  --travel: 1px;
+  --bevel: 1px;
+  --cap-drop: 1px;
+  --cap-blur: 2px;
+  --ring-w: 0px;
+  --ring-mix: 15%;
+  --wall-ink: 0%;
+  --wall-far-mix: 0%;
+  --elev-y: 1px;
+  --elev-blur: 2px;
+  --elev-spread: 0px;
+  --elev-a: 8%;
   interpolate-size: allow-keywords;
 }
 
@@ -288,7 +453,7 @@
   --lip: #fff;
   --scrim: rgba(40, 44, 52, 0.35);
   --cap-top: rgb(99.0274509804%, 99.0839215686%, 99.4039215686%);
-  --cap-bottom: rgb(84.4392156863%, 85.342745098%, 90.462745098%);
+  --cap-bottom: rgb(90.5176470588%, 91.0682352941%, 94.1882352941%);
   --cap-edge-light: #ffffff;
   --cap-edge-dark: rgb(82.0078431373%, 83.0525490196%, 88.9725490196%);
   --wall-near: rgb(78.1176470588%, 79.3882352941%, 86.5882352941%);
@@ -367,7 +532,7 @@
     --lip: rgba(255, 255, 255, 0.07);
     --scrim: rgba(0, 0, 0, 0.6);
     --cap-top: rgb(25.631372549%, 28.0596078431%, 41.8196078431%);
-    --cap-bottom: rgb(19.5215686275%, 21.3709803922%, 31.8509803922%);
+    --cap-bottom: rgb(22.8%, 24.96%, 37.2%);
     --cap-edge-light: rgba(255, 255, 255, 0.22);
     --cap-edge-dark: rgb(13.7098039216%, 15.008627451%, 22.368627451%);
     --wall-near: rgb(12.0705882353%, 13.2141176471%, 19.6941176471%);
@@ -445,7 +610,7 @@
   --lip: rgba(255, 255, 255, 0.07);
   --scrim: rgba(0, 0, 0, 0.6);
   --cap-top: rgb(25.631372549%, 28.0596078431%, 41.8196078431%);
-  --cap-bottom: rgb(19.5215686275%, 21.3709803922%, 31.8509803922%);
+  --cap-bottom: rgb(22.8%, 24.96%, 37.2%);
   --cap-edge-light: rgba(255, 255, 255, 0.22);
   --cap-edge-dark: rgb(13.7098039216%, 15.008627451%, 22.368627451%);
   --wall-near: rgb(12.0705882353%, 13.2141176471%, 19.6941176471%);
@@ -523,7 +688,7 @@
   --lip: #fff;
   --scrim: rgba(40, 44, 52, 0.35);
   --cap-top: rgb(99.0431372549%, 99.3882352941%, 99.3537254902%);
-  --cap-bottom: rgb(84.6901960784%, 90.2117647059%, 89.6596078431%);
+  --cap-bottom: rgb(90.6705882353%, 94.0352941176%, 93.6988235294%);
   --cap-edge-light: #ffffff;
   --cap-edge-dark: rgb(82.2980392157%, 88.6823529412%, 88.0439215686%);
   --wall-near: rgb(78.4705882353%, 86.2352941176%, 85.4588235294%);
@@ -602,7 +767,7 @@
     --lip: rgba(255, 255, 255, 0.07);
     --scrim: rgba(0, 0, 0, 0.6);
     --cap-top: rgb(26.3058823529%, 41.1450980392%, 39.6611764706%);
-    --cap-bottom: rgb(20.0352941176%, 31.337254902%, 30.2070588235%);
+    --cap-bottom: rgb(23.4%, 36.6%, 35.28%);
     --cap-edge-light: rgba(255, 255, 255, 0.22);
     --cap-edge-dark: rgb(14.0705882353%, 22.0078431373%, 21.2141176471%);
     --wall-near: rgb(12.3882352941%, 19.3764705882%, 18.6776470588%);
@@ -680,7 +845,7 @@
   --lip: rgba(255, 255, 255, 0.07);
   --scrim: rgba(0, 0, 0, 0.6);
   --cap-top: rgb(26.3058823529%, 41.1450980392%, 39.6611764706%);
-  --cap-bottom: rgb(20.0352941176%, 31.337254902%, 30.2070588235%);
+  --cap-bottom: rgb(23.4%, 36.6%, 35.28%);
   --cap-edge-light: rgba(255, 255, 255, 0.22);
   --cap-edge-dark: rgb(14.0705882353%, 22.0078431373%, 21.2141176471%);
   --wall-near: rgb(12.3882352941%, 19.3764705882%, 18.6776470588%);
@@ -758,7 +923,7 @@
   --lip: #fff;
   --scrim: rgba(40, 44, 52, 0.35);
   --cap-top: rgb(99.3882352941%, 99.0431372549%, 99.1581699346%);
-  --cap-bottom: rgb(90.2117647059%, 84.6901960784%, 86.5307189542%);
+  --cap-bottom: rgb(94.0352941176%, 90.6705882353%, 91.7921568627%);
   --cap-edge-light: #ffffff;
   --cap-edge-dark: rgb(88.6823529412%, 82.2980392157%, 84.4261437908%);
   --wall-near: rgb(86.2352941176%, 78.4705882353%, 81.0588235294%);
@@ -837,7 +1002,7 @@
     --lip: rgba(255, 255, 255, 0.07);
     --scrim: rgba(0, 0, 0, 0.6);
     --cap-top: rgb(41.1450980392%, 26.3058823529%, 31.2522875817%);
-    --cap-bottom: rgb(31.337254902%, 20.0352941176%, 23.8026143791%);
+    --cap-bottom: rgb(36.6%, 23.4%, 27.8%);
     --cap-edge-light: rgba(255, 255, 255, 0.22);
     --cap-edge-dark: rgb(22.0078431373%, 14.0705882353%, 16.7163398693%);
     --wall-near: rgb(19.3764705882%, 12.3882352941%, 14.7176470588%);
@@ -915,7 +1080,7 @@
   --lip: rgba(255, 255, 255, 0.07);
   --scrim: rgba(0, 0, 0, 0.6);
   --cap-top: rgb(41.1450980392%, 26.3058823529%, 31.2522875817%);
-  --cap-bottom: rgb(31.337254902%, 20.0352941176%, 23.8026143791%);
+  --cap-bottom: rgb(36.6%, 23.4%, 27.8%);
   --cap-edge-light: rgba(255, 255, 255, 0.22);
   --cap-edge-dark: rgb(22.0078431373%, 14.0705882353%, 16.7163398693%);
   --wall-near: rgb(19.3764705882%, 12.3882352941%, 14.7176470588%);
@@ -993,7 +1158,7 @@
   --lip: #fff;
   --scrim: rgba(40, 44, 52, 0.35);
   --cap-top: rgb(99.4196078431%, 99.2700653595%, 99.0117647059%);
-  --cap-bottom: rgb(90.7137254902%, 88.3210457516%, 84.1882352941%);
+  --cap-bottom: rgb(94.3411764706%, 92.8831372549%, 90.3647058824%);
   --cap-edge-light: #ffffff;
   --cap-edge-dark: rgb(89.262745098%, 86.4962091503%, 81.7176470588%);
   --wall-near: rgb(86.9411764706%, 83.5764705882%, 77.7647058824%);
@@ -1072,7 +1237,7 @@
     --lip: rgba(255, 255, 255, 0.07);
     --scrim: rgba(0, 0, 0, 0.6);
     --cap-top: rgb(42.4941176471%, 36.0637908497%, 24.9568627451%);
-    --cap-bottom: rgb(32.3647058824%, 27.4671895425%, 19.0078431373%);
+    --cap-bottom: rgb(37.8%, 32.08%, 22.2%);
     --cap-edge-light: rgba(255, 255, 255, 0.22);
     --cap-edge-dark: rgb(22.7294117647%, 19.2899346405%, 13.3490196078%);
     --wall-near: rgb(20.0117647059%, 16.9835294118%, 11.7529411765%);
@@ -1150,7 +1315,7 @@
   --lip: rgba(255, 255, 255, 0.07);
   --scrim: rgba(0, 0, 0, 0.6);
   --cap-top: rgb(42.4941176471%, 36.0637908497%, 24.9568627451%);
-  --cap-bottom: rgb(32.3647058824%, 27.4671895425%, 19.0078431373%);
+  --cap-bottom: rgb(37.8%, 32.08%, 22.2%);
   --cap-edge-light: rgba(255, 255, 255, 0.22);
   --cap-edge-dark: rgb(22.7294117647%, 19.2899346405%, 13.3490196078%);
   --wall-near: rgb(20.0117647059%, 16.9835294118%, 11.7529411765%);
@@ -1228,7 +1393,7 @@
   --lip: #fff;
   --scrim: rgba(40, 44, 52, 0.35);
   --cap-top: rgb(99.0745098039%, 99.3568627451%, 99.0980392157%);
-  --cap-bottom: rgb(85.1921568627%, 89.7098039216%, 85.568627451%);
+  --cap-bottom: rgb(90.9764705882%, 93.7294117647%, 91.2058823529%);
   --cap-edge-light: #ffffff;
   --cap-edge-dark: rgb(82.8784313725%, 88.1019607843%, 83.3137254902%);
   --wall-near: rgb(79.1764705882%, 85.5294117647%, 79.7058823529%);
@@ -1307,7 +1472,7 @@
     --lip: rgba(255, 255, 255, 0.07);
     --scrim: rgba(0, 0, 0, 0.6);
     --cap-top: rgb(27.6549019608%, 39.7960784314%, 28.6666666667%);
-    --cap-bottom: rgb(21.062745098%, 30.3098039216%, 21.8333333333%);
+    --cap-bottom: rgb(24.6%, 35.4%, 25.5%);
     --cap-edge-light: rgba(255, 255, 255, 0.22);
     --cap-edge-dark: rgb(14.7921568627%, 21.2862745098%, 15.3333333333%);
     --wall-near: rgb(13.0235294118%, 18.7411764706%, 13.5%);
@@ -1385,7 +1550,7 @@
   --lip: rgba(255, 255, 255, 0.07);
   --scrim: rgba(0, 0, 0, 0.6);
   --cap-top: rgb(27.6549019608%, 39.7960784314%, 28.6666666667%);
-  --cap-bottom: rgb(21.062745098%, 30.3098039216%, 21.8333333333%);
+  --cap-bottom: rgb(24.6%, 35.4%, 25.5%);
   --cap-edge-light: rgba(255, 255, 255, 0.22);
   --cap-edge-dark: rgb(14.7921568627%, 21.2862745098%, 15.3333333333%);
   --wall-near: rgb(13.0235294118%, 18.7411764706%, 13.5%);
@@ -1463,7 +1628,7 @@
   --lip: #fff;
   --scrim: rgba(40, 44, 52, 0.35);
   --cap-top: rgb(99.0117647059%, 99.2836601307%, 99.4196078431%);
-  --cap-bottom: rgb(84.1882352941%, 88.5385620915%, 90.7137254902%);
+  --cap-bottom: rgb(90.3647058824%, 93.0156862745%, 94.3411764706%);
   --cap-edge-light: #ffffff;
   --cap-edge-dark: rgb(81.7176470588%, 86.7477124183%, 89.262745098%);
   --wall-near: rgb(77.7647058824%, 83.8823529412%, 86.9411764706%);
@@ -1542,7 +1707,7 @@
     --lip: rgba(255, 255, 255, 0.07);
     --scrim: rgba(0, 0, 0, 0.6);
     --cap-top: rgb(24.9568627451%, 36.6483660131%, 42.4941176471%);
-    --cap-bottom: rgb(19.0078431373%, 27.9124183007%, 32.3647058824%);
+    --cap-bottom: rgb(22.2%, 32.6%, 37.8%);
     --cap-edge-light: rgba(255, 255, 255, 0.22);
     --cap-edge-dark: rgb(13.3490196078%, 19.6026143791%, 22.7294117647%);
     --wall-near: rgb(11.7529411765%, 17.2588235294%, 20.0117647059%);
@@ -1620,7 +1785,7 @@
   --lip: rgba(255, 255, 255, 0.07);
   --scrim: rgba(0, 0, 0, 0.6);
   --cap-top: rgb(24.9568627451%, 36.6483660131%, 42.4941176471%);
-  --cap-bottom: rgb(19.0078431373%, 27.9124183007%, 32.3647058824%);
+  --cap-bottom: rgb(22.2%, 32.6%, 37.8%);
   --cap-edge-light: rgba(255, 255, 255, 0.22);
   --cap-edge-dark: rgb(13.3490196078%, 19.6026143791%, 22.7294117647%);
   --wall-near: rgb(11.7529411765%, 17.2588235294%, 20.0117647059%);
@@ -1778,9 +1943,9 @@
   margin: 0 0 1.25rem;
   padding: 1rem 1.25rem 1.25rem;
   border: 0;
-  border-radius: 18px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(180deg, var(--surface-top), var(--surface-bottom));
-  box-shadow: inset 0 1px 0 var(--lip), inset 0 -1px 0 color-mix(in srgb, #000 min(100%, 6% * var(--shade-k)), transparent), 0 1px 2px color-mix(in srgb, #000 min(100%, 8% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset 0 1px 0 var(--lip), inset 0 -1px 0 color-mix(in srgb, #000 min(100%, 6% * var(--shade-k) * var(--depth)), transparent), 0 var(--elev-y) var(--elev-blur) var(--elev-spread) color-mix(in srgb, #000 min(100%, var(--elev-a) * var(--shade-k) * var(--depth)), transparent);
 }
 @media (forced-colors: active) {
   .panel {
@@ -2017,7 +2182,7 @@ kbd.kbd,
   display: inline-block;
   min-width: 1.6em;
   padding: 0.1em 0.5em;
-  border-radius: 6px;
+  border-radius: var(--radius);
   color: var(--ink);
   font: 0.85em/1.4 var(--font-mono);
   text-align: center;
@@ -2097,9 +2262,9 @@ kbd.kbd,
 
 .blurb {
   padding: 1.1rem 1.25rem 1.25rem;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
-  box-shadow: 0 0 0 1px var(--hairline), 0 6px 14px -8px color-mix(in srgb, #000 min(100%, 30% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 var(--elev-y) var(--elev-blur) var(--elev-spread) color-mix(in srgb, #000 min(100%, var(--elev-a) * var(--shade-k) * var(--depth)), transparent);
 }
 .blurb__eyebrow {
   margin: 0 0 0.4rem;
@@ -2874,9 +3039,9 @@ kbd.kbd,
 .well {
   display: inline-flex;
   padding: 5px;
-  border-radius: calc(var(--radius) + 5px);
+  border-radius: var(--radius);
   background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
-  box-shadow: inset 0 2px 4px color-mix(in srgb, #000 min(100%, 12% * var(--shade-k)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
 }
 .well > input[type=radio],
 .well > input[type=checkbox] {
@@ -2922,7 +3087,7 @@ kbd.kbd,
   --k-bottom: var(--cap-bottom);
   background: linear-gradient(180deg, var(--k-top), var(--k-bottom));
   transform: translateY(calc(var(--travel) * -1));
-  box-shadow: inset 1px 1px 0 var(--cap-edge-light), inset -1px -1.5px 0 var(--cap-edge-dark), 0 var(--travel) 0 var(--wall-near), 0 calc(var(--travel) + 1px) 0 var(--wall-far), 0 calc(var(--travel) + 3px) 6px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-light), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark), 0 var(--travel) 0 color-mix(in srgb, var(--ink) var(--wall-ink), var(--wall-near)), 0 calc(var(--travel) + 1px) 0 color-mix(in srgb, var(--wall-far) var(--wall-far-mix), transparent), 0 calc(var(--travel) + var(--cap-drop)) var(--cap-blur) color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent);
   transition: transform 240ms cubic-bezier(0.22, 0.9, 0.3, 1), box-shadow 240ms cubic-bezier(0.22, 0.9, 0.3, 1), --k-top 220ms ease-out, --k-bottom 220ms ease-out, color 220ms ease-out, text-shadow 220ms ease-out;
 }
 .key:active:not(:disabled), input:active:not(:disabled) + .key {
@@ -2939,7 +3104,7 @@ input + .key::after, .key[aria-pressed]::after, .key[aria-selected]::after {
   height: 7px;
   border-radius: 50%;
   background: var(--lit);
-  box-shadow: 0 0 6px 2px var(--lit-glow), inset 0 -1px 1px color-mix(in srgb, #000 min(100%, 25% * var(--shade-k)), transparent);
+  box-shadow: 0 0 6px 2px var(--lit-glow), inset 0 -1px 1px color-mix(in srgb, #000 min(100%, 25% * var(--shade-k) * var(--depth)), transparent);
   opacity: 0;
   transform: scale(0.3);
   transition: opacity 220ms ease-out, transform 240ms cubic-bezier(0.22, 0.9, 0.3, 1);
@@ -2953,7 +3118,7 @@ input:checked + .key, .key[aria-pressed=true], .key[aria-selected=true] {
   --k-top: var(--latch-top);
   --k-bottom: var(--latch-bottom);
   transform: translateY(-1px);
-  box-shadow: none;
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent);
 }
 input:checked + .key::after, .key[aria-pressed=true]::after, .key[aria-selected=true]::after {
   opacity: 1;
@@ -3124,7 +3289,7 @@ input:checked + .key--sq .icon, .key--sq[aria-pressed=true] .icon, .key--sq[aria
 }
 .check .well {
   padding: 4px;
-  border-radius: 12px;
+  border-radius: var(--radius);
 }
 .check__text {
   font-weight: 600;
@@ -3141,7 +3306,7 @@ input:checked + .key--sq .icon, .key--sq[aria-pressed=true] .icon, .key--sq[aria
   height: 1.7rem;
   min-height: 0;
   padding: 0;
-  border-radius: 8px;
+  border-radius: var(--radius);
 }
 .key--box::after {
   display: none;
@@ -3181,6 +3346,7 @@ input:indeterminate + .key--box .icon--minus {
   width: calc(var(--cap) * 2 + 8px);
   border-radius: 999px !important;
   justify-content: flex-start;
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
 }
 .switch .key {
   --travel: 2px;
@@ -3263,7 +3429,7 @@ input:indeterminate + .key--box .icon--minus {
 .form__summary {
   margin: 0 0 1rem;
   padding: 0.75rem 1rem;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--hairline);
   box-shadow: inset 0 0 0 2px var(--error);
   color: var(--ink);
@@ -3347,7 +3513,7 @@ input:indeterminate + .key--box .icon--minus {
   font-family: inherit;
   font-size: 0.95rem;
   line-height: 1.3;
-  box-shadow: inset 0 2px 4px color-mix(in srgb, #000 min(100%, 18% * var(--shade-k)), transparent), inset 0 0 0 1px var(--input-edge), 0 1px 0 var(--lip);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 18% * var(--shade-k) * var(--depth)), transparent), inset 0 0 0 1px var(--input-edge), 0 1px 0 var(--lip);
   transition: box-shadow 220ms ease-out;
 }
 .input::placeholder {
@@ -3364,7 +3530,7 @@ input:indeterminate + .key--box .icon--minus {
   opacity: 0.75;
 }
 .input[aria-invalid=true] {
-  box-shadow: inset 0 2px 4px color-mix(in srgb, #000 min(100%, 18% * var(--shade-k)), transparent), inset 0 0 0 2px var(--error), 0 1px 0 var(--lip);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 18% * var(--shade-k) * var(--depth)), transparent), inset 0 0 0 2px var(--error), 0 1px 0 var(--lip);
 }
 @media (prefers-reduced-motion: reduce) {
   .input {
@@ -3428,7 +3594,7 @@ select.input[multiple] {
 }
 select.input[multiple] option {
   padding: 0.35rem 0.55rem;
-  border-radius: 6px;
+  border-radius: var(--radius);
 }
 
 input[type=file].input {
@@ -3439,9 +3605,9 @@ input[type=file].input::file-selector-button {
   margin-right: 0.85rem;
   padding: 0.45rem 0.95rem;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
-  box-shadow: inset 1px 1px 0 var(--cap-edge-light), inset -1px -1.5px 0 var(--cap-edge-dark), 0 2px 0 var(--wall-near), 0 calc(2px + 1px) 0 var(--wall-far), 0 calc(2px + 3px) 6px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-light), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark), 0 2px 0 color-mix(in srgb, var(--ink) var(--wall-ink), var(--wall-near)), 0 calc(2px + 1px) 0 color-mix(in srgb, var(--wall-far) var(--wall-far-mix), transparent), 0 calc(2px + var(--cap-drop)) var(--cap-blur) color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent);
   color: var(--ink);
   font-family: inherit;
   font-size: 0.85rem;
@@ -3477,22 +3643,22 @@ input[type=file].input:disabled::file-selector-button {
   height: 3.2rem;
   padding: 5px;
   border: 0;
-  border-radius: 19px;
+  border-radius: var(--radius);
   background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
   cursor: pointer;
-  box-shadow: inset 0 2px 4px color-mix(in srgb, #000 min(100%, 12% * var(--shade-k)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
 }
 .color input[type=color]::-webkit-color-swatch-wrapper {
   padding: 0;
 }
 .color input[type=color]::-webkit-color-swatch {
   border: 0;
-  border-radius: 14px;
-  box-shadow: inset 1px 1px 0 var(--cap-edge-light), 0 1px 3px color-mix(in srgb, #000 min(100%, 30% * var(--shade-k)), transparent);
+  border-radius: var(--radius);
+  box-shadow: inset 1px 1px 0 var(--cap-edge-light), 0 1px 3px color-mix(in srgb, #000 min(100%, 30% * var(--shade-k) * var(--depth)), transparent);
 }
 .color input[type=color]::-moz-color-swatch {
   border: 0;
-  border-radius: 14px;
+  border-radius: var(--radius);
 }
 .color input[type=color]:focus-visible {
   outline: 3px solid var(--focus);
@@ -3561,7 +3727,7 @@ input[type=file].input:disabled::file-selector-button {
   margin-top: -1.2rem;
   padding: 0;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: none;
   color: var(--ink-soft);
   cursor: pointer;
@@ -3619,10 +3785,10 @@ input[type=file].input:disabled::file-selector-button {
 }
 .picker__list {
   border: 0;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   color: var(--ink);
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
-  box-shadow: 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
   position: fixed;
   inset: auto;
   margin: 0;
@@ -3638,7 +3804,7 @@ input[type=file].input:disabled::file-selector-button {
 }
 .picker__option {
   padding: 0.4rem 0.6rem;
-  border-radius: 10px;
+  border-radius: var(--radius);
   cursor: pointer;
 }
 .picker__option.is-active {
@@ -3694,7 +3860,7 @@ input[type=file].input:disabled::file-selector-button {
   border-radius: 999px;
   overflow: hidden;
   background: linear-gradient(180deg, var(--groove-top), var(--groove-bottom));
-  box-shadow: inset 0 2px 3px color-mix(in srgb, #000 min(100%, 20% * var(--shade-k)), transparent), 0 1px 0 var(--lip);
+  box-shadow: inset 0 2px 3px color-mix(in srgb, #000 min(100%, 20% * var(--shade-k) * var(--depth)), transparent), 0 1px 0 var(--lip);
 }
 .meter::-webkit-meter-bar {
   height: 100%;
@@ -3740,7 +3906,7 @@ input[type=file].input:disabled::file-selector-button {
   padding: 0.15rem 0.55rem;
   font: 600 0.85rem/1.4 var(--font-mono);
   text-align: right;
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: linear-gradient(180deg, #16211b, #22332a);
   color: var(--lit-screen);
   text-shadow: 0 0 6px var(--lit-glow);
@@ -3803,12 +3969,12 @@ input[type=file].input:disabled::file-selector-button {
   --track-bg:
     linear-gradient(90deg, var(--lit-fill) 0 var(--fill), transparent var(--fill)),
     linear-gradient(180deg, var(--groove-top), var(--groove-bottom));
-  --track-shadow: inset 0 2px 3px color-mix(in srgb, #000 min(100%, 20% * var(--shade-k)), transparent), 0 1px 0 var(--lip);
+  --track-shadow: inset 0 2px 3px color-mix(in srgb, #000 min(100%, 20% * var(--shade-k) * var(--depth)), transparent), 0 1px 0 var(--lip);
   --thumb-bg:
     repeating-linear-gradient(90deg, var(--grip-dark) 0 1px, var(--grip-light) 1px 2px, transparent 2px 4px) center / 14px 20px no-repeat,
     linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
-  --thumb-up: inset 1px 1px 0 var(--cap-edge-light), inset -1px -1.5px 0 var(--cap-edge-dark), 0 var(--lift) 0 var(--wall-near), 0 calc(var(--lift) + 1px) 0 var(--wall-far), 0 calc(var(--lift) + 3px) 6px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k)), transparent);
-  --thumb-down: inset 1px 1px 0 var(--cap-edge-dark), inset -1px -1px 0 var(--cap-edge-light), inset 0 2px 6px color-mix(in srgb, #000 min(100%, 10% * var(--shade-k)), transparent), 0 0 0 rgba(0, 0, 0, 0);
+  --thumb-up: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-light), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark), 0 var(--lift) 0 color-mix(in srgb, var(--ink) var(--wall-ink), var(--wall-near)), 0 calc(var(--lift) + 1px) 0 color-mix(in srgb, var(--wall-far) var(--wall-far-mix), transparent), 0 calc(var(--lift) + var(--cap-drop)) var(--cap-blur) color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent);
+  --thumb-down: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-dark), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-light), inset 0 2px 6px color-mix(in srgb, #000 min(100%, 10% * var(--shade-k) * var(--depth)), transparent);
   appearance: none;
   -webkit-appearance: none;
   display: block;
@@ -3850,7 +4016,7 @@ input[type=file].input:disabled::file-selector-button {
   width: var(--thumb-w);
   height: var(--thumb-h);
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: var(--thumb-bg);
   box-shadow: var(--thumb-up);
   transform: translateY(calc(var(--lift) * -1));
@@ -3873,7 +4039,7 @@ input[type=file].input:disabled::file-selector-button {
   width: var(--thumb-w);
   height: var(--thumb-h);
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: var(--thumb-bg);
   box-shadow: var(--thumb-up);
   transform: translateY(calc(var(--lift) * -1));
@@ -3910,7 +4076,7 @@ input[type=file].input:disabled::file-selector-button {
 .fader:focus-visible, .rknob:not(.is-enhanced) > input[type=range]:focus-visible, .knob:not(.is-enhanced) > input[type=range]:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
-  border-radius: 10px;
+  border-radius: var(--radius);
 }
 .fader:disabled, .rknob:not(.is-enhanced) > input[type=range]:disabled, .knob:not(.is-enhanced) > input[type=range]:disabled {
   cursor: not-allowed;
@@ -3938,7 +4104,7 @@ input[type=file].input:disabled::file-selector-button {
   margin-top: calc(var(--track-h) / -2);
   border-radius: 999px;
   background: linear-gradient(90deg, transparent var(--a), var(--lit-fill) var(--a) var(--b), transparent var(--b)), linear-gradient(180deg, var(--groove-top), var(--groove-bottom));
-  box-shadow: inset 0 2px 3px color-mix(in srgb, #000 min(100%, 20% * var(--shade-k)), transparent), 0 1px 0 var(--lip);
+  box-shadow: inset 0 2px 3px color-mix(in srgb, #000 min(100%, 20% * var(--shade-k) * var(--depth)), transparent), 0 1px 0 var(--lip);
 }
 .range2.is-enhanced > .fader, .range2.is-enhanced.rknob:not(.is-enhanced) > input[type=range], .range2.is-enhanced.knob:not(.is-enhanced) > input[type=range] {
   --track-bg: transparent;
@@ -4018,7 +4184,7 @@ input[type=file].input:disabled::file-selector-button {
   padding: 6px;
   border-radius: 50%;
   background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
-  box-shadow: inset 0 3px 5px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), inset 0 3px 5px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k) * var(--depth)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
 }
 .knob.is-enhanced > input:focus-visible ~ .knob__dial .knob__well {
   outline: 3px solid var(--focus);
@@ -4038,7 +4204,7 @@ input[type=file].input:disabled::file-selector-button {
   border-radius: 50%;
   background: conic-gradient(from 30deg, var(--metal-1), var(--metal-2), var(--metal-3), var(--metal-4), var(--metal-1));
   transform: translateY(-2px);
-  box-shadow: inset 1px 1px 0 var(--cap-edge-light), inset -1px -1.5px 0 var(--cap-edge-dark), 0 2px 0 var(--wall-near), 0 calc(2px + 1px) 0 var(--wall-far), 0 calc(2px + 4px) 9px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-light), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark), 0 2px 0 color-mix(in srgb, var(--ink) var(--wall-ink), var(--wall-near)), 0 calc(2px + 1px) 0 color-mix(in srgb, var(--wall-far) var(--wall-far-mix), transparent), 0 calc(2px + 4px) 9px color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent);
 }
 @media (forced-colors: active) {
   .knob__cap {
@@ -4080,7 +4246,7 @@ input[type=file].input:disabled::file-selector-button {
   margin-left: -2.5px;
   border-radius: 3px;
   background: var(--accent);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 60%, transparent), inset 0 -1px 1px color-mix(in srgb, #000 min(100%, 25% * var(--shade-k)), transparent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 60%, transparent), inset 0 -1px 1px color-mix(in srgb, #000 min(100%, 25% * var(--shade-k) * var(--depth)), transparent);
 }
 @media (forced-colors: active) {
   .knob__face::after {
@@ -4094,7 +4260,7 @@ input[type=file].input:disabled::file-selector-button {
   inset: 24%;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, var(--dish-1), var(--dish-2) 55%, var(--dish-3));
-  box-shadow: inset 0 2px 4px color-mix(in srgb, #000 min(100%, 25% * var(--shade-k)), transparent), inset 0 -1px 0 var(--lip), 0 1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent);
+  box-shadow: inset 0 2px 4px color-mix(in srgb, #000 min(100%, 25% * var(--shade-k) * var(--depth)), transparent), inset 0 -1px 0 var(--lip), 0 1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent);
 }
 @media (forced-colors: active) {
   .knob__dish {
@@ -4155,10 +4321,10 @@ input[type=file].input:disabled::file-selector-button {
   width: min(28rem, 100vw - 2rem);
   padding: 0;
   border: 0;
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   color: var(--ink);
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
-  box-shadow: 0 0 0 1px var(--hairline), 0 28px 60px -14px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 28px 60px -14px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
   opacity: 0;
   transform: translateY(10px) scale(0.98);
   transition: opacity 180ms ease-out, transform 180ms ease-out, overlay 180ms allow-discrete, display 180ms allow-discrete;
@@ -4263,7 +4429,7 @@ input[type=file].input:disabled::file-selector-button {
   --k-top: var(--latch-top);
   --k-bottom: var(--latch-bottom);
   transform: translateY(-1px);
-  box-shadow: none;
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent);
 }
 .accordion__item[open] > summary:active .key {
   transform: translateY(0);
@@ -4324,7 +4490,7 @@ input[type=file].input:disabled::file-selector-button {
 .tabs__panel:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
-  border-radius: 8px;
+  border-radius: var(--radius);
 }
 
 .menu {
@@ -4332,10 +4498,10 @@ input[type=file].input:disabled::file-selector-button {
 }
 .menu__list {
   border: 0;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   color: var(--ink);
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
-  box-shadow: 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
   position: fixed;
   inset: auto;
   min-width: 12rem;
@@ -4367,7 +4533,7 @@ input[type=file].input:disabled::file-selector-button {
   width: 100%;
   padding: 0.5rem 0.7rem;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: none;
   color: var(--ink);
   font: inherit;
@@ -4407,7 +4573,7 @@ input[type=file].input:disabled::file-selector-button {
   gap: 0.75rem;
   align-items: flex-start;
   padding: 0.85rem 1rem;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   color: var(--ink);
   border: 1px solid color-mix(in srgb, var(--alert-color) 45%, transparent);
   background: color-mix(in srgb, var(--alert-color) 9%, var(--sheet-top));
@@ -4451,7 +4617,7 @@ input[type=file].input:disabled::file-selector-button {
   margin: -0.25rem -0.4rem -0.25rem 0;
   padding: 0;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: none;
   color: var(--ink-soft);
   cursor: pointer;
@@ -4497,7 +4663,7 @@ input[type=file].input:disabled::file-selector-button {
   width: min(26rem, 100%);
   pointer-events: auto;
   background: color-mix(in srgb, var(--alert-color) 9%, var(--sheet-top));
-  box-shadow: 0 14px 30px -12px color-mix(in srgb, #000 min(100%, 50% * var(--shade-k)), transparent);
+  box-shadow: 0 14px 30px -12px color-mix(in srgb, #000 min(100%, 50% * var(--shade-k) * var(--depth)), transparent);
   animation: toast-in 180ms ease-out;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -4588,9 +4754,9 @@ input[type=file].input:disabled::file-selector-button {
 .table-wrap {
   max-width: 100%;
   overflow-x: auto;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
-  box-shadow: 0 0 0 1px var(--hairline);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline);
 }
 .table-wrap:focus-visible {
   outline: 3px solid var(--focus);
@@ -4645,7 +4811,7 @@ input[type=file].input:disabled::file-selector-button {
   padding: 0.25rem 0.4rem;
   margin: -0.25rem -0.4rem;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: none;
   color: inherit;
   font: inherit;
@@ -4705,7 +4871,7 @@ th[aria-sort=descending] .table__sort::after {
   --k-top: var(--latch-top);
   --k-bottom: var(--latch-bottom);
   transform: translateY(-1px);
-  box-shadow: none;
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent);
   color: var(--lit-ink);
   pointer-events: none;
 }
@@ -4737,7 +4903,7 @@ th[aria-sort=descending] .table__sort::after {
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   box-shadow: 0 0 0 1px var(--hairline-strong);
 }
 .media picture {
@@ -4761,7 +4927,7 @@ th[aria-sort=descending] .table__sort::after {
   min-height: 1.5rem;
   line-height: 1.5rem;
   margin-top: 0.4rem;
-  border-radius: 6px;
+  border-radius: var(--radius);
   color: var(--ink-soft);
   font-size: 0.9rem;
   cursor: pointer;
@@ -4809,7 +4975,7 @@ video.media {
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   box-shadow: 0 0 0 1px var(--hairline-strong);
 }
 @media (forced-colors: active) {
@@ -4826,9 +4992,9 @@ video.media {
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
-  box-shadow: 0 0 0 1px var(--hairline), 0 6px 14px -8px color-mix(in srgb, #000 min(100%, 30% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 var(--elev-y) var(--elev-blur) var(--elev-spread) color-mix(in srgb, #000 min(100%, var(--elev-a) * var(--shade-k) * var(--depth)), transparent);
 }
 @media (forced-colors: active) {
   .card {
@@ -4902,6 +5068,61 @@ video.media {
   border-radius: inherit;
 }
 
+.key-group {
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.key-group__item {
+  position: relative;
+  display: flex;
+  cursor: pointer;
+}
+.key-group__item > .key {
+  flex: 1 1 auto;
+}
+.key-group__item > input[type=radio] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+}
+.key-group .key {
+  min-width: 4rem;
+  border-radius: 0;
+}
+.key-group > .key:first-child,
+.key-group > .key-group__item:first-child > .key {
+  border-top-left-radius: var(--radius);
+  border-bottom-left-radius: var(--radius);
+}
+.key-group > .key:last-child,
+.key-group > .key-group__item:last-child > .key {
+  border-top-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+}
+.key-group .key:focus-visible,
+.key-group input:focus-visible + .key,
+.key-group input:checked + .key,
+.key-group .key[aria-pressed=true] {
+  z-index: 1;
+}
+.key-group--vertical {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  width: fit-content;
+}
+.key-group--vertical > .key:first-child,
+.key-group--vertical > .key-group__item:first-child > .key {
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.key-group--vertical > .key:last-child,
+.key-group--vertical > .key-group__item:last-child > .key {
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
@@ -4929,7 +5150,7 @@ video.media {
   align-items: center;
   min-height: 1.5rem;
   padding-inline: 0.25rem;
-  border-radius: 6px;
+  border-radius: var(--radius);
   color: var(--ink-soft);
   text-decoration: underline;
   text-decoration-color: transparent;
@@ -4963,7 +5184,7 @@ video.media {
   padding: 0.55rem 0.75rem;
   border: 0;
   font: 600 0.95rem/1.2 var(--font-mono);
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: linear-gradient(180deg, #16211b, #22332a);
   color: var(--lit-screen);
   text-shadow: 0 0 6px var(--lit-glow);
@@ -5000,10 +5221,10 @@ video.media {
   max-height: calc(100vh - 16px);
   overflow: auto;
   border: 0;
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   color: var(--ink);
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
-  box-shadow: 0 0 0 1px var(--hairline), 0 24px 50px -12px color-mix(in srgb, #000 min(100%, 35% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 24px 50px -12px color-mix(in srgb, #000 min(100%, 35% * var(--shade-k) * var(--depth)), transparent);
   opacity: 0;
   transform: translateY(-4px);
   transition: opacity 150ms ease-out, transform 150ms ease-out, overlay 150ms allow-discrete, display 150ms allow-discrete;
@@ -5072,7 +5293,7 @@ video.media {
   height: 2.4rem;
   padding: 0;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: transparent;
   color: var(--ink);
   font: 600 0.9rem/1 inherit;
@@ -5083,11 +5304,11 @@ video.media {
 .day:not(.is-start):not(.is-end):hover:not(:disabled) {
   background: linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
   transform: translateY(-2px);
-  box-shadow: inset 1px 1px 0 var(--cap-edge-light), inset -1px -1px 0 var(--cap-edge-dark), 0 2px 0 var(--wall-near), 0 3px 4px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k)), transparent);
+  box-shadow: inset 1px 1px 0 var(--cap-edge-light), inset -1px -1px 0 var(--cap-edge-dark), 0 2px 0 var(--wall-near), 0 3px 4px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k) * var(--depth)), transparent);
 }
 .day:active:not(:disabled) {
   transform: translateY(0) scale(0.97);
-  box-shadow: inset 1px 1px 0 var(--cap-edge-dark), inset -1px -1px 0 var(--cap-edge-light), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 15% * var(--shade-k)), transparent), 0 0 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-dark), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-light), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 15% * var(--shade-k) * var(--depth)), transparent);
   transition-duration: 90ms;
 }
 .day.is-range {
@@ -5106,10 +5327,10 @@ video.media {
   box-shadow: none;
 }
 .day.is-range-start {
-  border-radius: 10px 0 0 10px;
+  border-radius: var(--radius) 0 0 var(--radius);
 }
 .day.is-range-end {
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
 }
 .day.is-today::after {
   content: "";
@@ -5255,7 +5476,7 @@ video.media {
   border-radius: 50%;
   background: radial-gradient(circle, var(--metal-hub) 0 26%, transparent 28%), conic-gradient(from 30deg, var(--metal-1), var(--metal-2), var(--metal-3), var(--metal-4), var(--metal-1));
   transform: translateY(calc(var(--lift) * -1));
-  box-shadow: inset 1px 1px 0 var(--cap-edge-light), inset -1px -1.5px 0 var(--cap-edge-dark), 0 var(--lift) 0 var(--wall-near), 0 calc(var(--lift) + 1px) 0 var(--wall-far), 0 calc(var(--lift) + 3px) 6px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-light), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark), 0 var(--lift) 0 color-mix(in srgb, var(--ink) var(--wall-ink), var(--wall-near)), 0 calc(var(--lift) + 1px) 0 color-mix(in srgb, var(--wall-far) var(--wall-far-mix), transparent), 0 calc(var(--lift) + var(--cap-drop)) var(--cap-blur) color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent);
   transition: transform 240ms cubic-bezier(0.22, 0.9, 0.3, 1), box-shadow 240ms cubic-bezier(0.22, 0.9, 0.3, 1);
 }
 .rknob__handle.is-active .rknob__cap {
@@ -5291,7 +5512,7 @@ video.media {
   overflow: hidden;
   color: var(--lit-ink);
   background: linear-gradient(180deg, var(--groove-top), var(--groove-bottom));
-  box-shadow: inset 0 2px 3px color-mix(in srgb, #000 min(100%, 20% * var(--shade-k)), transparent), 0 1px 0 var(--lip);
+  box-shadow: inset 0 2px 3px color-mix(in srgb, #000 min(100%, 20% * var(--shade-k) * var(--depth)), transparent), 0 1px 0 var(--lip);
 }
 .loader::-webkit-progress-bar {
   background: transparent;
@@ -5555,9 +5776,9 @@ video.media {
   min-width: 0;
   margin: 0;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--code-bg);
-  box-shadow: 0 0 0 1px var(--hairline-strong), 0 10px 24px -14px color-mix(in srgb, #000 min(100%, 50% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 1px var(--hairline-strong), 0 10px 24px -14px color-mix(in srgb, #000 min(100%, 50% * var(--shade-k) * var(--depth)), transparent);
 }
 .code__label {
   display: flex;
@@ -5645,7 +5866,7 @@ video.media {
   height: 2rem;
   padding: 0;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: none;
   color: var(--code-ink);
   opacity: 0.75;
@@ -5685,7 +5906,7 @@ video.media {
   max-width: min(18rem, 100vw - 16px);
   overflow: visible;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: var(--tip-bg);
   color: var(--tip-ink);
   font-family: inherit;
@@ -5693,7 +5914,7 @@ video.media {
   font-weight: 600;
   line-height: 1.35;
   text-align: center;
-  box-shadow: 0 6px 18px color-mix(in srgb, #000 min(100%, 30% * var(--shade-k)), transparent);
+  box-shadow: 0 6px 18px color-mix(in srgb, #000 min(100%, 30% * var(--shade-k) * var(--depth)), transparent);
   opacity: 0;
   transition: opacity 120ms ease-out, overlay 120ms allow-discrete, display 120ms allow-discrete;
 }

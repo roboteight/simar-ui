@@ -1,0 +1,74 @@
+@use "../abstracts" as *;
+
+// Key group: keys joined edge to edge in one well, for a few related choices or actions. Put it on a
+// .well with a role and a name, so a screen reader announces what the group is for:
+//
+//   Buttons (each one acts, or toggles with aria-pressed):
+//   <div class="well key-group" role="group" aria-label="Text style">
+//     <button type="button" class="key" aria-pressed="true">Bold</button>
+//     <button type="button" class="key" aria-pressed="false">Italic</button>
+//   </div>
+//
+//   One choice (native radios; the arrow keys move between them, as for any radio group):
+//   <div class="well key-group" role="radiogroup" aria-label="Size">
+//     <label class="key-group__item"><input type="radio" name="size" value="s"><span class="key">Small</span></label>
+//     <label class="key-group__item"><input type="radio" name="size" value="m" checked><span class="key">Medium</span></label>
+//   </div>
+//
+// Only the two outer ends are rounded; the keys keep their own states, so the selected one stays latched.
+// key-group--vertical stacks them. A group that is too wide for a narrow screen wraps to a second row.
+.key-group {
+  flex-wrap: wrap;
+  max-width: 100%;
+
+  &__item {
+    position: relative;
+    display: flex;
+    cursor: pointer;
+
+    > .key { flex: 1 1 auto; }
+
+    // The radio stays focusable and checkable; the key is what you see.
+    > input[type="radio"] { @include visually-hidden; }
+  }
+
+  // Every key in the row is flat-edged; the ends are rounded again below.
+  .key {
+    min-width: 4rem;
+    border-radius: 0;
+  }
+
+  > .key:first-child,
+  > .key-group__item:first-child > .key {
+    border-top-left-radius: var(--radius);
+    border-bottom-left-radius: var(--radius);
+  }
+
+  > .key:last-child,
+  > .key-group__item:last-child > .key {
+    border-top-right-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+  }
+
+  // The selected or focused key sits above its neighbours so its latch and focus ring aren't cut off.
+  .key:focus-visible,
+  input:focus-visible + .key,
+  input:checked + .key,
+  .key[aria-pressed="true"] { z-index: 1; }
+
+  &--vertical {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: fit-content;
+
+    > .key:first-child,
+    > .key-group__item:first-child > .key {
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    > .key:last-child,
+    > .key-group__item:last-child > .key {
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+  }
+}

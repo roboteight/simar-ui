@@ -3,6 +3,7 @@
 @use "sass:meta";
 @use "sass:color";
 @use "../themes/default" as theme;
+@use "../themes/styles";
 
 // Registering the key's gradient stops lets the browser fade between them (gradients themselves
 // can't be transitioned). Browsers without @property simply switch instantly.
@@ -27,8 +28,23 @@
   --accent: #ff7a3d;
   --accent-top: #ffa070;
 
-  --travel: 2px; // how far a cap is extruded above its well
-  --radius: 14px;
+  // The shape and depth of everything, set as a bundle by data-style (scss/themes/_styles.scss). With no
+  // data-style these values are the "flat" style.
+  --radius: 4px;       // controls: keys, inputs, wells
+  --radius-lg: 4px;    // surfaces: panels, cards, dialogs, menus, tables
+  --depth: 1;          // strength of every soft shadow (0 is none)
+  --travel: 1px;       // how far a cap is extruded above its well
+  --bevel: 1px;        // the light and dark rim on a cap
+  --cap-drop: 1px;     // the soft shadow under a cap
+  --cap-blur: 2px;
+  --ring-w: 0px;       // an outline round every control and surface
+  --ring-mix: 15%;     // how strong the outline is, as a share of the ink color
+  --wall-ink: 0%;      // how much of the key's wall is ink (a hard, dark wall)
+  --wall-far-mix: 0%;  // a second, darker wall line
+  --elev-y: 1px;       // the shadow under panels, cards and blurbs
+  --elev-blur: 2px;
+  --elev-spread: 0px;
+  --elev-a: 8%;
 
   interpolate-size: allow-keywords; // lets <details> animate its height
 }

@@ -85,13 +85,7 @@
 .themebar {
   flex: none;
 
-  [role="radiogroup"] { display: flex; gap: 0.5rem; }
-
-  .key {
-    min-width: 0;
-    min-height: 2.5rem;
-    width: 2.5rem;
-  }
+  .select { width: 7.5rem; }
 }
 
 .setting {

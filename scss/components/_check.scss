@@ -23,7 +23,7 @@
 
   .well {
     padding: 4px;
-    border-radius: 12px;
+    border-radius: var(--radius);
   }
 
   &__text {
@@ -45,7 +45,7 @@
   height: 1.7rem;
   min-height: 0;
   padding: 0;
-  border-radius: 8px;
+  border-radius: var(--radius);
 
   &::after { display: none; } // no dot: the check mark is the indicator
 
@@ -87,6 +87,7 @@
   width: calc(var(--cap) * 2 + 8px);
   border-radius: 999px !important; // beats the checkbox's rounded square
   justify-content: flex-start;
+  @include well-shadow($outline: true);
 
   .key {
     --travel: 2px;

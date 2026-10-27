@@ -4,7 +4,7 @@
 .sheet {
   width: min(28rem, calc(100vw - 2rem));
   padding: 0; // so a click that lands on the dialog box itself is a click on the backdrop
-  @include surface(20px, 0 28px 60px -14px shade(0.4));
+  @include surface(var(--radius-lg), 0 28px 60px -14px shade(0.4));
   opacity: 0;
   transform: translateY(10px) scale(0.98);
   transition: opacity 180ms ease-out, transform 180ms ease-out, overlay 180ms allow-discrete, display 180ms allow-discrete;

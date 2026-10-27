@@ -6,6 +6,8 @@ $focus: var(--focus);
 // A key's side wall, from the cap down to the well floor.
 $wall-near: var(--wall-near);
 $wall-far: var(--wall-far);
+// The wall under a key, or under a thick-outlined style's key, the ink color itself.
+$wall-color: color-mix(in srgb, var(--ink) var(--wall-ink), #{$wall-near});
 $wall-latched: var(--latch-wall);
 
 $groove-top: var(--groove-top);

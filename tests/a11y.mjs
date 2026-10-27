@@ -25,6 +25,9 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const load = async (href) => { await page.goto(href); if (process.env.EXTRA_CSS) await page.addStyleTag({ content: process.env.EXTRA_CSS }); };
 
 const run = async (label) => {
+  // axe scrolls offscreen targets into view to measure them; with smooth scrolling it can measure mid-scroll
+  // (a link half behind the sticky header), so the result changes from run to run. Scroll instantly instead.
+  await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; });
   await page.evaluate(axeSource);
   const result = await page.evaluate(() => axe.run(document, {
     runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] },
@@ -142,6 +145,13 @@ const suite = async (theme) => {
     total += await gradientContrast(`${t}, ${palette} palette`);
   }
   await page.evaluate(() => { delete document.documentElement.dataset.palette; });
+  // Every style (shape and depth) has to pass too: a style with no shadows still needs visible edges.
+  for (const style of ['classic', 'soft', 'crisp', 'line', 'round', 'deep', 'brutal']) {
+    await page.evaluate((name) => { document.documentElement.dataset.style = name; }, style);
+    add(await run(`${t}, ${style} style`));
+    total += await gradientContrast(`${t}, ${style} style`);
+  }
+  await page.evaluate(() => { delete document.documentElement.dataset.style; });
 
   // calendar popover open
   await page.evaluate(() => document.querySelector('[data-daterange] button[popovertarget]').scrollIntoView({ block: 'center' }));

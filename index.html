@@ -12,6 +12,7 @@
   <script>
     // Apply a saved theme before the page paints, so it never flashes the other one.
     try { const f = localStorage.getItem('simar-ui:font'); if (f === 'sans' || f === 'serif' || f === 'both') document.documentElement.dataset.font = f; } catch {}
+    try { const y = localStorage.getItem('simar-ui:style'); if (['classic', 'soft', 'crisp', 'line', 'round', 'deep', 'brutal'].includes(y)) document.documentElement.dataset.style = y; } catch {}
     try { const t = localStorage.getItem('simar-ui:theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch {}
   </script>
   <link rel="stylesheet" href="dist/simar-ui.css">
@@ -65,12 +66,9 @@
       </span>
       <datalist id="site-index"></datalist>
     </search>
-    <div class="themebar needs-js" role="group" aria-label="Appearance">
-  <div role="radiogroup" aria-label="Theme">
-    <label class="well"><input type="radio" name="theme" value="auto" data-tooltip="Auto, follow the system" aria-label="Auto, follow the system" checked><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-monitor"/></svg></span></label>
-    <label class="well"><input type="radio" name="theme" value="light" data-tooltip="Light" aria-label="Light"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></span></label>
-    <label class="well"><input type="radio" name="theme" value="dark" data-tooltip="Dark" aria-label="Dark"><span class="key key--sq"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></span></label>
-  </div>
+    <div class="themebar needs-js">
+      <label class="visually-hidden" for="appearance">Appearance</label>
+      <span class="select"><select class="input" id="appearance" name="theme" data-tooltip="Appearance: Auto follows your device"><option value="auto" selected>Auto</option><option value="light">Light</option><option value="dark">Dark</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
     </div>
   </header>
   <button type="button" class="key key--sq toc-toggle needs-js" aria-label="Contents" aria-expanded="false" aria-controls="toc-nav" hidden><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg></button>
@@ -124,6 +122,7 @@
         <ul>
         <li><a href="#accordion">Accordion</a></li>
         <li><a href="#buttons">Buttons</a></li>
+        <li><a href="#key-groups">Button group</a></li>
         <li><a href="#dialogs">Dialog</a></li>
         <li><a href="#alerts">Alerts and toasts</a></li>
         <li><a href="#badges">Badge</a></li>
@@ -159,6 +158,7 @@
           <span class="setting__label">Theme</span>
           <div class="well-row" role="radiogroup" aria-label="Theme"><label class="well"><input type="radio" name="palette" value="" aria-label="Default" checked><span class="key key--sq"><span class="swatch" style="--lit: #36d27a"></span></span></label><label class="well"><input type="radio" name="palette" value="indigo" aria-label="Indigo"><span class="key key--sq"><span class="swatch" style="--lit: #5c6bc0"></span></span></label><label class="well"><input type="radio" name="palette" value="teal" aria-label="Teal"><span class="key key--sq"><span class="swatch" style="--lit: #00a896"></span></span></label><label class="well"><input type="radio" name="palette" value="rose" aria-label="Rose"><span class="key key--sq"><span class="swatch" style="--lit: #e91e63"></span></span></label><label class="well"><input type="radio" name="palette" value="amber" aria-label="Amber"><span class="key key--sq"><span class="swatch" style="--lit: #ffa000"></span></span></label><label class="well"><input type="radio" name="palette" value="forest" aria-label="Forest"><span class="key key--sq"><span class="swatch" style="--lit: #43a047"></span></span></label><label class="well"><input type="radio" name="palette" value="ocean" aria-label="Ocean"><span class="key key--sq"><span class="swatch" style="--lit: #039be5"></span></span></label></div>
         </div>
+        <div class="setting"><div class="field"><label for="style-select">Style</label><span class="select"><select class="input" id="style-select" name="style"><option value="">Flat (default)</option><option value="classic">Classic</option><option value="soft">Soft</option><option value="crisp">Crisp</option><option value="line">Line</option><option value="round">Round</option><option value="deep">Deep</option><option value="brutal">Brutal</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span></div></div>
         <div class="setting">
           <span class="setting__label">Highlight</span>
           <div class="well-row" role="radiogroup" aria-label="Highlight color">
@@ -1381,6 +1381,59 @@
         </script>
       </fieldset>
     </section>
+    <section aria-labelledby="key-groups">
+      <h3 id="key-groups">Button group</h3>
+      <p class="note">A few related keys joined edge to edge in one well. Give the <code>key-group</code> a <code>role</code> and an <code>aria-label</code> so a screen reader says what the group is for. Use it for actions, for toggles (<code>aria-pressed</code>, which your script flips) or, with native radios, for choosing one. Only the two ends are rounded, and each key keeps its own states: the selected one stays latched.</p>
+
+      <fieldset class="panel">
+        <legend>Button group</legend>
+        <div class="well-row">
+          <div class="well key-group" role="group" aria-label="Edit">
+            <button type="button" class="key">Cut</button>
+            <button type="button" class="key">Copy</button>
+            <button type="button" class="key">Paste</button>
+          </div>
+          <div class="well key-group" role="group" aria-label="Text style" data-toggle-group>
+            <button type="button" class="key" aria-pressed="true">Bold</button>
+            <button type="button" class="key" aria-pressed="false">Italic</button>
+            <button type="button" class="key" aria-pressed="false">Underline</button>
+          </div>
+        </div>
+        <div class="well-row">
+          <div class="well key-group" role="radiogroup" aria-label="Size">
+            <label class="key-group__item"><input type="radio" name="kg-size" value="s"><span class="key">Small</span></label>
+            <label class="key-group__item"><input type="radio" name="kg-size" value="m" checked><span class="key">Medium</span></label>
+            <label class="key-group__item"><input type="radio" name="kg-size" value="l"><span class="key">Large</span></label>
+            <label class="key-group__item"><input type="radio" name="kg-size" value="x" disabled><span class="key">Extra large</span></label>
+          </div>
+          <div class="well key-group key-group--vertical" role="group" aria-label="Align">
+            <button type="button" class="key">Left</button>
+            <button type="button" class="key">Center</button>
+            <button type="button" class="key">Right</button>
+          </div>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <div class="well key-group" role="group" aria-label="Text style">
+            <button type="button" class="key" aria-pressed="true">Bold</button>
+            <button type="button" class="key" aria-pressed="false">Italic</button>
+          </div>
+
+          <div class="well key-group" role="radiogroup" aria-label="Size">
+            <label class="key-group__item"><input type="radio" name="size" value="s"><span class="key">Small</span></label>
+            <label class="key-group__item"><input type="radio" name="size" value="m" checked><span class="key">Medium</span></label>
+          </div>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          // Toggle buttons: flip aria-pressed. (Radios need no script; the browser does it.)
+          document.querySelectorAll('.key-group [aria-pressed]').forEach((key) => {
+            key.addEventListener('click', () => {
+              key.setAttribute('aria-pressed', String(key.getAttribute('aria-pressed') !== 'true'));
+            });
+          });
+        </script>
+      </fieldset>
+    </section>
+
     <section aria-labelledby="dialogs">
       <h3 id="dialogs">Dialog</h3>
       <p class="note">A native <code>&lt;dialog&gt;</code> opened as a modal. Esc, a click on the backdrop, or any button in the form closes it.</p>
@@ -1785,6 +1838,7 @@
     <div class="panel settings-tab__drawer" id="settings-drawer" data-haptic="off" hidden>
       <p class="settings-tab__title">Page settings</p>
       <div class="setting"><div class="field"><label for="theme-select-tab">Theme</label><span class="select"><select class="input" id="theme-select-tab" name="palette-tab"><option value="">Default</option><option value="indigo">Indigo</option><option value="teal">Teal</option><option value="rose">Rose</option><option value="amber">Amber</option><option value="forest">Forest</option><option value="ocean">Ocean</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span></div></div>
+      <div class="setting"><div class="field"><label for="style-select-tab">Style</label><span class="select"><select class="input" id="style-select-tab" name="style-tab"><option value="">Flat (default)</option><option value="classic">Classic</option><option value="soft">Soft</option><option value="crisp">Crisp</option><option value="line">Line</option><option value="round">Round</option><option value="deep">Deep</option><option value="brutal">Brutal</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span></div></div>
       <div class="setting"><div class="field"><label for="lit-select-tab">Highlight</label><span class="select"><select class="input" id="lit-select-tab" name="lit-select-tab"><option value="">Theme default</option><option value="green">Green</option><option value="blue">Blue</option><option value="amber">Amber</option><option value="red">Red</option><option value="violet">Violet</option><option value="deep-orange">Deep orange</option><option value="orange">Orange</option><option value="yellow">Yellow</option><option value="lime">Lime</option><option value="light-green">Light green</option><option value="teal">Teal</option><option value="cyan">Cyan</option><option value="light-blue">Light blue</option><option value="indigo">Indigo</option><option value="deep-purple">Deep purple</option><option value="purple">Purple</option><option value="pink">Pink</option><option value="brown">Brown</option><option value="blue-grey">Blue grey</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span></div></div>
       <div class="setting"><div class="field"><label for="font-select-tab">Font</label><span class="select"><select class="input" id="font-select-tab" name="font-tab"><option value="">Default</option><option value="sans">Sans</option><option value="serif">Serif</option><option value="both">Both</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span></div></div>
       <div class="setting" id="haptics-setting-tab" hidden>

@@ -6,5 +6,5 @@
   padding: 0.15rem 0.55rem;
   font: 600 0.85rem/1.4 $mono;
   text-align: right;
-  @include lcd-screen(6px);
+  @include lcd-screen(var(--radius));
 }

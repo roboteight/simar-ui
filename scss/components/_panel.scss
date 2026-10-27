@@ -6,12 +6,13 @@
   margin: 0 0 1.25rem;
   padding: 1rem 1.25rem 1.25rem;
   border: 0;
-  border-radius: 18px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(180deg, var(--surface-top), var(--surface-bottom));
   box-shadow:
+    ring(),
     inset 0 1px 0 var(--lip),
     inset 0 -1px 0 shade(0.06),
-    0 1px 2px shade(0.08);
+    elev();
 
   // The soft edge disappears in high-contrast modes, so draw one.
   @include forced-colors { border: 1px solid CanvasText; }

@@ -15,7 +15,7 @@
   display: inline-block;
 
   &__list {
-    @include surface(14px, 0 18px 40px -12px shade(0.4));
+    @include surface(var(--radius-lg), 0 18px 40px -12px shade(0.4));
     position: fixed;
     inset: auto;
     min-width: 12rem;
@@ -44,7 +44,7 @@
     width: 100%;
     padding: 0.5rem 0.7rem;
     border: 0;
-    border-radius: 10px;
+    border-radius: var(--radius);
     background: none;
     color: var(--ink);
     font: inherit;

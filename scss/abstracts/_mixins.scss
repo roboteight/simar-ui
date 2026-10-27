@@ -3,8 +3,20 @@
 // ---- Theme-aware shadows and highlights ----------------------------------------------------
 // A dark page needs stronger shadows and much subtler highlights than a light one, so every black
 // shadow is scaled by --shade-k and every white highlight by --tint-k (both set per theme).
+// --depth is the style's own strength (data-style): 0 is no soft shadows at all, 1 is the default.
 @function shade($alpha) {
-  @return color-mix(in srgb, #000 min(100%, calc(#{$alpha * 100%} * var(--shade-k))), transparent);
+  @return color-mix(in srgb, #000 min(100%, calc(#{$alpha * 100%} * var(--shade-k) * var(--depth))), transparent);
+}
+
+// A style's outline: --ring-w wide (0 in most styles) in the ink color at --ring-mix strength. It is
+// what keeps a control's edge visible in styles that have no shadow, so it is in every control and surface.
+@function ring() {
+  @return 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent);
+}
+
+// The one-level shadow under panels, cards and blurbs: --elev-* are set by the style.
+@function elev() {
+  @return 0 var(--elev-y) var(--elev-blur) var(--elev-spread) color-mix(in srgb, #000 min(100%, calc(var(--elev-a) * var(--shade-k) * var(--depth))), transparent);
 }
 
 @function tint($alpha) {
@@ -15,27 +27,32 @@
 // Functions rather than mixins so they can also fill custom properties (--thumb-up).
 
 // A raised cap: hairline bevel, a solid side wall $lift tall, and a soft contact shadow.
-@function raised-shadow($lift, $drop: 3px, $blur: 6px) {
+@function raised-shadow($lift, $drop: var(--cap-drop), $blur: var(--cap-blur)) {
   @return
-    inset 1px 1px 0 var(--cap-edge-light),
-    inset -1px -1.5px 0 var(--cap-edge-dark),
-    0 $lift 0 $wall-near,
-    0 calc(#{$lift} + 1px) 0 $wall-far,
-    0 calc(#{$lift} + #{$drop}) $blur shade(0.14);
+    ring(),
+    inset var(--bevel) var(--bevel) 0 var(--cap-edge-light),
+    inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark),
+    0 $lift 0 $wall-color,
+    0 calc(#{$lift} + 1px) 0 color-mix(in srgb, $wall-far var(--wall-far-mix), transparent),
+    0 calc(#{$lift} + #{$drop}) $blur shade(0.12);
 }
 
 // A pushed-in cap: the bevel flips and the wall is gone.
 @function pressed-shadow($blur: 6px, $alpha: 0.1) {
   @return
-    inset 1px 1px 0 var(--cap-edge-dark),
-    inset -1px -1px 0 var(--cap-edge-light),
-    inset 0 2px $blur shade($alpha),
-    0 0 0 #0000;
+    ring(),
+    inset var(--bevel) var(--bevel) 0 var(--cap-edge-dark),
+    inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-light),
+    inset 0 2px $blur shade($alpha);
 }
 
 // A recessed socket.
-@mixin well-shadow($drop: 2px, $blur: 4px, $alpha: 0.12) {
+// $outline adds the style's ring: off for a well that holds a key (the key has its own), on for a
+// well that is the control itself, like a switch track.
+@mixin well-shadow($drop: 2px, $blur: 4px, $alpha: 0.12, $outline: false) {
+  $edge: if($outline, ring(), 0 0 0 0 #0000);
   box-shadow:
+    $edge,
     inset 0 $drop $blur shade($alpha),
     inset 0 -1px 0 tint(0.9),
     0 1px 0 var(--lip);
@@ -49,7 +66,7 @@
   --k-top: var(--latch-top);
   --k-bottom: var(--latch-bottom);
   transform: translateY(-1px);
-  box-shadow: none;
+  box-shadow: ring();
 }
 
 // How fast a key goes down. Used with the transition list on .key (transform, shadow, then four fades).
@@ -106,7 +123,7 @@
   border-radius: $radius;
   color: var(--ink);
   background: $sheet-bg;
-  box-shadow: 0 0 0 1px var(--hairline), $shadow;
+  box-shadow: ring(), 0 0 0 1px var(--hairline), $shadow;
 }
 
 // A small tick mark: knob dials and fader marks.

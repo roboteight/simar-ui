@@ -10,9 +10,9 @@
 .table-wrap {
   max-width: 100%;
   overflow-x: auto;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: $sheet-bg;
-  box-shadow: 0 0 0 1px var(--hairline);
+  box-shadow: ring(), 0 0 0 1px var(--hairline);
 
   &:focus-visible { @include focus-ring(3px); }
 }
@@ -61,7 +61,7 @@
     padding: 0.25rem 0.4rem;
     margin: -0.25rem -0.4rem;
     border: 0;
-    border-radius: 8px;
+    border-radius: var(--radius);
     background: none;
     color: inherit;
     font: inherit;

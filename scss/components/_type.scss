@@ -127,7 +127,7 @@ kbd.kbd,
   display: inline-block;
   min-width: 1.6em;
   padding: 0.1em 0.5em;
-  border-radius: 6px;
+  border-radius: var(--radius);
   color: var(--ink);
   font: 0.85em/1.4 var(--font-mono);
   text-align: center;
@@ -200,9 +200,9 @@ kbd.kbd,
 
 .blurb {
   padding: 1.1rem 1.25rem 1.25rem;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
-  box-shadow: 0 0 0 1px var(--hairline), 0 6px 14px -8px shade(0.3);
+  box-shadow: ring(), 0 0 0 1px var(--hairline), elev();
 
   &__eyebrow {
     margin: 0 0 0.4rem;

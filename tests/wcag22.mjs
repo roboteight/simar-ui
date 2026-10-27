@@ -208,8 +208,8 @@ await page.mouse.move(5, 5);
 await wait(600);
 (await shownTip()) === null ? pass('goes away when the pointer leaves') : fail('stays after the pointer leaves');
 
-// at the edge of the screen it stays on screen (the theme control is top right)
-await keyboardFocus('input[name="theme"][value="dark"]');
+// at the edge of the screen it stays on screen (the appearance control is top right)
+await keyboardFocus('#appearance');
 const edge = await page.evaluate(() => { const r = document.querySelector('[role="tooltip"]:popover-open')?.getBoundingClientRect(); return r && { l: Math.round(r.left), r: Math.round(r.right), t: Math.round(r.top), b: Math.round(r.bottom), w: innerWidth, h: innerHeight }; });
 edge && edge.l >= 0 && edge.r <= edge.w && edge.t >= 0 && edge.b <= edge.h ? pass(`stays on screen at the page edge (${edge.l}-${edge.r} of ${edge.w})`) : fail(`off screen: ${JSON.stringify(edge)}`);
 await page.keyboard.press('Escape');
@@ -545,8 +545,8 @@ const ac3 = await acNow();
 console.log('\nHeader and in-page search');
 for (const width of [1280, 375]) {
   await open(width);
-  const head = await page.evaluate(() => { const h = document.querySelector('header.topbar'); const input = document.querySelector('#site-search'); const r = h.getBoundingClientRect(); return { banner: getComputedStyle(h).position, search: !!input.closest('search'), label: !!document.querySelector('label[for="site-search"]'), groups: document.querySelectorAll('#site-index option').length, buttons: [...h.querySelectorAll('input[name="theme"]')].length, overflow: document.documentElement.scrollWidth > innerWidth + 1, h: r.height }; });
-  head.banner === 'sticky' && head.search && head.label && head.groups > 20 && head.buttons === 3 && !head.overflow ? pass(`${width}px: a sticky header holds a labelled search (${head.groups} entries) and the three appearance keys`) : fail(`${width}px header: ${JSON.stringify(head)}`);
+  const head = await page.evaluate(() => { const h = document.querySelector('header.topbar'); const input = document.querySelector('#site-search'); const r = h.getBoundingClientRect(); return { banner: getComputedStyle(h).position, search: !!input.closest('search'), label: !!document.querySelector('label[for="site-search"]'), groups: document.querySelectorAll('#site-index option').length, appearance: (() => { const sel = h.querySelector('select#appearance'); return sel && { opts: [...sel.options].map((o) => o.value).join(), value: sel.value, label: !!h.querySelector('label[for="appearance"]') }; })(), overflow: document.documentElement.scrollWidth > innerWidth + 1, h: r.height }; });
+  head.banner === 'sticky' && head.search && head.label && head.groups > 20 && head.appearance?.opts === 'auto,light,dark' && head.appearance.value === 'auto' && head.appearance.label && !head.overflow ? pass(`${width}px: a sticky header holds a labelled search (${head.groups} entries) and an Appearance dropdown (Auto, Light, Dark) that starts on Auto`) : fail(`${width}px header: ${JSON.stringify(head)}`);
 }
 await open(1280);
 await page.waitForFunction(() => document.querySelector('#site-search')?.getAttribute('role') === 'combobox');
@@ -704,6 +704,75 @@ ring.w >= 2 && ring.style !== 'none' ? pass('keyboard focus on the card link dra
 await page.setViewport({ width: 320, height: 700 });
 await wait(200);
 (await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('cards stack at 320px without sideways scrolling') : fail('cards overflow at 320px');
+await page.setViewport({ width: 1280, height: 800 });
+
+// ---- button group ---------------------------------------------------------------------------------
+console.log('\nButton group');
+await open(1280);
+const kg = await page.evaluate(() => {
+  const sec = document.querySelector('section[aria-labelledby="key-groups"]');
+  const groups = [...sec.querySelectorAll('.key-group')];
+  const radii = (g) => [...g.querySelectorAll('.key')].map((k) => getComputedStyle(k));
+  const h = groups[0] && radii(groups[0]);
+  const r = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--radius'));
+  return {
+    n: groups.length,
+    named: groups.every((g) => ['group', 'radiogroup'].includes(g.getAttribute('role')) && g.getAttribute('aria-label')),
+    endsOnly: h && parseFloat(h[0].borderTopLeftRadius) === r && parseFloat(h[0].borderTopRightRadius) === 0 && parseFloat(h.at(-1).borderTopRightRadius) === r && parseFloat(h[1].borderTopLeftRadius) === 0,
+    toggles: [...sec.querySelectorAll('[aria-pressed]')].every((b) => b.tagName === 'BUTTON' && ['true', 'false'].includes(b.getAttribute('aria-pressed'))),
+    radios: [...sec.querySelectorAll('input[type=radio]')].every((i) => i.closest('label')) && sec.querySelectorAll('input[name="kg-size"]').length === 4,
+    heights: [...sec.querySelectorAll('.key')].every((k) => k.getBoundingClientRect().height >= 24),
+  };
+});
+kg.n === 4 && kg.named && kg.toggles && kg.radios && kg.heights ? pass('each group has a role and a name; toggles are buttons with aria-pressed; radios are native in labels (24px targets)') : fail(`key group markup: ${JSON.stringify(kg)}`);
+kg.endsOnly ? pass('only the two outer ends of a group are rounded') : fail(`key group radii: ${JSON.stringify(kg)}`);
+const tg = await page.evaluate(() => { const b = document.querySelector('[data-toggle-group] [aria-pressed="false"]'); b.click(); return b.getAttribute('aria-pressed'); });
+tg === 'true' ? pass('a toggle key flips aria-pressed when clicked') : fail(`toggle: ${tg}`);
+await page.focus('input[name="kg-size"][value="m"]');
+await page.keyboard.press('ArrowRight');
+const arrow = await page.evaluate(() => document.querySelector('input[name="kg-size"]:checked')?.value);
+arrow === 'l' ? pass('the arrow keys move the choice through the radio group, skipping the disabled one') : fail(`radio arrows: ${arrow}`);
+await page.keyboard.press('ArrowRight');
+(await page.evaluate(() => document.querySelector('input[name="kg-size"]:checked')?.value)) === 's' ? pass('and it wraps round') : fail('radio group did not wrap');
+await page.setViewport({ width: 320, height: 700 });
+await wait(200);
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('groups wrap at 320px without sideways scrolling') : fail('a button group overflows at 320px');
+await page.setViewport({ width: 1280, height: 800 });
+
+// ---- styles ---------------------------------------------------------------------------------------
+console.log('\nStyles');
+await open(1280);
+const STYLES = { classic: ['14px', '18px'], flat: ['4px', '4px'], soft: ['12px', '20px'], crisp: ['8px', '12px'], line: ['6px', '10px'], round: ['20px', '28px'], deep: ['8px', '14px'], brutal: ['0px', '0px'] };
+const styleInfo = await page.evaluate(() => ({
+  panel: !!document.querySelector('#page-settings select#style-select'),
+  label: !!document.querySelector('label[for="style-select"]'),
+  options: [...document.querySelector('#style-select').options].map((o) => o.value || 'flat').join(),
+  start: document.documentElement.dataset.style ?? '',
+}));
+styleInfo.panel && styleInfo.label && styleInfo.start === '' && styleInfo.options === 'flat,classic,soft,crisp,line,round,deep,brutal' ? pass('the Page settings panel has a labelled Style select with eight styles, starting on Flat') : fail(`style select: ${JSON.stringify(styleInfo)}`);
+const applied = [];
+for (const [name, [radius, large]] of Object.entries(STYLES)) {
+  await page.select('#style-select', name === 'flat' ? '' : name);
+  const got = await page.evaluate(() => {
+    const key = document.querySelector('section[aria-labelledby="buttons"] .key'), panel = document.querySelector('.panel');
+    return { attr: document.documentElement.dataset.style ?? '', key: getComputedStyle(key).borderTopLeftRadius, panel: getComputedStyle(panel).borderTopLeftRadius, tab: document.querySelector('#style-select-tab').value };
+  });
+  if (!(got.attr === (name === 'flat' ? '' : name) && got.key === radius && got.panel === large && got.tab === (name === 'flat' ? '' : name))) applied.push(`${name}: ${JSON.stringify(got)}`);
+}
+applied.length === 0 ? pass('each style sets its own radius on keys and surfaces, and the settings tab select follows') : fail(`styles: ${applied.join(' | ')}`);
+await page.select('#style-select', 'brutal');
+const outline = await page.evaluate(() => { const i = document.querySelector('#f-name'); const sh = getComputedStyle(i).boxShadow; const k = getComputedStyle(document.querySelector('.panel')).boxShadow; return { input: sh.includes('2px'), panel: k.includes('2px') }; });
+outline.input && outline.panel ? pass('a style with no soft shadows still draws an outline round inputs and panels') : fail(`outline: ${JSON.stringify(outline)}`);
+await page.reload();
+await wait(400);
+(await page.evaluate(() => document.documentElement.dataset.style ?? '')) === 'brutal' ? pass('the chosen style is remembered and applied on reload') : fail('the style was not remembered');
+await page.select('#style-select', '');
+(await page.evaluate(() => localStorage.getItem('simar-ui:style'))) === null ? pass('choosing Flat clears the remembered style') : fail('Flat left a remembered style');
+await page.setViewport({ width: 320, height: 700 });
+await wait(200);
+await page.select('#style-select', 'round');
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('the roundest style fits at 320px without sideways scrolling') : fail('a style overflows at 320px');
+await page.select('#style-select', '');
 await page.setViewport({ width: 1280, height: 800 });
 
 // ---- fonts ---------------------------------------------------------------------------------------

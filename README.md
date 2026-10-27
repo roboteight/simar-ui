@@ -67,7 +67,7 @@ Open `index.html` for the live demo, with a contents list that floats on the lef
 
 ## What's inside
 
-**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, buttons, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Content:** typography, quotes, text blurbs, media, cards, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
+**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Content:** typography, quotes, text blurbs, media, cards, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
 
 The demo page and its contents list follow Bootstrap's docs order: Getting started, Customize, Content, Forms, then Components, with similar items together.
 
@@ -334,6 +334,19 @@ Where you are in the site: an ordered list of links in a labelled `<nav>`, with 
 </nav>
 ```
 
+#### Button group
+
+A few related keys joined edge to edge in one well. Give the group a `role` and an `aria-label` so a screen reader says what it is for. Use it for actions, for toggles (`aria-pressed`, which your script flips) or, with native radios, for choosing one (the arrow keys move between them with no script). Only the two outer ends are rounded and each key keeps its own states, so the selected one stays latched. `key-group--vertical` stacks them, and a group too wide for a narrow screen wraps.
+
+<img src="docs/screenshots/button-group.png" alt="Cut, Copy and Paste joined together; Bold, Italic and Underline with Bold pressed; Small, Medium and Large with Medium selected; Left, Center and Right stacked" width="640">
+
+```html
+<div class="well key-group" role="group" aria-label="Text style">
+  <button type="button" class="key" aria-pressed="true">Bold</button>
+  <button type="button" class="key" aria-pressed="false">Italic</button>
+</div>
+```
+
 #### Dropdown menu
 
 A button that opens a list of actions or links. It is a native `popover`, so it opens, closes and dismisses with no JavaScript; the script adds the menu roles and the keys from the ARIA menu button pattern (Enter, Space and the arrows open it, arrows, Home, End and letters move, Esc returns focus to the button, Tab leaves).
@@ -467,9 +480,9 @@ All of the styling is a theme, and this is the first one: the components describ
 
 ## Light and dark
 
-simar-ui follows the system setting. To choose, put `data-theme="dark"` or `data-theme="light"` on `<html>`, or on any element to theme just that part of the page. The demo has an **Auto / Light / Dark** control in the top right.
+simar-ui follows the system setting. To choose, put `data-theme="dark"` or `data-theme="light"` on `<html>`, or on any element to theme just that part of the page. The demo has an **Appearance** dropdown (Auto, Light, Dark) in the top right; Auto is the default.
 
-<img src="docs/screenshots/theme-control.png" alt="The Auto, Light and Dark theme control" width="190">
+<img src="docs/screenshots/theme-control.png" alt="The Appearance dropdown, set to Auto" width="190">
 
 The demo page's contents list floats in the left margin on wide screens, marking the section you're reading. Below 76rem it folds into an icon that floats on the left edge and opens a drawer (Esc closes it, and so does choosing a link). Without JavaScript it simply sits above the page. A matching settings icon on the right edge opens Theme, Highlight and Font once you've scrolled past the Page settings panel:
 
@@ -555,7 +568,7 @@ Every control is a native element, so the keyboard, focus and screen-reader beha
   - WCAG 2.2 checks for 320px reflow, target size, reduced motion, forced colors, click-only alternatives to dragging, non-text contrast and the accessibility tree;
   - a keyboard pass that tabs through every control and checks the focus ring is actually on screen and not hidden behind a floating button;
   - the same checks with every highlight color, every whole-page palette, the font choices, and states such as menus, suggestions and toasts showing;
-  - behavior tests for tabs, the menu, autocomplete, sortable tables, the contents drawer, the settings tab, header search, pagination, breadcrumbs, media and cards, and a responsive grid test at phone, tablet and desktop widths;
+  - behavior tests for tabs, the menu, autocomplete, sortable tables, the contents drawer, the settings tab, header search, pagination, breadcrumbs, media, cards and button groups, and a responsive grid test at phone, tablet and desktop widths;
   - an app test that serves the page, checks the manifest and icons and the service worker, and loads the page with the network off.
 
   `npm test` builds first; `npm publish` runs it automatically.

@@ -118,19 +118,33 @@ setFont(root.dataset.font ?? '', false);
 
 // Theme: Auto follows the system (no data-theme on <html>); Light and Dark set it, which the
 // library reads. The choice is remembered, and applied before first paint by a script in <head>.
-const themeChoices = document.querySelectorAll('input[name="theme"]');
-const savedTheme = root.dataset.theme ?? 'auto';
-for (const radio of themeChoices) {
-  radio.checked = radio.value === savedTheme;
-  radio.addEventListener('change', () => {
-    if (radio.value === 'auto') delete root.dataset.theme;
-    else root.dataset.theme = radio.value;
+const themeSelect = document.getElementById('appearance');
+if (themeSelect) {
+  themeSelect.value = root.dataset.theme ?? 'auto';
+  themeSelect.addEventListener('change', () => {
+    if (themeSelect.value === 'auto') delete root.dataset.theme;
+    else root.dataset.theme = themeSelect.value;
     try {
-      if (radio.value === 'auto') localStorage.removeItem('simar-ui:theme');
-      else localStorage.setItem('simar-ui:theme', radio.value);
+      if (themeSelect.value === 'auto') localStorage.removeItem('simar-ui:theme');
+      else localStorage.setItem('simar-ui:theme', themeSelect.value);
     } catch { /* the choice just isn't remembered */ }
   });
 }
+
+// Style: the shape and depth of everything (data-style on <html>). The panel and the settings tab
+// each have a select; both show the same choice, which is remembered and applied before first paint.
+const styleSelects = document.querySelectorAll('#style-select, #style-select-tab');
+const setStyle = (value) => {
+  if (value) root.dataset.style = value;
+  else delete root.dataset.style;
+  for (const select of styleSelects) select.value = value;
+  try {
+    if (value) localStorage.setItem('simar-ui:style', value);
+    else localStorage.removeItem('simar-ui:style');
+  } catch { /* the choice just isn't remembered */ }
+};
+for (const select of styleSelects) select.addEventListener('change', () => setStyle(select.value));
+for (const select of styleSelects) select.value = root.dataset.style ?? '';
 
 // Spinners: the chosen style replaces the artwork in the two live spinners.
 const spinnerPick = document.getElementById('spinner-pick');
@@ -258,3 +272,8 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
     });
   }).catch(() => { /* the page works the same without it */ });
 }
+
+// Button group demo: the toggle keys flip aria-pressed (the library styles it; the page decides what it means).
+document.querySelectorAll('[data-toggle-group] [aria-pressed]').forEach((key) => {
+  key.addEventListener('click', () => key.setAttribute('aria-pressed', String(key.getAttribute('aria-pressed') !== 'true')));
+});

@@ -239,7 +239,7 @@ html:not([data-js=on]) .needs-js {
   border-radius: 18px;
   color: var(--ink);
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
-  box-shadow: 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k)), transparent);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
 }
 .toc--drawer .toc__groups ul {
   display: block;
@@ -425,14 +425,8 @@ html:not([data-js=on]) .needs-js {
 .themebar {
   flex: none;
 }
-.themebar [role=radiogroup] {
-  display: flex;
-  gap: 0.5rem;
-}
-.themebar .key {
-  min-width: 0;
-  min-height: 2.5rem;
-  width: 2.5rem;
+.themebar .select {
+  width: 7.5rem;
 }
 
 .setting {
@@ -556,7 +550,7 @@ input:checked + .key .swatch {
   --k-top: var(--latch-top);
   --k-bottom: var(--latch-bottom);
   transform: translateY(-1px);
-  box-shadow: none;
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent);
 }
 .snippet[open] > summary:active .key {
   transform: translateY(0);

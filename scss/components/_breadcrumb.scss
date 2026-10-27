@@ -40,7 +40,7 @@
     align-items: center;
     min-height: 1.5rem;
     padding-inline: 0.25rem;
-    border-radius: 6px;
+    border-radius: var(--radius);
     color: var(--ink-soft);
     text-decoration: underline;
     text-decoration-color: transparent;

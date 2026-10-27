@@ -88,7 +88,7 @@ $key-colors: (
 
   // cap (a key)
   --cap-top: #{tone(#fdfdfd, $hue, $sat)};
-  --cap-bottom: #{tone(#dcdee2, $hue, $sat)};
+  --cap-bottom: #{tone(#e9ebee, $hue, $sat)};
   --cap-edge-light: #ffffff;
   --cap-edge-dark: #{tone(#d6d9de, $hue, $sat)};
   --wall-near: #{tone(#cdd1d7, $hue, $sat)};
@@ -169,7 +169,7 @@ $key-colors: (
   --scrim: rgba(0, 0, 0, 0.6);
 
   --cap-top: #{tone(#4f535d, $hue, $sat)};
-  --cap-bottom: #{tone(#3c3f47, $hue, $sat)};
+  --cap-bottom: #{tone(#464a53, $hue, $sat)};
   --cap-edge-light: rgba(255, 255, 255, 0.22);
   --cap-edge-dark: #{tone(#2a2c32, $hue, $sat)};
   --wall-near: #{tone(#25272c, $hue, $sat)};

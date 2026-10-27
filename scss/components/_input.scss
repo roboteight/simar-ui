@@ -19,6 +19,7 @@
   font-size: 0.95rem;
   line-height: 1.3;
   box-shadow:
+    ring(),
     inset 0 2px 4px shade(0.18),
     inset 0 0 0 1px var(--input-edge),
     0 1px 0 var(--lip);
@@ -41,6 +42,7 @@
   // color alone.
   &[aria-invalid="true"] {
     box-shadow:
+      ring(),
       inset 0 2px 4px shade(0.18),
       inset 0 0 0 2px var(--error),
       0 1px 0 var(--lip);
@@ -102,7 +104,7 @@ select.input[multiple] {
 
   option {
     padding: 0.35rem 0.55rem;
-    border-radius: 6px;
+    border-radius: var(--radius);
   }
 }
 
@@ -117,7 +119,7 @@ input[type="file"].input {
     margin-right: 0.85rem;
     padding: 0.45rem 0.95rem;
     border: 0;
-    border-radius: 10px;
+    border-radius: var(--radius);
     background: linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
     box-shadow: raised-shadow(2px);
     color: var(--ink);
@@ -161,7 +163,7 @@ input[type="file"].input {
     height: 3.2rem;
     padding: 5px;
     border: 0;
-    border-radius: 19px;
+    border-radius: var(--radius);
     background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
     cursor: pointer;
     @include well-shadow;
@@ -170,13 +172,13 @@ input[type="file"].input {
 
     &::-webkit-color-swatch {
       border: 0;
-      border-radius: 14px;
+      border-radius: var(--radius);
       box-shadow: inset 1px 1px 0 var(--cap-edge-light), 0 1px 3px shade(0.3);
     }
 
     &::-moz-color-swatch {
       border: 0;
-      border-radius: 14px;
+      border-radius: var(--radius);
     }
 
     &:focus-visible { @include focus-ring(3px); }
@@ -254,7 +256,7 @@ input[type="file"].input {
     margin-top: -1.2rem;
     padding: 0;
     border: 0;
-    border-radius: 8px;
+    border-radius: var(--radius);
     background: none;
     color: var(--ink-soft);
     cursor: pointer;

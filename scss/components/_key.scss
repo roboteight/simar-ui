@@ -7,7 +7,7 @@
 .well {
   display: inline-flex;
   padding: 5px;
-  border-radius: calc(var(--radius) + 5px);
+  border-radius: var(--radius);
   background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
   @include well-shadow;
 

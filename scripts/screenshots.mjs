@@ -77,6 +77,7 @@ await shoot('pagination', [await panel('Pagination')]);
 await shoot('breadcrumb', [await panel('Breadcrumb')]);
 await shoot('media', [await panel('Media')]);
 await shoot('cards', [await panel('Cards')]);
+await shoot('button-group', [await panel('Button group')]);
 await page.focus('#ac-country');
 await page.keyboard.type('un');
 await wait(300);
@@ -177,7 +178,7 @@ await wait(400);
 await shoot('validation-errors-dark', [await panel('Sign up')]);
 await page.click('#signup button[type="reset"]');
 
-// the Auto / Light / Dark control, top right of the page
+// the Auto / Light / Dark dropdown, top right of the page
 await page.addStyleTag({ content: '.themebar { display: block !important; }' });
 await page.evaluate(() => scrollTo(0, 0));
 await page.screenshot({ path: path.join(out, 'theme-control.png'), clip: { x: 860 - 190, y: 0, width: 190, height: 74 } });

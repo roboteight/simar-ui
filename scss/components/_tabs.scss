@@ -33,5 +33,5 @@
   }
 
   &__panel { outline: none; }
-  &__panel:focus-visible { @include focus-ring(3px); border-radius: 8px; }
+  &__panel:focus-visible { @include focus-ring(3px); border-radius: var(--radius); }
 }
