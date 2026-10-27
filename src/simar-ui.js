@@ -674,10 +674,34 @@ const enhanceCode = (claim) => {
 
 // Number stepper: the keys call the input's own stepUp/stepDown, so min, max and step apply. A
 // screen reader can't see the number change when a key is pressed, so the new value is announced.
+//
+// The field is a native number input, which is a spinbutton, but browsers differ on whether the arrow
+// keys step it, so the script does it too, following the ARIA spinbutton pattern: Up and Down step by
+// one, Page Up and Page Down by ten (min and max are kept). Home and End are left to the caret, as the
+// pattern makes them optional and this is a field you can type in.
+const keyedSteppers = new WeakSet();
+const stepFromKeyboard = (input) => {
+  if (keyedSteppers.has(input)) return;
+  keyedSteppers.add(input);
+  const by = { ArrowUp: 1, ArrowDown: -1, PageUp: 10, PageDown: -10 };
+  input.addEventListener('keydown', (e) => {
+    if (!(e.key in by) || e.isComposing || e.altKey || e.ctrlKey || e.metaKey || input.readOnly || input.disabled) return;
+    e.preventDefault(); // so a browser that steps by itself doesn't step twice
+    const n = by[e.key];
+    const before = input.value;
+    try { if (n > 0) input.stepUp(n); else input.stepDown(-n); } catch { /* no valid step from here */ }
+    if (input.value !== before) {
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  });
+};
+
 const enhanceSteppers = (claim) => {
   for (const key of claim('[data-step]')) {
     const input = document.getElementById(key.getAttribute('aria-controls'));
     if (!input) continue;
+    stepFromKeyboard(input);
     const stepper = key.closest('.stepper');
     stepper.classList.add('is-enhanced');
     let status = stepper.querySelector('.stepper__status');

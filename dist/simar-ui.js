@@ -890,10 +890,32 @@
       });
     }
   };
+  var keyedSteppers = /* @__PURE__ */ new WeakSet();
+  var stepFromKeyboard = (input) => {
+    if (keyedSteppers.has(input)) return;
+    keyedSteppers.add(input);
+    const by = { ArrowUp: 1, ArrowDown: -1, PageUp: 10, PageDown: -10 };
+    input.addEventListener("keydown", (e) => {
+      if (!(e.key in by) || e.isComposing || e.altKey || e.ctrlKey || e.metaKey || input.readOnly || input.disabled) return;
+      e.preventDefault();
+      const n = by[e.key];
+      const before = input.value;
+      try {
+        if (n > 0) input.stepUp(n);
+        else input.stepDown(-n);
+      } catch {
+      }
+      if (input.value !== before) {
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+  };
   var enhanceSteppers = (claim) => {
     for (const key of claim("[data-step]")) {
       const input = document.getElementById(key.getAttribute("aria-controls"));
       if (!input) continue;
+      stepFromKeyboard(input);
       const stepper = key.closest(".stepper");
       stepper.classList.add("is-enhanced");
       let status = stepper.querySelector(".stepper__status");

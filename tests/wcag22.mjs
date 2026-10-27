@@ -337,6 +337,36 @@ await page.click('#signup button[type="reset"]');
 const afterReset = await page.evaluate(() => ({ errors: [...document.querySelectorAll('#signup .field__error')].filter((e) => !e.hidden).length, value: document.querySelector('#v-name').value }));
 afterReset.errors === 0 && afterReset.value === '' ? pass('Reset clears the values and any errors') : fail(`after reset: ${JSON.stringify(afterReset)}`);
 
+// stepper keyboard: synthetic key events are not stepped by the browser itself, so a pass here means the script does it
+console.log('\nNumber stepper keyboard');
+await open(1280);
+const stepKeys = await page.evaluate(() => {
+  const input = document.querySelector('#g-qty');
+  const press = (key, extra = {}) => { const e = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true, ...extra }); input.dispatchEvent(e); return { value: input.value, prevented: e.defaultPrevented }; };
+  input.value = '5';
+  const events = []; input.addEventListener('change', () => events.push(input.value));
+  const out = {};
+  out.up = press('ArrowUp'); out.down = press('ArrowDown'); out.down2 = press('ArrowDown');
+  input.value = '5'; out.pageUp = press('PageUp');            // 5 + 10 clamps to max 10
+  input.value = '5'; out.pageDown = press('PageDown');        // 5 - 10 clamps to min 1
+  input.value = '10'; out.atMax = press('ArrowUp');
+  input.value = '1'; out.atMin = press('ArrowDown');
+  input.value = '5'; out.withCtrl = press('ArrowUp', { ctrlKey: true });
+  out.changes = events.length;
+  input.value = '2';
+  return out;
+});
+const sk = stepKeys;
+sk.up.value === '6' && sk.down.value === '5' && sk.down2.value === '4' && sk.up.prevented ? pass('Up and Down arrows step by one, and fire input and change events') : fail(`stepper arrows: ${JSON.stringify(sk)}`);
+sk.pageUp.value === '10' && sk.pageDown.value === '1' ? pass('Page Up and Page Down step by ten and stop at max and min') : fail(`stepper page keys: ${JSON.stringify(sk)}`);
+sk.atMax.value === '10' && sk.atMin.value === '1' ? pass('the arrows do not go past max or below min') : fail(`stepper limits: ${JSON.stringify(sk)}`);
+sk.withCtrl.value === '5' && !sk.withCtrl.prevented ? pass('a key with Ctrl held is left alone') : fail(`stepper modifiers: ${JSON.stringify(sk)}`);
+await page.$eval('#g-qty', (i) => { i.scrollIntoView({ block: 'center', behavior: 'instant' }); i.focus(); });
+const realBefore = await page.$eval('#g-qty', (i) => +i.value);
+await page.keyboard.press('ArrowUp');
+(await page.$eval('#g-qty', (i) => +i.value)) === realBefore + 1 ? pass('a real arrow key press steps exactly once (no double step)') : fail('a real arrow key press stepped the wrong amount');
+await page.$eval('#g-qty', (i) => { i.value = '2'; });
+
 // stepper
 await page.$eval('#g-qty', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
 const qtyBefore = +(await page.$eval('#g-qty', (i) => i.value));

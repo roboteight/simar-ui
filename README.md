@@ -181,7 +181,7 @@ Two native date inputs stay the source of truth, so typing, `min`/`max` and form
 
 #### Input group
 
-A field with a control attached: a number with a key on each side, a password with a show/hide button. Both stay real inputs. The keys are added by the script, announce the new value, and without JavaScript you get the plain native field.
+A field with a control attached: a number with a key on each side, a password with a show/hide button. Both stay real inputs. The keys are added by the script, announce the new value, and without JavaScript you get the plain native field. The number field follows the ARIA spinbutton pattern in the script too, because browsers differ on whether the arrow keys step a number field: Up and Down step by one, Page Up and Page Down by ten, and min and max are kept.
 
 <img src="docs/screenshots/input-group.png" alt="A number stepper and a password field with a reveal button" width="640">
 
@@ -619,7 +619,7 @@ index.html  the demo and documentation page
 
 ## Roadmap
 
-Next: card, tags and chips, avatar, list group, skeleton loader, empty state, popover variants, rating, stepper, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
+Next: confirmation dialog, timeline (horizontal and vertical), floating button, side menu, charts and graphs (our own styling over an existing library), suggested flows, tags and chips, avatar, list group, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
 
 ## Contributing
 
