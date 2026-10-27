@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, code, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -100,6 +100,24 @@ A terminal-style block: monospace text on a dark screen, with a title bar when i
 
 ```html
 <simar-code lang="html"><template><button class="key">Push</button></template></simar-code>
+```
+
+#### Divider
+
+A standalone `<hr>`: a thin line that marks a change of topic. Add `divider` (inside `.prose` a plain `<hr>` gets the same look). It is a real thematic break, so a screen reader can announce it.
+
+```html
+<hr class="divider">
+```
+
+#### Embed
+
+A responsive frame for content you don't control the size of: an `<iframe>` (a map, a video player, a document), an `<embed>`, an `<object>`, a `<canvas>` or a `<video>`. It keeps an aspect ratio (16:9, or `embed--4x3`, `embed--1x1`, `embed--21x9`, or any ratio with `--embed-ratio`) and scales with its container, so it never overflows a phone. An `<iframe>` must have a `title`, which is its name for a screen reader.
+
+```html
+<div class="embed embed--4x3">
+  <iframe src="https://example.com/player" title="Ramones at CBGB, 1977" loading="lazy"></iframe>
+</div>
 ```
 
 #### Layout and breakpoints

@@ -1156,6 +1156,19 @@ await wait(250);
 const folded = await page.evaluate(() => ({ nav: !document.querySelector('#toc-nav').hidden, toggle: getComputedStyle(document.querySelector('#toc-toggle')).display, expanded: document.querySelector('#toc-toggle').getAttribute('aria-expanded') }));
 docked.nav && docked.toggle === 'none' && !folded.nav && folded.toggle !== 'none' && folded.expanded === 'false' ? pass('a docked side menu is an open column at xl and up, and a tab with a closed panel below') : fail(`docked: ${JSON.stringify({ docked, folded })}`);
 
+// ---- embed, divider, table footer -----------------------------------------------------------------
+console.log('\nEmbed and divider');
+await open(1280);
+const em = await page.evaluate(() => {
+  const e = document.querySelector('section[aria-labelledby="embeds"] .embed'); const r = e.getBoundingClientRect(); const f = e.querySelector('iframe').getBoundingClientRect();
+  return { ratio: +(r.width / r.height).toFixed(2), filled: Math.abs(f.width - r.width) < 2 && Math.abs(f.height - r.height) < 2, title: !!e.querySelector('iframe').title, hr: document.querySelector('section[aria-labelledby="dividers"] hr.divider').tagName === 'HR' };
+});
+Math.abs(em.ratio - 1.78) < 0.02 && em.filled && em.title ? pass('an embed holds 16:9, its iframe fills it and has a title') : fail(`embed: ${JSON.stringify(em)}`);
+em.hr ? pass('the divider is a real <hr>') : fail('the divider is not an hr');
+await open(320);
+const emNarrow = await page.evaluate(() => { const e = document.querySelector('section[aria-labelledby="embeds"] .embed').getBoundingClientRect(); return { fits: e.right <= innerWidth, page: document.documentElement.scrollWidth <= innerWidth + 1 }; });
+emNarrow.fits && emNarrow.page ? pass('an embed shrinks to a 320px screen') : fail(`embed at 320px: ${JSON.stringify(emNarrow)}`);
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

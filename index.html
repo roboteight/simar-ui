@@ -99,7 +99,9 @@
           <ul>
           <li><a href="#cards">Card</a></li>
           <li><a href="#code">Code</a></li>
-          <li><a href="#layout">Layout and breakpoints</a></li>
+          <li><a href="#dividers">Divider</a></li>
+        <li><a href="#embeds">Embed</a></li>
+        <li><a href="#layout">Layout and breakpoints</a></li>
           <li><a href="#lists">Lists</a></li>
           <li><a href="#media">Media</a></li>
           <li><a href="#quotes">Quotes</a></li>
@@ -531,7 +533,41 @@
       </fieldset>
     </section>
 
-        <section aria-labelledby="layout">
+        <section aria-labelledby="dividers">
+      <h3 id="dividers">Divider</h3>
+      <p class="note">A standalone <code>&lt;hr&gt;</code>: a thin line that marks a change of topic. Add <code>divider</code> (inside <code>.prose</code>, a plain <code>&lt;hr&gt;</code> gets the same look). It is a real thematic break, so a screen reader can announce it.</p>
+
+      <fieldset class="panel">
+        <legend>Divider</legend>
+        <p>Soundcheck runs from five until seven.</p>
+        <hr class="divider">
+        <p>Doors open at eight, and the Ramones are on at ten.</p>
+        <script type="text/plain" data-example="HTML">
+          <p>Soundcheck runs from five until seven.</p>
+          <hr class="divider">
+          <p>Doors open at eight.</p>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="embeds">
+      <h3 id="embeds">Embed</h3>
+      <p class="note">A responsive frame for content you don't control the size of: an <code>&lt;iframe&gt;</code> (a map, a video player, a document), an <code>&lt;embed&gt;</code>, an <code>&lt;object&gt;</code>, a <code>&lt;canvas&gt;</code> or a <code>&lt;video&gt;</code>. It keeps an aspect ratio (16:9, or <code>embed--4x3</code>, <code>embed--1x1</code>, <code>embed--21x9</code>) and scales with its container, so it never overflows a phone. An <code>&lt;iframe&gt;</code> must have a <code>title</code>, which is its name for a screen reader.</p>
+
+      <fieldset class="panel">
+        <legend>Embed</legend>
+        <div class="embed embed--16x9">
+          <iframe title="A sample page: Haddonfield, October 31" loading="lazy" srcdoc="<!doctype html><html lang=&quot;en&quot;><body style=&quot;margin:0;display:grid;place-items:center;height:100vh;font:600 1.1rem system-ui;background:#14172b;color:#f4e9b8&quot;><p>Haddonfield, October 31</p></body></html>"></iframe>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <div class="embed embed--16x9">
+            <iframe src="https://example.com/player" title="Ramones at CBGB, 1977" loading="lazy"></iframe>
+          </div>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="layout">
       <h3 id="layout">Layout and breakpoints</h3>
       <p class="note">Mobile first, like Bootstrap: a class with no breakpoint applies everywhere, and one with a breakpoint (<code>md</code>) applies from that width up. The breakpoints are <code>sm</code> 36rem, <code>md</code> 48rem, <code>lg</code> 62rem, <code>xl</code> 75rem and <code>xxl</code> 87.5rem (576, 768, 992, 1200 and 1400px at the default size), and they are in <code>rem</code>, so they follow the reader's text size. Resize the window to see the columns below change. The class names and breakpoint approach are borrowed from <a href="https://getbootstrap.com/docs/5.3/layout/grid/">Bootstrap</a>, so they will feel familiar.</p>
 
