@@ -16,6 +16,7 @@
     try { const t = localStorage.getItem('simar-ui:theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch {}
   </script>
   <link rel="stylesheet" href="dist/simar-ui.css">
+  <link rel="stylesheet" href="docs/vendor/chartist.min.css">
   <link rel="stylesheet" href="docs/docs.css">
 </head>
 <body id="top">
@@ -130,6 +131,7 @@
         <li><a href="#badges">Badge</a></li>
         <li><a href="#breadcrumbs">Breadcrumb</a></li>
         <li><a href="#menus">Dropdown menu</a></li>
+        <li><a href="#charts">Charts</a></li>
         <li><a href="#pagination">Pagination</a></li>
         <li><a href="#meters">Meter</a></li>
         <li><a href="#progress">Progress</a></li>
@@ -1764,6 +1766,60 @@
           </div>
         </script>
       </fieldset>
+    </section>
+
+    <section aria-labelledby="charts">
+      <h3 id="charts">Charts</h3>
+      <p class="note">A chart is a figure whose data is a native <code>&lt;table&gt;</code>. The table is the accessible version, so it works with no script. With the optional charts add-on it is drawn as a line, bar, pie or donut chart, named by its title and described by a short summary, and the table moves into a "Data table" disclosure for everyone to read. Each series has its own color, a dash pattern and a legend entry, so color is never the only clue. The drawing is done by <a href="https://chartist.dev">Chartist</a> (MIT), styled with our theme tokens, so charts follow light, dark, palettes and styles.</p>
+
+      <fieldset class="panel">
+        <legend>Line chart</legend>
+        <figure class="chart" data-chart="line">
+          <figcaption class="chart__title">Rehearsals per month</figcaption>
+          <table class="table"><caption class="visually-hidden">Rehearsals per month, by band</caption><thead><tr><th scope="col">Month</th><th scope="col">Ramones</th><th scope="col">Blondie</th></tr></thead><tbody><tr><th scope="row">Jan</th><td>12</td><td>8</td></tr><tr><th scope="row">Feb</th><td>14</td><td>11</td></tr><tr><th scope="row">Mar</th><td>9</td><td>13</td></tr><tr><th scope="row">Apr</th><td>16</td><td>10</td></tr><tr><th scope="row">May</th><td>18</td><td>14</td></tr><tr><th scope="row">Jun</th><td>15</td><td>17</td></tr></tbody></table>
+        </figure>
+      </fieldset>
+
+      <div class="row">
+        <div class="col-12 col-md-7">
+          <fieldset class="panel">
+            <legend>Bar chart</legend>
+            <figure class="chart" data-chart="bar">
+              <figcaption class="chart__title">Records sold, in thousands</figcaption>
+              <table class="table"><caption class="visually-hidden">Records sold in thousands, by band</caption><thead><tr><th scope="col">Band</th><th scope="col">Records sold</th></tr></thead><tbody><tr><th scope="row">Ramones</th><td>120</td></tr><tr><th scope="row">Blondie</th><td>200</td></tr><tr><th scope="row">Misfits</th><td>80</td></tr><tr><th scope="row">Bad Brains</th><td>65</td></tr></tbody></table>
+            </figure>
+          </fieldset>
+        </div>
+        <div class="col-12 col-md-5">
+          <fieldset class="panel">
+            <legend>Donut chart</legend>
+            <figure class="chart" data-chart="donut" data-summary="Donut chart of practice hours: guitar 45, bass 25, drums 30. The data is in the table below.">
+              <figcaption class="chart__title">Practice hours</figcaption>
+              <table class="table"><caption class="visually-hidden">Practice hours by instrument</caption><thead><tr><th scope="col">Instrument</th><th scope="col">Hours</th></tr></thead><tbody><tr><th scope="row">Guitar</th><td>45</td></tr><tr><th scope="row">Bass</th><td>25</td></tr><tr><th scope="row">Drums</th><td>30</td></tr></tbody></table>
+            </figure>
+          </fieldset>
+        </div>
+      </div>
+
+      <script type="text/plain" data-example="HTML">
+        <figure class="chart" data-chart="line">
+          <figcaption class="chart__title">Rehearsals per month</figcaption>
+          <table class="table">
+            <caption class="visually-hidden">Rehearsals per month, by band</caption>
+            <thead><tr><th scope="col">Month</th><th scope="col">Ramones</th><th scope="col">Blondie</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Jan</th><td>12</td><td>8</td></tr>
+              <tr><th scope="row">Feb</th><td>14</td><td>11</td></tr>
+            </tbody>
+          </table>
+        </figure>
+      </script>
+      <script type="text/plain" data-example="Setup">
+        <!-- the add-on needs Chartist loaded first -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chartist@2/dist/chartist.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/chartist@2/dist/chartist.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/roboteight/simar-ui@1/dist/simar-ui-charts.min.js"></script>
+      </script>
     </section>
 
     <section aria-labelledby="pagination">

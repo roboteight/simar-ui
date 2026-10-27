@@ -1,0 +1,118 @@
+@use "../abstracts" as *;
+
+// Chart: a figure whose data is a native <table>. The table is the source of truth and the
+// accessible version of the chart, so it works with no script and no chart library. With the optional
+// charts add-on (dist/simar-ui-charts.js, which draws with Chartist, https://chartist.dev, MIT) the
+// table is drawn as a line, bar, pie or donut chart in SVG and the table moves into a "Data table"
+// disclosure. The chart is named by its title, described by a short summary, and every series has
+// its own color, a dash or marker pattern and a legend entry, so it never depends on color alone.
+//
+//   <figure class="chart" data-chart="line">
+//     <figcaption class="chart__title">Shows per month</figcaption>
+//     <table class="table">
+//       <caption class="visually-hidden">Shows per month</caption>
+//       <thead><tr><th scope="col">Month</th><th scope="col">Ramones</th><th scope="col">Blondie</th></tr></thead>
+//       <tbody><tr><th scope="row">Jan</th><td>12</td><td>8</td></tr> … </tbody>
+//     </table>
+//   </figure>
+.chart {
+  margin: 0;
+  min-width: 0;
+
+  // Chartist reads these variables, so the chart follows the theme: light, dark, palettes, styles.
+  --ct-series-a: var(--chart-1);
+  --ct-series-b: var(--chart-2);
+  --ct-series-c: var(--chart-3);
+  --ct-series-d: var(--chart-4);
+  --ct-series-e: var(--chart-5);
+  --ct-series-f: var(--chart-6);
+  --ct-series-g: var(--chart-7);
+  --ct-series-h: var(--chart-8);
+  --ct-label-color: var(--ink-soft); // text needs 4.5:1, so not Chartist's pale default
+  --ct-label-size: 0.8rem;
+  --ct-grid-color: var(--hairline-strong);
+  --ct-grid-dasharray: 0;
+  --ct-line-width: 2.5px;
+  --ct-point-size: 8px;
+
+  &__title {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  &__canvas { min-width: 0; }
+
+  // Line series are told apart by a dash pattern as well as a color.
+  .ct-series-b { --ct-line-dasharray: 8 5; }
+  .ct-series-c { --ct-line-dasharray: 2 4; }
+  .ct-series-d { --ct-line-dasharray: 12 4 2 4; }
+  .ct-series-e { --ct-line-dasharray: 8 5; }
+  .ct-series-f { --ct-line-dasharray: 2 4; }
+  .ct-series-g { --ct-line-dasharray: 12 4 2 4; }
+  .ct-series-h { --ct-line-dasharray: 8 5; }
+
+  // The legend: a swatch (with the same dash pattern as its line) and the series name.
+  &__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink);
+    font-size: 0.9rem;
+
+    li { display: inline-flex; align-items: center; gap: 0.5rem; }
+  }
+
+  &__swatch {
+    flex: none;
+    width: 1.5rem;
+    height: 0;
+    border-top: 3px solid var(--swatch);
+    border-radius: 2px;
+
+    &--dash-b, &--dash-e, &--dash-h { border-top-style: dashed; }
+    &--dash-c, &--dash-f { border-top-style: dotted; }
+    &--dash-d, &--dash-g { border-top-style: double; border-top-width: 5px; }
+  }
+
+  // Bar, pie and donut legends use a solid block.
+  &[data-chart="bar"] &__swatch,
+  &[data-chart="pie"] &__swatch,
+  &[data-chart="donut"] &__swatch {
+    width: 0.9rem;
+    height: 0.9rem;
+    border: 0;
+    border-radius: 3px;
+    background: var(--swatch);
+  }
+
+  // The data table, once it is inside its disclosure.
+  &__table {
+    margin-top: 0.75rem;
+
+    > summary {
+      display: list-item;
+      width: fit-content;
+      min-height: 1.5rem;
+      line-height: 1.5rem;
+      border-radius: 6px;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      cursor: pointer;
+
+      &:focus-visible { @include focus-ring(3px); }
+    }
+
+    .table-wrap { margin-top: 0.5rem; }
+  }
+
+  @include forced-colors {
+    .ct-series-a, .ct-series-b, .ct-series-c, .ct-series-d, .ct-series-e, .ct-series-f, .ct-series-g, .ct-series-h { --ct-color: CanvasText; }
+    &__swatch { border-color: CanvasText; background: CanvasText; }
+  }
+}

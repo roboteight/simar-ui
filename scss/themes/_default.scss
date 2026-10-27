@@ -146,6 +146,16 @@ $key-colors: (
   // How light or dark the lit text may be (OKLCH lightness 0 to 1): dark enough on the light keys.
   --lit-ink-min-l: 0;
   --lit-ink-max-l: 0.45;
+
+  // Chart series colors: each is at least 3:1 against the panel (WCAG 1.4.11), checked in tests/wcag22.mjs.
+  --chart-1: #d7263d;
+  --chart-2: #2b6cd8;
+  --chart-3: #b07800;
+  --chart-4: #8445b0;
+  --chart-5: #00917f;
+  --chart-6: #d2621c;
+  --chart-7: #b8479f;
+  --chart-8: #6e8b1f;
 }
 
 @mixin dark($hue: null, $sat: null) {
@@ -223,6 +233,16 @@ $key-colors: (
   // ...and light enough on the dark ones.
   --lit-ink-min-l: 0.88;
   --lit-ink-max-l: 1;
+
+  // Chart series colors, lighter for the dark panel (at least 3:1, checked in tests/wcag22.mjs).
+  --chart-1: #ef6b70;
+  --chart-2: #6f9bf2;
+  --chart-3: #cf9c20;
+  --chart-4: #b389e0;
+  --chart-5: #2cb5a5;
+  --chart-6: #e68544;
+  --chart-7: #dd78c4;
+  --chart-8: #93b03c;
 }
 
 

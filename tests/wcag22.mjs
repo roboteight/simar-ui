@@ -937,6 +937,60 @@ tb2.gaps.every((g) => g <= 3) ? pass(`the tabs sit close together (${tb2.gaps.jo
 tb2.topOnly && tb2.joined && tb2.panelBorder ? pass('traditional tabs: rounded on top only, the selected one joined to its bordered panel') : fail(`tab shape: ${JSON.stringify(tb2)}`);
 tb2.heights && tb2.roles ? pass('tabs keep 24px targets and the tablist, tab and tabpanel roles and links') : fail(`tab roles: ${JSON.stringify(tb2)}`);
 
+// ---- charts ---------------------------------------------------------------------------------------
+console.log('\nCharts');
+await open(1280);
+const ch = await page.evaluate(() => {
+  const figs = [...document.querySelectorAll('figure.chart')];
+  const text = (id) => document.getElementById(id)?.textContent.trim() ?? '';
+  return figs.map((f) => {
+    const canvas = f.querySelector('.chart__canvas'), details = f.querySelector('details.chart__table'), table = details?.querySelector('table');
+    return {
+      type: f.dataset.chart,
+      img: canvas?.getAttribute('role') === 'img' && !!canvas.querySelector('svg'),
+      named: !!text(canvas?.getAttribute('aria-labelledby')),
+      described: text(canvas?.getAttribute('aria-describedby')).length > 20,
+      legend: f.querySelectorAll('.chart__legend li').length,
+      table: !!table && !!table.querySelector('caption') && [...table.querySelectorAll('thead th')].every((th) => th.scope === 'col') && [...table.querySelectorAll('tbody th')].every((th) => th.scope === 'row'),
+      rows: table?.querySelectorAll('tbody tr').length,
+      region: details?.querySelector('.table-wrap')?.getAttribute('role') === 'region' && details.querySelector('.table-wrap').tabIndex === 0,
+      summary: details?.querySelector('summary')?.textContent,
+    };
+  });
+});
+const expectLegend = { line: 2, bar: 1, donut: 3 };
+ch.length === 3 && ch.every((c) => c.img && c.named && c.described) ? pass('each chart is an image named by its title and described by a summary, drawn as SVG') : fail(`chart naming: ${JSON.stringify(ch)}`);
+ch.every((c) => c.legend === expectLegend[c.type] && c.table && c.region && c.summary === 'Data table') ? pass('each has a legend entry per series or slice, and its data as a real table in a Data table disclosure') : fail(`chart legend and table: ${JSON.stringify(ch)}`);
+await page.$eval('figure.chart .chart__table summary', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.keyboard.press('Tab');
+await page.$eval('figure.chart .chart__table summary', (n) => n.focus());
+await page.keyboard.press('Enter');
+const tableOpened = await page.$eval('figure.chart .chart__table', (d) => ({ open: d.open, visible: d.querySelector('table').getBoundingClientRect().height > 0 }));
+tableOpened.open && tableOpened.visible ? pass('the Data table opens from the keyboard (Enter on its summary)') : fail(`data table: ${JSON.stringify(tableOpened)}`);
+await page.$eval('figure.chart .chart__table', (d) => { d.open = false; });
+// series colors against the panel, both themes (WCAG 1.4.11, 3:1)
+const lum = (c) => { const [r, g, b] = c.map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+for (const theme of ['light', 'dark']) {
+  await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: theme }]);
+  await page.reload();
+  await wait(500);
+  const colors = await page.evaluate(() => {
+    const ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true }); ctx.canvas.width = ctx.canvas.height = 1;
+    const rgb = (css) => { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = css; ctx.fillRect(0, 0, 1, 1); return [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3); };
+    const fig = document.querySelector('figure.chart'); const cs = getComputedStyle(fig);
+    return { series: [1, 2, 3, 4, 5, 6, 7, 8].map((n) => rgb(cs.getPropertyValue(`--chart-${n}`).trim())), panel: [rgb(cs.getPropertyValue('--sheet-top').trim()), rgb(cs.getPropertyValue('--sheet-bottom').trim())] };
+  });
+  const low = colors.series.map((c, i) => [i + 1, Math.min(...colors.panel.map((p) => ratio(c, p)))]).filter(([, r]) => r < 3);
+  low.length === 0 ? pass(`all eight series colors are at least 3:1 against the panel in ${theme}`) : fail(`${theme} series below 3:1: ${low.map(([i, r]) => `chart-${i} ${r.toFixed(2)}`).join(', ')}`);
+}
+await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }]);
+await open(1280, '?js=off');
+const plain = await page.evaluate(() => ({ svg: document.querySelectorAll('figure.chart svg').length, tables: [...document.querySelectorAll('figure.chart table')].every((t) => t.getBoundingClientRect().height > 0) }));
+plain.svg === 0 && plain.tables ? pass('with JavaScript off each chart is just its table, in full view') : fail(`no-JS charts: ${JSON.stringify(plain)}`);
+await open(320);
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('the charts fit a 320px screen without sideways scrolling') : fail('a chart overflows at 320px');
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

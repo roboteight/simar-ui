@@ -67,7 +67,7 @@ Open `index.html` for the live demo, with a contents list that floats on the lef
 
 ## What's inside
 
-**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, confirmation dialog, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Content:** typography, quotes, text blurbs, media, cards, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
+**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, confirmation dialog, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Charts:** line, bar, pie and donut (optional add-on). **Content:** typography, quotes, text blurbs, media, cards, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
 
 The demo page and its contents list follow Bootstrap's docs order: Getting started, Customize, Content, Forms, then Components, with similar items together.
 
@@ -474,6 +474,26 @@ A self-contained block: an `<article>` with an optional image, a heading and wor
 </article>
 ```
 
+#### Charts
+
+A chart is a figure whose data is a native `<table>`. The table is the accessible version, so it works with no script and no chart library. With the optional charts add-on (`dist/simar-ui-charts.min.js`) it is drawn as a **line, bar, pie or donut** chart in SVG by [Chartist](https://chartist.dev) (MIT; load it first, it is not bundled), styled with our theme tokens so it follows light, dark, palettes and styles. The chart is an image named by its title and described by a short summary (`data-summary` to write your own). Each series has its own color, a dash pattern and a legend entry, so color is never the only clue, and the table moves into a "Data table" disclosure that opens from the keyboard. The eight series colors (`--chart-1` to `--chart-8`) are in the theme file and are tested at 3:1 against the panel in light and dark.
+
+<img src="docs/screenshots/charts.png" alt="A line chart of two bands' rehearsals per month, a bar chart of records sold and a donut chart of practice hours, each with a legend" width="640">
+
+```html
+<figure class="chart" data-chart="line">
+  <figcaption class="chart__title">Rehearsals per month</figcaption>
+  <table class="table">
+    <caption class="visually-hidden">Rehearsals per month, by band</caption>
+    <thead><tr><th scope="col">Month</th><th scope="col">Ramones</th><th scope="col">Blondie</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Jan</th><td>12</td><td>8</td></tr>
+      <tr><th scope="row">Feb</th><td>14</td><td>11</td></tr>
+    </tbody>
+  </table>
+</figure>
+```
+
 #### Layout and breakpoints
 
 Responsive behavior borrowed from [Bootstrap](https://getbootstrap.com/docs/5.3/layout/grid/): a `container`, a 12-column `row` of `col-*` items, and `d-*` display helpers that change at five mobile-first breakpoints (`sm` 36rem, `md` 48rem, `lg` 62rem, `xl` 75rem, `xxl` 87.5rem, in `rem` so they follow the reader's text size). The class names will be familiar; the code is our own, and uses CSS grid.
@@ -662,7 +682,7 @@ index.html  the demo and documentation page
 
 ## Roadmap
 
-Next: timeline (horizontal and vertical), floating button, side menu, charts and graphs (our own styling over an existing library), suggested flows, tags and chips, avatar, list group, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
+Next: timeline (horizontal and vertical), floating button, side menu, more chart types, suggested flows, tags and chips, avatar, list group, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
 
 ## Contributing
 
