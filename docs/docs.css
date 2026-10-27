@@ -254,7 +254,7 @@ html:not([data-js=on]) .needs-js {
     border: 0;
     border-radius: var(--radius-lg);
     color: var(--ink);
-    background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
+    background: linear-gradient(180deg, var(--sheet-top), color-mix(in srgb, var(--sheet-bottom) var(--fade), var(--sheet-top)));
     box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
   }
   .side-menu.is-enhanced > .toc .toc__groups ul {

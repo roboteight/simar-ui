@@ -7,7 +7,7 @@
   padding: 1rem 1.25rem 1.25rem;
   border: 0;
   border-radius: var(--panel-radius, var(--radius-lg));
-  background: linear-gradient(180deg, var(--surface-top), var(--surface-bottom));
+  background: grad(var(--surface-top), var(--surface-bottom));
   box-shadow:
     ring(),
     inset 0 1px 0 var(--lip),

@@ -774,14 +774,14 @@ await page.setViewport({ width: 1280, height: 800 });
 // ---- styles ---------------------------------------------------------------------------------------
 console.log('\nStyles');
 await open(1280);
-const STYLES = { classic: ['14px', '18px'], flat: ['4px', '4px'], soft: ['12px', '20px'], crisp: ['8px', '12px'], line: ['6px', '10px'], round: ['20px', '28px'], deep: ['8px', '14px'], brutal: ['0px', '0px'] };
+const STYLES = { basic: ['2px', '2px'], brutal: ['0px', '0px'], classic: ['14px', '18px'], crisp: ['8px', '12px'], deep: ['8px', '14px'], flat: ['4px', '4px'], line: ['6px', '10px'], round: ['20px', '28px'], soft: ['12px', '20px'] };
 const styleInfo = await page.evaluate(() => ({
   panel: !!document.querySelector('#page-settings select#style-select'),
   label: !!document.querySelector('label[for="style-select"]'),
   options: [...document.querySelector('#style-select').options].map((o) => o.value || 'flat').join(),
   start: document.documentElement.dataset.style ?? '',
 }));
-styleInfo.panel && styleInfo.label && styleInfo.start === '' && styleInfo.options === 'flat,classic,soft,crisp,line,round,deep,brutal' ? pass('the Page settings panel has a labelled Style select with eight styles, starting on Flat') : fail(`style select: ${JSON.stringify(styleInfo)}`);
+styleInfo.panel && styleInfo.label && styleInfo.start === '' && styleInfo.options === 'flat,basic,brutal,classic,crisp,deep,line,round,soft' ? pass('the Page settings panel has a labelled Style select with nine styles, Flat first and the rest alphabetical') : fail(`style select: ${JSON.stringify(styleInfo)}`);
 const applied = [];
 for (const [name, [radius, large]] of Object.entries(STYLES)) {
   await page.select('#style-select', name === 'flat' ? '' : name);

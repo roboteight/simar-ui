@@ -146,7 +146,7 @@ const suite = async (theme) => {
   }
   await page.evaluate(() => { delete document.documentElement.dataset.palette; });
   // Every style (shape and depth) has to pass too: a style with no shadows still needs visible edges.
-  for (const style of ['classic', 'soft', 'crisp', 'line', 'round', 'deep', 'brutal']) {
+  for (const style of ['basic', 'brutal', 'classic', 'crisp', 'deep', 'line', 'round', 'soft']) {
     await page.evaluate((name) => { document.documentElement.dataset.style = name; }, style);
     add(await run(`${t}, ${style} style`));
     total += await gradientContrast(`${t}, ${style} style`);

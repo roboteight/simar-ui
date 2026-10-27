@@ -16,7 +16,13 @@ $tick: var(--tick);
 
 // Code always uses the monospace token, whatever font the page picks.
 $mono: var(--font-mono);
-$sheet-bg: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
+// A top-to-bottom gradient whose strength the style sets with --fade: 100% is the full gradient, 0% is a flat
+// color (the top one).
+@function grad($top, $bottom) {
+  @return linear-gradient(180deg, $top, color-mix(in srgb, #{$bottom} var(--fade), #{$top}));
+}
+
+$sheet-bg: grad(var(--sheet-top), var(--sheet-bottom));
 
 // Motion. A key goes down fast and comes back slower, which reads as a real press; colour and
 // glow changes fade rather than snap. All of it switches off under prefers-reduced-motion.

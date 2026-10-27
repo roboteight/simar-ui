@@ -74,7 +74,7 @@
     padding: 1rem 1.25rem;
     border: 1px solid color-mix(in srgb, var(--ink) var(--ring-mix), transparent);
     border-radius: 0 var(--panel-radius, var(--radius-lg)) var(--panel-radius, var(--radius-lg)) var(--panel-radius, var(--radius-lg));
-    background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
+    background: grad(var(--sheet-top), var(--sheet-bottom));
 
     @include forced-colors { border-color: CanvasText; background: Canvas; }
   }

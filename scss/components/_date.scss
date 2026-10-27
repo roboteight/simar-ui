@@ -119,7 +119,7 @@
   transition: transform $release $ease, box-shadow $release $ease;
 
   &:not(.is-start):not(.is-end):hover:not(:disabled) {
-    background: linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
+    background: grad(var(--cap-top), var(--cap-bottom));
     transform: translateY(-2px);
     box-shadow:
       inset 1px 1px 0 var(--cap-edge-light),

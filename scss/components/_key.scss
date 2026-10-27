@@ -8,7 +8,7 @@
   display: inline-flex;
   padding: 5px;
   border-radius: var(--well-radius, var(--radius));
-  background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
+  background: grad(var(--well-top), var(--well-bottom));
   @include well-shadow;
 
   > input[type="radio"],
@@ -42,7 +42,7 @@
   -webkit-tap-highlight-color: transparent;
   --k-top: var(--cap-top);
   --k-bottom: var(--cap-bottom);
-  background: linear-gradient(180deg, var(--k-top), var(--k-bottom));
+  background: grad(var(--k-top), var(--k-bottom));
   transform: translateY(calc(var(--travel) * -1));
   box-shadow: raised-shadow(var(--travel));
   transition:

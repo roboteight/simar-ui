@@ -13,7 +13,7 @@
   padding: 0.6rem 0.85rem;
   border: 0;
   border-radius: var(--input-radius, var(--radius));
-  background: linear-gradient(180deg, var(--input-top), var(--input-bottom));
+  background: grad(var(--input-top), var(--input-bottom));
   color: var(--ink);
   font-family: inherit;
   font-size: 0.95rem;
@@ -120,7 +120,7 @@ input[type="file"].input {
     padding: 0.45rem 0.95rem;
     border: 0;
     border-radius: var(--key-radius, var(--radius));
-    background: linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
+    background: grad(var(--cap-top), var(--cap-bottom));
     box-shadow: raised-shadow(2px);
     color: var(--ink);
     font-family: inherit;
@@ -164,7 +164,7 @@ input[type="file"].input {
     padding: 5px;
     border: 0;
     border-radius: var(--input-radius, var(--radius));
-    background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
+    background: grad(var(--well-top), var(--well-bottom));
     cursor: pointer;
     @include well-shadow;
 

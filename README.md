@@ -588,9 +588,9 @@ Shape and depth are CSS custom properties, so a developer can change one thing w
 .sidebar { --radius: 20px; --ring-w: 2px; }                  /* one part of the page */
 ```
 
-- **Global tokens:** `--radius` (controls), `--radius-lg` (surfaces), `--depth` (every soft shadow, 0 is none), `--travel` (how tall a key stands), `--bevel`, `--cap-drop`, `--cap-blur`, `--ring-w` and `--ring-mix` (an outline round everything), `--wall-ink`, `--wall-far-mix` and `--elev-*` (the shadow under panels).
+- **Global tokens:** `--radius` (controls), `--radius-lg` (surfaces), `--depth` (every soft shadow, 0 is none), `--fade` (every gradient, 0% is a flat color), `--travel` (how tall a key stands), `--bevel`, `--cap-drop`, `--cap-blur`, `--ring-w` and `--ring-mix` (an outline round everything), `--wall-ink`, `--wall-far-mix` and `--elev-*` (the shadow under panels).
 - **Component tokens:** each component has its own radius (`--key-radius`, `--input-radius`, `--panel-radius`, `--card-radius`, `--sheet-radius`, `--menu-radius` and more, all listed on the demo page). If you don't set one, it falls back to the global radius.
-- **Styles:** `data-style="classic | flat | soft | crisp | line | round | deep | brutal"` on `<html>` or any element sets a whole bundle of these tokens. With no `data-style` you get `flat`. Colors stay with `data-theme`, `data-palette` and `data-lit`, so every style works in light and dark and with every palette. A new style is one more entry in `scss/themes/_styles.scss`.
+- **Styles:** `data-style="basic | brutal | classic | crisp | deep | flat | line | round | soft"` on `<html>` or any element sets a whole bundle of these tokens. With no `data-style` you get `flat`. Colors stay with `data-theme`, `data-palette` and `data-lit`, so every style works in light and dark and with every palette. `basic` is plain, functional HTML: flat fills, a thin outline and a 2px radius. A new style is one more entry in `scss/themes/_styles.scss`.
 - **Theme builder:** the demo page has sliders that change the main tokens on a preview and give you the CSS to copy. The Style select in Page settings switches the whole page.
 
 <img src="docs/screenshots/theme-builder.png" alt="Sliders for radius, depth, key height and outline width beside a preview of a key, a field and a card, with the generated CSS below" width="640">
@@ -637,7 +637,7 @@ Every color and size is a CSS custom property, so you can restyle without touchi
 | `data-unit`, `data-prefix` | faders, knobs, ranges | Text around the readout |
 | `data-lit="blue"`, `style="--lit:#ff4d6d"` | any element | Highlight color for it and everything inside |
 | `data-theme="dark"` / `"light"` | any element | Force a theme; leave off to follow the system |
-| `data-style="classic"`, `"flat"`, `"soft"`, `"crisp"`, `"line"`, `"round"`, `"deep"`, `"brutal"` | any element | Shape and depth of every component; leave off for `flat` |
+| `data-style="basic"`, `"brutal"`, `"classic"`, `"crisp"`, `"deep"`, `"flat"`, `"line"`, `"round"`, `"soft"` | any element | Shape and depth of every component; leave off for `flat` |
 | `data-haptic="off"` | any element | Vibration: `on`, `off`, `tick`, `click`, `heavy`, or milliseconds like `10,30,10` |
 | `data-months`, `data-max-span`, `data-first-day` | date range | Months shown, longest range in days, week start |
 | `name="faq"` / `multiple` | accordion | Items open one at a time, or several at once |

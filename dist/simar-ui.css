@@ -1,9 +1,30 @@
 @charset "UTF-8";
+:root[data-style=basic],
+[data-style=basic] {
+  --radius: 2px;
+  --radius-lg: 2px;
+  --depth: 0;
+  --fade: 0%;
+  --travel: 0px;
+  --bevel: 0px;
+  --cap-drop: 0px;
+  --cap-blur: 0px;
+  --ring-w: 1px;
+  --ring-mix: 50%;
+  --wall-ink: 0%;
+  --wall-far-mix: 0%;
+  --elev-y: 0px;
+  --elev-blur: 0px;
+  --elev-spread: 0px;
+  --elev-a: 0%;
+}
+
 :root[data-style=classic],
 [data-style=classic] {
   --radius: 14px;
   --radius-lg: 18px;
   --depth: 1;
+  --fade: 100%;
   --travel: 2px;
   --bevel: 1px;
   --cap-drop: 3px;
@@ -23,6 +44,7 @@
   --radius: 4px;
   --radius-lg: 4px;
   --depth: 1;
+  --fade: 100%;
   --travel: 1px;
   --bevel: 1px;
   --cap-drop: 1px;
@@ -42,6 +64,7 @@
   --radius: 12px;
   --radius-lg: 20px;
   --depth: 0.7;
+  --fade: 100%;
   --travel: 0px;
   --bevel: 0px;
   --cap-drop: 4px;
@@ -61,6 +84,7 @@
   --radius: 8px;
   --radius-lg: 12px;
   --depth: 0.5;
+  --fade: 100%;
   --travel: 1px;
   --bevel: 0px;
   --cap-drop: 1px;
@@ -80,6 +104,7 @@
   --radius: 6px;
   --radius-lg: 10px;
   --depth: 0;
+  --fade: 100%;
   --travel: 0px;
   --bevel: 0px;
   --cap-drop: 0px;
@@ -99,6 +124,7 @@
   --radius: 20px;
   --radius-lg: 28px;
   --depth: 0.8;
+  --fade: 100%;
   --travel: 1px;
   --bevel: 1px;
   --cap-drop: 2px;
@@ -118,6 +144,7 @@
   --radius: 8px;
   --radius-lg: 14px;
   --depth: 1.6;
+  --fade: 100%;
   --travel: 4px;
   --bevel: 1px;
   --cap-drop: 4px;
@@ -137,6 +164,7 @@
   --radius: 0px;
   --radius-lg: 0px;
   --depth: 0;
+  --fade: 100%;
   --travel: 4px;
   --bevel: 0px;
   --cap-drop: 0px;
@@ -401,6 +429,7 @@
   --radius: 4px;
   --radius-lg: 4px;
   --depth: 1;
+  --fade: 100%;
   --travel: 1px;
   --bevel: 1px;
   --cap-drop: 1px;
@@ -2112,7 +2141,7 @@
   padding: 1rem 1.25rem 1.25rem;
   border: 0;
   border-radius: var(--panel-radius, var(--radius-lg));
-  background: linear-gradient(180deg, var(--surface-top), var(--surface-bottom));
+  background: linear-gradient(180deg, var(--surface-top), color-mix(in srgb, var(--surface-bottom) var(--fade), var(--surface-top)));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset 0 1px 0 var(--lip), inset 0 -1px 0 color-mix(in srgb, #000 min(100%, 6% * var(--shade-k) * var(--depth)), transparent), 0 var(--elev-y) var(--elev-blur) var(--elev-spread) color-mix(in srgb, #000 min(100%, var(--elev-a) * var(--shade-k) * var(--depth)), transparent);
 }
 @media (forced-colors: active) {
@@ -2388,7 +2417,7 @@ kbd.kbd,
   color: var(--ink);
   font: 0.85em/1.4 var(--font-mono);
   text-align: center;
-  background: linear-gradient(var(--cap-top), var(--cap-bottom));
+  background: linear-gradient(180deg, var(--cap-top), color-mix(in srgb, var(--cap-bottom) var(--fade), var(--cap-top)));
   box-shadow: 0 0 0 1px var(--hairline-strong), 0 2px 0 var(--wall-near), 0 3px 3px rgba(0, 0, 0, 0.12);
 }
 @media (forced-colors: active) {
@@ -2469,7 +2498,7 @@ kbd.kbd,
 .blurb {
   padding: 1.1rem 1.25rem 1.25rem;
   border-radius: var(--blurb-radius, var(--radius-lg));
-  background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
+  background: linear-gradient(180deg, var(--sheet-top), color-mix(in srgb, var(--sheet-bottom) var(--fade), var(--sheet-top)));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 var(--elev-y) var(--elev-blur) var(--elev-spread) color-mix(in srgb, #000 min(100%, var(--elev-a) * var(--shade-k) * var(--depth)), transparent);
 }
 .blurb__eyebrow {
@@ -2492,7 +2521,7 @@ kbd.kbd,
   line-height: 1.55;
 }
 .blurb--inset {
-  background: linear-gradient(var(--well-top), var(--well-bottom));
+  background: linear-gradient(180deg, var(--well-top), color-mix(in srgb, var(--well-bottom) var(--fade), var(--well-top)));
   box-shadow: inset 0 2px 4px var(--grip-dark), 0 1px 0 var(--lip);
 }
 @media (forced-colors: active) {
@@ -3246,7 +3275,7 @@ kbd.kbd,
   display: inline-flex;
   padding: 5px;
   border-radius: var(--well-radius, var(--radius));
-  background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
+  background: linear-gradient(180deg, var(--well-top), color-mix(in srgb, var(--well-bottom) var(--fade), var(--well-top)));
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
 }
 .well > input[type=radio],
@@ -3291,7 +3320,7 @@ kbd.kbd,
   -webkit-tap-highlight-color: transparent;
   --k-top: var(--cap-top);
   --k-bottom: var(--cap-bottom);
-  background: linear-gradient(180deg, var(--k-top), var(--k-bottom));
+  background: linear-gradient(180deg, var(--k-top), color-mix(in srgb, var(--k-bottom) var(--fade), var(--k-top)));
   transform: translateY(calc(var(--travel) * -1));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-light), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark), 0 var(--travel) 0 color-mix(in srgb, var(--ink) var(--wall-ink), var(--wall-near)), 0 calc(var(--travel) + 1px) 0 color-mix(in srgb, var(--wall-far) var(--wall-far-mix), transparent), 0 calc(var(--travel) + var(--cap-drop)) var(--cap-blur) color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent);
   transition: transform 240ms cubic-bezier(0.22, 0.9, 0.3, 1), box-shadow 240ms cubic-bezier(0.22, 0.9, 0.3, 1), --k-top 220ms ease-out, --k-bottom 220ms ease-out, color 220ms ease-out, text-shadow 220ms ease-out;
@@ -3718,7 +3747,7 @@ input:indeterminate + .key--box .icon--minus {
   padding: 0.6rem 0.85rem;
   border: 0;
   border-radius: var(--input-radius, var(--radius));
-  background: linear-gradient(180deg, var(--input-top), var(--input-bottom));
+  background: linear-gradient(180deg, var(--input-top), color-mix(in srgb, var(--input-bottom) var(--fade), var(--input-top)));
   color: var(--ink);
   font-family: inherit;
   font-size: 0.95rem;
@@ -3816,7 +3845,7 @@ input[type=file].input::file-selector-button {
   padding: 0.45rem 0.95rem;
   border: 0;
   border-radius: var(--key-radius, var(--radius));
-  background: linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
+  background: linear-gradient(180deg, var(--cap-top), color-mix(in srgb, var(--cap-bottom) var(--fade), var(--cap-top)));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-light), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark), 0 2px 0 color-mix(in srgb, var(--ink) var(--wall-ink), var(--wall-near)), 0 calc(2px + 1px) 0 color-mix(in srgb, var(--wall-far) var(--wall-far-mix), transparent), 0 calc(2px + var(--cap-drop)) var(--cap-blur) color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent);
   color: var(--ink);
   font-family: inherit;
@@ -3854,7 +3883,7 @@ input[type=file].input:disabled::file-selector-button {
   padding: 5px;
   border: 0;
   border-radius: var(--input-radius, var(--radius));
-  background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
+  background: linear-gradient(180deg, var(--well-top), color-mix(in srgb, var(--well-bottom) var(--fade), var(--well-top)));
   cursor: pointer;
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
 }
@@ -3997,7 +4026,7 @@ input[type=file].input:disabled::file-selector-button {
   border: 0;
   border-radius: var(--menu-radius, var(--radius-lg));
   color: var(--ink);
-  background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
+  background: linear-gradient(180deg, var(--sheet-top), color-mix(in srgb, var(--sheet-bottom) var(--fade), var(--sheet-top)));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
   position: fixed;
   inset: auto;
@@ -4182,7 +4211,7 @@ input[type=file].input:disabled::file-selector-button {
   --track-shadow: inset 0 2px 3px color-mix(in srgb, #000 min(100%, 20% * var(--shade-k) * var(--depth)), transparent), 0 1px 0 var(--lip);
   --thumb-bg:
     repeating-linear-gradient(90deg, var(--grip-dark) 0 1px, var(--grip-light) 1px 2px, transparent 2px 4px) center / 14px 20px no-repeat,
-    linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
+    grad(var(--cap-top), var(--cap-bottom));
   --thumb-up: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-light), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark), 0 var(--lift) 0 color-mix(in srgb, var(--ink) var(--wall-ink), var(--wall-near)), 0 calc(var(--lift) + 1px) 0 color-mix(in srgb, var(--wall-far) var(--wall-far-mix), transparent), 0 calc(var(--lift) + var(--cap-drop)) var(--cap-blur) color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent);
   --thumb-down: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-dark), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-light), inset 0 2px 6px color-mix(in srgb, #000 min(100%, 10% * var(--shade-k) * var(--depth)), transparent);
   appearance: none;
@@ -4393,7 +4422,7 @@ input[type=file].input:disabled::file-selector-button {
   display: grid;
   padding: 6px;
   border-radius: 50%;
-  background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
+  background: linear-gradient(180deg, var(--well-top), color-mix(in srgb, var(--well-bottom) var(--fade), var(--well-top)));
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), inset 0 3px 5px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k) * var(--depth)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
 }
 .knob.is-enhanced > input:focus-visible ~ .knob__dial .knob__well {
@@ -4533,7 +4562,7 @@ input[type=file].input:disabled::file-selector-button {
   border: 0;
   border-radius: var(--sheet-radius, var(--radius-lg));
   color: var(--ink);
-  background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
+  background: linear-gradient(180deg, var(--sheet-top), color-mix(in srgb, var(--sheet-bottom) var(--fade), var(--sheet-top)));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 28px 60px -14px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
   opacity: 0;
   transform: translateY(10px) scale(0.98);
@@ -4757,7 +4786,7 @@ input[type=file].input:disabled::file-selector-button {
   padding: 1rem 1.25rem;
   border: 1px solid color-mix(in srgb, var(--ink) var(--ring-mix), transparent);
   border-radius: 0 var(--panel-radius, var(--radius-lg)) var(--panel-radius, var(--radius-lg)) var(--panel-radius, var(--radius-lg));
-  background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
+  background: linear-gradient(180deg, var(--sheet-top), color-mix(in srgb, var(--sheet-bottom) var(--fade), var(--sheet-top)));
 }
 @media (forced-colors: active) {
   .tabs.is-enhanced .tabs__panel {
@@ -4780,7 +4809,7 @@ input[type=file].input:disabled::file-selector-button {
   border: 0;
   border-radius: var(--menu-radius, var(--radius-lg));
   color: var(--ink);
-  background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
+  background: linear-gradient(180deg, var(--sheet-top), color-mix(in srgb, var(--sheet-bottom) var(--fade), var(--sheet-top)));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
   position: fixed;
   inset: auto;
@@ -5035,7 +5064,7 @@ input[type=file].input:disabled::file-selector-button {
   max-width: 100%;
   overflow-x: auto;
   border-radius: var(--table-radius, var(--radius-lg));
-  background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
+  background: linear-gradient(180deg, var(--sheet-top), color-mix(in srgb, var(--sheet-bottom) var(--fade), var(--sheet-top)));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline);
 }
 .table-wrap:focus-visible {
@@ -5273,7 +5302,7 @@ video.media {
   min-width: 0;
   overflow: hidden;
   border-radius: var(--card-radius, var(--radius-lg));
-  background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
+  background: linear-gradient(180deg, var(--sheet-top), color-mix(in srgb, var(--sheet-bottom) var(--fade), var(--sheet-top)));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 var(--elev-y) var(--elev-blur) var(--elev-spread) color-mix(in srgb, #000 min(100%, var(--elev-a) * var(--shade-k) * var(--depth)), transparent);
 }
 @media (forced-colors: active) {
@@ -5987,7 +6016,7 @@ video.media {
   border: 0;
   border-radius: var(--sheet-radius, var(--radius-lg));
   color: var(--ink);
-  background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
+  background: linear-gradient(180deg, var(--sheet-top), color-mix(in srgb, var(--sheet-bottom) var(--fade), var(--sheet-top)));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 24px 50px -12px color-mix(in srgb, #000 min(100%, 35% * var(--shade-k) * var(--depth)), transparent);
   opacity: 0;
   transform: translateY(-4px);
@@ -6066,7 +6095,7 @@ video.media {
   transition: transform 240ms cubic-bezier(0.22, 0.9, 0.3, 1), box-shadow 240ms cubic-bezier(0.22, 0.9, 0.3, 1);
 }
 .day:not(.is-start):not(.is-end):hover:not(:disabled) {
-  background: linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
+  background: linear-gradient(180deg, var(--cap-top), color-mix(in srgb, var(--cap-bottom) var(--fade), var(--cap-top)));
   transform: translateY(-2px);
   box-shadow: inset 1px 1px 0 var(--cap-edge-light), inset -1px -1px 0 var(--cap-edge-dark), 0 2px 0 var(--wall-near), 0 3px 4px color-mix(in srgb, #000 min(100%, 14% * var(--shade-k) * var(--depth)), transparent);
 }

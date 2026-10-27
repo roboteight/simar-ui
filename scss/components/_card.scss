@@ -23,7 +23,7 @@
   min-width: 0;
   overflow: hidden;
   border-radius: var(--card-radius, var(--radius-lg));
-  background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
+  background: grad(var(--sheet-top), var(--sheet-bottom));
   box-shadow: ring(), 0 0 0 1px var(--hairline), elev();
 
   @include forced-colors { border: 1px solid CanvasText; box-shadow: none; }

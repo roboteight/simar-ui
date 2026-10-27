@@ -7,6 +7,7 @@
 // To add one, add a map here with the same keys. What each key means:
 //   radius, radius-lg   controls (keys, inputs, wells) and surfaces (panels, cards, dialogs, tables)
 //   depth               strength of every soft shadow: 0 is none, 1 is normal
+//   fade                strength of every gradient: 100% is the full gradient, 0% a flat color
 //   travel              how far a key stands above its well (its side wall)
 //   bevel               the light and dark rim on a cap
 //   cap-drop, cap-blur  the soft shadow under a cap
@@ -15,36 +16,40 @@
 //   wall-far-mix        a second, darker wall line
 //   elev-*              the shadow under panels, cards and blurbs (y offset, blur, spread, strength)
 $styles: (
+  // Plain, functional HTML: flat fills, a thin visible outline, a small radius, nothing raised and no shadow.
+  "basic": (radius: 2px, radius-lg: 2px, depth: 0, fade: 0%, travel: 0px, bevel: 0px, cap-drop: 0px, cap-blur: 0px,
+    ring-w: 1px, ring-mix: 50%, wall-ink: 0%, wall-far-mix: 0%,
+    elev-y: 0px, elev-blur: 0px, elev-spread: 0px, elev-a: 0%),
   // The original look: big radii, tall walls, soft contact shadows.
-  "classic": (radius: 14px, radius-lg: 18px, depth: 1, travel: 2px, bevel: 1px, cap-drop: 3px, cap-blur: 6px,
+  "classic": (radius: 14px, radius-lg: 18px, depth: 1, fade: 100%, travel: 2px, bevel: 1px, cap-drop: 3px, cap-blur: 6px,
     ring-w: 0px, ring-mix: 15%, wall-ink: 0%, wall-far-mix: 100%,
     elev-y: 6px, elev-blur: 14px, elev-spread: -8px, elev-a: 30%),
   // Square-ish and low: a 4px radius and a key that stands 1px.
-  "flat": (radius: 4px, radius-lg: 4px, depth: 1, travel: 1px, bevel: 1px, cap-drop: 1px, cap-blur: 2px,
+  "flat": (radius: 4px, radius-lg: 4px, depth: 1, fade: 100%, travel: 1px, bevel: 1px, cap-drop: 1px, cap-blur: 2px,
     ring-w: 0px, ring-mix: 15%, wall-ink: 0%, wall-far-mix: 0%,
     elev-y: 1px, elev-blur: 2px, elev-spread: 0px, elev-a: 8%),
   // Rounded, with no walls: keys float on a wide, diffuse shadow.
-  "soft": (radius: 12px, radius-lg: 20px, depth: 0.7, travel: 0px, bevel: 0px, cap-drop: 4px, cap-blur: 12px,
+  "soft": (radius: 12px, radius-lg: 20px, depth: 0.7, fade: 100%, travel: 0px, bevel: 0px, cap-drop: 4px, cap-blur: 12px,
     ring-w: 0px, ring-mix: 15%, wall-ink: 0%, wall-far-mix: 0%,
     elev-y: 8px, elev-blur: 24px, elev-spread: -4px, elev-a: 14%),
   // A modern app look: medium radius, a thin outline, hardly any shadow.
-  "crisp": (radius: 8px, radius-lg: 12px, depth: 0.5, travel: 1px, bevel: 0px, cap-drop: 1px, cap-blur: 2px,
+  "crisp": (radius: 8px, radius-lg: 12px, depth: 0.5, fade: 100%, travel: 1px, bevel: 0px, cap-drop: 1px, cap-blur: 2px,
     ring-w: 1px, ring-mix: 22%, wall-ink: 0%, wall-far-mix: 0%,
     elev-y: 1px, elev-blur: 3px, elev-spread: 0px, elev-a: 10%),
   // Outlines only: no shadows at all, a 1.5px line round every part.
-  "line": (radius: 6px, radius-lg: 10px, depth: 0, travel: 0px, bevel: 0px, cap-drop: 0px, cap-blur: 0px,
+  "line": (radius: 6px, radius-lg: 10px, depth: 0, fade: 100%, travel: 0px, bevel: 0px, cap-drop: 0px, cap-blur: 0px,
     ring-w: 1.5px, ring-mix: 60%, wall-ink: 0%, wall-far-mix: 0%,
     elev-y: 0px, elev-blur: 0px, elev-spread: 0px, elev-a: 0%),
   // Very round: keys are nearly pills, surfaces have generous corners.
-  "round": (radius: 20px, radius-lg: 28px, depth: 0.8, travel: 1px, bevel: 1px, cap-drop: 2px, cap-blur: 5px,
+  "round": (radius: 20px, radius-lg: 28px, depth: 0.8, fade: 100%, travel: 1px, bevel: 1px, cap-drop: 2px, cap-blur: 5px,
     ring-w: 0px, ring-mix: 15%, wall-ink: 0%, wall-far-mix: 0%,
     elev-y: 4px, elev-blur: 12px, elev-spread: -2px, elev-a: 12%),
   // Exaggerated and tactile: keys stand tall on two wall lines.
-  "deep": (radius: 8px, radius-lg: 14px, depth: 1.6, travel: 4px, bevel: 1px, cap-drop: 4px, cap-blur: 10px,
+  "deep": (radius: 8px, radius-lg: 14px, depth: 1.6, fade: 100%, travel: 4px, bevel: 1px, cap-drop: 4px, cap-blur: 10px,
     ring-w: 0px, ring-mix: 15%, wall-ink: 0%, wall-far-mix: 100%,
     elev-y: 10px, elev-blur: 22px, elev-spread: -6px, elev-a: 22%),
   // Square corners, thick ink outlines and hard, dark walls.
-  "brutal": (radius: 0px, radius-lg: 0px, depth: 0, travel: 4px, bevel: 0px, cap-drop: 0px, cap-blur: 0px,
+  "brutal": (radius: 0px, radius-lg: 0px, depth: 0, fade: 100%, travel: 4px, bevel: 0px, cap-drop: 0px, cap-blur: 0px,
     ring-w: 2px, ring-mix: 100%, wall-ink: 100%, wall-far-mix: 0%,
     elev-y: 0px, elev-blur: 0px, elev-spread: 0px, elev-a: 0%),
 );

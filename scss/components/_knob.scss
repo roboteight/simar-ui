@@ -45,7 +45,7 @@
     display: grid;
     padding: 6px;
     border-radius: 50%;
-    background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
+    background: grad(var(--well-top), var(--well-bottom));
     @include well-shadow(3px, 5px, 0.14);
 
     .knob.is-enhanced > input:focus-visible ~ .knob__dial & { @include focus-ring(4px); }
