@@ -3,7 +3,7 @@
 //
 // Keep VERSION in step with package.json (a test checks). A new version caches the files again and
 // removes the old cache; the page is told, and offers a reload.
-const VERSION = '1.2.0';
+const VERSION = '1.2.1';
 const CACHE = `simar-ui-${VERSION}`;
 const FILES = [
   './',
