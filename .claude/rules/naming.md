@@ -35,7 +35,7 @@ thing everywhere and a reader can guess the next name.
 | input / field / form | text-like controls, a labelled control with its hint and error, and the form |
 | hairline, lip, wall, shade, tint | edges, light rims, extrusion sides, and the shadow and highlight mixers |
 | picker, suggest, menu, tabs, tooltip | list-style components; `suggest` is autocomplete suggestions |
-| quote, blurb, media, card, prose, lead, display | content blocks and type styles; `media` is a figure holding an image, video or audio; `card` is an article with media, body and footer |
+| quote, blurb, media, card, timeline, prose, lead, display | content blocks and type styles; `media` is a figure holding an image, video or audio; `card` is an article with media, body and footer; `timeline` is an ordered list of events or steps on a rail |
 | container, row, col, d-*, gap-* | layout, named after Bootstrap's grid |
 
 ## Known to tidy (open items)

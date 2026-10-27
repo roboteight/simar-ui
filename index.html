@@ -100,6 +100,7 @@
         <li><a href="#blurbs">Text blurbs</a></li>
         <li><a href="#media">Media</a></li>
         <li><a href="#cards">Card</a></li>
+        <li><a href="#timelines">Timeline</a></li>
         <li><a href="#layout">Layout and breakpoints</a></li>
         <li><a href="#code">Code</a></li>
         </ul>
@@ -654,6 +655,88 @@
               <p class="card__text">A few words.</p>
             </div>
           </article>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="timelines">
+      <h3 id="timelines">Timeline</h3>
+      <p class="note">Events or steps in order, as a native <code>&lt;ol&gt;</code>, so a screen reader says how many there are and which one it is on. Each entry has a dot on a thin rail, in the style of the depth rail on the case studies at chrissimari.com. The state is in the shape of the dot, not only its color: a filled dot is done, a glowing ring (<code>aria-current="step"</code>) is now, and a hollow ring (<code>timeline__item--upcoming</code>) is still to come. It is vertical by default; add <code>timeline--horizontal</code> to run it left to right from the md breakpoint up. On a phone it stacks, so it never needs sideways scrolling.</p>
+
+      <fieldset class="panel">
+        <legend>Vertical timeline</legend>
+        <ol class="timeline" aria-label="Halloween night in Haddonfield">
+          <li class="timeline__item">
+            <time class="timeline__time" datetime="1978-10-31T15:00">3:00 pm</time>
+            <h4 class="timeline__title">Laurie Strode drops off a key</h4>
+            <p class="timeline__text">A walk past the old house on her way home from school.</p>
+          </li>
+          <li class="timeline__item">
+            <time class="timeline__time" datetime="1978-10-31T19:30">7:30 pm</time>
+            <h4 class="timeline__title">Babysitting begins</h4>
+            <p class="timeline__text">Tommy asks for a scary story. She would rather he watched the movie.</p>
+          </li>
+          <li class="timeline__item">
+            <time class="timeline__time" datetime="1978-10-31T21:15">9:15 pm</time>
+            <h4 class="timeline__title">Someone is outside</h4>
+            <p class="timeline__text">The porch light flickers, and a shape stands in the hedge.</p>
+          </li>
+        </ol>
+        <script type="text/plain" data-example="HTML">
+          <ol class="timeline" aria-label="Halloween night">
+            <li class="timeline__item">
+              <time class="timeline__time" datetime="1978-10-31T15:00">3:00 pm</time>
+              <h4 class="timeline__title">Laurie Strode drops off a key</h4>
+              <p class="timeline__text">A walk past the old house.</p>
+            </li>
+            <li class="timeline__item">…</li>
+          </ol>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Horizontal timeline, with progress</legend>
+        <ol class="timeline timeline--horizontal" aria-label="Delivery of order #1045">
+          <li class="timeline__item">
+            <time class="timeline__time" datetime="2026-10-24">24 Oct</time>
+            <h4 class="timeline__title">Ordered <span class="visually-hidden">(completed)</span></h4>
+            <p class="timeline__text">Debbie Harry's tour poster.</p>
+          </li>
+          <li class="timeline__item">
+            <time class="timeline__time" datetime="2026-10-25">25 Oct</time>
+            <h4 class="timeline__title">Packed <span class="visually-hidden">(completed)</span></h4>
+            <p class="timeline__text">Rolled in a tube.</p>
+          </li>
+          <li class="timeline__item" aria-current="step">
+            <time class="timeline__time" datetime="2026-10-27">27 Oct</time>
+            <h4 class="timeline__title">Shipped <span class="visually-hidden">(current step)</span></h4>
+            <p class="timeline__text">On a truck, out for delivery.</p>
+          </li>
+          <li class="timeline__item timeline__item--upcoming">
+            <time class="timeline__time" datetime="2026-10-29">29 Oct</time>
+            <h4 class="timeline__title">Delivered <span class="visually-hidden">(upcoming)</span></h4>
+            <p class="timeline__text">Expected by the end of the day.</p>
+          </li>
+        </ol>
+        <script type="text/plain" data-example="HTML">
+          <ol class="timeline timeline--horizontal" aria-label="Delivery">
+            <li class="timeline__item">
+              <time class="timeline__time" datetime="2026-10-24">24 Oct</time>
+              <h4 class="timeline__title">Ordered <span class="visually-hidden">(completed)</span></h4>
+            </li>
+            <li class="timeline__item" aria-current="step">
+              <time class="timeline__time" datetime="2026-10-27">27 Oct</time>
+              <h4 class="timeline__title">Shipped <span class="visually-hidden">(current step)</span></h4>
+            </li>
+            <li class="timeline__item timeline__item--upcoming">
+              <time class="timeline__time" datetime="2026-10-29">29 Oct</time>
+              <h4 class="timeline__title">Delivered <span class="visually-hidden">(upcoming)</span></h4>
+            </li>
+          </ol>
+        </script>
+        <script type="text/plain" data-example="Theme">
+          /* dot size, rail width and the space between entries */
+          .timeline { --timeline-dot: 1.2rem; --timeline-rail: 3px; --timeline-gap: 2.5rem; }
         </script>
       </fieldset>
     </section>

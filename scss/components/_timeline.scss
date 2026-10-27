@@ -1,0 +1,133 @@
+@use "../abstracts" as *;
+
+// Timeline: events or steps in order, as a native <ol> (the order is real, so a screen reader says "list,
+// 4 items" and counts). Each entry has a dot on a thin rail, in the style of the depth rail on the case studies
+// at chrissimari.com. Vertical by default; timeline--horizontal runs left to right from the md breakpoint and
+// stacks vertically on a phone, so it never needs sideways scrolling.
+//
+//   <ol class="timeline" aria-label="Delivery">
+//     <li class="timeline__item">                                   done: a filled dot
+//       <time class="timeline__time" datetime="2026-10-27">27 Oct</time>
+//       <h4 class="timeline__title">Packed</h4>
+//       <p class="timeline__text">Your order left the shelf.</p>
+//     </li>
+//     <li class="timeline__item" aria-current="step">…</li>           now: a glowing ring
+//     <li class="timeline__item timeline__item--upcoming">…</li>     later: a hollow ring
+//   </ol>
+//
+// The state is not left to color: the dot's shape differs (filled, glowing ring, hollow ring). For a progress
+// timeline also add a visually hidden word to each entry ("Completed", "Current step", "Upcoming") with
+// <span class="visually-hidden">. Tokens: --timeline-dot (size), --timeline-rail (line width), --timeline-gap
+// (space between entries).
+.timeline {
+  --_dot: var(--timeline-dot, 0.95rem);
+  --_rail: var(--timeline-rail, 2px);
+  --_gap: var(--timeline-gap, 1.75rem);
+  --_rail-color: color-mix(in srgb, var(--ink) 28%, transparent);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    position: relative;
+    padding-inline-start: calc(var(--_dot) + 1rem);
+    padding-bottom: var(--_gap);
+
+    // The dot.
+    &::before {
+      content: "";
+      position: absolute;
+      inset-block-start: 0.2rem;
+      inset-inline-start: 0;
+      box-sizing: border-box;
+      width: var(--_dot);
+      height: var(--_dot);
+      border-radius: 50%;
+      background: var(--lit-ink);
+      box-shadow: 0 0 0 3px var(--sheet-top); // a halo that lifts the dot off the rail
+      z-index: 1;
+    }
+
+    // The rail from this dot to the next one: lit once this step is done.
+    &::after {
+      content: "";
+      position: absolute;
+      inset-block: calc(0.2rem + var(--_dot)) 0;
+      inset-inline-start: calc((var(--_dot) - var(--_rail)) / 2);
+      width: var(--_rail);
+      background: var(--lit-ink);
+    }
+
+    &:last-child { padding-bottom: 0; }
+    &:last-child::after { display: none; }
+
+    // Now: a ring with a glow, and the rail below it not yet lit.
+    &[aria-current="step"]::before {
+      background: var(--sheet-top);
+      border: 3px solid var(--lit-ink);
+      box-shadow: 0 0 0 3px var(--sheet-top), 0 0 0 6px var(--lit-glow);
+    }
+    &[aria-current="step"]::after { background: var(--_rail-color); }
+
+    // Later: a hollow ring.
+    &--upcoming::before {
+      background: var(--sheet-top);
+      border: 2px solid var(--ink-soft);
+    }
+    &--upcoming::after { background: var(--_rail-color); }
+  }
+
+  &__time {
+    display: block;
+    margin-bottom: 0.15rem;
+    @include label-caps(0.72rem);
+  }
+
+  &__title {
+    margin: 0 0 0.25rem;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+
+  &__text {
+    margin: 0;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+
+  // Left to right from md up; below that it is the vertical timeline.
+  &--horizontal {
+    @media (min-width: 48rem) {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(9rem, 1fr);
+      gap: 0;
+
+      .timeline__item {
+        padding-inline-start: 0;
+        padding-inline-end: 1rem;
+        padding-block-start: calc(var(--_dot) + 1rem);
+        padding-bottom: 0;
+
+        &::before { inset-block-start: 0; }
+
+        // The rail runs along the top, to the next dot.
+        &::after {
+          inset-block: calc((var(--_dot) - var(--_rail)) / 2) auto;
+          inset-inline: calc(var(--_dot)) 0;
+          width: auto;
+          height: var(--_rail);
+        }
+        &:last-child::after { display: none; }
+      }
+    }
+  }
+
+  @include forced-colors {
+    &__item::before { background: CanvasText; box-shadow: none; }
+    &__item::after { background: CanvasText; }
+    &__item[aria-current="step"]::before { background: Highlight; border-color: CanvasText; }
+    &__item--upcoming::before { background: Canvas; border-color: CanvasText; }
+  }
+}

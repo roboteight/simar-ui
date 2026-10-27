@@ -80,6 +80,7 @@ await shoot('cards', [await panel('Cards')]);
 await shoot('button-group', [await panel('Button group')]);
 await shoot('theme-builder', [await panel('Theme builder')]);
 await shoot('charts', [await panel('Line chart'), await panel('Bar chart'), await panel('Donut chart')]);
+await shoot('timeline', [await panel('Vertical timeline'), await panel('Horizontal timeline, with progress')]);
 await page.focus('#ac-country');
 await page.keyboard.type('un');
 await wait(300);

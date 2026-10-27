@@ -67,7 +67,7 @@ Open `index.html` for the live demo, with a contents list that floats on the lef
 
 ## What's inside
 
-**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, confirmation dialog, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Charts:** line, bar, pie and donut (optional add-on). **Content:** typography, quotes, text blurbs, media, cards, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
+**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, confirmation dialog, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Charts:** line, bar, pie and donut (optional add-on). **Content:** typography, quotes, text blurbs, media, cards, timeline, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
 
 The demo page and its contents list follow Bootstrap's docs order: Getting started, Customize, Content, Forms, then Components, with similar items together.
 
@@ -494,6 +494,29 @@ A chart is a figure whose data is a native `<table>`. The table is the accessibl
 </figure>
 ```
 
+#### Timeline
+
+Events or steps in order, as a native `<ol>`, so a screen reader says how many there are. Each entry has a dot on a thin rail, in the style of the depth rail on the case studies at chrissimari.com. The state is in the shape of the dot, not only its color: a filled dot is done, a glowing ring (`aria-current="step"`) is now, and a hollow ring (`timeline__item--upcoming`) is still to come. It is vertical by default; `timeline--horizontal` runs it left to right from the md breakpoint up and stacks on a phone, so it never needs sideways scrolling. Tokens: `--timeline-dot`, `--timeline-rail`, `--timeline-gap`.
+
+<img src="docs/screenshots/timeline.png" alt="A vertical timeline of three evenings events, and a horizontal delivery timeline with two done steps, a current one and an upcoming one" width="640">
+
+```html
+<ol class="timeline timeline--horizontal" aria-label="Delivery">
+  <li class="timeline__item">
+    <time class="timeline__time" datetime="2026-10-24">24 Oct</time>
+    <h4 class="timeline__title">Ordered <span class="visually-hidden">(completed)</span></h4>
+  </li>
+  <li class="timeline__item" aria-current="step">
+    <time class="timeline__time" datetime="2026-10-27">27 Oct</time>
+    <h4 class="timeline__title">Shipped <span class="visually-hidden">(current step)</span></h4>
+  </li>
+  <li class="timeline__item timeline__item--upcoming">
+    <time class="timeline__time" datetime="2026-10-29">29 Oct</time>
+    <h4 class="timeline__title">Delivered <span class="visually-hidden">(upcoming)</span></h4>
+  </li>
+</ol>
+```
+
 #### Layout and breakpoints
 
 Responsive behavior borrowed from [Bootstrap](https://getbootstrap.com/docs/5.3/layout/grid/): a `container`, a 12-column `row` of `col-*` items, and `d-*` display helpers that change at five mobile-first breakpoints (`sm` 36rem, `md` 48rem, `lg` 62rem, `xl` 75rem, `xxl` 87.5rem, in `rem` so they follow the reader's text size). The class names will be familiar; the code is our own, and uses CSS grid.
@@ -682,7 +705,7 @@ index.html  the demo and documentation page
 
 ## Roadmap
 
-Next: timeline (horizontal and vertical), floating button, side menu, more chart types, suggested flows, tags and chips, avatar, list group, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
+Next: floating button, side menu, more chart types, suggested flows, tags and chips, avatar, list group, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
 
 ## Contributing
 

@@ -991,6 +991,57 @@ plain.svg === 0 && plain.tables ? pass('with JavaScript off each chart is just i
 await open(320);
 (await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('the charts fit a 320px screen without sideways scrolling') : fail('a chart overflows at 320px');
 
+// ---- timeline -------------------------------------------------------------------------------------
+console.log('\nTimeline');
+await open(1280);
+const tlInfo = await page.evaluate(() => {
+  const lists = [...document.querySelectorAll('section[aria-labelledby="timelines"] ol.timeline')];
+  const info = lists.map((ol) => {
+    const items = [...ol.querySelectorAll(':scope > li.timeline__item')];
+    return {
+      horizontal: ol.classList.contains('timeline--horizontal'),
+      named: !!ol.getAttribute('aria-label'),
+      n: items.length,
+      times: items.every((li) => li.querySelector('time[datetime]')),
+      headings: items.every((li) => li.querySelector('.timeline__title')),
+      current: ol.querySelectorAll('[aria-current="step"]').length,
+      tops: items.map((li) => Math.round(li.getBoundingClientRect().top)),
+      lefts: items.map((li) => Math.round(li.getBoundingClientRect().left)),
+      status: items.every((li) => !ol.classList.contains('timeline--horizontal') || li.querySelector('.visually-hidden')),
+    };
+  });
+  return info;
+});
+const [vt, ht] = tlInfo;
+vt && ht && vt.named && ht.named && vt.times && ht.times && vt.headings && ht.headings ? pass('both timelines are named ordered lists, each entry with a time element and a heading') : fail(`timeline markup: ${JSON.stringify(tlInfo)}`);
+ht.current === 1 && ht.status ? pass('the progress timeline has exactly one current step and a hidden word for each state') : fail(`timeline states: ${JSON.stringify(ht)}`);
+new Set(ht.tops).size === 1 && ht.lefts.every((l, i, a) => i === 0 || l > a[i - 1]) ? pass('at 1280px the horizontal timeline runs left to right on one row') : fail(`timeline horizontal layout: ${JSON.stringify(ht)}`);
+vt.tops.every((t, i, a) => i === 0 || t > a[i - 1]) && new Set(vt.lefts).size === 1 ? pass('the vertical timeline stacks its entries down one column') : fail(`timeline vertical layout: ${JSON.stringify(vt)}`);
+const dotsOk = [];
+const tlLum = (c) => { const [r, g, b] = c.map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+const tlRatio = (a, b) => { const [x, y] = [tlLum(a), tlLum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+for (const theme of ['light', 'dark']) {
+  await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: theme }]);
+  await page.reload();
+  await wait(500);
+  const dots = await page.evaluate(() => {
+    const ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true }); ctx.canvas.width = ctx.canvas.height = 1;
+    const rgb = (css) => { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = css; ctx.fillRect(0, 0, 1, 1); return [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3); };
+    const ol = document.querySelectorAll('section[aria-labelledby="timelines"] ol.timeline')[1];
+    const [done, , now, later] = [...ol.children];
+    const panel = rgb(getComputedStyle(ol).getPropertyValue('--sheet-top').trim() || getComputedStyle(document.body).backgroundColor);
+    const bg = rgb(getComputedStyle(ol.closest('.panel')).backgroundColor);
+    const edge = (li, prop) => rgb(getComputedStyle(li, '::before')[prop]);
+    return { panel: bg, done: edge(done, 'backgroundColor'), now: edge(now, 'borderTopColor'), later: edge(later, 'borderTopColor') };
+  });
+  for (const k of ['done', 'now', 'later']) if (tlRatio(dots[k], dots.panel) < 3) dotsOk.push(`${theme} ${k} ${tlRatio(dots[k], dots.panel).toFixed(2)}`);
+}
+dotsOk.length === 0 ? pass('the done, current and upcoming dots are each at least 3:1 against the panel in light and dark') : fail(`timeline dots under 3:1: ${dotsOk.join(', ')}`);
+await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }]);
+await open(375);
+const phone = await page.evaluate(() => { const ol = document.querySelectorAll('section[aria-labelledby="timelines"] ol.timeline')[1]; const tops = [...ol.children].map((li) => Math.round(li.getBoundingClientRect().top)); return { stacked: tops.every((t, i, a) => i === 0 || t > a[i - 1]), page: document.documentElement.scrollWidth <= innerWidth + 1 }; });
+phone.stacked && phone.page ? pass('on a phone the horizontal timeline stacks, with no sideways scrolling') : fail(`timeline at 375px: ${JSON.stringify(phone)}`);
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);
