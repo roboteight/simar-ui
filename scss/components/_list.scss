@@ -1,0 +1,83 @@
+@use "../abstracts" as *;
+
+// List: native <ul>, <ol> and <dl>, styled. Bare lists are left to the browser, so add .list. The markers
+// take the theme's highlight color, and nested lists indent.
+//
+//   <ul class="list"><li>Joey Ramone</li><li>Dee Dee Ramone</li></ul>
+//   <ol class="list"><li>Soundcheck</li><li>Doors</li></ol>
+//   <dl class="list"><dt>Band</dt><dd>Ramones</dd></dl>
+//
+// Variants: list--plain (no markers: add role="list" too, because Safari with VoiceOver stops calling a
+// list a list once its markers are gone), list--divided (a line between items, like a list group),
+// list--stacked (a <dl> with each detail underneath its term; by default they sit side by side).
+// Tokens: --list-gap (space between items), --list-marker (marker color).
+.list {
+  --_gap: var(--list-gap, 0.4rem);
+  margin: 0 0 1rem;
+  padding-inline-start: 1.4rem;
+  color: var(--ink);
+  line-height: 1.6;
+
+  > li { padding-inline-start: 0.25rem; }
+  > li + li { margin-top: var(--_gap); }
+  > li::marker { color: var(--list-marker, var(--lit-ink)); font-weight: 700; }
+
+  // Lists inside a list.
+  .list { margin: var(--_gap) 0 0; }
+  ul.list ul.list > li::marker, ul.list ol.list > li::marker { font-weight: 600; }
+
+  &--plain,
+  &--divided {
+    padding-inline-start: 0;
+    list-style: none;
+
+    > li { padding-inline-start: 0; }
+  }
+
+  // A line between items.
+  &--divided > li,
+  &--divided > div {
+    padding: 0.65rem 0;
+    margin: 0;
+    border-top: 1px solid var(--hairline-strong);
+
+    &:first-child { border-top: 0; padding-top: 0; }
+    &:last-child { padding-bottom: 0; }
+
+    @include forced-colors { border-top-color: CanvasText; }
+  }
+
+  // A description list: each term sits beside its detail (list--stacked puts the detail underneath), and
+  // on a phone they stack.
+  dt { font-weight: 600; }
+  dd { margin: 0; }
+
+  &:is(dl) {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--_gap) 1.5rem;
+    padding-inline-start: 0;
+
+    dt { color: var(--ink-soft); }
+    dd { color: var(--ink); }
+
+    @media (max-width: 35.99rem) {
+      grid-template-columns: 1fr;
+      gap: 0;
+      dd { margin-bottom: var(--_gap); }
+    }
+  }
+
+  // The term in bold with its detail underneath in softer ink.
+  &--stacked:is(dl) {
+    display: block;
+
+    dt { color: var(--ink); }
+    dd { margin: 0 0 var(--_gap); color: var(--ink-soft); }
+    dd:last-child { margin-bottom: 0; }
+  }
+
+  // A divided description list wraps each pair in a <div>, which is a row of its own.
+  &--divided:is(dl) > div { display: grid; grid-template-columns: max-content 1fr; gap: 0 1.5rem; }
+  &--divided:is(dl) > div > dd { margin: 0; }
+}

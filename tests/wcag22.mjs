@@ -1088,6 +1088,26 @@ await page.emulateMediaFeatures([{ name: 'forced-colors', value: 'active' }]);
 (await page.$eval('section[aria-labelledby="charts"] .note a', (n) => getComputedStyle(n).textDecorationLine)) === 'underline' ? pass('in forced-colors mode links are always underlined') : fail('links are not underlined in forced-colors mode');
 await page.emulateMediaFeatures([{ name: 'forced-colors', value: 'none' }]);
 
+// ---- lists ----------------------------------------------------------------------------------------
+console.log('\nLists');
+await open(1280);
+const ls = await page.evaluate(() => {
+  const sec = document.querySelector('section[aria-labelledby="lists"]');
+  const dl = sec.querySelector('dl.list:not(.list--stacked)'), st = sec.querySelector('dl.list--stacked');
+  const dt = dl.querySelector('dt').getBoundingClientRect(), dd = dl.querySelector('dd').getBoundingClientRect();
+  const sdt = st.querySelector('dt').getBoundingClientRect(), sdd = st.querySelector('dd').getBoundingClientRect();
+  const plain = sec.querySelector('.list--divided');
+  return {
+    inline: Math.abs(dt.top - dd.top) < 4 && dd.left > dt.right,
+    stacked: sdd.top >= sdt.bottom - 1 && Math.abs(sdd.left - sdt.left) < 2,
+    divided: getComputedStyle(plain.querySelectorAll('li')[1]).borderTopWidth === '1px' && plain.getAttribute('role') === 'list' && getComputedStyle(plain).listStyleType === 'none',
+    marker: getComputedStyle(sec.querySelector('ul.list > li'), '::marker').color !== getComputedStyle(sec.querySelector('ul.list > li')).color,
+    items: ['ul', 'ol', 'dl'].every((t) => sec.querySelector(`${t}.list`)),
+  };
+});
+ls.items && ls.inline && ls.stacked ? pass('a description list puts each term beside its detail, and list--stacked puts the detail underneath') : fail(`list layout: ${JSON.stringify(ls)}`);
+ls.divided && ls.marker ? pass('a divided list draws a line between items and keeps role="list"; the markers use the theme color') : fail(`list parts: ${JSON.stringify(ls)}`);
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

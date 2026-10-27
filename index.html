@@ -98,6 +98,7 @@
         <li><a href="#cards">Card</a></li>
         <li><a href="#code">Code</a></li>
         <li><a href="#layout">Layout and breakpoints</a></li>
+        <li><a href="#lists">Lists</a></li>
         <li><a href="#media">Media</a></li>
         <li><a href="#quotes">Quotes</a></li>
         <li><a href="#blurbs">Text blurbs</a></li>
@@ -555,6 +556,70 @@
         <script type="text/plain" data-example="HTML">
           <span class="d-md-none">Shown below md</span>
           <span class="d-none d-md-inline">Shown from md up</span>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="lists">
+      <h3 id="lists">Lists</h3>
+      <p class="note">Native <code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code> and <code>&lt;dl&gt;</code>, styled. A bare list is left to the browser, so add <code>list</code>. The markers take the theme's highlight color. <code>list--divided</code> puts a line between items (a list group), a description list puts each term beside its detail (<code>list--stacked</code> puts the detail underneath), and <code>list--plain</code> drops the markers; give a plain or divided list <code>role="list"</code> too, because Safari with VoiceOver stops announcing a list once its markers are gone.</p>
+
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <fieldset class="panel">
+            <legend>Unordered and ordered</legend>
+            <ul class="list">
+              <li>Joey Ramone
+                <ul class="list"><li>Vocals</li><li>Lyrics</li></ul>
+              </li>
+              <li>Johnny Ramone</li>
+              <li>Dee Dee Ramone</li>
+            </ul>
+            <ol class="list">
+              <li>Soundcheck at five</li>
+              <li>Doors at eight</li>
+              <li>Ramones on at ten</li>
+            </ol>
+          </fieldset>
+        </div>
+        <div class="col-12 col-md-6">
+          <fieldset class="panel">
+            <legend>Divided</legend>
+            <ul class="list list--divided" role="list">
+              <li>Ellen Ripley, warrant officer</li>
+              <li>Laurie Strode, babysitter</li>
+              <li>Sidney Prescott, student</li>
+            </ul>
+          </fieldset>
+        </div>
+      </div>
+
+      <fieldset class="panel">
+        <legend>Description lists</legend>
+        <dl class="list">
+          <dt>Band</dt><dd>Black Flag</dd>
+          <dt>Formed</dt><dd>Hermosa Beach, 1976</dd>
+          <dt>Singer</dt><dd>Henry Rollins</dd>
+        </dl>
+        <dl class="list list--stacked">
+          <dt>Debbie Harry</dt>
+          <dd>Singer of Blondie, and a regular at CBGB.</dd>
+          <dt>Iggy Pop</dt>
+          <dd>Singer of the Stooges, who has never once stood still.</dd>
+        </dl>
+        <script type="text/plain" data-example="HTML">
+          <ul class="list"><li>Joey Ramone</li><li>Dee Dee Ramone</li></ul>
+
+          <ul class="list list--divided" role="list">
+            <li>Ellen Ripley</li>
+            <li>Laurie Strode</li>
+          </ul>
+
+          <!-- term beside detail; add list--stacked to put the detail underneath -->
+          <dl class="list">
+            <dt>Band</dt><dd>Black Flag</dd>
+            <dt>Singer</dt><dd>Henry Rollins</dd>
+          </dl>
         </script>
       </fieldset>
     </section>
