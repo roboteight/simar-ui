@@ -11,21 +11,24 @@
 ![dependencies: none](https://img.shields.io/badge/dependencies-none-2b2d31?style=flat-square)
 ![accessibility: axe, keyboard and contrast tested](https://img.shields.io/badge/accessibility-axe%20%C2%B7%20keyboard%20%C2%B7%20contrast%20tested-2b2d31?style=flat-square)
 
-**Beveled, extruded controls and components built on real HTML elements.** Form fields with validation, selects and autocomplete, keys, faders, knobs, a date range, tabs, menus, alerts and toasts, tables, pagination, breadcrumbs, images and media, cards, typography, a responsive grid and more, in light and dark with themes. The aim is that you never need another library for a component. You configure them with HTML attributes, they work without JavaScript, and they're built to be fully accessible.
+**A dependency-free, accessible UI library built on native HTML.** Forms, navigation, data display, feedback and layout: nearly forty components, each one a real HTML element underneath (`<button>`, `<input>`, `<dialog>`, `<table>`, `<details>`), with the styling, the keyboard behavior and the ARIA on top. You configure them with HTML attributes, they work without JavaScript, they follow light and dark, and they are built to meet WCAG 2.2 AA. The aim is that you never need another library for a component.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/hero-dark.png">
-  <img src="docs/screenshots/hero.png" alt="Beveled keys, icon keys and radio keys on a light page" width="720">
+  <img src="docs/screenshots/hero.png" alt="Keys, icon keys and radio keys on a light page" width="720">
 </picture>
 
 **Free and open source.** simar-ui is public and MIT licensed: use it in personal and commercial projects, change it, and ship it, no strings attached.
 
-- **Native underneath.** Every control is an `<input>`, `<select>`, `<textarea>`, `<button>`, `<meter>`, `<progress>`, `<details>` or `<dialog>`, so forms, labels, validation, keyboard and screen-reader behavior come from the browser. The styling sits on top.
-- **Configured in HTML.** Options are attributes (`min`, `max`, `step`, `data-lit="blue"`, `data-haptic="off"`), or short tags like `<simar-knob label="Volume" max="11">`. No config objects.
-- **Accessible, and kept that way.** Keyboard operable, WCAG 2.2 AA contrast, no dragging required, reduced motion and high contrast supported. Automated tests run in light and dark, and the library warns you while you build if you forget a label. [More below.](#accessibility)
-- **No dependencies, no build step to use it.** Two files from a CDN, or `npm install`. About 34 KB gzipped for the CSS, script and icons together; nothing else is downloaded unless you choose a web font.
-- **Themed.** All styling is a theme (`scss/themes/`): tokens for color, fonts and shadows, highlight presets, button colors and whole-page palettes. This is the first theme; more will follow.
-- **Responsive.** Mobile first, with Bootstrap-style breakpoints, a grid and display helpers.
+## Why simar-ui
+
+- **Native first.** The browser does the work: forms, labels, validation, focus, the keyboard and screen-reader behavior all come from the real element. Where no native element exists (tabs, menus, a combobox), it follows the matching WAI-ARIA pattern exactly. The script only enhances, so a component still works when it doesn't run.
+- **Tokens all the way down.** Shape, depth, color and type are CSS custom properties, and you choose how fine-grained to be. Global tokens (`--radius`, `--depth`, `--fade`, `--lit`) move everything together; every component also has its own (`--key-radius`, `--card-radius`) that falls back to the global one. Nine ready-made styles (`data-style`) bundle them, from `basic` (plain, flat HTML) to `brutal`, and each works in light and dark, with every palette and highlight. [More below.](#styles-and-design-tokens)
+- **Accessible, and kept that way.** Keyboard operable, WCAG 2.2 AA contrast (gradients, disabled controls and chart colors included), 24px targets, no dragging required, reduced motion and forced colors supported. Axe, contrast, keyboard and WCAG 2.2 checks run over the demo in light and dark, in every style, and the library warns you while you build if you forget a label. It says plainly what automation cannot confirm. [More below.](#accessibility)
+- **Small.** About 44 KB gzipped for the CSS, the script and the icons together. Charts are an optional add-on (1.4 KB plus [Chartist](https://chartist.dev)), and nothing else is downloaded unless you choose a web font.
+- **Works without JavaScript.** Native controls, content stacked in order, forms that submit. Newer CSS is guarded and falls back to the browser's defaults.
+- **Configured in HTML.** Options are attributes (`min`, `max`, `step`, `data-lit="blue"`, `data-style="soft"`), or short tags like `<simar-knob label="Volume" max="11">`. No config objects, and it sits alongside any framework because it is just markup.
+- **Responsive.** Mobile first, with Bootstrap-style breakpoints, a grid and display helpers; nothing scrolls sideways at 320px.
 
 ## Install
 
@@ -209,7 +212,7 @@ Headings, display type, a lead paragraph and running text. Use the classes anywh
 
 #### Checks and radios
 
-Beveled caps that sit in a recessed well. They go down quickly and ease back up, a selected key stays latched with its dot lit, and small keys light their label or icon instead. Checkboxes show a check mark (a dash when mixed) and a switch slides a cap, so neither relies on color alone.
+Keys are real buttons, set in a well. They go down quickly and ease back up, a selected key stays latched with its dot lit, and small keys light their label or icon instead. How raised they look depends on the style: `flat` is low, `classic` stands tall on a wall, and `basic` is flat fills and an outline. Checkboxes show a check mark (a dash when mixed) and a switch slides a cap, so neither relies on color alone.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/radios-dark.png">
@@ -576,7 +579,7 @@ Keep the `aria-label` in the markup: a tooltip needs JavaScript, a label doesn't
 
 ## Themes
 
-All of the styling is a theme, and this is the first one: the components describe structure and read their colors, fonts and shadows from tokens, so more looks can be added without touching them. A theme is one file in `scss/themes/` (`_default.scss`): the design tokens for light and dark, the highlight presets (`data-lit`, including the Material palette), the color of each button variant (`key--primary`, `--secondary`, `--success`, `--danger`, `--warning`, `--info`, `--light`, `--dark`) and whole-page palettes (`data-palette="indigo"`, `teal`, `rose`, `amber`, `forest`, `ocean`), which retint every surface and bring their own highlight and button colors. This is the first theme; more will follow, and a new one is a copy of that file with new values.
+All of the styling is a theme: the components describe structure and read their colors, fonts and shapes from tokens, so a new look is a change to values and never to the components. Color lives in one file in `scss/themes/` (`_default.scss`): the design tokens for light and dark, the highlight presets (`data-lit`, including the Material palette), the color of each button variant (`key--primary`, `--secondary`, `--success`, `--danger`, `--warning`, `--info`, `--light`, `--dark`) and whole-page palettes (`data-palette="indigo"`, `teal`, `rose`, `amber`, `forest`, `ocean`), which retint every surface and bring their own highlight and button colors. Shape and depth live in `scss/themes/_styles.scss` (see [Styles and design tokens](#styles-and-design-tokens)), so a style, a palette and a highlight combine freely.
 
 ## Styles and design tokens
 

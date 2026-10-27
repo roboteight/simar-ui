@@ -1,0 +1,52 @@
+@use "../abstracts" as *;
+
+// Embed: a responsive frame for content you don't control the size of: an <iframe> (a map, a video player, a
+// document), an <embed>, an <object>, a <canvas> or a <video>. It keeps an aspect ratio (16:9 unless you pick
+// another) and scales with its container, so it never overflows a phone. An <iframe> must have a title, which is
+// its name for a screen reader.
+//
+//   <div class="embed embed--4x3">
+//     <iframe src="https://example.com/player" title="Ramones at CBGB, 1977" loading="lazy"></iframe>
+//   </div>
+//
+// Ratios: embed--16x9 (default), embed--4x3, embed--1x1, embed--21x9. Tokens: --embed-ratio (any ratio, as
+// "5 / 3"), --embed-radius.
+.embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--embed-ratio, 16 / 9);
+  overflow: hidden;
+  border-radius: var(--embed-radius, var(--radius-lg));
+  background: var(--well-top);
+  box-shadow: ring(), 0 0 0 1px var(--hairline-strong);
+
+  > iframe,
+  > embed,
+  > object,
+  > canvas,
+  > video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  &--16x9 { --embed-ratio: 16 / 9; }
+  &--4x3 { --embed-ratio: 4 / 3; }
+  &--1x1 { --embed-ratio: 1; }
+  &--21x9 { --embed-ratio: 21 / 9; }
+
+  @include forced-colors { box-shadow: none; border: 1px solid CanvasText; }
+}
+
+// Divider: a standalone <hr>. (Inside .prose a plain <hr> gets this too.)
+hr.divider {
+  height: 0;
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--hairline-strong);
+  box-shadow: 0 1px 0 var(--lip);
+
+  @include forced-colors { border-top-color: CanvasText; box-shadow: none; }
+}

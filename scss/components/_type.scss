@@ -110,6 +110,10 @@ $heading-sizes: (
 
   code,
   samp { font-family: var(--font-mono); font-size: 0.9em; }
+  var { font-family: var(--font-mono); font-size: 0.9em; font-style: italic; }
+  dfn { font-style: italic; font-weight: 600; }
+  address { font-style: normal; color: var(--ink-soft); }
+  s { text-decoration-thickness: 2px; color: var(--ink-soft); }
 
   abbr[title] { text-decoration: underline dotted; text-underline-offset: 0.2em; cursor: help; }
   del { color: var(--ink-soft); }

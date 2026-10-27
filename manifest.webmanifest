@@ -2,7 +2,7 @@
   "id": "./",
   "name": "simar-ui",
   "short_name": "simar-ui",
-  "description": "Beveled form controls and components built on native HTML. Free to use.",
+  "description": "A dependency-free, accessible UI library built on native HTML. Free to use.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -36,6 +36,13 @@
     vertical-align: top;
   }
 
+  // A footer row (totals): set apart by a heavier line above it.
+  tfoot th,
+  tfoot td {
+    border-top: 2px solid var(--hairline-strong);
+    font-weight: 600;
+  }
+
   thead th {
     color: var(--ink-soft);
     font-size: 0.75rem;

@@ -2390,6 +2390,23 @@
   font-family: var(--font-mono);
   font-size: 0.9em;
 }
+.prose var {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  font-style: italic;
+}
+.prose dfn {
+  font-style: italic;
+  font-weight: 600;
+}
+.prose address {
+  font-style: normal;
+  color: var(--ink-soft);
+}
+.prose s {
+  text-decoration-thickness: 2px;
+  color: var(--ink-soft);
+}
 .prose abbr[title] {
   text-decoration: underline dotted;
   text-underline-offset: 0.2em;
@@ -5089,6 +5106,11 @@ input[type=file].input:disabled::file-selector-button {
   text-align: left;
   vertical-align: top;
 }
+.table tfoot th,
+.table tfoot td {
+  border-top: 2px solid var(--hairline-strong);
+  font-weight: 600;
+}
 .table thead th {
   color: var(--ink-soft);
   font-size: 0.75rem;
@@ -5292,6 +5314,59 @@ video.media {
   video.media {
     box-shadow: none;
     border: 1px solid CanvasText;
+  }
+}
+
+.embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--embed-ratio, 16/9);
+  overflow: hidden;
+  border-radius: var(--embed-radius, var(--radius-lg));
+  background: var(--well-top);
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline-strong);
+}
+.embed > iframe,
+.embed > embed,
+.embed > object,
+.embed > canvas,
+.embed > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.embed--16x9 {
+  --embed-ratio: 16 / 9;
+}
+.embed--4x3 {
+  --embed-ratio: 4 / 3;
+}
+.embed--1x1 {
+  --embed-ratio: 1;
+}
+.embed--21x9 {
+  --embed-ratio: 21 / 9;
+}
+@media (forced-colors: active) {
+  .embed {
+    box-shadow: none;
+    border: 1px solid CanvasText;
+  }
+}
+
+hr.divider {
+  height: 0;
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--hairline-strong);
+  box-shadow: 0 1px 0 var(--lip);
+}
+@media (forced-colors: active) {
+  hr.divider {
+    border-top-color: CanvasText;
+    box-shadow: none;
   }
 }
 

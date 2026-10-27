@@ -8,6 +8,7 @@
   <link rel="icon" href="docs/logo/icon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="docs/logo/apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
+  <meta name="description" content="simar-ui is a dependency-free, accessible UI library built on native HTML: forms, navigation, data display, feedback and layout, themed with CSS custom properties.">
   <meta name="theme-color" content="#1b1d21">
   <script>
     // Apply a saved theme before the page paints, so it never flashes the other one.
@@ -158,7 +159,7 @@
 
     <header>
       <h1>simar-ui <span class="version">v1 beta</span></h1>
-      <p>Custom form controls. Every one is a real HTML element underneath. Press <em>HTML</em> under any component to see how it was added to the page.</p>
+      <p>A dependency-free UI library built on native HTML: forms, navigation, data display and layout. Every component is a real HTML element underneath. Press <em>HTML</em> under any component to see how it was added to the page.</p>
     </header>
 
     <fieldset class="panel needs-js" id="page-settings" data-haptic="off">
@@ -382,7 +383,7 @@
           <thead><tr><th scope="col">Token</th><th scope="col">What it rounds</th></tr></thead>
           <tbody>
             <tr><th scope="row"><code>--key-radius</code></th><td>Keys, button groups, the file button, small controls inside other components</td></tr>
-            <tr><th scope="row"><code>--well-radius</code></th><td>The recessed socket around a key</td></tr>
+            <tr><th scope="row"><code>--well-radius</code></th><td>The socket around a key</td></tr>
             <tr><th scope="row"><code>--input-radius</code></th><td>Text fields, selects, textareas, color and number fields</td></tr>
             <tr><th scope="row"><code>--check-radius</code></th><td>The checkbox box</td></tr>
             <tr><th scope="row"><code>--fader-radius</code></th><td>The fader thumb</td></tr>
@@ -1498,7 +1499,7 @@
       <div class="accordion">
         <details class="accordion__item" name="faq" open>
           <summary><span class="well"><span class="key"><svg class="icon icon--lead icon--chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg>What is simar-ui?</span></span></summary>
-          <div class="accordion__body"><p>A set of custom-styled form controls. Each one is a real HTML element underneath, so it still works without CSS or JavaScript.</p></div>
+          <div class="accordion__body"><p>A set of UI components. Each one is a real HTML element underneath, so it still works without CSS or JavaScript.</p></div>
         </details>
         <details class="accordion__item" name="faq">
           <summary><span class="well"><span class="key"><svg class="icon icon--lead icon--chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg>Does it work with a keyboard?</span></span></summary>
@@ -1512,7 +1513,7 @@
               <script type="text/plain" data-example="Tag">
       <!-- items open one at a time -->
       <simar-accordion>
-        <simar-item title="What is it?" open>A set of form controls.</simar-item>
+        <simar-item title="What is it?" open>A set of UI components.</simar-item>
         <simar-item title="Is it accessible?">Yes: <strong>keyboard</strong> and screen readers.</simar-item>
       </simar-accordion>
 
@@ -1678,7 +1679,7 @@
 
     <section aria-labelledby="buttons">
       <h3 id="buttons">Buttons</h3>
-      <p class="note">Beveled and extruded. Press and hold to see the cap travel.</p>
+      <p class="note">Keys are real buttons. They press down on a click or touch, a selected key stays latched with its dot lit, and small keys light their label or icon instead.</p>
 
       <fieldset class="panel">
         <legend>Keys</legend>
