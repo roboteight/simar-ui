@@ -271,6 +271,33 @@ An alert is a banner in the page with an icon, a title and some words, so the ki
 <script>SimarUI.toast("Your changes are in.", { variant: "success", duration: 6000 });</script>
 ```
 
+#### Badge
+
+A small label for a status or a count. It always has words (or a number with hidden words after it), so the kind never depends on color alone; the dot is decoration. `badge--info`, `--success`, `--warning`, `--danger` and `badge--count`.
+
+<img src="docs/screenshots/badges.png" alt="Badges: Draft, New, Paid, Pending, Overdue and an Inbox key with a count" width="640">
+
+```html
+<simar-badge variant="success">Paid</simar-badge>
+<button type="button" class="key">Inbox <span class="badge badge--count">3<span class="visually-hidden"> unread</span></span></button>
+```
+
+#### Table
+
+A native `<table>` with a `<caption>` and `<th scope>`, in a `.table-wrap` that scrolls sideways on a narrow screen (the wrapper takes keyboard focus). `table--striped`, `table--hover`, and `data-sortable` with `data-sort` on headers for sorting: the script adds the buttons and keeps `aria-sort` on one column.
+
+<img src="docs/screenshots/table.png" alt="A sortable table of orders with status badges" width="640">
+
+```html
+<div class="table-wrap" role="region" aria-labelledby="cap" tabindex="0">
+  <table class="table table--hover" data-sortable>
+    <caption id="cap">Recent orders</caption>
+    <thead><tr><th scope="col" data-sort>Order</th><th scope="col" class="num" data-sort>Total</th></tr></thead>
+    <tbody><tr><th scope="row">#1042</th><td class="num">$120.00</td></tr></tbody>
+  </table>
+</div>
+```
+
 #### Dropdown menu
 
 A button that opens a list of actions or links. It is a native `popover`, so it opens, closes and dismisses with no JavaScript; the script adds the menu roles and the keys from the ARIA menu button pattern (Enter, Space and the arrows open it, arrows, Home, End and letters move, Esc returns focus to the button, Tab leaves).

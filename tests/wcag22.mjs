@@ -41,7 +41,7 @@ console.log('\nReflow at 320px (a 1280px screen at 400% zoom)');
 await open(320);
 const reflow = await page.evaluate(() => {
   const limit = document.documentElement.clientWidth;
-  const scrollers = (n) => n.closest('pre, .ref-scroll, .code__body, .snippet__tabs, .daterange__pop'); // may scroll on their own
+  const scrollers = (n) => n.closest('pre, .ref-scroll, .table-wrap, .code__body, .snippet__tabs, .daterange__pop'); // may scroll on their own
   const wide = [...document.body.querySelectorAll('*')]
     .filter((n) => !n.closest('svg, [hidden], .needs-js:not(:root *)') && !scrollers(n) && n.getBoundingClientRect().width)
     .filter((n) => n.getBoundingClientRect().right > limit + 1)
@@ -316,12 +316,12 @@ v.fields.length === 4 && v.fields.every((f) => f.visible && f.text && f.hasIcon)
 v.focused === 'name' ? pass('focus goes to the first problem') : fail(`focus went to "${v.focused}"`);
 v.fields.find((f) => f.name === 'email')?.text === 'Enter an email like name@chrissimari.com' ? pass('uses the author\'s own message when there is one') : fail('custom message not used');
 
-await page.type('#v-name', 'Ada');
+await page.type('#v-name', 'Darby');
 const cleared = await page.evaluate(() => ({ invalid: document.querySelector('#v-name').getAttribute('aria-invalid'), summary: document.querySelector('#signup .form__summary').textContent }));
 cleared.invalid === null ? pass('an error clears as soon as the field is valid') : fail('the error stayed after fixing the field');
 /3 fields/.test(cleared.summary) ? pass('and the summary count follows') : fail(`summary after fixing one: "${cleared.summary}"`);
 
-await page.type('#v-email', 'ada@chrissimari.com');
+await page.type('#v-email', 'darby@chrissimari.com');
 await page.type('#v-age', '36');
 await page.focus('input[name="terms"]');
 await page.keyboard.press('Space');
@@ -554,14 +554,14 @@ await page.keyboard.down('Control');
 await page.keyboard.press('KeyK');
 await page.keyboard.up('Control');
 (await page.evaluate(() => document.activeElement.id)) === 'site-search' ? pass('Ctrl+K focuses the search (a modifier key, so typing never triggers it)') : fail('Ctrl+K did not focus the search');
-await page.keyboard.type('tab', { delay: 30 });
+await page.keyboard.type('dropdo', { delay: 30 });
 await wait(250);
 const sr = await page.evaluate(() => { const lists = [...document.querySelectorAll('.suggest')]; const l = lists.find((n) => n.matches(':popover-open')); return { items: l ? [...l.children].map((c) => c.textContent) : [], status: document.querySelector('#site-search').parentNode.querySelector('.suggest__status').textContent }; });
-sr.items.some((t) => t.startsWith('Tabs')) && /suggestion/.test(sr.status) ? pass('typing lists matching sections and announces the count') : fail(`results: ${JSON.stringify(sr)}`);
+sr.items.some((t) => t.startsWith('Dropdown menu')) && /suggestion/.test(sr.status) ? pass('typing lists matching sections and announces the count') : fail(`results: ${JSON.stringify(sr)}`);
 await page.keyboard.press('Enter');
 await wait(1500);
 const nav = await page.evaluate(() => ({ hash: location.hash, focus: document.activeElement.id, value: document.querySelector('#site-search').value }));
-nav.hash === '#tabs' && nav.focus === 'tabs' && nav.value === '' ? pass('Enter goes to the section, moves focus to its heading and clears the search') : fail(`navigate: ${JSON.stringify(nav)}`);
+nav.hash === '#menus' && nav.focus === 'menus' && nav.value === '' ? pass('Enter goes to the section, moves focus to its heading and clears the search') : fail(`navigate: ${JSON.stringify(nav)}`);
 
 // ---- alerts and toasts -----------------------------------------------------------------------------
 console.log('\nAlerts and toasts');
@@ -590,6 +590,27 @@ await page.focus('.toast:last-child .alert__close');
 await wait(800);
 (await page.evaluate(() => [...document.querySelectorAll('.toast')].some((t) => t.textContent.includes('Hold on')))) ? pass('a toast waits while it has focus (WCAG 2.2.1)') : fail('the toast left while focused');
 await page.evaluate(() => document.querySelectorAll('.toast').forEach((t) => t.remove()));
+
+// ---- badge and table -------------------------------------------------------------------------------
+console.log('\nBadge and table');
+await open(1280);
+const badges = await page.evaluate(() => [...document.querySelectorAll('#badges ~ .panel .badge')].map((b) => ({ words: b.textContent.trim().length > 0, count: b.classList.contains('badge--count'), hidden: !!b.querySelector('.visually-hidden') })));
+badges.length === 6 && badges.every((b) => b.words) && badges.filter((b) => b.count).every((b) => b.hidden) ? pass('every badge has words, and a count carries hidden words after the number') : fail(`badges: ${JSON.stringify(badges)}`);
+const tbl = await page.evaluate(() => { const w = document.querySelector('.table-wrap'); const t = w.querySelector('table'); return { region: w.getAttribute('role'), focus: w.tabIndex, named: !!document.getElementById(w.getAttribute('aria-labelledby')), caption: !!t.caption, cols: [...t.querySelectorAll('thead th')].every((th) => th.getAttribute('scope') === 'col'), rows: [...t.querySelectorAll('tbody th')].every((th) => th.getAttribute('scope') === 'row'), sort: [...t.querySelectorAll('thead th[aria-sort]')].map((th) => th.getAttribute('aria-sort')).join(), buttons: t.querySelectorAll('thead th .table__sort').length }; });
+tbl.region === 'region' && tbl.focus === 0 && tbl.named && tbl.caption && tbl.cols && tbl.rows && tbl.sort === 'none,none,none,none' && tbl.buttons === 4 ? pass('the table has a caption, scoped headers, a focusable named scroll region and a sort button per sortable header') : fail(`table: ${JSON.stringify(tbl)}`);
+await page.$eval('.table', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.focus('.table th:nth-child(3) .table__sort');
+await page.keyboard.press('Enter');
+const s1 = await page.evaluate(() => ({ first: document.querySelector('.table tbody th').textContent, sort: [...document.querySelectorAll('.table thead th')].map((th) => th.getAttribute('aria-sort')[0]).join('') }));
+s1.first === '#1045' && s1.sort === 'nnan' ? pass('Enter on a header sorts ascending by number ($9.99 first) and marks only that column') : fail(`sort asc: ${JSON.stringify(s1)}`);
+await page.keyboard.press('Space');
+const s2 = await page.evaluate(() => ({ first: document.querySelector('.table tbody th').textContent, sort: [...document.querySelectorAll('.table thead th')].map((th) => th.getAttribute('aria-sort')[0]).join('') }));
+s2.first === '#1044' && s2.sort === 'nndn' ? pass('pressing again sorts descending') : fail(`sort desc: ${JSON.stringify(s2)}`);
+await page.setViewport({ width: 320, height: 700 });
+await wait(200);
+const narrow = await page.evaluate(() => { const w = document.querySelector('.table-wrap'); return { scrolls: w.scrollWidth > w.clientWidth, page: document.documentElement.scrollWidth > innerWidth + 1 }; });
+narrow.scrolls && !narrow.page ? pass('at 320px the table scrolls inside its wrapper and the page does not') : fail(`320px table: ${JSON.stringify(narrow)}`);
+await page.setViewport({ width: 1280, height: 800 });
 
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');

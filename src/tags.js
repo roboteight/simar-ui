@@ -197,6 +197,13 @@ const builders = {
     return `<div${rootAttrs(node, `alert alert--${variant}`)} role="${variant === 'danger' ? 'alert' : 'status'}"${node.hasAttribute('dismissible') ? ' data-dismissible' : ''}><svg class="icon alert__icon" aria-hidden="true"><use href="#i-${iconName}"/></svg><div class="alert__body"><p class="alert__title">${esc(node.getAttribute('title') ?? label)}</p>${text}</div></div>`;
   },
 
+  // <simar-badge variant="success">New</simar-badge>   variant: neutral (default), info, success, warning, danger
+  // <simar-badge count>3<span class="visually-hidden"> unread</span></simar-badge>
+  'simar-badge': (node) => {
+    const variant = ['info', 'success', 'warning', 'danger'].includes(node.getAttribute('variant')) ? ` badge--${node.getAttribute('variant')}` : '';
+    return `<span${rootAttrs(node, `badge${variant}${node.hasAttribute('count') ? ' badge--count' : ''}`)}>${node.innerHTML}</span>`;
+  },
+
   // <simar-accordion name="faq"><simar-item title="What is it?" open>Answer…</simar-item></simar-accordion>
   // Items open one at a time (sharing `name`) unless `multiple` is set.
   'simar-accordion': (node) => {

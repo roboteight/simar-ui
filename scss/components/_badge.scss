@@ -1,0 +1,63 @@
+@use "../abstracts" as *;
+
+// Badge: a small label for a status or a count. It always has words (or a number with hidden words),
+// so the kind of badge never depends on color alone; the dot is decoration. The colors are the same
+// ones the alerts use, from the theme.
+//
+//   <span class="badge badge--success">New</span>
+//   <button class="key">Inbox <span class="badge">3<span class="visually-hidden"> unread</span></span></button>
+.badge {
+  --badge-color: var(--ink-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.12em 0.65em;
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+  vertical-align: middle;
+  background: color-mix(in srgb, var(--badge-color) 12%, var(--sheet-top));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--badge-color) 55%, transparent);
+
+  &::before {
+    content: "";
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background: var(--badge-color);
+  }
+
+  &--info { --badge-color: var(--lit-ink); }
+  &--success { --badge-color: var(--meter-ok); }
+  &--warning { --badge-color: var(--meter-warn); }
+  &--danger { --badge-color: var(--error); }
+
+  // A count: just the number in a small pill.
+  &--count {
+    min-width: 1.6em;
+    justify-content: center;
+    padding-inline: 0.45em;
+    &::before { display: none; }
+  }
+
+  // Inside a key the badge sits beside the label.
+  .key & { font-size: 0.75rem; }
+
+  @include forced-colors {
+    border: 1px solid CanvasText;
+    box-shadow: none;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: none;
+    &::before { background: CanvasText; }
+  }
+}
+
+// A key that holds a badge puts it beside the label, not under it.
+.key:has(> .badge) {
+  grid-auto-flow: column;
+  gap: 0.6rem;
+}

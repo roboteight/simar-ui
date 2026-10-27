@@ -163,6 +163,12 @@
       const text = node.children.length ? body : `<p class="alert__text">${body}</p>`;
       return `<div${rootAttrs(node, `alert alert--${variant}`)} role="${variant === "danger" ? "alert" : "status"}"${node.hasAttribute("dismissible") ? " data-dismissible" : ""}><svg class="icon alert__icon" aria-hidden="true"><use href="#i-${iconName}"/></svg><div class="alert__body"><p class="alert__title">${esc(node.getAttribute("title") ?? label)}</p>${text}</div></div>`;
     },
+    // <simar-badge variant="success">New</simar-badge>   variant: neutral (default), info, success, warning, danger
+    // <simar-badge count>3<span class="visually-hidden"> unread</span></simar-badge>
+    "simar-badge": (node) => {
+      const variant = ["info", "success", "warning", "danger"].includes(node.getAttribute("variant")) ? ` badge--${node.getAttribute("variant")}` : "";
+      return `<span${rootAttrs(node, `badge${variant}${node.hasAttribute("count") ? " badge--count" : ""}`)}>${node.innerHTML}</span>`;
+    },
     // <simar-accordion name="faq"><simar-item title="What is it?" open>Answer…</simar-item></simar-accordion>
     // Items open one at a time (sharing `name`) unless `multiple` is set.
     "simar-accordion": (node) => {
@@ -1227,6 +1233,39 @@
       }));
     }
   };
+  var enhanceTables = (claim) => {
+    for (const table of claim("table[data-sortable]")) {
+      const heads = [...table.querySelectorAll("thead th")];
+      const body = table.tBodies[0];
+      if (!body) continue;
+      const value = (row, i) => {
+        const cell = row.cells[i];
+        const raw = (cell.dataset.value ?? cell.textContent).trim();
+        const number = parseFloat(raw.replace(/[^0-9.\-]/g, ""));
+        return raw !== "" && !Number.isNaN(number) && /^[-+$€£]?[0-9.,\s]+%?$/.test(raw) ? number : raw.toLowerCase();
+      };
+      heads.forEach((th, i) => {
+        if (!th.hasAttribute("data-sort")) return;
+        const button = el("button", "table__sort");
+        button.type = "button";
+        button.append(...th.childNodes);
+        th.append(button);
+        th.setAttribute("aria-sort", "none");
+        button.addEventListener("click", () => {
+          const next = th.getAttribute("aria-sort") === "ascending" ? "descending" : "ascending";
+          for (const other of heads) if (other.hasAttribute("aria-sort")) other.setAttribute("aria-sort", "none");
+          th.setAttribute("aria-sort", next);
+          const sign = next === "ascending" ? 1 : -1;
+          const rows = [...body.rows].sort((a, b) => {
+            const x = value(a, i);
+            const y = value(b, i);
+            return (typeof x === "number" && typeof y === "number" ? x - y : String(x).localeCompare(String(y), void 0, { numeric: true })) * sign;
+          });
+          body.append(...rows);
+        });
+      });
+    }
+  };
   var pickers = 0;
   var enhancePickers = (claim) => {
     for (const select of claim("select[data-picker]")) {
@@ -1606,6 +1645,7 @@
     enhanceTabs(claim);
     enhanceMenus(claim);
     enhanceAlerts(claim);
+    enhanceTables(claim);
     enhanceToastTriggers(claim);
     enhanceAutocomplete(claim);
     enhanceSteppers(claim);

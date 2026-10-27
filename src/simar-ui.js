@@ -1014,6 +1014,43 @@ const enhanceToastTriggers = (claim) => {
   }
 };
 
+// Sortable table: <th data-sort> gets a button; clicking sorts the rows by that column (numbers by
+// number, otherwise by text; a cell's data-value overrides what is shown). aria-sort says which
+// column is sorted and which way, and only one column carries it.
+const enhanceTables = (claim) => {
+  for (const table of claim('table[data-sortable]')) {
+    const heads = [...table.querySelectorAll('thead th')];
+    const body = table.tBodies[0];
+    if (!body) continue;
+    const value = (row, i) => {
+      const cell = row.cells[i];
+      const raw = (cell.dataset.value ?? cell.textContent).trim();
+      const number = parseFloat(raw.replace(/[^0-9.\-]/g, ''));
+      return raw !== '' && !Number.isNaN(number) && /^[-+$€£]?[0-9.,\s]+%?$/.test(raw) ? number : raw.toLowerCase();
+    };
+    heads.forEach((th, i) => {
+      if (!th.hasAttribute('data-sort')) return;
+      const button = el('button', 'table__sort');
+      button.type = 'button';
+      button.append(...th.childNodes);
+      th.append(button);
+      th.setAttribute('aria-sort', 'none');
+      button.addEventListener('click', () => {
+        const next = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : 'ascending';
+        for (const other of heads) if (other.hasAttribute('aria-sort')) other.setAttribute('aria-sort', 'none');
+        th.setAttribute('aria-sort', next);
+        const sign = next === 'ascending' ? 1 : -1;
+        const rows = [...body.rows].sort((a, b) => {
+          const x = value(a, i);
+          const y = value(b, i);
+          return (typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y), undefined, { numeric: true })) * sign;
+        });
+        body.append(...rows);
+      });
+    });
+  }
+};
+
 // Picker: a <select data-picker> whose list can show more than text, such as a moving spinner. The
 // select stays in the form and keeps the value; a select-only combobox (the ARIA pattern) is built
 // over it. An option points at a <template> with data-art, and that is drawn beside its words.
@@ -1426,6 +1463,7 @@ const init = (scope = document) => {
   enhanceTabs(claim);
   enhanceMenus(claim);
   enhanceAlerts(claim);
+  enhanceTables(claim);
   enhanceToastTriggers(claim);
   enhanceAutocomplete(claim);
   enhanceSteppers(claim);

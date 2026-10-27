@@ -1,0 +1,87 @@
+@use "../abstracts" as *;
+
+// Table: a native <table>, styled. Put it in .table-wrap so it can scroll sideways on a narrow screen
+// (the wrapper takes keyboard focus so the scrolling works without a mouse). Use a <caption> to name
+// it and <th scope> to say what each header is for.
+//
+//   <div class="table-wrap" role="region" aria-labelledby="cap" tabindex="0">
+//     <table class="table"><caption id="cap">Orders</caption>…</table>
+//   </div>
+.table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 14px;
+  background: $sheet-bg;
+  box-shadow: 0 0 0 1px var(--hairline);
+
+  &:focus-visible { @include focus-ring(3px); }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+
+  caption {
+    padding: 0.85rem 1rem 0.35rem;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    text-align: left;
+  }
+
+  th,
+  td {
+    padding: 0.7rem 1rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  thead th {
+    color: var(--ink-soft);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 2px solid var(--hairline-strong);
+  }
+
+  tbody th { font-weight: 600; }
+  tbody tr + tr > * { border-top: 1px solid var(--hairline); }
+  td.num,
+  th.num { text-align: right; }
+
+  &--striped tbody tr:nth-child(even) > * { background: color-mix(in srgb, var(--ink) 4%, transparent); }
+  &--hover tbody tr:hover > * { background: color-mix(in srgb, var(--lit) 10%, transparent); }
+
+  // Sortable headers: the script wraps the title in a button and keeps aria-sort up to date.
+  &__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.4rem;
+    margin: -0.25rem -0.4rem;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+
+    &:hover { color: var(--ink); }
+    &:focus-visible { @include focus-ring(2px); }
+
+    // The arrow shows the direction; unsorted columns show a faint double arrow.
+    &::after {
+      content: "\2195" / "";
+      opacity: 0.5;
+    }
+  }
+
+  th[aria-sort="ascending"] &__sort::after { content: "\2191" / ""; opacity: 1; }
+  th[aria-sort="descending"] &__sort::after { content: "\2193" / ""; opacity: 1; }
+  th[aria-sort] { color: var(--ink); }
+
+  @include forced-colors { border: 1px solid CanvasText; }
+}

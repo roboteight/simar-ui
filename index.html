@@ -123,10 +123,12 @@
         <li><a href="#buttons">Buttons</a></li>
         <li><a href="#dialogs">Dialog</a></li>
         <li><a href="#alerts">Alerts and toasts</a></li>
+        <li><a href="#badges">Badge</a></li>
         <li><a href="#menus">Dropdown menu</a></li>
         <li><a href="#meters">Meter</a></li>
         <li><a href="#progress">Progress</a></li>
         <li><a href="#spinners">Spinners</a></li>
+        <li><a href="#tables">Table</a></li>
         <li><a href="#tabs">Tabs</a></li>
         <li><a href="#tooltips">Tooltips</a></li>
         </ul>
@@ -540,11 +542,11 @@
         <div class="field-grid">
         <div class="field">
           <div class="field__head"><label class="field__label" for="f-name">Name</label></div>
-          <input class="input" id="f-name" name="name" type="text" autocomplete="name" placeholder="Ada Lovelace">
+          <input class="input" id="f-name" name="name" type="text" autocomplete="name" placeholder="Darby Crash">
         </div>
         <div class="field">
           <div class="field__head"><label class="field__label" for="f-email">Email</label><span class="field__flag">Required</span></div>
-          <input class="input" id="f-email" name="email" type="email" autocomplete="email" placeholder="ada@chrissimari.com" required data-error="Enter an email like name@chrissimari.com" aria-describedby="f-email-hint">
+          <input class="input" id="f-email" name="email" type="email" autocomplete="email" placeholder="darby@chrissimari.com" required data-error="Enter an email like name@chrissimari.com" aria-describedby="f-email-hint">
           <p class="field__hint" id="f-email-hint">Used only for receipts.</p>
         </div>
         <div class="field">
@@ -565,7 +567,7 @@
         </div>
         </div>
         <script type="text/plain" data-example="Tag">
-          <simar-input label="Name" name="name" autocomplete="name" placeholder="Ada Lovelace"></simar-input>
+          <simar-input label="Name" name="name" autocomplete="name" placeholder="Darby Crash"></simar-input>
 
           <!-- required adds a flag; hint is linked to the field; error is shown when it is invalid -->
           <simar-input label="Email" type="email" name="email" required
@@ -1389,6 +1391,61 @@
         </script>
       </fieldset>
     </section>
+    <section aria-labelledby="badges">
+      <h3 id="badges">Badge</h3>
+      <p class="note">A small label for a status or a count. It always has words, or a number with hidden words after it, so the kind never depends on color alone; the dot is decoration. Use <code>badge--info</code>, <code>--success</code>, <code>--warning</code> or <code>--danger</code>, and <code>badge--count</code> for a number.</p>
+
+      <fieldset class="panel">
+        <legend>Badges</legend>
+        <div class="well-row">
+          <span class="badge">Draft</span>
+          <span class="badge badge--info">New</span>
+          <span class="badge badge--success">Paid</span>
+          <span class="badge badge--warning">Pending</span>
+          <span class="badge badge--danger">Overdue</span>
+          <span class="well"><button type="button" class="key">Inbox <span class="badge badge--count">3<span class="visually-hidden"> unread</span></span></button></span>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-badge variant="success">Paid</simar-badge>
+          <simar-badge count variant="info">3<span class="visually-hidden"> unread</span></simar-badge>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <span class="badge badge--success">Paid</span>
+          <button type="button" class="key">Inbox <span class="badge badge--count">3<span class="visually-hidden"> unread</span></span></button>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="tables">
+      <h3 id="tables">Table</h3>
+      <p class="note">A native <code>&lt;table&gt;</code> with a <code>&lt;caption&gt;</code> and <code>&lt;th scope&gt;</code>. Wrap it in <code>.table-wrap</code> so it scrolls sideways on a narrow screen; the wrapper takes keyboard focus so the scrolling works without a mouse. Add <code>table--striped</code> or <code>table--hover</code>, and <code>data-sortable</code> with <code>data-sort</code> on the headers for sorting (the script adds the buttons and <code>aria-sort</code>).</p>
+
+      <fieldset class="panel">
+        <legend>Table</legend>
+        <div class="table-wrap" role="region" aria-labelledby="orders-cap" tabindex="0">
+          <table class="table table--hover" data-sortable>
+            <caption id="orders-cap">Recent orders. Sortable by order, customer, total and status.</caption>
+            <thead><tr><th scope="col" data-sort>Order</th><th scope="col" data-sort>Customer</th><th scope="col" class="num" data-sort>Total</th><th scope="col" data-sort>Status</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">#1042</th><td>Darby Crash</td><td class="num">$120.00</td><td><span class="badge badge--success">Paid</span></td></tr>
+              <tr><th scope="row">#1043</th><td>Deborah Harry</td><td class="num">$48.50</td><td><span class="badge badge--warning">Pending</span></td></tr>
+              <tr><th scope="row">#1044</th><td>Iggy Pop</td><td class="num">$1,310.00</td><td><span class="badge badge--danger">Overdue</span></td></tr>
+              <tr><th scope="row">#1045</th><td>Joey Ramone</td><td class="num">$9.99</td><td><span class="badge badge--success">Paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <div class="table-wrap" role="region" aria-labelledby="cap" tabindex="0">
+            <table class="table table--hover" data-sortable>
+              <caption id="cap">Recent orders</caption>
+              <thead><tr><th scope="col" data-sort>Order</th><th scope="col" class="num" data-sort>Total</th></tr></thead>
+              <tbody><tr><th scope="row">#1042</th><td class="num">$120.00</td></tr></tbody>
+            </table>
+          </div>
+        </script>
+      </fieldset>
+    </section>
+
     <section aria-labelledby="menus">
       <h3 id="menus">Dropdown menu</h3>
       <p class="note">A button that opens a list of actions or links. It is a native <code>popover</code>, so it opens, closes, dismisses on Esc and on a click outside without any JavaScript. The script adds the menu roles and keyboard movement: Enter, Space or the arrow keys open it, the arrows, Home, End and letters move, Esc closes and returns focus to the button, and Tab leaves.</p>
