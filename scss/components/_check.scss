@@ -116,6 +116,11 @@
     @include reduced-motion { transition: none; }
   }
 
-  // on: the cap slides across
+  // on: the cap slides across. It keeps the same raised shape on or off (only its place and the lit dot
+  // change), so it never turns into a bare dot; pressing it still sinks it.
   input:checked + .key { translate: var(--cap) 0; }
+  input:checked:not(:active):not(:disabled) + .key {
+    transform: none;
+    box-shadow: raised-shadow(var(--travel));
+  }
 }

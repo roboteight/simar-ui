@@ -3373,6 +3373,10 @@ input:indeterminate + .key--box .icon--minus {
 .switch input:checked + .key {
   translate: var(--cap) 0;
 }
+.switch input:checked:not(:active):not(:disabled) + .key {
+  transform: none;
+  box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-light), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark), 0 var(--travel) 0 color-mix(in srgb, var(--ink) var(--wall-ink), var(--wall-near)), 0 calc(var(--travel) + 1px) 0 color-mix(in srgb, var(--wall-far) var(--wall-far-mix), transparent), 0 calc(var(--travel) + var(--cap-drop)) var(--cap-blur) color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent);
+}
 
 .field__flag {
   font-size: 0.7rem;

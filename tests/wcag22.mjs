@@ -786,6 +786,24 @@ const gut = await page.evaluate(() => {
 });
 gut.none ? pass('(no code block wide enough to scroll sideways on this page, so the gutter check is skipped)') : gut.pad === '0px' && gut.sticky === 'sticky' && parseFloat(gut.gutter) >= 16 && parseFloat(gut.gap) >= 16 && gut.margin === '0px' ? pass('the sticky line numbers carry the left padding and the gap, so scrolled code cannot show beside them') : fail(`code gutter: ${JSON.stringify(gut)}`);
 
+// ---- switch cap -----------------------------------------------------------------------------------
+console.log('\nSwitch cap');
+await open(1280);
+const swc = await page.evaluate(async () => {
+  const sw = document.querySelector('.switch'); const input = sw.querySelector('input'); const key = sw.querySelector('.key');
+  sw.scrollIntoView({ block: 'center', behavior: 'instant' });
+  const read = () => { const c = getComputedStyle(key); return { w: key.offsetWidth, h: key.offsetHeight, radius: c.borderTopLeftRadius, shadow: c.boxShadow !== 'none', dot: parseFloat(getComputedStyle(key, '::after').width) }; };
+  const out = {};
+  for (const style of ['', 'classic', 'line', 'brutal']) {
+    if (style) document.documentElement.dataset.style = style; else delete document.documentElement.dataset.style;
+    for (const on of [false, true]) { input.checked = on; await new Promise((r) => setTimeout(r, 350)); out[`${style || 'flat'}-${on ? 'on' : 'off'}`] = read(); }
+  }
+  delete document.documentElement.dataset.style;
+  return out;
+});
+const swBad = Object.keys(swc).filter((k) => k.endsWith('-on')).filter((on) => { const off = swc[on.replace('-on', '-off')], o = swc[on]; return !(o.w === off.w && o.h === off.h && o.radius === off.radius && o.shadow && o.w > 14); });
+swBad.length === 0 ? pass('the switch cap keeps its size, round shape and raised look when turned on, in four styles (never just the dot)') : fail(`switch cap: ${swBad.join(', ')} ${JSON.stringify(swc)}`);
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);
