@@ -76,6 +76,7 @@ await shoot('table', [await panel('Table')]);
 await shoot('pagination', [await panel('Pagination')]);
 await shoot('breadcrumb', [await panel('Breadcrumb')]);
 await shoot('media', [await panel('Media')]);
+await shoot('cards', [await panel('Cards')]);
 await page.focus('#ac-country');
 await page.keyboard.type('un');
 await wait(300);

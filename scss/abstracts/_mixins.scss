@@ -43,15 +43,13 @@
 
 // ---- States --------------------------------------------------------------------------
 
-// Selected / open: the cap sits a hair above the floor, shaded by the well's rim.
+// Selected / open: the cap sits a hair above the floor, with no shadow of its own; the latch fill and
+// the lit dot say it is selected.
 @mixin latched {
   --k-top: var(--latch-top);
   --k-bottom: var(--latch-bottom);
   transform: translateY(-1px);
-  box-shadow:
-    inset 0 3px 5px -1px shade(0.16),
-    0 1px 0 $wall-latched,
-    0 2px 3px shade(0.18);
+  box-shadow: none;
 }
 
 // How fast a key goes down. Used with the transition list on .key (transform, shadow, then four fades).

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>simar-ui v1</title>
+  <title>simar-ui v1 beta</title>
   <link rel="icon" href="docs/logo/simar-ui-mark.svg" type="image/svg+xml">
   <link rel="icon" href="docs/logo/icon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="docs/logo/apple-touch-icon.png">
@@ -99,6 +99,7 @@
         <li><a href="#quotes">Quotes</a></li>
         <li><a href="#blurbs">Text blurbs</a></li>
         <li><a href="#media">Media</a></li>
+        <li><a href="#cards">Card</a></li>
         <li><a href="#layout">Layout and breakpoints</a></li>
         <li><a href="#code">Code</a></li>
         </ul>
@@ -147,7 +148,7 @@
     </div>
 
     <header>
-      <h1>simar-ui <span class="version">v1</span></h1>
+      <h1>simar-ui <span class="version">v1 beta</span></h1>
       <p>Custom form controls. Every one is a real HTML element underneath. Press <em>HTML</em> under any component to see how it was added to the page.</p>
     </header>
 
@@ -506,6 +507,51 @@
               <track kind="captions" src="show.en.vtt" srclang="en" label="English" default>
             </video>
           </figure>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="cards">
+      <h3 id="cards">Card</h3>
+      <p class="note">A self-contained block of content: an <code>&lt;article&gt;</code> with an optional image, a heading and words, and a footer for actions. Lay cards in a <code>blurb-grid</code> and they wrap to fit. To make the whole card a link, put one link with <code>card__link</code> in the heading: a click anywhere on the card follows it, but a keyboard and a screen reader still meet a single link named by the heading. Buttons in the footer stay separate.</p>
+
+      <fieldset class="panel">
+        <legend>Cards</legend>
+        <div class="blurb-grid">
+          <article class="card">
+            <img class="card__media" src="docs/media/haddonfield-night.svg" alt="" width="1200" height="675" loading="lazy">
+            <div class="card__body">
+              <p class="card__eyebrow">Linked card</p>
+              <h4 class="card__title"><a class="card__link" href="#cards">Haddonfield at night</a></h4>
+              <p class="card__text">The whole card is one link, named by its heading.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__body">
+              <p class="card__eyebrow">With actions</p>
+              <h4 class="card__title">Ellen Ripley</h4>
+              <p class="card__text">Warrant officer, Nostromo. The footer holds separate controls.</p>
+            </div>
+            <div class="card__footer">
+              <button class="key" type="button">Follow</button>
+              <a href="#cards">Details</a>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card__body">
+              <h4 class="card__title">Text only</h4>
+              <p class="card__text">Every part is optional, so a card can be just a heading and a few words.</p>
+            </div>
+          </article>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <article class="card">
+            <img class="card__media" src="poster.jpg" alt="" width="1200" height="675" loading="lazy">
+            <div class="card__body">
+              <h4 class="card__title"><a class="card__link" href="/laurie">Laurie Strode</a></h4>
+              <p class="card__text">A few words.</p>
+            </div>
+          </article>
         </script>
       </fieldset>
     </section>

@@ -667,6 +667,45 @@ const mo = await page.evaluate(() => {
 mo.page && mo.video ? pass('a wide image and a 1920px video shrink to fit at 320px without sideways scrolling') : fail(`media at 320px: ${JSON.stringify(mo)}`);
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- card -----------------------------------------------------------------------------------------
+console.log('\nCard');
+await open(1280);
+const cd = await page.evaluate(() => {
+  const cards = [...document.querySelectorAll('section[aria-labelledby="cards"] article.card')];
+  const linked = cards[0];
+  const link = linked.querySelector('.card__link');
+  const lr = link.getBoundingClientRect(), cr = linked.getBoundingClientRect();
+  const after = getComputedStyle(link, '::after');
+  // A footer button added to the linked card must still be clickable above the stretched link.
+  const footer = document.createElement('div');
+  footer.className = 'card__footer';
+  footer.innerHTML = '<button class="key" type="button">Follow</button>';
+  linked.append(footer);
+  const btn = footer.querySelector('button');
+  btn.scrollIntoView({ block: 'center', behavior: 'instant' });
+  const br = btn.getBoundingClientRect();
+  const top = document.elementFromPoint(br.x + br.width / 2, br.y + br.height / 2);
+  return {
+    n: cards.length,
+    headings: cards.every((c) => c.querySelector('h4.card__title')),
+    oneLink: linked.querySelectorAll('a[href]').length === 1 && link.closest('h4') !== null,
+    covers: after.position === 'absolute' && cr.height > lr.height,
+    imgAlt: linked.querySelector('img').getAttribute('alt') === '',
+    footerClickable: top === btn || btn.contains(top),
+    done: footer.remove(),
+  };
+});
+cd.n === 3 && cd.headings && cd.oneLink && cd.imgAlt ? pass('each card is an article with a heading; the linked card has one link, inside its heading') : fail(`card markup: ${JSON.stringify(cd)}`);
+cd.covers && cd.footerClickable ? pass('the link covers the whole card and footer buttons stay clickable above it') : fail(`card link cover: ${JSON.stringify(cd)}`);
+await page.focus('section[aria-labelledby="cards"] .card__link');
+await page.keyboard.press('Shift'); // a key press makes the focus count as keyboard focus (:focus-visible)
+const ring = await page.evaluate(() => { const l = document.querySelector('.card__link'); const o = getComputedStyle(l, '::after'); return { w: parseFloat(o.outlineWidth), style: o.outlineStyle }; });
+ring.w >= 2 && ring.style !== 'none' ? pass('keyboard focus on the card link draws a ring round the card') : fail(`card focus ring: ${JSON.stringify(ring)}`);
+await page.setViewport({ width: 320, height: 700 });
+await wait(200);
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('cards stack at 320px without sideways scrolling') : fail('cards overflow at 320px');
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);
