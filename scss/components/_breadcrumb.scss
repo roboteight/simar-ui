@@ -1,0 +1,54 @@
+@use "../abstracts" as *;
+
+// Breadcrumb: where you are in the site, as an ordered list of links in a labelled <nav>. The last item
+// is the current page: plain text with aria-current="page". The separators are drawn by CSS with empty
+// alt text, so screen readers hear a list of links rather than slashes.
+//
+//   <nav aria-label="Breadcrumb">
+//     <ol class="breadcrumb">
+//       <li><a href="/">Home</a></li>
+//       <li><a href="/components">Components</a></li>
+//       <li aria-current="page">Breadcrumb</li>
+//     </ol>
+//   </nav>
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  li + li::before {
+    content: "/";
+    content: "/" / "";
+    color: var(--ink-soft);
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
+    padding-inline: 0.25rem;
+    border-radius: 6px;
+    color: var(--ink-soft);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2em;
+
+    &:hover { color: var(--ink); text-decoration-color: currentColor; }
+    &:focus-visible { @include focus-ring(2px); }
+  }
+
+  [aria-current="page"] { color: var(--ink); font-weight: 600; }
+}

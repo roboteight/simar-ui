@@ -125,6 +125,7 @@
         <li><a href="#dialogs">Dialog</a></li>
         <li><a href="#alerts">Alerts and toasts</a></li>
         <li><a href="#badges">Badge</a></li>
+        <li><a href="#breadcrumbs">Breadcrumb</a></li>
         <li><a href="#menus">Dropdown menu</a></li>
         <li><a href="#pagination">Pagination</a></li>
         <li><a href="#meters">Meter</a></li>
@@ -1473,6 +1474,32 @@
               <li><a class="key" href="?page=2" aria-label="Page 2, current page" aria-current="page">2</a></li>
               <li><a class="key" href="?page=3" rel="next">Next</a></li>
             </ul>
+          </nav>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="breadcrumbs">
+      <h3 id="breadcrumbs">Breadcrumb</h3>
+      <p class="note">Where you are in the site: an ordered list of links in a labelled <code>&lt;nav&gt;</code>. The last item is the current page, plain text with <code>aria-current="page"</code>. The slashes are drawn by CSS with empty alt text, so a screen reader hears a list of links, not punctuation. Long names wrap instead of overflowing.</p>
+
+      <fieldset class="panel">
+        <legend>Breadcrumb</legend>
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            <li><a href="#breadcrumbs">Home</a></li>
+            <li><a href="#breadcrumbs">Components</a></li>
+            <li><a href="#breadcrumbs">Navigation and wayfinding for very long section names</a></li>
+            <li aria-current="page">Breadcrumb</li>
+          </ol>
+        </nav>
+        <script type="text/plain" data-example="HTML">
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb">
+              <li><a href="/">Home</a></li>
+              <li><a href="/components">Components</a></li>
+              <li aria-current="page">Breadcrumb</li>
+            </ol>
           </nav>
         </script>
       </fieldset>

@@ -624,6 +624,16 @@ await open(1280);
 const foot = await page.evaluate(() => { const f = document.querySelector('footer.sitefoot'); const a = f?.querySelector('a[href]'); return { copy: f?.textContent.includes('\u00a9 2026 Chris Simari'), href: a?.href, name: a?.textContent.trim(), h: a?.getBoundingClientRect().height }; });
 foot.copy && foot.href === 'https://chrissimari.com/projects/simar-ui' && foot.name === 'simar-ui' && foot.h >= 24 ? pass('the footer has the copyright and links to chrissimari.com/projects/simar-ui (24px target)') : fail(`footer: ${JSON.stringify(foot)}`);
 
+// ---- breadcrumb -----------------------------------------------------------------------------------
+console.log('\nBreadcrumb');
+await open(1280);
+const bc = await page.evaluate(() => { const nav = document.querySelector('nav[aria-label="Breadcrumb"]'); const items = [...nav.querySelectorAll('ol > li')]; const last = items.at(-1); return { list: nav.querySelector('ol') !== null, n: items.length, current: nav.querySelectorAll('[aria-current="page"]').length, lastIsText: last.getAttribute('aria-current') === 'page' && !last.querySelector('a'), links: items.slice(0, -1).every((li) => li.querySelector('a[href]')), heights: [...nav.querySelectorAll('a')].every((a) => a.getBoundingClientRect().height >= 24) }; });
+bc.list && bc.n === 4 && bc.current === 1 && bc.lastIsText && bc.links && bc.heights ? pass('an ordered list in a labelled nav: links, then the current page as plain text (24px targets)') : fail(`breadcrumb: ${JSON.stringify(bc)}`);
+await page.setViewport({ width: 320, height: 700 });
+await wait(200);
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('a long breadcrumb wraps at 320px without sideways scrolling') : fail('the breadcrumb overflows at 320px');
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

@@ -314,6 +314,22 @@ Page links in a `<nav>` with its own label. They are real links, so they work wi
 </nav>
 ```
 
+#### Breadcrumb
+
+Where you are in the site: an ordered list of links in a labelled `<nav>`, with the current page as plain text and `aria-current="page"`. The slashes are drawn by CSS with empty alt text, so a screen reader hears a list of links. Long names wrap.
+
+<img src="docs/screenshots/breadcrumb.png" alt="Home, Components, a long section name and the current page, Breadcrumb" width="640">
+
+```html
+<nav aria-label="Breadcrumb">
+  <ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="/components">Components</a></li>
+    <li aria-current="page">Breadcrumb</li>
+  </ol>
+</nav>
+```
+
 #### Dropdown menu
 
 A button that opens a list of actions or links. It is a native `popover`, so it opens, closes and dismisses with no JavaScript; the script adds the menu roles and the keys from the ARIA menu button pattern (Enter, Space and the arrows open it, arrows, Home, End and letters move, Esc returns focus to the button, Tab leaves).
