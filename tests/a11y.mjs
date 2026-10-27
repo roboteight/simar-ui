@@ -186,6 +186,13 @@ const suite = async (theme) => {
   total += await gradientContrast(`${t}, autocomplete open`);
   await page.$eval('#ac-country', (i) => { i.value = ''; i.blur(); });
 
+  // toasts showing
+  await page.evaluate(() => { window.SimarUI.toast('Your changes are in.', { variant: 'success', duration: 0 }); window.SimarUI.toast('Check the card number.', { variant: 'danger', title: 'Payment failed', duration: 0 }); window.SimarUI.toast('Storage almost full.', { variant: 'warning', duration: 0 }); });
+  await wait(300);
+  add(await run(`${t}, toasts showing`));
+  total += await gradientContrast(`${t}, toasts showing`);
+  await page.evaluate(() => document.querySelectorAll('.toast').forEach((n) => n.remove()));
+
   // the dropdown menu open
   await page.evaluate(() => document.querySelector('#menu-demo-button').scrollIntoView({ block: 'center', behavior: 'instant' }));
   await page.click('#menu-demo-button');

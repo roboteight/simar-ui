@@ -27,6 +27,8 @@
     <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>
     <symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>
     <symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01" /><path d="M3 18h.01" /><path d="M3 6h.01" /><path d="M8 12h13" /><path d="M8 18h13" /><path d="M8 6h13" /></symbol>
+    <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></symbol>
+    <symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></symbol>
     <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /><circle cx="12" cy="12" r="3" /></symbol>
     <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M15 12H3" /><path d="M17 19H3" /></symbol>
     <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M17 12H7" /><path d="M19 19H5" /></symbol>
@@ -120,6 +122,7 @@
         <li><a href="#accordion">Accordion</a></li>
         <li><a href="#buttons">Buttons</a></li>
         <li><a href="#dialogs">Dialog</a></li>
+        <li><a href="#alerts">Alerts and toasts</a></li>
         <li><a href="#menus">Dropdown menu</a></li>
         <li><a href="#meters">Meter</a></li>
         <li><a href="#progress">Progress</a></li>
@@ -1345,6 +1348,47 @@
       </script>
     </section>
 
+    <section aria-labelledby="alerts">
+      <h3 id="alerts">Alerts and toasts</h3>
+      <p class="note">An alert is a banner in the page with an icon, a title and some words, so the kind of message never depends on color alone. Add <code>data-dismissible</code> for a close button. A toast is the same banner shown for a few seconds in a live region, so it is announced without moving focus. It waits while the pointer or focus is on it, can always be dismissed (Esc too), and an error interrupts while the others wait their turn. Call <code>SimarUI.toast("Saved", { variant: "success" })</code>, or put <code>data-toast</code> on a button.</p>
+
+      <fieldset class="panel">
+        <legend>Alerts</legend>
+        <div class="alert-stack">
+          <div class="alert alert--info" role="status" data-dismissible><svg class="icon alert__icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert__body"><p class="alert__title">Heads up</p><p class="alert__text">Alerts are announced politely when they appear.</p></div></div>
+          <div class="alert alert--success" role="status" data-dismissible><svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-check"/></svg><div class="alert__body"><p class="alert__title">Saved</p><p class="alert__text">Your changes are in.</p></div></div>
+          <div class="alert alert--warning" role="status"><svg class="icon alert__icon" aria-hidden="true"><use href="#i-triangle-alert"/></svg><div class="alert__body"><p class="alert__title">Almost full</p><p class="alert__text">You have used 90% of your storage.</p></div></div>
+          <div class="alert alert--danger" role="alert"><svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-alert"/></svg><div class="alert__body"><p class="alert__title">Payment failed</p><p class="alert__text">Check the card number and try again.</p></div></div>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-alert variant="success" title="Saved" dismissible>Your changes are in.</simar-alert>
+          <simar-alert variant="danger" title="Payment failed">Check the card number.</simar-alert>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <div class="alert alert--success" role="status" data-dismissible>
+            <svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-check"/></svg>
+            <div class="alert__body"><p class="alert__title">Saved</p><p class="alert__text">Your changes are in.</p></div>
+          </div>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel needs-js">
+        <legend>Toasts</legend>
+        <div class="well-row">
+          <span class="well"><button type="button" class="key" data-toast="Your changes are in." data-toast-variant="success">Success</button></span>
+          <span class="well"><button type="button" class="key" data-toast="A new version is available.">Info</button></span>
+          <span class="well"><button type="button" class="key" data-toast="You have used 90% of your storage." data-toast-variant="warning">Warning</button></span>
+          <span class="well"><button type="button" class="key" data-toast="Check the card number and try again." data-toast-variant="danger" data-toast-title="Payment failed">Error</button></span>
+          <span class="well"><button type="button" class="key" data-toast="This one stays until you close it." data-duration="0">Stays</button></span>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <button type="button" class="key" data-toast="Your changes are in." data-toast-variant="success">Save</button>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          SimarUI.toast("Your changes are in.", { variant: "success", duration: 6000 });
+        </script>
+      </fieldset>
+    </section>
     <section aria-labelledby="menus">
       <h3 id="menus">Dropdown menu</h3>
       <p class="note">A button that opens a list of actions or links. It is a native <code>popover</code>, so it opens, closes, dismisses on Esc and on a click outside without any JavaScript. The script adds the menu roles and keyboard movement: Enter, Space or the arrow keys open it, the arrows, Home, End and letters move, Esc closes and returns focus to the button, and Tab leaves.</p>

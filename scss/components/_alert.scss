@@ -1,0 +1,92 @@
+@use "../abstracts" as *;
+
+// Alerts and toasts. An alert is a banner in the page: an icon, a title and some words, so the kind
+// of message never depends on color alone. A toast is the same banner shown for a few seconds in a
+// live region (it is announced, it pauses while you hover or focus it, and it can be dismissed).
+//
+//   <div class="alert alert--success" role="status">
+//     <svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-check"/></svg>
+//     <div class="alert__body"><p class="alert__title">Saved</p><p class="alert__text">Your changes are in.</p></div>
+//   </div>
+.alert {
+  --alert-color: var(--lit-ink);
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--alert-color) 9%, var(--sheet-top));
+  box-shadow: 0 0 0 1px var(--hairline), inset 4px 0 0 var(--alert-color);
+  padding-left: 1.25rem;
+
+  &--info { --alert-color: var(--lit-ink); }
+  &--success { --alert-color: var(--meter-ok); }
+  &--warning { --alert-color: var(--meter-warn); }
+  &--danger { --alert-color: var(--error); }
+
+  &__icon {
+    flex: none;
+    margin-top: 0.1rem;
+    color: var(--alert-color);
+    filter: none;
+  }
+
+  &__body { flex: 1; min-width: 0; }
+  &__title { margin: 0; font-weight: 700; }
+  &__text { margin: 0.15rem 0 0; color: var(--ink); } // full ink: the tinted background is too close to the softer gray
+
+  // The dismiss button the script adds: an icon only, no border, like the code block's copy button.
+  &__close {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    margin: -0.25rem -0.4rem -0.25rem 0;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+
+    &:hover { color: var(--ink); background: var(--hairline); }
+    &:focus-visible { @include focus-ring(2px); }
+    .icon { filter: none; }
+    @include forced-colors { color: ButtonText; }
+  }
+
+  @include forced-colors { border: 1px solid CanvasText; box-shadow: none; }
+}
+
+.alert-stack { display: grid; gap: 0.75rem; }
+
+// Toasts sit at the bottom of the window. The region is always in the page; each toast is added to it.
+.toasts {
+  position: fixed;
+  inset: auto 0 1rem 0;
+  z-index: 40;
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  padding: 0 1rem;
+  pointer-events: none;
+
+  .toast {
+    width: min(26rem, 100%);
+    pointer-events: auto;
+    background: color-mix(in srgb, var(--alert-color) 9%, var(--sheet-top));
+    box-shadow: 0 0 0 1px var(--hairline), inset 4px 0 0 var(--alert-color), 0 14px 30px -12px shade(0.5);
+    animation: toast-in 180ms ease-out;
+
+    @include reduced-motion { animation: none; }
+  }
+
+  @media print { display: none; }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}

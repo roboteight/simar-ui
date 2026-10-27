@@ -186,6 +186,17 @@ const builders = {
     return `<div${rootAttrs(node, 'menu')}><span class="well"><button type="button" class="key" id="${id}-button" popovertarget="${id}">${esc(node.getAttribute('label') ?? 'Menu')}<svg class="icon icon--lead icon--chevron-down" aria-hidden="true"><use href="#i-chevron-down"/></svg></button></span><ul class="menu__list" id="${id}" popover>${rows.join('')}</ul></div>`;
   },
 
+  // <simar-alert variant="success" title="Saved" dismissible>Your changes are in.</simar-alert>
+  // variant: info (default), success, warning, danger. danger is announced at once (role="alert").
+  'simar-alert': (node) => {
+    const variant = ['info', 'success', 'warning', 'danger'].includes(node.getAttribute('variant')) ? node.getAttribute('variant') : 'info';
+    const iconName = { info: 'info', success: 'circle-check', warning: 'triangle-alert', danger: 'circle-alert' }[variant];
+    const label = { info: 'Information', success: 'Success', warning: 'Warning', danger: 'Error' }[variant];
+    const body = node.innerHTML.trim();
+    const text = node.children.length ? body : `<p class="alert__text">${body}</p>`;
+    return `<div${rootAttrs(node, `alert alert--${variant}`)} role="${variant === 'danger' ? 'alert' : 'status'}"${node.hasAttribute('dismissible') ? ' data-dismissible' : ''}><svg class="icon alert__icon" aria-hidden="true"><use href="#i-${iconName}"/></svg><div class="alert__body"><p class="alert__title">${esc(node.getAttribute('title') ?? label)}</p>${text}</div></div>`;
+  },
+
   // <simar-accordion name="faq"><simar-item title="What is it?" open>Answer…</simar-item></simar-accordion>
   // Items open one at a time (sharing `name`) unless `multiple` is set.
   'simar-accordion': (node) => {

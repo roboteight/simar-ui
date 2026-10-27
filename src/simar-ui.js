@@ -940,6 +940,80 @@ const enhanceAutocomplete = (claim) => {
   }
 };
 
+// Alerts and toasts. A dismissible alert (data-dismissible) gets a close button. A toast is an alert
+// shown in a live region: SimarUI.toast("Saved", { variant: "success" }), or put data-toast="Saved" on
+// a button. It disappears after a few seconds (data-duration / the duration option, in ms; 0 keeps it),
+// waits while the pointer or focus is on it, and can always be dismissed. Esc dismisses the toast with focus.
+const ALERT_ICONS = { info: 'info', success: 'circle-check', warning: 'triangle-alert', danger: 'circle-alert' };
+const closeButton = (label = 'Dismiss') => {
+  const button = el('button', 'alert__close');
+  button.type = 'button';
+  button.setAttribute('aria-label', label);
+  button.innerHTML = icon('x');
+  return button;
+};
+const enhanceAlerts = (claim) => {
+  for (const alert of claim('.alert[data-dismissible]')) {
+    const button = closeButton();
+    alert.append(button);
+    button.addEventListener('click', () => {
+      const stack = alert.closest('.alert-stack') ?? alert.parentElement;
+      alert.remove();
+      stack.tabIndex = -1; // focus has to go somewhere when the focused button disappears
+      stack.focus({ preventScroll: true });
+    });
+  }
+};
+
+const toastRegion = () => {
+  let region = document.querySelector('.toasts');
+  if (!region) {
+    region = el('div', 'toasts', document.body);
+    region.setAttribute('role', 'region');
+    region.setAttribute('aria-label', 'Notifications');
+    region.setAttribute('aria-live', 'polite');
+    region.setAttribute('aria-relevant', 'additions');
+  }
+  return region;
+};
+
+const toast = (message, { variant = 'info', title = '', duration = 6000 } = {}) => {
+  const kind = ALERT_ICONS[variant] ? variant : 'info';
+  const node = el('div', `alert alert--${kind} toast`, toastRegion());
+  if (kind === 'danger') node.setAttribute('role', 'alert'); // errors interrupt; the rest wait their turn
+  node.innerHTML = `${icon(ALERT_ICONS[kind]).replace('class="icon"', 'class="icon alert__icon"')}<div class="alert__body"></div>`;
+  const body = node.querySelector('.alert__body');
+  const label = { info: 'Information', success: 'Success', warning: 'Warning', danger: 'Error' }[kind];
+  el('p', 'alert__title', body).textContent = title || label;
+  if (message) el('p', 'alert__text', body).textContent = message;
+  const button = closeButton();
+  node.append(button);
+
+  let timer;
+  let waiting = false;
+  const remove = () => { clearTimeout(timer); node.remove(); };
+  const start = () => {
+    clearTimeout(timer);
+    if (duration > 0) timer = setTimeout(() => { if (!waiting) remove(); else start(); }, duration);
+  };
+  button.addEventListener('click', remove);
+  node.addEventListener('keydown', (e) => { if (e.key === 'Escape') remove(); });
+  for (const type of ['pointerenter', 'focusin']) node.addEventListener(type, () => { waiting = true; });
+  for (const type of ['pointerleave', 'focusout']) node.addEventListener(type, () => { waiting = false; start(); });
+  start();
+  return node;
+};
+
+const enhanceToastTriggers = (claim) => {
+  for (const trigger of claim('[data-toast]')) {
+    trigger.addEventListener('click', () => toast(trigger.dataset.toast, {
+      variant: trigger.dataset.toastVariant,
+      title: trigger.dataset.toastTitle,
+      duration: trigger.dataset.duration === undefined ? undefined : +trigger.dataset.duration,
+    }));
+  }
+};
+
 // Picker: a <select data-picker> whose list can show more than text, such as a moving spinner. The
 // select stays in the form and keeps the value; a select-only combobox (the ARIA pattern) is built
 // over it. An option points at a <template> with data-art, and that is drawn beside its words.
@@ -1351,6 +1425,8 @@ const init = (scope = document) => {
   enhanceChecks(claim);
   enhanceTabs(claim);
   enhanceMenus(claim);
+  enhanceAlerts(claim);
+  enhanceToastTriggers(claim);
   enhanceAutocomplete(claim);
   enhanceSteppers(claim);
   enhanceReveal(claim);
@@ -1361,7 +1437,7 @@ const init = (scope = document) => {
   audit(scope);
 };
 
-window.SimarUI = { init, audit };
+window.SimarUI = { init, audit, toast };
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => init());
 else init();

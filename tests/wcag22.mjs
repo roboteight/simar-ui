@@ -563,6 +563,34 @@ await wait(1500);
 const nav = await page.evaluate(() => ({ hash: location.hash, focus: document.activeElement.id, value: document.querySelector('#site-search').value }));
 nav.hash === '#tabs' && nav.focus === 'tabs' && nav.value === '' ? pass('Enter goes to the section, moves focus to its heading and clears the search') : fail(`navigate: ${JSON.stringify(nav)}`);
 
+// ---- alerts and toasts -----------------------------------------------------------------------------
+console.log('\nAlerts and toasts');
+await open(1280);
+const alertInfo = await page.evaluate(() => [...document.querySelectorAll('#alerts ~ .panel .alert')].map((a) => ({ role: a.getAttribute('role'), icon: !!a.querySelector('.alert__icon[aria-hidden="true"]'), title: !!a.querySelector('.alert__title')?.textContent.trim() })));
+alertInfo.length === 4 && alertInfo.every((a) => a.icon && a.title) && alertInfo.map((a) => a.role).join() === 'status,status,status,alert' ? pass('each alert has an icon and a title (not color alone); errors use role="alert", the rest role="status"') : fail(`alerts: ${JSON.stringify(alertInfo)}`);
+await page.$eval('#alerts', (n) => n.scrollIntoView({ block: 'start', behavior: 'instant' }));
+await page.focus('.alert .alert__close');
+await page.keyboard.press('Enter');
+const afterDismiss = await page.evaluate(() => ({ left: document.querySelectorAll('#alerts ~ .panel .alert').length, focusOn: document.activeElement.className }));
+afterDismiss.left === 3 && afterDismiss.focusOn.includes('alert-stack') ? pass('dismissing an alert removes it and keeps focus in the list') : fail(`dismiss: ${JSON.stringify(afterDismiss)}`);
+const region = await page.evaluate(() => { const r = document.querySelector('.toasts'); return r ? { role: r.getAttribute('role'), live: r.getAttribute('aria-live'), name: r.getAttribute('aria-label') } : null; });
+await page.click('[data-toast-variant="success"]');
+const region2 = await page.evaluate(() => { const r = document.querySelector('.toasts'); return { role: r.getAttribute('role'), live: r.getAttribute('aria-live'), name: r.getAttribute('aria-label'), n: r.children.length, text: r.textContent }; });
+region2.role === 'region' && region2.live === 'polite' && region2.name === 'Notifications' && region2.n === 1 && /Success/.test(region2.text) ? pass('a toast appears in a named, polite live region') : fail(`toast region: ${JSON.stringify(region2)}`);
+await page.click('[data-toast-variant="danger"]');
+(await page.evaluate(() => document.querySelector('.toast.alert--danger').getAttribute('role'))) === 'alert' ? pass('an error toast is role="alert" so it interrupts') : fail('error toast is not role="alert"');
+await page.focus('.toast .alert__close');
+await page.keyboard.press('Escape');
+(await page.evaluate(() => document.querySelectorAll('.toast').length)) === 1 ? pass('Esc dismisses the toast with focus') : fail('Esc did not dismiss the toast');
+await page.evaluate(() => window.SimarUI.toast('Quick one', { duration: 300 }));
+await wait(700);
+(await page.evaluate(() => !document.body.textContent.includes('Quick one') || ![...document.querySelectorAll('.toast')].some((t) => t.textContent.includes('Quick one')))) ? pass('a toast goes away by itself after its duration') : fail('the toast did not time out');
+await page.evaluate(() => window.SimarUI.toast('Hold on', { duration: 300 }));
+await page.focus('.toast:last-child .alert__close');
+await wait(800);
+(await page.evaluate(() => [...document.querySelectorAll('.toast')].some((t) => t.textContent.includes('Hold on')))) ? pass('a toast waits while it has focus (WCAG 2.2.1)') : fail('the toast left while focused');
+await page.evaluate(() => document.querySelectorAll('.toast').forEach((t) => t.remove()));
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

@@ -1,6 +1,6 @@
 (() => {
   // src/icons.svg
-  var icons_default = '<svg xmlns="http://www.w3.org/2000/svg" hidden>\n  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10" /><path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></symbol>\n  <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>\n  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></symbol>\n  <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></symbol>\n  <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>\n  <symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>\n  <symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01" /><path d="M3 18h.01" /><path d="M3 6h.01" /><path d="M8 12h13" /><path d="M8 18h13" /><path d="M8 6h13" /></symbol>\n  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M15 12H3" /><path d="M17 19H3" /></symbol>\n  <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M17 12H7" /><path d="M19 19H5" /></symbol>\n  <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M21 12H9" /><path d="M21 19H7" /></symbol>\n  <symbol id="i-align-justify" viewBox="0 0 24 24"><path d="M3 5h18" /><path d="M3 12h18" /><path d="M3 19h18" /></symbol>\n  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>\n  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol>\n  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></symbol>\n  <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></symbol>\n  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>\n  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>\n  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></symbol>\n  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>\n  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" /><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" /><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" /><path d="m2 2 20 20" /></symbol>\n  <symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" /></symbol>\n  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="M12 5v14" /></symbol>\n  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>\n  <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" x2="12" y1="8" y2="12" /><line x1="12" x2="12.01" y1="16" y2="16" /></symbol>\n  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m17 8-5-5-5 5" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></symbol>\n  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></symbol>\n  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>\n  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>\n  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>\n</svg>\n';
+  var icons_default = '<svg xmlns="http://www.w3.org/2000/svg" hidden>\n  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10" /><path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></symbol>\n  <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>\n  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></symbol>\n  <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></symbol>\n  <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>\n  <symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>\n  <symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01" /><path d="M3 18h.01" /><path d="M3 6h.01" /><path d="M8 12h13" /><path d="M8 18h13" /><path d="M8 6h13" /></symbol>\n  <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></symbol>\n  <symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></symbol>\n  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M15 12H3" /><path d="M17 19H3" /></symbol>\n  <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M17 12H7" /><path d="M19 19H5" /></symbol>\n  <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M21 12H9" /><path d="M21 19H7" /></symbol>\n  <symbol id="i-align-justify" viewBox="0 0 24 24"><path d="M3 5h18" /><path d="M3 12h18" /><path d="M3 19h18" /></symbol>\n  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>\n  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol>\n  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></symbol>\n  <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></symbol>\n  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>\n  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>\n  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></symbol>\n  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>\n  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" /><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" /><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" /><path d="m2 2 20 20" /></symbol>\n  <symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" /></symbol>\n  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="M12 5v14" /></symbol>\n  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>\n  <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" x2="12" y1="8" y2="12" /><line x1="12" x2="12.01" y1="16" y2="16" /></symbol>\n  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m17 8-5-5-5 5" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></symbol>\n  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></symbol>\n  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>\n  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>\n  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>\n</svg>\n';
 
   // src/tags.js
   var esc = (text) => String(text).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -152,6 +152,16 @@
         return child.getAttribute("href") ? `<li><a class="${cls}" href="${esc(child.getAttribute("href"))}"${dis}>${inner}</a></li>` : `<li><button type="button" class="${cls}"${dis}>${inner}</button></li>`;
       });
       return `<div${rootAttrs(node, "menu")}><span class="well"><button type="button" class="key" id="${id}-button" popovertarget="${id}">${esc(node.getAttribute("label") ?? "Menu")}<svg class="icon icon--lead icon--chevron-down" aria-hidden="true"><use href="#i-chevron-down"/></svg></button></span><ul class="menu__list" id="${id}" popover>${rows.join("")}</ul></div>`;
+    },
+    // <simar-alert variant="success" title="Saved" dismissible>Your changes are in.</simar-alert>
+    // variant: info (default), success, warning, danger. danger is announced at once (role="alert").
+    "simar-alert": (node) => {
+      const variant = ["info", "success", "warning", "danger"].includes(node.getAttribute("variant")) ? node.getAttribute("variant") : "info";
+      const iconName = { info: "info", success: "circle-check", warning: "triangle-alert", danger: "circle-alert" }[variant];
+      const label = { info: "Information", success: "Success", warning: "Warning", danger: "Error" }[variant];
+      const body = node.innerHTML.trim();
+      const text = node.children.length ? body : `<p class="alert__text">${body}</p>`;
+      return `<div${rootAttrs(node, `alert alert--${variant}`)} role="${variant === "danger" ? "alert" : "status"}"${node.hasAttribute("dismissible") ? " data-dismissible" : ""}><svg class="icon alert__icon" aria-hidden="true"><use href="#i-${iconName}"/></svg><div class="alert__body"><p class="alert__title">${esc(node.getAttribute("title") ?? label)}</p>${text}</div></div>`;
     },
     // <simar-accordion name="faq"><simar-item title="What is it?" open>Answer…</simar-item></simar-accordion>
     // Items open one at a time (sharing `name`) unless `multiple` is set.
@@ -1139,6 +1149,84 @@
       addEventListener("resize", close);
     }
   };
+  var ALERT_ICONS = { info: "info", success: "circle-check", warning: "triangle-alert", danger: "circle-alert" };
+  var closeButton = (label = "Dismiss") => {
+    const button = el("button", "alert__close");
+    button.type = "button";
+    button.setAttribute("aria-label", label);
+    button.innerHTML = icon2("x");
+    return button;
+  };
+  var enhanceAlerts = (claim) => {
+    for (const alert of claim(".alert[data-dismissible]")) {
+      const button = closeButton();
+      alert.append(button);
+      button.addEventListener("click", () => {
+        const stack = alert.closest(".alert-stack") ?? alert.parentElement;
+        alert.remove();
+        stack.tabIndex = -1;
+        stack.focus({ preventScroll: true });
+      });
+    }
+  };
+  var toastRegion = () => {
+    let region = document.querySelector(".toasts");
+    if (!region) {
+      region = el("div", "toasts", document.body);
+      region.setAttribute("role", "region");
+      region.setAttribute("aria-label", "Notifications");
+      region.setAttribute("aria-live", "polite");
+      region.setAttribute("aria-relevant", "additions");
+    }
+    return region;
+  };
+  var toast = (message, { variant = "info", title = "", duration = 6e3 } = {}) => {
+    const kind = ALERT_ICONS[variant] ? variant : "info";
+    const node = el("div", `alert alert--${kind} toast`, toastRegion());
+    if (kind === "danger") node.setAttribute("role", "alert");
+    node.innerHTML = `${icon2(ALERT_ICONS[kind]).replace('class="icon"', 'class="icon alert__icon"')}<div class="alert__body"></div>`;
+    const body = node.querySelector(".alert__body");
+    const label = { info: "Information", success: "Success", warning: "Warning", danger: "Error" }[kind];
+    el("p", "alert__title", body).textContent = title || label;
+    if (message) el("p", "alert__text", body).textContent = message;
+    const button = closeButton();
+    node.append(button);
+    let timer;
+    let waiting = false;
+    const remove = () => {
+      clearTimeout(timer);
+      node.remove();
+    };
+    const start = () => {
+      clearTimeout(timer);
+      if (duration > 0) timer = setTimeout(() => {
+        if (!waiting) remove();
+        else start();
+      }, duration);
+    };
+    button.addEventListener("click", remove);
+    node.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") remove();
+    });
+    for (const type of ["pointerenter", "focusin"]) node.addEventListener(type, () => {
+      waiting = true;
+    });
+    for (const type of ["pointerleave", "focusout"]) node.addEventListener(type, () => {
+      waiting = false;
+      start();
+    });
+    start();
+    return node;
+  };
+  var enhanceToastTriggers = (claim) => {
+    for (const trigger of claim("[data-toast]")) {
+      trigger.addEventListener("click", () => toast(trigger.dataset.toast, {
+        variant: trigger.dataset.toastVariant,
+        title: trigger.dataset.toastTitle,
+        duration: trigger.dataset.duration === void 0 ? void 0 : +trigger.dataset.duration
+      }));
+    }
+  };
   var pickers = 0;
   var enhancePickers = (claim) => {
     for (const select of claim("select[data-picker]")) {
@@ -1517,6 +1605,8 @@
     enhanceChecks(claim);
     enhanceTabs(claim);
     enhanceMenus(claim);
+    enhanceAlerts(claim);
+    enhanceToastTriggers(claim);
     enhanceAutocomplete(claim);
     enhanceSteppers(claim);
     enhanceReveal(claim);
@@ -1526,7 +1616,7 @@
     enhanceTooltips(scope);
     audit(scope);
   };
-  window.SimarUI = { init, audit };
+  window.SimarUI = { init, audit, toast };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => init());
   else init();
 })();

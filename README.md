@@ -258,6 +258,19 @@ Write each tab as a headed section. Without JavaScript they stack under their he
 </simar-tabs>
 ```
 
+#### Alerts and toasts
+
+An alert is a banner in the page with an icon, a title and some words, so the kind of message never depends on color alone: `info`, `success`, `warning` and `danger`. Add `data-dismissible` for a close button. A toast is the same banner shown for a few seconds in a live region, so it is announced without moving focus. It waits while the pointer or focus is on it, can always be dismissed (Esc too), and an error interrupts while the others wait their turn.
+
+<img src="docs/screenshots/alerts.png" alt="Four alerts: information, success, warning and error" width="640">
+
+```html
+<simar-alert variant="success" title="Saved" dismissible>Your changes are in.</simar-alert>
+
+<button type="button" class="key" data-toast="Your changes are in." data-toast-variant="success">Save</button>
+<script>SimarUI.toast("Your changes are in.", { variant: "success", duration: 6000 });</script>
+```
+
 #### Dropdown menu
 
 A button that opens a list of actions or links. It is a native `popover`, so it opens, closes and dismisses with no JavaScript; the script adds the menu roles and the keys from the ARIA menu button pattern (Enter, Space and the arrows open it, arrows, Home, End and letters move, Esc returns focus to the button, Tab leaves).

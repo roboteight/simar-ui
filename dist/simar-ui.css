@@ -4401,6 +4401,128 @@ input[type=file].input:disabled::file-selector-button {
   }
 }
 
+.alert {
+  --alert-color: var(--lit-ink);
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--alert-color) 9%, var(--sheet-top));
+  box-shadow: 0 0 0 1px var(--hairline), inset 4px 0 0 var(--alert-color);
+  padding-left: 1.25rem;
+}
+.alert--info {
+  --alert-color: var(--lit-ink);
+}
+.alert--success {
+  --alert-color: var(--meter-ok);
+}
+.alert--warning {
+  --alert-color: var(--meter-warn);
+}
+.alert--danger {
+  --alert-color: var(--error);
+}
+.alert__icon {
+  flex: none;
+  margin-top: 0.1rem;
+  color: var(--alert-color);
+  filter: none;
+}
+.alert__body {
+  flex: 1;
+  min-width: 0;
+}
+.alert__title {
+  margin: 0;
+  font-weight: 700;
+}
+.alert__text {
+  margin: 0.15rem 0 0;
+  color: var(--ink);
+}
+.alert__close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin: -0.25rem -0.4rem -0.25rem 0;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.alert__close:hover {
+  color: var(--ink);
+  background: var(--hairline);
+}
+.alert__close:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.alert__close .icon {
+  filter: none;
+}
+@media (forced-colors: active) {
+  .alert__close {
+    color: ButtonText;
+  }
+}
+@media (forced-colors: active) {
+  .alert {
+    border: 1px solid CanvasText;
+    box-shadow: none;
+  }
+}
+
+.alert-stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.toasts {
+  position: fixed;
+  inset: auto 0 1rem 0;
+  z-index: 40;
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  padding: 0 1rem;
+  pointer-events: none;
+}
+.toasts .toast {
+  width: min(26rem, 100%);
+  pointer-events: auto;
+  background: color-mix(in srgb, var(--alert-color) 9%, var(--sheet-top));
+  box-shadow: 0 0 0 1px var(--hairline), inset 4px 0 0 var(--alert-color), 0 14px 30px -12px color-mix(in srgb, #000 min(100%, 50% * var(--shade-k)), transparent);
+  animation: toast-in 180ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .toasts .toast {
+    animation: none;
+  }
+}
+@media print {
+  .toasts {
+    display: none;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 .daterange {
   display: flex;
   flex-wrap: wrap;

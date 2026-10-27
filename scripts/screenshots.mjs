@@ -69,6 +69,7 @@ await shoot('typography', [await panel('Headings'), await panel('Text')]);
 await shoot('quotes', [await panel('Blockquote'), await panel('Pull quote')]);
 await shoot('blurbs', [await panel('Blurbs')]);
 await shoot('tabs', [await panel('Tabs')]);
+await shoot('alerts', [await panel('Alerts')]);
 await page.focus('#ac-country');
 await page.keyboard.type('un');
 await wait(300);
