@@ -11,7 +11,7 @@
 ![dependencies: none](https://img.shields.io/badge/dependencies-none-2b2d31?style=flat-square)
 ![accessibility: axe, keyboard and contrast tested](https://img.shields.io/badge/accessibility-axe%20%C2%B7%20keyboard%20%C2%B7%20contrast%20tested-2b2d31?style=flat-square)
 
-**Beveled, extruded form controls built on real HTML elements.** Text fields, selects, checkboxes, switches, keys, faders, knobs, a date range, validation, a dialog and more, in light and dark. You configure them with HTML attributes, they work without JavaScript, and they're built to be fully accessible.
+**Beveled, extruded controls and components built on real HTML elements.** Form fields with validation, selects and autocomplete, keys, faders, knobs, a date range, tabs, menus, alerts and toasts, tables, pagination, breadcrumbs, typography, a responsive grid and more, in light and dark with themes. The aim is that you never need another library for a component. You configure them with HTML attributes, they work without JavaScript, and they're built to be fully accessible.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/hero-dark.png">
@@ -23,7 +23,9 @@
 - **Native underneath.** Every control is an `<input>`, `<select>`, `<textarea>`, `<button>`, `<meter>`, `<progress>`, `<details>` or `<dialog>`, so forms, labels, validation, keyboard and screen-reader behavior come from the browser. The styling sits on top.
 - **Configured in HTML.** Options are attributes (`min`, `max`, `step`, `data-lit="blue"`, `data-haptic="off"`), or short tags like `<simar-knob label="Volume" max="11">`. No config objects.
 - **Accessible, and kept that way.** Keyboard operable, WCAG 2.2 AA contrast, no dragging required, reduced motion and high contrast supported. Automated tests run in light and dark, and the library warns you while you build if you forget a label. [More below.](#accessibility)
-- **No dependencies, no build step to use it.** Two files from a CDN, or `npm install`.
+- **No dependencies, no build step to use it.** Two files from a CDN, or `npm install`. About 34 KB gzipped for the CSS, script and icons together; nothing else is downloaded unless you choose a web font.
+- **Themed.** All styling is a theme (`scss/themes/`): tokens for color, fonts and shadows, highlight presets, button colors and whole-page palettes. This is the first theme; more will follow.
+- **Responsive.** Mobile first, with Bootstrap-style breakpoints, a grid and display helpers.
 
 ## Install
 
@@ -64,6 +66,8 @@ The tags are replaced with real inputs, so values submit with their form and `in
 Open `index.html` for the live demo, with a contents list that floats on the left (on smaller screens it folds into an icon on the left edge that opens a drawer) a sticky header with in-page search (Ctrl or Cmd + K) and the light, dark and auto keys, and a settings tab on the right edge that appears once you scroll past Page settings: every component has an **HTML** key that shows exactly how it was added to the page, with the tag form and JavaScript examples.
 
 ## What's inside
+
+**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, buttons, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Content:** typography, quotes, text blurbs, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
 
 The demo page and its contents list follow Bootstrap's docs order: Getting started, Customize, Content, Forms, then Components, with similar items together.
 
@@ -483,6 +487,15 @@ Every color and size is a CSS custom property, so you can restyle without touchi
 | `data-validate` | form | Show validation as messages in the page (see Validation) |
 | `required`, `hint`, `error`, `reveal` | form-control tags | Required flag, hint text, error text, show/hide on a password |
 | `nolines` / `nocopy` | code block | Leave off the line numbers or the copy button |
+| `data-lit`, `data-palette="indigo"`, `data-font="serif"` | `<html>` or any element | Highlight color, whole-page theme (indigo, teal, rose, amber, forest, ocean) and fonts (sans, serif, both; system fonts by default) |
+| `variant="ring"` / `spinner--ring` | spinner | ticks (default), ring, dots or bars |
+| `data-tabs` | tabs wrapper | Turns headed sections into tabs |
+| `data-sortable`, `data-sort` | table, header cells | Sortable columns with `aria-sort` |
+| `data-autocomplete`, `list="id"` | text input | A themed suggestion list over a `<datalist>`; `data-autocomplete="first"` makes Enter take the top result |
+| `data-dismissible` | alert | Adds a close button |
+| `data-toast`, `data-toast-variant`, `data-duration` | button | Shows a toast when pressed; `SimarUI.toast(text, options)` does the same from script |
+| `popovertarget`, `.menu__list` | dropdown menu | A native popover; the script adds the menu roles and keys |
+| `select[data-picker]` | select | A list that can show moving artwork (see the spinner picker) |
 
 Haptics use the browser's Vibration API, so there is nothing to install. It works on Android browsers; iOS Safari doesn't support it and the calls are skipped.
 
@@ -499,6 +512,10 @@ Every control is a native element, so the keyboard, focus and screen-reader beha
 - **Motion and contrast modes:** `prefers-reduced-motion` turns transitions and animation off (the preloader shows a still "busy" state). In `forced-colors` (Windows High Contrast) the controls drop their gradients and use only system colors, so the user's own theme decides.
 - **Tooltips (WCAG 1.4.13):** dismissible with Esc, hoverable, persistent, shown on keyboard focus, linked with `aria-describedby`, and kept on screen at the page edge.
 - **Code blocks:** line numbers are skipped by screen readers, can't be selected, and aren't copied; the block can be scrolled by keyboard.
+- **ARIA patterns:** native elements first. Where none exists the component follows the WAI-ARIA Authoring Practices exactly: tabs (arrows, Home, End), menu button (arrows, letters, Esc, Tab), editable combobox for autocomplete (`aria-activedescendant`, a live count of suggestions) and select-only combobox for the picker. Alerts use `role="status"`, and errors `role="alert"`.
+- **Disabled controls** are held to 4.5:1 too, even though WCAG exempts them, so they stay readable in every theme.
+- **Toasts (WCAG 2.2.1):** announced in a polite live region, paused while hovered or focused, dismissible by button or Esc.
+- **Standard:** the target is WCAG 2.2 AA, 100%, which covers what the ADA, Section 508 and the DOJ's WCAG 2.1 AA rule point to. We say "tested against WCAG 2.2 AA", not "ADA compliant": that is a legal judgment this project can't make.
 
 ### Safeguards
 
@@ -507,7 +524,10 @@ Every control is a native element, so the keyboard, focus and screen-reader beha
   - the [axe](https://github.com/dequelabs/axe-core) engine, with every rule on, over the demo in each state (JS on and off, calendar open, dialog open);
   - a contrast check across every gradient and highlight preset (axe can't do gradients);
   - WCAG 2.2 checks for 320px reflow, target size, reduced motion, forced colors, click-only alternatives to dragging, non-text contrast and the accessibility tree;
-  - a keyboard pass that tabs through every control and checks the focus ring is actually on screen and not hidden behind a floating button.
+  - a keyboard pass that tabs through every control and checks the focus ring is actually on screen and not hidden behind a floating button;
+  - the same checks with every highlight color, every whole-page palette, the font choices, and states such as menus, suggestions and toasts showing;
+  - behavior tests for tabs, the menu, autocomplete, sortable tables, the contents drawer, the settings tab, header search, pagination and breadcrumbs, and a responsive grid test at phone, tablet and desktop widths;
+  - an app test that serves the page, checks the manifest and icons and the service worker, and loads the page with the network off.
 
   `npm test` builds first; `npm publish` runs it automatically.
 - **The tests can fail.** `SABOTAGE=1 node tests/keyboard.mjs` strips the focus rings and the run must exit non-zero.
@@ -554,6 +574,10 @@ docs/       demo-only scripts and styles, themes.html, screenshots
 tests/      accessibility tests
 index.html  the demo and documentation page
 ```
+
+## Roadmap
+
+Next: card, tags and chips, avatar, list group, skeleton loader, empty state, popover variants, rating, stepper, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
 
 ## Contributing
 
