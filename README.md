@@ -499,6 +499,10 @@ Every control is a native element, so the keyboard, focus and screen-reader beha
 
 What automation can't cover, and you should test by hand: what real screen readers (VoiceOver, NVDA, TalkBack) actually announce (Chrome's automation interface can't show `aria-valuetext`, so the stepped knobs' labels in particular need a listen), touch and switch access, and Safari and Firefox.
 
+## Offline and installable
+
+The demo and docs page is a small web app: a [manifest](manifest.webmanifest) with the app icons (192, 512 and a maskable one, made from the logo with `npm run icons`) and a service worker (`sw.js`). Served over https (or localhost) it works offline, and a browser can install it. When a new version has been fetched in the background, the page says so and offers a reload. The library in `dist/` does not need any of this. When you change the version in `package.json`, change `VERSION` in `sw.js` too; a test checks they match.
+
 ## Without JavaScript
 
 Keys, radio keys, the accordion, the progress bar, and the dialog (via `command="show-modal"`) are CSS and HTML only. Faders, knobs and date fields fall back to their native inputs, styled as plain faders. `html[data-js="on"]` is set when the script runs, so your own CSS can tell the two cases apart. The demo's **Turn JS off** button shows exactly how it downgrades.

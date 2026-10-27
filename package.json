@@ -47,7 +47,7 @@
     "dev": "sass --watch --no-source-map scss/simar-ui.scss:dist/simar-ui.css scss/docs.scss:docs/docs.css",
     "dev:js": "esbuild src/simar-ui.js --bundle --loader:.svg=text --format=iife --outfile=dist/simar-ui.js --watch",
     "serve": "python3 -m http.server 8000",
-    "test:a11y": "node tests/a11y.mjs && node tests/wcag22.mjs && THEME=light node tests/keyboard.mjs && THEME=dark node tests/keyboard.mjs",
+    "test:a11y": "node tests/a11y.mjs && node tests/wcag22.mjs && node tests/pwa.mjs && THEME=light node tests/keyboard.mjs && THEME=dark node tests/keyboard.mjs",
     "test": "npm run build && npm run test:a11y",
     "prepublishOnly": "npm test",
     "screenshots": "node scripts/screenshots.mjs",

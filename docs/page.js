@@ -243,3 +243,18 @@ if (toc) {
   addEventListener('resize', queue);
   spy();
 }
+
+// Offline and installable: register the service worker (docs only). When a new version has been
+// fetched in the background, say so and offer to reload. It only runs on https and localhost.
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  navigator.serviceWorker.register('sw.js').then((registration) => {
+    registration.addEventListener('updatefound', () => {
+      const worker = registration.installing;
+      worker?.addEventListener('statechange', () => {
+        if (worker.state === 'installed' && navigator.serviceWorker.controller && window.SimarUI) {
+          window.SimarUI.toast('Reload the page to get the latest version.', { title: 'New version ready', duration: 0 });
+        }
+      });
+    });
+  }).catch(() => { /* the page works the same without it */ });
+}
