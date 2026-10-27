@@ -1943,7 +1943,7 @@
   margin: 0 0 1.25rem;
   padding: 1rem 1.25rem 1.25rem;
   border: 0;
-  border-radius: var(--radius-lg);
+  border-radius: var(--panel-radius, var(--radius-lg));
   background: linear-gradient(180deg, var(--surface-top), var(--surface-bottom));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset 0 1px 0 var(--lip), inset 0 -1px 0 color-mix(in srgb, #000 min(100%, 6% * var(--shade-k) * var(--depth)), transparent), 0 var(--elev-y) var(--elev-blur) var(--elev-spread) color-mix(in srgb, #000 min(100%, var(--elev-a) * var(--shade-k) * var(--depth)), transparent);
 }
@@ -2182,7 +2182,7 @@ kbd.kbd,
   display: inline-block;
   min-width: 1.6em;
   padding: 0.1em 0.5em;
-  border-radius: var(--radius);
+  border-radius: var(--kbd-radius, var(--radius));
   color: var(--ink);
   font: 0.85em/1.4 var(--font-mono);
   text-align: center;
@@ -2260,9 +2260,13 @@ kbd.kbd,
   gap: 1rem;
 }
 
+.well-row + .blurb {
+  margin-top: 1.5rem;
+}
+
 .blurb {
   padding: 1.1rem 1.25rem 1.25rem;
-  border-radius: var(--radius-lg);
+  border-radius: var(--blurb-radius, var(--radius-lg));
   background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 var(--elev-y) var(--elev-blur) var(--elev-spread) color-mix(in srgb, #000 min(100%, var(--elev-a) * var(--shade-k) * var(--depth)), transparent);
 }
@@ -3039,7 +3043,7 @@ kbd.kbd,
 .well {
   display: inline-flex;
   padding: 5px;
-  border-radius: var(--radius);
+  border-radius: var(--well-radius, var(--radius));
   background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
 }
@@ -3073,7 +3077,7 @@ kbd.kbd,
   min-height: 3rem;
   padding: 0 1.4rem;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--key-radius, var(--radius));
   font: 600 0.95rem/1 inherit;
   font-family: inherit;
   letter-spacing: 0.02em;
@@ -3289,7 +3293,7 @@ input:checked + .key--sq .icon, .key--sq[aria-pressed=true] .icon, .key--sq[aria
 }
 .check .well {
   padding: 4px;
-  border-radius: var(--radius);
+  border-radius: var(--well-radius, var(--radius));
 }
 .check__text {
   font-weight: 600;
@@ -3306,7 +3310,7 @@ input:checked + .key--sq .icon, .key--sq[aria-pressed=true] .icon, .key--sq[aria
   height: 1.7rem;
   min-height: 0;
   padding: 0;
-  border-radius: var(--radius);
+  border-radius: var(--check-radius, var(--radius));
 }
 .key--box::after {
   display: none;
@@ -3433,7 +3437,7 @@ input:indeterminate + .key--box .icon--minus {
 .form__summary {
   margin: 0 0 1rem;
   padding: 0.75rem 1rem;
-  border-radius: var(--radius-lg);
+  border-radius: var(--summary-radius, var(--radius-lg));
   background: var(--hairline);
   box-shadow: inset 0 0 0 2px var(--error);
   color: var(--ink);
@@ -3511,7 +3515,7 @@ input:indeterminate + .key--box .icon--minus {
   min-height: 2.75rem;
   padding: 0.6rem 0.85rem;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--input-radius, var(--radius));
   background: linear-gradient(180deg, var(--input-top), var(--input-bottom));
   color: var(--ink);
   font-family: inherit;
@@ -3598,7 +3602,7 @@ select.input[multiple] {
 }
 select.input[multiple] option {
   padding: 0.35rem 0.55rem;
-  border-radius: var(--radius);
+  border-radius: var(--input-radius, var(--radius));
 }
 
 input[type=file].input {
@@ -3609,7 +3613,7 @@ input[type=file].input::file-selector-button {
   margin-right: 0.85rem;
   padding: 0.45rem 0.95rem;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--key-radius, var(--radius));
   background: linear-gradient(180deg, var(--cap-top), var(--cap-bottom));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), inset var(--bevel) var(--bevel) 0 var(--cap-edge-light), inset calc(var(--bevel) * -1) calc(var(--bevel) * -1) 0 var(--cap-edge-dark), 0 2px 0 color-mix(in srgb, var(--ink) var(--wall-ink), var(--wall-near)), 0 calc(2px + 1px) 0 color-mix(in srgb, var(--wall-far) var(--wall-far-mix), transparent), 0 calc(2px + var(--cap-drop)) var(--cap-blur) color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent);
   color: var(--ink);
@@ -3647,7 +3651,7 @@ input[type=file].input:disabled::file-selector-button {
   height: 3.2rem;
   padding: 5px;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--input-radius, var(--radius));
   background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
   cursor: pointer;
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), inset 0 2px 4px color-mix(in srgb, #000 min(100%, 12% * var(--shade-k) * var(--depth)), transparent), inset 0 -1px 0 color-mix(in srgb, #fff min(100%, 90% * var(--tint-k)), transparent), 0 1px 0 var(--lip);
@@ -3657,12 +3661,12 @@ input[type=file].input:disabled::file-selector-button {
 }
 .color input[type=color]::-webkit-color-swatch {
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--input-radius, var(--radius));
   box-shadow: inset 1px 1px 0 var(--cap-edge-light), 0 1px 3px color-mix(in srgb, #000 min(100%, 30% * var(--shade-k) * var(--depth)), transparent);
 }
 .color input[type=color]::-moz-color-swatch {
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--input-radius, var(--radius));
 }
 .color input[type=color]:focus-visible {
   outline: 3px solid var(--focus);
@@ -3731,7 +3735,7 @@ input[type=file].input:disabled::file-selector-button {
   margin-top: -1.2rem;
   padding: 0;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--input-radius, var(--radius));
   background: none;
   color: var(--ink-soft);
   cursor: pointer;
@@ -3789,7 +3793,7 @@ input[type=file].input:disabled::file-selector-button {
 }
 .picker__list {
   border: 0;
-  border-radius: var(--radius-lg);
+  border-radius: var(--menu-radius, var(--radius-lg));
   color: var(--ink);
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
@@ -3808,7 +3812,7 @@ input[type=file].input:disabled::file-selector-button {
 }
 .picker__option {
   padding: 0.4rem 0.6rem;
-  border-radius: var(--radius);
+  border-radius: var(--menu-item-radius, var(--radius));
   cursor: pointer;
 }
 .picker__option.is-active {
@@ -3910,7 +3914,7 @@ input[type=file].input:disabled::file-selector-button {
   padding: 0.15rem 0.55rem;
   font: 600 0.85rem/1.4 var(--font-mono);
   text-align: right;
-  border-radius: var(--radius);
+  border-radius: var(--lcd-radius, var(--radius));
   background: linear-gradient(180deg, #16211b, #22332a);
   color: var(--lit-screen);
   text-shadow: 0 0 6px var(--lit-glow);
@@ -4020,7 +4024,7 @@ input[type=file].input:disabled::file-selector-button {
   width: var(--thumb-w);
   height: var(--thumb-h);
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--fader-radius, var(--radius));
   background: var(--thumb-bg);
   box-shadow: var(--thumb-up);
   transform: translateY(calc(var(--lift) * -1));
@@ -4043,7 +4047,7 @@ input[type=file].input:disabled::file-selector-button {
   width: var(--thumb-w);
   height: var(--thumb-h);
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--fader-radius, var(--radius));
   background: var(--thumb-bg);
   box-shadow: var(--thumb-up);
   transform: translateY(calc(var(--lift) * -1));
@@ -4080,7 +4084,7 @@ input[type=file].input:disabled::file-selector-button {
 .fader:focus-visible, .rknob:not(.is-enhanced) > input[type=range]:focus-visible, .knob:not(.is-enhanced) > input[type=range]:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
-  border-radius: var(--radius);
+  border-radius: var(--fader-radius, var(--radius));
 }
 .fader:disabled, .rknob:not(.is-enhanced) > input[type=range]:disabled, .knob:not(.is-enhanced) > input[type=range]:disabled {
   cursor: not-allowed;
@@ -4325,7 +4329,7 @@ input[type=file].input:disabled::file-selector-button {
   width: min(28rem, 100vw - 2rem);
   padding: 0;
   border: 0;
-  border-radius: var(--radius-lg);
+  border-radius: var(--sheet-radius, var(--radius-lg));
   color: var(--ink);
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 28px 60px -14px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
@@ -4501,13 +4505,63 @@ input[type=file].input:disabled::file-selector-button {
 .tabs__list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0 0 1rem;
+  align-items: flex-end;
+  gap: 2px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 .tabs__list .key {
+  --tab-edge: 1px solid color-mix(in srgb, var(--ink) var(--ring-mix), transparent);
+  min-width: 0;
   min-height: 2.5rem;
+  padding: 0 1.1rem;
+  margin-bottom: -1px;
+  border: var(--tab-edge);
+  border-bottom: 0;
+  border-radius: var(--tab-radius, var(--key-radius, var(--radius))) var(--tab-radius, var(--key-radius, var(--radius))) 0 0;
+  --k-top: var(--well-top);
+  --k-bottom: var(--well-bottom);
+  transform: none;
+  box-shadow: none;
+  text-shadow: none;
+}
+.tabs__list .key:active:not(:disabled) {
+  transform: none;
+  box-shadow: none;
+}
+.tabs__list .key[aria-selected=true] {
+  --k-top: var(--sheet-top);
+  --k-bottom: var(--sheet-top);
+  z-index: 1;
+  transform: none;
+  box-shadow: none;
+  padding-bottom: 1px;
+}
+.tabs__list .key:focus-visible {
+  z-index: 2;
+}
+@media (forced-colors: active) {
+  .tabs__list .key {
+    border: 1px solid CanvasText;
+    border-bottom: 0;
+  }
+  .tabs__list .key[aria-selected=true] {
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+.tabs.is-enhanced .tabs__panel {
+  padding: 1rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--ink) var(--ring-mix), transparent);
+  border-radius: 0 var(--panel-radius, var(--radius-lg)) var(--panel-radius, var(--radius-lg)) var(--panel-radius, var(--radius-lg));
+  background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
+}
+@media (forced-colors: active) {
+  .tabs.is-enhanced .tabs__panel {
+    border-color: CanvasText;
+    background: Canvas;
+  }
 }
 .tabs__panel {
   outline: none;
@@ -4515,7 +4569,6 @@ input[type=file].input:disabled::file-selector-button {
 .tabs__panel:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
-  border-radius: var(--radius);
 }
 
 .menu {
@@ -4523,7 +4576,7 @@ input[type=file].input:disabled::file-selector-button {
 }
 .menu__list {
   border: 0;
-  border-radius: var(--radius-lg);
+  border-radius: var(--menu-radius, var(--radius-lg));
   color: var(--ink);
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 18px 40px -12px color-mix(in srgb, #000 min(100%, 40% * var(--shade-k) * var(--depth)), transparent);
@@ -4558,7 +4611,7 @@ input[type=file].input:disabled::file-selector-button {
   width: 100%;
   padding: 0.5rem 0.7rem;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--menu-item-radius, var(--radius));
   background: none;
   color: var(--ink);
   font: inherit;
@@ -4598,7 +4651,7 @@ input[type=file].input:disabled::file-selector-button {
   gap: 0.75rem;
   align-items: flex-start;
   padding: 0.85rem 1rem;
-  border-radius: var(--radius-lg);
+  border-radius: var(--alert-radius, var(--radius-lg));
   color: var(--ink);
   border: 1px solid color-mix(in srgb, var(--alert-color) 45%, transparent);
   background: color-mix(in srgb, var(--alert-color) 9%, var(--sheet-top));
@@ -4642,7 +4695,7 @@ input[type=file].input:disabled::file-selector-button {
   margin: -0.25rem -0.4rem -0.25rem 0;
   padding: 0;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--key-radius, var(--radius));
   background: none;
   color: var(--ink-soft);
   cursor: pointer;
@@ -4779,7 +4832,7 @@ input[type=file].input:disabled::file-selector-button {
 .table-wrap {
   max-width: 100%;
   overflow-x: auto;
-  border-radius: var(--radius-lg);
+  border-radius: var(--table-radius, var(--radius-lg));
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline);
 }
@@ -4836,7 +4889,7 @@ input[type=file].input:disabled::file-selector-button {
   padding: 0.25rem 0.4rem;
   margin: -0.25rem -0.4rem;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--key-radius, var(--radius));
   background: none;
   color: inherit;
   font: inherit;
@@ -4928,7 +4981,7 @@ th[aria-sort=descending] .table__sort::after {
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: var(--radius-lg);
+  border-radius: var(--media-radius, var(--radius-lg));
   box-shadow: 0 0 0 1px var(--hairline-strong);
 }
 .media picture {
@@ -4952,7 +5005,7 @@ th[aria-sort=descending] .table__sort::after {
   min-height: 1.5rem;
   line-height: 1.5rem;
   margin-top: 0.4rem;
-  border-radius: var(--radius);
+  border-radius: var(--key-radius, var(--radius));
   color: var(--ink-soft);
   font-size: 0.9rem;
   cursor: pointer;
@@ -5000,7 +5053,7 @@ video.media {
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: var(--radius-lg);
+  border-radius: var(--media-radius, var(--radius-lg));
   box-shadow: 0 0 0 1px var(--hairline-strong);
 }
 @media (forced-colors: active) {
@@ -5017,7 +5070,7 @@ video.media {
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
-  border-radius: var(--radius-lg);
+  border-radius: var(--card-radius, var(--radius-lg));
   background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 var(--elev-y) var(--elev-blur) var(--elev-spread) color-mix(in srgb, #000 min(100%, var(--elev-a) * var(--shade-k) * var(--depth)), transparent);
 }
@@ -5120,13 +5173,13 @@ video.media {
 }
 .key-group > .key:first-child,
 .key-group > .key-group__item:first-child > .key {
-  border-top-left-radius: var(--radius);
-  border-bottom-left-radius: var(--radius);
+  border-top-left-radius: var(--key-radius, var(--radius));
+  border-bottom-left-radius: var(--key-radius, var(--radius));
 }
 .key-group > .key:last-child,
 .key-group > .key-group__item:last-child > .key {
-  border-top-right-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
+  border-top-right-radius: var(--key-radius, var(--radius));
+  border-bottom-right-radius: var(--key-radius, var(--radius));
 }
 .key-group .key:focus-visible,
 .key-group input:focus-visible + .key,
@@ -5141,11 +5194,11 @@ video.media {
 }
 .key-group--vertical > .key:first-child,
 .key-group--vertical > .key-group__item:first-child > .key {
-  border-radius: var(--radius) var(--radius) 0 0;
+  border-radius: var(--key-radius, var(--radius)) var(--key-radius, var(--radius)) 0 0;
 }
 .key-group--vertical > .key:last-child,
 .key-group--vertical > .key-group__item:last-child > .key {
-  border-radius: 0 0 var(--radius) var(--radius);
+  border-radius: 0 0 var(--key-radius, var(--radius)) var(--key-radius, var(--radius));
 }
 
 .breadcrumb {
@@ -5175,7 +5228,7 @@ video.media {
   align-items: center;
   min-height: 1.5rem;
   padding-inline: 0.25rem;
-  border-radius: var(--radius);
+  border-radius: var(--breadcrumb-radius, var(--radius));
   color: var(--ink-soft);
   text-decoration: underline;
   text-decoration-color: transparent;
@@ -5209,7 +5262,7 @@ video.media {
   padding: 0.55rem 0.75rem;
   border: 0;
   font: 600 0.95rem/1.2 var(--font-mono);
-  border-radius: var(--radius);
+  border-radius: var(--lcd-radius, var(--radius));
   background: linear-gradient(180deg, #16211b, #22332a);
   color: var(--lit-screen);
   text-shadow: 0 0 6px var(--lit-glow);
@@ -5246,7 +5299,7 @@ video.media {
   max-height: calc(100vh - 16px);
   overflow: auto;
   border: 0;
-  border-radius: var(--radius-lg);
+  border-radius: var(--sheet-radius, var(--radius-lg));
   color: var(--ink);
   background: linear-gradient(180deg, var(--sheet-top), var(--sheet-bottom));
   box-shadow: 0 0 0 var(--ring-w) color-mix(in srgb, var(--ink) var(--ring-mix), transparent), 0 0 0 1px var(--hairline), 0 24px 50px -12px color-mix(in srgb, #000 min(100%, 35% * var(--shade-k) * var(--depth)), transparent);
@@ -5318,7 +5371,7 @@ video.media {
   height: 2.4rem;
   padding: 0;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--day-radius, var(--radius));
   background: transparent;
   color: var(--ink);
   font: 600 0.9rem/1 inherit;
@@ -5352,10 +5405,10 @@ video.media {
   box-shadow: none;
 }
 .day.is-range-start {
-  border-radius: var(--radius) 0 0 var(--radius);
+  border-radius: var(--day-radius, var(--radius)) 0 0 var(--day-radius, var(--radius));
 }
 .day.is-range-end {
-  border-radius: 0 var(--radius) var(--radius) 0;
+  border-radius: 0 var(--day-radius, var(--radius)) var(--day-radius, var(--radius)) 0;
 }
 .day.is-today::after {
   content: "";
@@ -5801,7 +5854,7 @@ video.media {
   min-width: 0;
   margin: 0;
   overflow: hidden;
-  border-radius: var(--radius-lg);
+  border-radius: var(--code-radius, var(--radius-lg));
   background: var(--code-bg);
   box-shadow: 0 0 0 1px var(--hairline-strong), 0 10px 24px -14px color-mix(in srgb, #000 min(100%, 50% * var(--shade-k) * var(--depth)), transparent);
 }
@@ -5894,7 +5947,7 @@ video.media {
   height: 2rem;
   padding: 0;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--key-radius, var(--radius));
   background: none;
   color: var(--code-ink);
   opacity: 0.75;
@@ -5934,7 +5987,7 @@ video.media {
   max-width: min(18rem, 100vw - 16px);
   overflow: visible;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--tooltip-radius, var(--radius));
   background: var(--tip-bg);
   color: var(--tip-ink);
   font-family: inherit;

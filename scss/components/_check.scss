@@ -23,7 +23,7 @@
 
   .well {
     padding: 4px;
-    border-radius: var(--radius);
+    border-radius: var(--well-radius, var(--radius));
   }
 
   &__text {
@@ -45,7 +45,7 @@
   height: 1.7rem;
   min-height: 0;
   padding: 0;
-  border-radius: var(--radius);
+  border-radius: var(--check-radius, var(--radius));
 
   &::after { display: none; } // no dot: the check mark is the indicator
 

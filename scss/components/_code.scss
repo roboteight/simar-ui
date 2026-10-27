@@ -16,7 +16,7 @@ $bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
   min-width: 0;
   margin: 0;
   overflow: hidden;
-  border-radius: var(--radius-lg);
+  border-radius: var(--code-radius, var(--radius-lg));
   background: var(--code-bg);
   box-shadow: 0 0 0 1px var(--hairline-strong), 0 10px 24px -14px shade(0.5);
 
@@ -106,7 +106,7 @@ $bar: color-mix(in srgb, var(--code-bg) 90%, #fff);
     height: 2rem;
     padding: 0;
     border: 0;
-    border-radius: var(--radius);
+    border-radius: var(--key-radius, var(--radius));
     background: none;
     color: var(--code-ink);
     opacity: 0.75;

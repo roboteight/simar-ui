@@ -127,7 +127,7 @@ kbd.kbd,
   display: inline-block;
   min-width: 1.6em;
   padding: 0.1em 0.5em;
-  border-radius: var(--radius);
+  border-radius: var(--kbd-radius, var(--radius));
   color: var(--ink);
   font: 0.85em/1.4 var(--font-mono);
   text-align: center;
@@ -198,9 +198,12 @@ kbd.kbd,
   gap: 1rem;
 }
 
+// Space between a row of keys and a blurb that follows it.
+.well-row + .blurb { margin-top: 1.5rem; }
+
 .blurb {
   padding: 1.1rem 1.25rem 1.25rem;
-  border-radius: var(--radius-lg);
+  border-radius: var(--blurb-radius, var(--radius-lg));
   background: linear-gradient(var(--sheet-top), var(--sheet-bottom));
   box-shadow: ring(), 0 0 0 1px var(--hairline), elev();
 

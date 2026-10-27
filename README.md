@@ -216,6 +216,8 @@ A native `<details>` accordion, keys (`<button class="key">`, also on submit and
 
 <img src="docs/screenshots/keys.png" alt="Buttons and icon buttons" width="640">
 
+The icons come from [Lucide](https://lucide.dev), a free set of clean outline icons (ISC license, credited in `THIRD_PARTY_LICENSES.md`). They are SVG, so they take the color of the text around them and follow light, dark and every style. Name one with `<use href="#i-name">`, mark it `aria-hidden`, and give an icon-only key an `aria-label`. Add your own the same way.
+
 <img src="docs/screenshots/accordion.png" alt="An accordion with the first item open" width="640">
 
 <img src="docs/screenshots/dialog.png" alt="A modal dialog with radio keys, a fader and buttons" width="420">
@@ -274,7 +276,7 @@ Four spinner styles, all SVG so they stay crisp on any background: `ticks` (defa
 
 #### Tabs
 
-Write each tab as a headed section. Without JavaScript they stack under their headings; with it the headings become a row of latched keys and one panel shows at a time. Left and Right arrows, Home and End move between tabs (the ARIA tabs pattern).
+Write each tab as a headed section. Without JavaScript they stack under their headings; with it the headings become traditional tabs, close together and rounded on top, with the selected one joined to its panel, and one panel shows at a time. Left and Right arrows, Home and End move between tabs (the ARIA tabs pattern).
 
 <img src="docs/screenshots/tabs.png" alt="A row of three tabs with the middle one selected, and its panel below" width="640">
 
@@ -501,6 +503,23 @@ A terminal-style block: monospace text on a dark screen, with a title bar when i
 
 All of the styling is a theme, and this is the first one: the components describe structure and read their colors, fonts and shadows from tokens, so more looks can be added without touching them. A theme is one file in `scss/themes/` (`_default.scss`): the design tokens for light and dark, the highlight presets (`data-lit`, including the Material palette), the color of each button variant (`key--primary`, `--secondary`, `--success`, `--danger`, `--warning`, `--info`, `--light`, `--dark`) and whole-page palettes (`data-palette="indigo"`, `teal`, `rose`, `amber`, `forest`, `ocean`), which retint every surface and bring their own highlight and button colors. This is the first theme; more will follow, and a new one is a copy of that file with new values.
 
+## Styles and design tokens
+
+Shape and depth are CSS custom properties, so a developer can change one thing without touching the rest. Set them on `:root` for the whole page, or on any element for just that part:
+
+```css
+:root { --radius: 8px; --radius-lg: 12px; --depth: 0.5; }   /* everything at once */
+.card { --card-radius: 0; }                                  /* one component */
+.sidebar { --radius: 20px; --ring-w: 2px; }                  /* one part of the page */
+```
+
+- **Global tokens:** `--radius` (controls), `--radius-lg` (surfaces), `--depth` (every soft shadow, 0 is none), `--travel` (how tall a key stands), `--bevel`, `--cap-drop`, `--cap-blur`, `--ring-w` and `--ring-mix` (an outline round everything), `--wall-ink`, `--wall-far-mix` and `--elev-*` (the shadow under panels).
+- **Component tokens:** each component has its own radius (`--key-radius`, `--input-radius`, `--panel-radius`, `--card-radius`, `--sheet-radius`, `--menu-radius` and more, all listed on the demo page). If you don't set one, it falls back to the global radius.
+- **Styles:** `data-style="classic | flat | soft | crisp | line | round | deep | brutal"` on `<html>` or any element sets a whole bundle of these tokens. With no `data-style` you get `flat`. Colors stay with `data-theme`, `data-palette` and `data-lit`, so every style works in light and dark and with every palette. A new style is one more entry in `scss/themes/_styles.scss`.
+- **Theme builder:** the demo page has sliders that change the main tokens on a preview and give you the CSS to copy. The Style select in Page settings switches the whole page.
+
+<img src="docs/screenshots/theme-builder.png" alt="Sliders for radius, depth, key height and outline width beside a preview of a key, a field and a card, with the generated CSS below" width="640">
+
 ## Light and dark
 
 simar-ui follows the system setting. To choose, put `data-theme="dark"` or `data-theme="light"` on `<html>`, or on any element to theme just that part of the page. The demo has an **Appearance** dropdown (Auto, Light, Dark) in the top right; Auto is the default.
@@ -543,6 +562,7 @@ Every color and size is a CSS custom property, so you can restyle without touchi
 | `data-unit`, `data-prefix` | faders, knobs, ranges | Text around the readout |
 | `data-lit="blue"`, `style="--lit:#ff4d6d"` | any element | Highlight color for it and everything inside |
 | `data-theme="dark"` / `"light"` | any element | Force a theme; leave off to follow the system |
+| `data-style="classic"`, `"flat"`, `"soft"`, `"crisp"`, `"line"`, `"round"`, `"deep"`, `"brutal"` | any element | Shape and depth of every component; leave off for `flat` |
 | `data-haptic="off"` | any element | Vibration: `on`, `off`, `tick`, `click`, `heavy`, or milliseconds like `10,30,10` |
 | `data-months`, `data-max-span`, `data-first-day` | date range | Months shown, longest range in days, week start |
 | `name="faq"` / `multiple` | accordion | Items open one at a time, or several at once |

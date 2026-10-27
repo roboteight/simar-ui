@@ -81,7 +81,7 @@
     width: var(--thumb-w);
     height: var(--thumb-h);
     border: 0;
-    border-radius: var(--radius);
+    border-radius: var(--fader-radius, var(--radius));
     background: var(--thumb-bg);
     box-shadow: var(--thumb-up);
     transform: translateY(calc(var(--lift) * -1));
@@ -114,7 +114,7 @@
 
   &:focus-visible {
     @include focus-ring(2px);
-    border-radius: var(--radius);
+    border-radius: var(--fader-radius, var(--radius));
   }
 
   &:disabled {

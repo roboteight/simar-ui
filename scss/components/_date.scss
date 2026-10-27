@@ -16,7 +16,7 @@
       padding: 0.55rem 0.75rem;
       border: 0;
       font: 600 0.95rem/1.2 $mono;
-      @include lcd-screen(var(--radius));
+      @include lcd-screen(var(--lcd-radius, var(--radius)));
 
       &:focus-visible { @include focus-ring(2px); }
     }
@@ -39,7 +39,7 @@
     max-width: calc(100vw - 16px);
     max-height: calc(100vh - 16px);
     overflow: auto;
-    @include surface(var(--radius-lg), 0 24px 50px -12px shade(0.35));
+    @include surface(var(--sheet-radius, var(--radius-lg)), 0 24px 50px -12px shade(0.35));
     opacity: 0;
     transform: translateY(-4px);
     transition: opacity 150ms ease-out, transform 150ms ease-out, overlay 150ms allow-discrete, display 150ms allow-discrete;
@@ -110,7 +110,7 @@
   height: 2.4rem;
   padding: 0;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--day-radius, var(--radius));
   background: transparent;
   color: var(--ink);
   font: 600 0.9rem/1 inherit;
@@ -158,8 +158,8 @@
   }
 
   // and sit flush against the band between them.
-  &.is-range-start { border-radius: var(--radius) 0 0 var(--radius); }
-  &.is-range-end { border-radius: 0 var(--radius) var(--radius) 0; }
+  &.is-range-start { border-radius: var(--day-radius, var(--radius)) 0 0 var(--day-radius, var(--radius)); }
+  &.is-range-end { border-radius: 0 var(--day-radius, var(--radius)) var(--day-radius, var(--radius)) 0; }
 
   &.is-today::after {
     content: "";

@@ -332,6 +332,15 @@ html:not([data-js=on]) .needs-js {
   }
 }
 
+.token-preview {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--page);
+  box-shadow: 0 0 0 1px var(--hairline-strong);
+}
+
 .jsbar .note {
   margin: 0 0 1.5rem;
 }

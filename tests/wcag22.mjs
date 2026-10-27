@@ -33,6 +33,8 @@ const pass = (msg) => console.log(`  ✓ ${msg}`);
 const open = async (width, query = '') => {
   await page.setViewport({ width, height: 900 });
   await page.goto(url(query));
+  // Smooth scrolling makes a click land mid-scroll now and then, which made some checks intermittent.
+  await page.addStyleTag({ content: 'html { scroll-behavior: auto !important; }' });
   await wait(600);
 };
 
@@ -626,19 +628,19 @@ console.log('\nBadge and table');
 await open(1280);
 const badges = await page.evaluate(() => [...document.querySelectorAll('#badges ~ .panel .badge')].map((b) => ({ words: b.textContent.trim().length > 0, count: b.classList.contains('badge--count'), hidden: !!b.querySelector('.visually-hidden') })));
 badges.length === 6 && badges.every((b) => b.words) && badges.filter((b) => b.count).every((b) => b.hidden) ? pass('every badge has words, and a count carries hidden words after the number') : fail(`badges: ${JSON.stringify(badges)}`);
-const tbl = await page.evaluate(() => { const w = document.querySelector('.table-wrap'); const t = w.querySelector('table'); return { region: w.getAttribute('role'), focus: w.tabIndex, named: !!document.getElementById(w.getAttribute('aria-labelledby')), caption: !!t.caption, cols: [...t.querySelectorAll('thead th')].every((th) => th.getAttribute('scope') === 'col'), rows: [...t.querySelectorAll('tbody th')].every((th) => th.getAttribute('scope') === 'row'), sort: [...t.querySelectorAll('thead th[aria-sort]')].map((th) => th.getAttribute('aria-sort')).join(), buttons: t.querySelectorAll('thead th .table__sort').length }; });
+const tbl = await page.evaluate(() => { const w = document.querySelector('.table-wrap[aria-labelledby="orders-cap"]'); const t = w.querySelector('table'); return { region: w.getAttribute('role'), focus: w.tabIndex, named: !!document.getElementById(w.getAttribute('aria-labelledby')), caption: !!t.caption, cols: [...t.querySelectorAll('thead th')].every((th) => th.getAttribute('scope') === 'col'), rows: [...t.querySelectorAll('tbody th')].every((th) => th.getAttribute('scope') === 'row'), sort: [...t.querySelectorAll('thead th[aria-sort]')].map((th) => th.getAttribute('aria-sort')).join(), buttons: t.querySelectorAll('thead th .table__sort').length }; });
 tbl.region === 'region' && tbl.focus === 0 && tbl.named && tbl.caption && tbl.cols && tbl.rows && tbl.sort === 'none,none,none,none' && tbl.buttons === 4 ? pass('the table has a caption, scoped headers, a focusable named scroll region and a sort button per sortable header') : fail(`table: ${JSON.stringify(tbl)}`);
-await page.$eval('.table', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
-await page.focus('.table th:nth-child(3) .table__sort');
+await page.$eval('.table-wrap[aria-labelledby="orders-cap"] .table', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.focus('.table-wrap[aria-labelledby="orders-cap"] .table th:nth-child(3) .table__sort');
 await page.keyboard.press('Enter');
-const s1 = await page.evaluate(() => ({ first: document.querySelector('.table tbody th').textContent, sort: [...document.querySelectorAll('.table thead th')].map((th) => th.getAttribute('aria-sort')[0]).join('') }));
+const s1 = await page.evaluate(() => ({ first: document.querySelector('.table-wrap[aria-labelledby="orders-cap"] .table tbody th').textContent, sort: [...document.querySelectorAll('.table-wrap[aria-labelledby="orders-cap"] .table thead th')].map((th) => th.getAttribute('aria-sort')[0]).join('') }));
 s1.first === '#1045' && s1.sort === 'nnan' ? pass('Enter on a header sorts ascending by number ($9.99 first) and marks only that column') : fail(`sort asc: ${JSON.stringify(s1)}`);
 await page.keyboard.press('Space');
-const s2 = await page.evaluate(() => ({ first: document.querySelector('.table tbody th').textContent, sort: [...document.querySelectorAll('.table thead th')].map((th) => th.getAttribute('aria-sort')[0]).join('') }));
+const s2 = await page.evaluate(() => ({ first: document.querySelector('.table-wrap[aria-labelledby="orders-cap"] .table tbody th').textContent, sort: [...document.querySelectorAll('.table-wrap[aria-labelledby="orders-cap"] .table thead th')].map((th) => th.getAttribute('aria-sort')[0]).join('') }));
 s2.first === '#1044' && s2.sort === 'nndn' ? pass('pressing again sorts descending') : fail(`sort desc: ${JSON.stringify(s2)}`);
 await page.setViewport({ width: 320, height: 700 });
 await wait(200);
-const narrow = await page.evaluate(() => { const w = document.querySelector('.table-wrap'); return { scrolls: w.scrollWidth > w.clientWidth, page: document.documentElement.scrollWidth > innerWidth + 1 }; });
+const narrow = await page.evaluate(() => { const w = document.querySelector('.table-wrap[aria-labelledby="orders-cap"]'); return { scrolls: w.scrollWidth > w.clientWidth, page: document.documentElement.scrollWidth > innerWidth + 1 }; });
 narrow.scrolls && !narrow.page ? pass('at 320px the table scrolls inside its wrapper and the page does not') : fail(`320px table: ${JSON.stringify(narrow)}`);
 await page.setViewport({ width: 1280, height: 800 });
 
@@ -875,6 +877,65 @@ confirmNarrow.fits && confirmNarrow.page ? pass('the confirmation fits a 320px s
 await page.keyboard.press('Escape');
 await wait(250);
 await page.setViewport({ width: 1280, height: 800 });
+
+// ---- design tokens --------------------------------------------------------------------------------
+console.log('\nDesign tokens');
+await open(1280);
+const tk = await page.evaluate(async () => {
+  const radius = (el) => getComputedStyle(el).borderTopLeftRadius;
+  const box = document.createElement('div');
+  box.innerHTML = '<button class="key" type="button">A</button><input class="input" aria-label="x"><article class="card"><div class="card__body">c</div></article>';
+  document.body.append(box);
+  const key = box.querySelector('.key'), input = box.querySelector('.input'), card = box.querySelector('.card');
+  const base = { key: radius(key), input: radius(input), card: radius(card) };
+  box.style.setProperty('--key-radius', '0px');
+  const one = { key: radius(key), input: radius(input), card: radius(card) };
+  box.style.removeProperty('--key-radius');
+  box.style.setProperty('--radius', '9px');
+  const global = { key: radius(key), input: radius(input), card: radius(card) };
+  box.style.removeProperty('--radius');
+  box.dataset.style = 'round';
+  const nested = { key: radius(key), card: radius(card) };
+  box.remove();
+  return { base, one, global, nested };
+});
+tk.one.key === '0px' && tk.one.input === tk.base.input && tk.one.card === tk.base.card ? pass('a component token (--key-radius) changes only that component') : fail(`component token: ${JSON.stringify(tk)}`);
+tk.global.key === '9px' && tk.global.input === '9px' && tk.global.card === tk.base.card ? pass('the global --radius moves every control and leaves the surfaces to --radius-lg') : fail(`global token: ${JSON.stringify(tk)}`);
+tk.nested.key === '20px' && tk.nested.card === '28px' ? pass('a data-style on one element restyles just that part of the page (it does not inherit the root\'s resolved values)') : fail(`nested style: ${JSON.stringify(tk)}`);
+const tb = await page.evaluate(async () => {
+  const slider = document.querySelector('#tb-radius'), css = document.querySelector('#tb-css'), preview = document.querySelector('#token-preview');
+  const before = css.value;
+  slider.value = '12'; slider.dispatchEvent(new Event('input', { bubbles: true }));
+  const key = preview.querySelector('.key');
+  const during = { css: css.value, radius: getComputedStyle(key).borderTopLeftRadius, page: getComputedStyle(document.querySelector('section[aria-labelledby="buttons"] .key')).borderTopLeftRadius };
+  document.querySelector('#tb-reset').click();
+  return { before, during, after: css.value, status: document.querySelector('#tb-status').textContent, label: !!document.querySelector('label[for="tb-radius"]'), cssLabel: !!document.querySelector('label[for="tb-css"]') };
+});
+/No changes/.test(tb.before) && /--radius: 12px/.test(tb.during.css) && tb.during.radius === '12px' && tb.during.page !== '12px' ? pass('the theme builder changes only its preview and writes the CSS for what changed') : fail(`builder: ${JSON.stringify(tb)}`);
+/No changes/.test(tb.after) && tb.label && tb.cssLabel ? pass('Reset returns to the current style, and the sliders and CSS box are labelled') : fail(`builder reset: ${JSON.stringify(tb)}`);
+
+// ---- tabs, traditional ----------------------------------------------------------------------------
+console.log('\nTabs, traditional');
+await open(1280);
+const tb2 = await page.evaluate(() => {
+  const root = document.querySelector('.tabs'); const list = root.querySelector('.tabs__list');
+  const tabs = [...list.querySelectorAll('[role="tab"]')], panel = root.querySelector('[role="tabpanel"]:not([hidden])');
+  const sel = tabs.find((t) => t.getAttribute('aria-selected') === 'true');
+  const r = tabs.map((t) => t.getBoundingClientRect());
+  const cs = getComputedStyle(sel), pc = getComputedStyle(panel);
+  const pr = panel.getBoundingClientRect(), sr = sel.getBoundingClientRect();
+  return {
+    gaps: r.slice(1).map((b, i) => Math.round(b.left - r[i].right)),
+    topOnly: cs.borderBottomLeftRadius === '0px' && parseFloat(cs.borderTopLeftRadius) >= 0 && cs.borderBottomWidth === '0px',
+    joined: Math.round(sr.bottom) >= Math.round(pr.top) && getComputedStyle(sel).marginBottom === '-1px',
+    panelBorder: parseFloat(pc.borderTopWidth) >= 1,
+    heights: r.every((b) => b.height >= 24),
+    roles: list.getAttribute('role') === 'tablist' && sel.getAttribute('aria-controls') === panel.id && panel.getAttribute('aria-labelledby') === sel.id,
+  };
+});
+tb2.gaps.every((g) => g <= 3) ? pass(`the tabs sit close together (${tb2.gaps.join(', ')}px apart)`) : fail(`tab gaps: ${JSON.stringify(tb2)}`);
+tb2.topOnly && tb2.joined && tb2.panelBorder ? pass('traditional tabs: rounded on top only, the selected one joined to its bordered panel') : fail(`tab shape: ${JSON.stringify(tb2)}`);
+tb2.heights && tb2.roles ? pass('tabs keep 24px targets and the tablist, tab and tabpanel roles and links') : fail(`tab roles: ${JSON.stringify(tb2)}`);
 
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');

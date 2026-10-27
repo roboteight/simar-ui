@@ -14,7 +14,7 @@
   gap: 0.75rem;
   align-items: flex-start;
   padding: 0.85rem 1rem;
-  border-radius: var(--radius-lg);
+  border-radius: var(--alert-radius, var(--radius-lg));
   color: var(--ink);
   border: 1px solid color-mix(in srgb, var(--alert-color) 45%, transparent); // semi-transparent, all the way round
   background: color-mix(in srgb, var(--alert-color) 9%, var(--sheet-top));
@@ -45,7 +45,7 @@
     margin: -0.25rem -0.4rem -0.25rem 0;
     padding: 0;
     border: 0;
-    border-radius: var(--radius);
+    border-radius: var(--key-radius, var(--radius));
     background: none;
     color: var(--ink-soft);
     cursor: pointer;

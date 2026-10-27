@@ -298,3 +298,13 @@ html:not([data-js="on"]) .needs-js { display: none; }
 
   @media print { padding-bottom: 1rem; }
 }
+
+// The theme builder's preview: a few components that read the tokens set on this box.
+.token-preview {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--page);
+  box-shadow: 0 0 0 1px var(--hairline-strong);
+}

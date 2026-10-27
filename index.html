@@ -87,6 +87,7 @@
         <span class="toc__group">Customize</span>
         <ul>
         <li><a href="#theming">Theme and color</a></li>
+        <li><a href="#tokens">Design tokens</a></li>
         <li><a href="#config">Configuration</a></li>
         </ul>
       </li>
@@ -310,6 +311,104 @@
         }
       </script>
     </section>
+    <section aria-labelledby="tokens" data-no-html>
+      <h3 id="tokens">Design tokens</h3>
+      <p class="note">Everything about shape and depth is a CSS custom property, set once on <code>:root</code> or on any element to change just that part of the page. The global ones (<code>--radius</code>, <code>--depth</code>) move everything together; each component also has its own (<code>--key-radius</code>, <code>--card-radius</code>) that you can set on its own, and that falls back to the global one when you don't. The <code>data-style</code> presets are just bundles of these values. Move the sliders to see the result, then copy the CSS.</p>
+
+      <fieldset class="panel">
+        <legend>Theme builder</legend>
+        <div class="row">
+          <div class="col-12 col-md-5">
+            <div class="field"><div class="field__head"><label class="field__label" for="tb-radius">Radius, controls</label></div><input class="fader" id="tb-radius" type="range" min="0" max="24" value="4" data-token="--radius" data-unit="px"></div>
+            <div class="field"><div class="field__head"><label class="field__label" for="tb-radius-lg">Radius, surfaces</label></div><input class="fader" id="tb-radius-lg" type="range" min="0" max="32" value="4" data-token="--radius-lg" data-unit="px"></div>
+            <div class="field"><div class="field__head"><label class="field__label" for="tb-depth">Depth</label></div><input class="fader" id="tb-depth" type="range" min="0" max="2" step="0.1" value="1" data-token="--depth"></div>
+            <div class="field"><div class="field__head"><label class="field__label" for="tb-travel">Key height</label></div><input class="fader" id="tb-travel" type="range" min="0" max="6" value="1" data-token="--travel" data-unit="px"></div>
+            <div class="field"><div class="field__head"><label class="field__label" for="tb-ring">Outline width</label></div><input class="fader" id="tb-ring" type="range" min="0" max="4" step="0.5" value="0" data-token="--ring-w" data-unit="px"></div>
+          </div>
+          <div class="col-12 col-md-7">
+            <div class="token-preview" id="token-preview">
+              <div class="well-row">
+                <span class="well"><button type="button" class="key">Push</button></span>
+                <span class="well"><button type="button" class="key key--accent">Go</button></span>
+              </div>
+              <div class="field"><div class="field__head"><label class="field__label" for="tb-sample">Name</label></div><input class="input" id="tb-sample" value="Joey Ramone"></div>
+              <article class="card"><div class="card__body"><h4 class="card__title">Poly Styrene</h4><p class="card__text">A card in the same settings.</p></div></article>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="tb-css">CSS for these values</label></div>
+          <textarea class="input" id="tb-css" rows="7" readonly></textarea>
+        </div>
+        <div class="well-row">
+          <span class="well"><button type="button" class="key" id="tb-copy">Copy CSS</button></span>
+          <span class="well"><button type="button" class="key" id="tb-reset">Reset</button></span>
+          <span id="tb-status" role="status" class="note"></span>
+        </div>
+      </fieldset>
+
+      <div class="table-wrap" role="region" aria-labelledby="tokens-global-cap" tabindex="0">
+        <table class="table">
+          <caption id="tokens-global-cap">Global tokens</caption>
+          <thead><tr><th scope="col">Token</th><th scope="col">Default</th><th scope="col">What it controls</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>--radius</code></th><td><code>4px</code></td><td>Corners of controls: keys, inputs, wells, tooltips.</td></tr>
+            <tr><th scope="row"><code>--radius-lg</code></th><td><code>4px</code></td><td>Corners of surfaces: panels, cards, dialogs, menus, tables, alerts, code blocks.</td></tr>
+            <tr><th scope="row"><code>--depth</code></th><td><code>1</code></td><td>Strength of every soft shadow. 0 is none.</td></tr>
+            <tr><th scope="row"><code>--travel</code></th><td><code>1px</code></td><td>How far a key stands above its well (its side wall).</td></tr>
+            <tr><th scope="row"><code>--bevel</code></th><td><code>1px</code></td><td>The light and dark rim on a key.</td></tr>
+            <tr><th scope="row"><code>--cap-drop, --cap-blur</code></th><td><code>1px, 2px</code></td><td>The soft shadow under a key.</td></tr>
+            <tr><th scope="row"><code>--ring-w</code></th><td><code>0px</code></td><td>Width of an outline round every control and surface.</td></tr>
+            <tr><th scope="row"><code>--ring-mix</code></th><td><code>15%</code></td><td>How strong that outline is, as a share of the ink color.</td></tr>
+            <tr><th scope="row"><code>--wall-ink</code></th><td><code>0%</code></td><td>How much of a key's wall is ink (100% is a hard, dark wall).</td></tr>
+            <tr><th scope="row"><code>--wall-far-mix</code></th><td><code>0%</code></td><td>A second, darker wall line under a key.</td></tr>
+            <tr><th scope="row"><code>--elev-y, --elev-blur, --elev-spread, --elev-a</code></th><td><code>1px, 2px, 0px, 8%</code></td><td>The shadow under panels, cards and blurbs.</td></tr>
+            <tr><th scope="row"><code>--lit</code></th><td><code>#36d27a</code></td><td>The highlight color. Everything lit derives from it.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap" role="region" aria-labelledby="tokens-comp-cap" tabindex="0">
+        <table class="table">
+          <caption id="tokens-comp-cap">Component radius tokens (each falls back to <code>--radius</code> or <code>--radius-lg</code>)</caption>
+          <thead><tr><th scope="col">Token</th><th scope="col">What it rounds</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>--key-radius</code></th><td>Keys, button groups, the file button, small controls inside other components</td></tr>
+            <tr><th scope="row"><code>--well-radius</code></th><td>The recessed socket around a key</td></tr>
+            <tr><th scope="row"><code>--input-radius</code></th><td>Text fields, selects, textareas, color and number fields</td></tr>
+            <tr><th scope="row"><code>--check-radius</code></th><td>The checkbox box</td></tr>
+            <tr><th scope="row"><code>--fader-radius</code></th><td>The fader thumb</td></tr>
+            <tr><th scope="row"><code>--lcd-radius</code></th><td>Readout screens</td></tr>
+            <tr><th scope="row"><code>--day-radius</code></th><td>Calendar days and the ends of a range</td></tr>
+            <tr><th scope="row"><code>--panel-radius</code></th><td>Panels (fieldsets)</td></tr>
+            <tr><th scope="row"><code>--card-radius</code></th><td>Cards</td></tr>
+            <tr><th scope="row"><code>--blurb-radius</code></th><td>Text blurbs</td></tr>
+            <tr><th scope="row"><code>--alert-radius</code></th><td>Alerts and toasts</td></tr>
+            <tr><th scope="row"><code>--table-radius</code></th><td>The table wrapper</td></tr>
+            <tr><th scope="row"><code>--code-radius</code></th><td>Code blocks</td></tr>
+            <tr><th scope="row"><code>--media-radius</code></th><td>Images, video and figures</td></tr>
+            <tr><th scope="row"><code>--sheet-radius</code></th><td>Dialogs and the calendar popup</td></tr>
+            <tr><th scope="row"><code>--menu-radius</code></th><td>Dropdown menus and suggestion lists</td></tr>
+            <tr><th scope="row"><code>--menu-item-radius</code></th><td>Items inside a menu or list</td></tr>
+            <tr><th scope="row"><code>--tooltip-radius</code></th><td>Tooltips</td></tr>
+            <tr><th scope="row"><code>--kbd-radius</code></th><td>Inline keyboard keys</td></tr>
+            <tr><th scope="row"><code>--breadcrumb-radius</code></th><td>Breadcrumb links</td></tr>
+            <tr><th scope="row"><code>--summary-radius</code></th><td>The error summary above a form</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <script type="text/plain" data-example="CSS">
+        /* Everything at once */
+        :root { --radius: 8px; --radius-lg: 12px; --depth: 0.5; }
+
+        /* Just one component */
+        .card { --card-radius: 0; }
+
+        /* One part of the page */
+        .sidebar { --radius: 20px; --ring-w: 2px; }
+      </script>
+    </section>
+
     <section aria-labelledby="config">
       <h3 id="config">Configuration</h3>
       <p class="note">Everything is set with HTML attributes. Native ones (<code>min</code>, <code>max</code>, <code>step</code>, <code>name</code>) keep their usual meaning.</p>
@@ -1314,7 +1413,12 @@
           <span class="well"><button type="button" class="key key--sq" aria-label="Settings" data-tooltip="Settings"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></button></span>
           <span class="well"><button type="button" class="key" aria-label="Play"><svg class="icon icon--lead" aria-hidden="true"><use href="#i-play"/></svg>Play</button></span>
         </div>
-              <script type="text/plain" data-example="Tag">
+              <div class="blurb blurb--inset">
+          <p class="blurb__eyebrow">Icons</p>
+          <h4 class="blurb__title">Lucide icons</h4>
+          <p class="blurb__text">The icons come from <a href="https://lucide.dev">Lucide</a>, a free set of clean outline icons (ISC license, credited in THIRD_PARTY_LICENSES.md). They are SVG, so they take the color of the text around them and follow light, dark and every style. Name one with <code>&lt;use href="#i-name"&gt;</code>, mark it <code>aria-hidden</code>, and give an icon-only key an <code>aria-label</code>. Add your own the same way.</p>
+        </div>
+        <script type="text/plain" data-example="Tag">
           <simar-button variant="sq" icon="skip-back" label="Previous"></simar-button>
           <simar-button variant="sq" icon="play" label="Play"></simar-button>
           <simar-button icon="play">Play</simar-button>   <!-- icon beside a label -->

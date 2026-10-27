@@ -7,7 +7,7 @@
 .well {
   display: inline-flex;
   padding: 5px;
-  border-radius: var(--radius);
+  border-radius: var(--well-radius, var(--radius));
   background: linear-gradient(180deg, var(--well-top), var(--well-bottom));
   @include well-shadow;
 
@@ -30,7 +30,7 @@
   min-height: 3rem;
   padding: 0 1.4rem;
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--key-radius, var(--radius));
   font: 600 0.95rem/1 inherit;
   font-family: inherit;
   letter-spacing: 0.02em;

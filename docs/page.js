@@ -277,3 +277,56 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
 document.querySelectorAll('[data-toggle-group] [aria-pressed]').forEach((key) => {
   key.addEventListener('click', () => key.setAttribute('aria-pressed', String(key.getAttribute('aria-pressed') !== 'true')));
 });
+
+// Design tokens: the theme builder. Each slider sets one token on the preview only; the textarea shows the
+// CSS for whatever differs from the current style's values, ready to paste into a project.
+const tokenPreview = document.getElementById('token-preview');
+if (tokenPreview) {
+  const sliders = [...document.querySelectorAll('[data-token]')];
+  const cssBox = document.getElementById('tb-css');
+  const tbStatus = document.getElementById('tb-status');
+  const defaults = new Map();
+  let syncing = false;
+  const valueOf = (slider) => `${slider.value}${slider.dataset.unit ?? ''}`;
+  const update = () => {
+    const lines = [];
+    for (const slider of sliders) {
+      if (slider.value !== defaults.get(slider)) {
+        tokenPreview.style.setProperty(slider.dataset.token, valueOf(slider));
+        lines.push(`  ${slider.dataset.token}: ${valueOf(slider)};`);
+      } else {
+        tokenPreview.style.removeProperty(slider.dataset.token);
+      }
+    }
+    cssBox.value = lines.length ? `:root {\n${lines.join('\n')}\n}` : '/* No changes: these are the current style\'s values. */';
+  };
+  // Start from what the page uses now (it differs by style), and show it on the sliders.
+  const readDefaults = () => {
+    syncing = true;
+    tokenPreview.removeAttribute('style');
+    for (const slider of sliders) {
+      const now = parseFloat(getComputedStyle(tokenPreview).getPropertyValue(slider.dataset.token));
+      if (!Number.isNaN(now)) slider.value = String(now);
+      defaults.set(slider, slider.value);
+      slider.dispatchEvent(new Event('input', { bubbles: true })); // so the fader's readout follows
+    }
+    syncing = false;
+    update();
+    tbStatus.textContent = '';
+  };
+  for (const slider of sliders) slider.addEventListener('input', () => { if (!syncing) update(); });
+  document.getElementById('tb-reset').addEventListener('click', () => { readDefaults(); tbStatus.textContent = 'Back to the current style.'; });
+  document.getElementById('tb-copy').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(cssBox.value);
+      tbStatus.textContent = 'CSS copied.';
+    } catch {
+      cssBox.focus();
+      cssBox.select();
+      tbStatus.textContent = 'Press Ctrl+C or Cmd+C to copy the selected CSS.';
+    }
+  });
+  // A different style changes the starting values.
+  for (const select of document.querySelectorAll('#style-select, #style-select-tab')) select.addEventListener('change', () => requestAnimationFrame(readDefaults));
+  readDefaults();
+}
