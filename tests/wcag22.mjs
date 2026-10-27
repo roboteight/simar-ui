@@ -612,6 +612,12 @@ const narrow = await page.evaluate(() => { const w = document.querySelector('.ta
 narrow.scrolls && !narrow.page ? pass('at 320px the table scrolls inside its wrapper and the page does not') : fail(`320px table: ${JSON.stringify(narrow)}`);
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- pagination ---------------------------------------------------------------------------------------
+console.log('\nPagination');
+await open(1280);
+const pg = await page.evaluate(() => { const nav = document.querySelector('nav.pagination'); const links = [...nav.querySelectorAll('a.key')]; return { label: nav.getAttribute('aria-label'), current: nav.querySelectorAll('[aria-current="page"]').length, rels: [...nav.querySelectorAll('[rel]')].map((a) => a.rel).join(), namesHaveText: links.every((a) => { const name = (a.getAttribute('aria-label') ?? a.textContent).toLowerCase(); return name.includes(a.textContent.trim().toLowerCase()); }), gapHidden: nav.querySelector('.pagination__gap').getAttribute('aria-hidden') === 'true', list: nav.querySelector('ul')?.children.length }; });
+pg.label && pg.current === 1 && pg.rels === 'prev,next' && pg.namesHaveText && pg.gapHidden && pg.list === 7 ? pass('a labelled nav with one current page, prev and next, names that contain the visible text, and a hidden gap') : fail(`pagination: ${JSON.stringify(pg)}`);
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

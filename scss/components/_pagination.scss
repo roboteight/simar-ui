@@ -1,0 +1,55 @@
+@use "../abstracts" as *;
+
+// Pagination: a row of page links inside a <nav aria-label>. The current page is marked with
+// aria-current="page" and is latched like a selected key; previous and next say where they go.
+//
+//   <nav class="pagination" aria-label="Orders pages">
+//     <ul class="pagination__list">
+//       <li><a class="key" href="?page=1" rel="prev">Previous</a></li>
+//       <li><a class="key" href="?page=1">1</a></li>
+//       <li><a class="key" href="?page=2" aria-current="page">2</a></li>
+//       <li><a class="key" href="?page=3" rel="next">Next</a></li>
+//     </ul>
+//   </nav>
+.pagination {
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    .key {
+      min-width: 2.5rem;
+      min-height: 2.5rem;
+      text-decoration: none;
+    }
+  }
+
+  // The gap where pages were left out. Not a link, and read as "ellipsis" only visually.
+  &__gap {
+    display: grid;
+    place-items: center;
+    min-width: 1.5rem;
+    min-height: 2.5rem;
+    color: var(--ink-soft);
+  }
+
+  // The page you are on.
+  .key[aria-current="page"] {
+    @include latched;
+    color: var(--lit-ink);
+    pointer-events: none;
+
+    @include forced-colors { background: Highlight; color: HighlightText; }
+  }
+
+  .key[aria-disabled="true"] {
+    --k-top: var(--disabled-top);
+    --k-bottom: var(--disabled-bottom);
+    color: var(--ink-disabled);
+    text-shadow: none;
+    pointer-events: none;
+  }
+}

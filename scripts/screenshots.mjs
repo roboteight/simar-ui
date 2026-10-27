@@ -19,7 +19,8 @@ const browser = await puppeteer.launch({
 });
 const page = await browser.newPage();
 await page.setViewport({ width: 860, height: 900, deviceScaleFactor: 2 });
-await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]); // no half-finished frames
+// Light first (the dark shots switch it below), whatever the machine is set to; no half-finished frames.
+await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }, { name: 'prefers-color-scheme', value: 'light' }]);
 
 const open = async (file, query) => {
   await page.goto(url(file, query));
@@ -72,6 +73,7 @@ await shoot('tabs', [await panel('Tabs')]);
 await shoot('alerts', [await panel('Alerts')]);
 await shoot('badges', [await panel('Badges')]);
 await shoot('table', [await panel('Table')]);
+await shoot('pagination', [await panel('Pagination')]);
 await page.focus('#ac-country');
 await page.keyboard.type('un');
 await wait(300);

@@ -298,6 +298,22 @@ A native `<table>` with a `<caption>` and `<th scope>`, in a `.table-wrap` that 
 </div>
 ```
 
+#### Pagination
+
+Page links in a `<nav>` with its own label. They are real links, so they work without JavaScript. The current page has `aria-current="page"` and stays latched; Previous and Next carry `rel="prev"` and `rel="next"`, and one that can't be used is `aria-disabled="true"`.
+
+<img src="docs/screenshots/pagination.png" alt="Previous, pages 1 to 3, a gap, page 12 and Next, with page 2 current" width="640">
+
+```html
+<nav class="pagination" aria-label="Orders pages">
+  <ul class="pagination__list">
+    <li><a class="key" href="?page=1" rel="prev">Previous</a></li>
+    <li><a class="key" href="?page=2" aria-label="Page 2, current page" aria-current="page">2</a></li>
+    <li><a class="key" href="?page=3" rel="next">Next</a></li>
+  </ul>
+</nav>
+```
+
 #### Dropdown menu
 
 A button that opens a list of actions or links. It is a native `popover`, so it opens, closes and dismisses with no JavaScript; the script adds the menu roles and the keys from the ARIA menu button pattern (Enter, Space and the arrows open it, arrows, Home, End and letters move, Esc returns focus to the button, Tab leaves).

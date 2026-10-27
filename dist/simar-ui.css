@@ -4681,6 +4681,48 @@ th[aria-sort=descending] .table__sort::after {
   }
 }
 
+.pagination__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pagination__list .key {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  text-decoration: none;
+}
+.pagination__gap {
+  display: grid;
+  place-items: center;
+  min-width: 1.5rem;
+  min-height: 2.5rem;
+  color: var(--ink-soft);
+}
+.pagination .key[aria-current=page] {
+  --k-top: var(--latch-top);
+  --k-bottom: var(--latch-bottom);
+  transform: translateY(-1px);
+  box-shadow: inset 0 3px 5px -1px color-mix(in srgb, #000 min(100%, 16% * var(--shade-k)), transparent), 0 1px 0 var(--latch-wall), 0 2px 3px color-mix(in srgb, #000 min(100%, 18% * var(--shade-k)), transparent);
+  color: var(--lit-ink);
+  pointer-events: none;
+}
+@media (forced-colors: active) {
+  .pagination .key[aria-current=page] {
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+.pagination .key[aria-disabled=true] {
+  --k-top: var(--disabled-top);
+  --k-bottom: var(--disabled-bottom);
+  color: var(--ink-disabled);
+  text-shadow: none;
+  pointer-events: none;
+}
+
 .daterange {
   display: flex;
   flex-wrap: wrap;

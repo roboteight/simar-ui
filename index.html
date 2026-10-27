@@ -125,6 +125,7 @@
         <li><a href="#alerts">Alerts and toasts</a></li>
         <li><a href="#badges">Badge</a></li>
         <li><a href="#menus">Dropdown menu</a></li>
+        <li><a href="#pagination">Pagination</a></li>
         <li><a href="#meters">Meter</a></li>
         <li><a href="#progress">Progress</a></li>
         <li><a href="#spinners">Spinners</a></li>
@@ -1442,6 +1443,36 @@
               <tbody><tr><th scope="row">#1042</th><td class="num">$120.00</td></tr></tbody>
             </table>
           </div>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="pagination">
+      <h3 id="pagination">Pagination</h3>
+      <p class="note">Page links in a <code>&lt;nav&gt;</code> with its own label. They are real links, so they work without JavaScript. The current page has <code>aria-current="page"</code> and stays latched; Previous and Next carry <code>rel="prev"</code> and <code>rel="next"</code>, and one that can't be used is <code>aria-disabled="true"</code> (and has no <code>href</code>).</p>
+
+      <fieldset class="panel">
+        <legend>Pagination</legend>
+        <nav class="pagination" aria-label="Orders pages">
+          <ul class="pagination__list">
+            <li><a class="key" href="#pagination" rel="prev">Previous</a></li>
+            <li><a class="key" href="#pagination" aria-label="Page 1">1</a></li>
+            <li><a class="key" href="#pagination" aria-label="Page 2, current page" aria-current="page">2</a></li>
+            <li><a class="key" href="#pagination" aria-label="Page 3">3</a></li>
+            <li><span class="pagination__gap" aria-hidden="true">&hellip;</span></li>
+            <li><a class="key" href="#pagination" aria-label="Page 12">12</a></li>
+            <li><a class="key" href="#pagination" rel="next">Next</a></li>
+          </ul>
+        </nav>
+        <script type="text/plain" data-example="HTML">
+          <nav class="pagination" aria-label="Orders pages">
+            <ul class="pagination__list">
+              <li><a class="key" href="?page=1" rel="prev">Previous</a></li>
+              <li><a class="key" href="?page=1" aria-label="Page 1">1</a></li>
+              <li><a class="key" href="?page=2" aria-label="Page 2, current page" aria-current="page">2</a></li>
+              <li><a class="key" href="?page=3" rel="next">Next</a></li>
+            </ul>
+          </nav>
         </script>
       </fieldset>
     </section>
