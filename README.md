@@ -11,7 +11,7 @@
 ![dependencies: none](https://img.shields.io/badge/dependencies-none-2b2d31?style=flat-square)
 ![accessibility: axe, keyboard and contrast tested](https://img.shields.io/badge/accessibility-axe%20%C2%B7%20keyboard%20%C2%B7%20contrast%20tested-2b2d31?style=flat-square)
 
-**Beveled, extruded controls and components built on real HTML elements.** Form fields with validation, selects and autocomplete, keys, faders, knobs, a date range, tabs, menus, alerts and toasts, tables, pagination, breadcrumbs, typography, a responsive grid and more, in light and dark with themes. The aim is that you never need another library for a component. You configure them with HTML attributes, they work without JavaScript, and they're built to be fully accessible.
+**Beveled, extruded controls and components built on real HTML elements.** Form fields with validation, selects and autocomplete, keys, faders, knobs, a date range, tabs, menus, alerts and toasts, tables, pagination, breadcrumbs, images and media, typography, a responsive grid and more, in light and dark with themes. The aim is that you never need another library for a component. You configure them with HTML attributes, they work without JavaScript, and they're built to be fully accessible.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/hero-dark.png">
@@ -67,7 +67,7 @@ Open `index.html` for the live demo, with a contents list that floats on the lef
 
 ## What's inside
 
-**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, buttons, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Content:** typography, quotes, text blurbs, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
+**Forms:** form control, select, datalist and autocomplete, checkboxes and switches, radio buttons, range pickers, knobs, date range, input group, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, buttons, dialog, dropdown menu, meter, pagination, progress, spinners, table, tabs, tooltips. **Content:** typography, quotes, text blurbs, media, layout and breakpoints, code. **Customize:** themes, fonts, highlight colors, configuration.
 
 The demo page and its contents list follow Bootstrap's docs order: Getting started, Customize, Content, Forms, then Components, with similar items together.
 
@@ -407,6 +407,19 @@ A short block with a small label, a title and a few words. Put several in a `blu
 
 <img src="docs/screenshots/blurbs.png" alt="Three text blurbs side by side" width="640">
 
+#### Media
+
+Images, video and audio on the native elements. Put `media` on a `<figure>` and its picture scales down to fit, keeps its shape and gets the same rim as other surfaces; `media--16x9`, `media--4x3` and `media--1x1` crop to a fixed shape. Give every image its `width` and `height` (so the page doesn't jump while it loads) and an `alt` that says what it shows. Video and audio keep the browser's own controls, which a keyboard and screen reader can use; the library does not add captions, so supply a `<track>` or a transcript for any recording.
+
+<img src="docs/screenshots/media.png" alt="A night scene of a house under a moon, shown at 16:9 and cropped to a square, with captions, above an audio player" width="640">
+
+```html
+<figure class="media media--16x9">
+  <img src="poster.jpg" alt="Deborah Harry on stage under red light" width="1200" height="675" loading="lazy">
+  <figcaption>Blondie at CBGB, 1977.</figcaption>
+</figure>
+```
+
 #### Layout and breakpoints
 
 Responsive behavior borrowed from [Bootstrap](https://getbootstrap.com/docs/5.3/layout/grid/): a `container`, a 12-column `row` of `col-*` items, and `d-*` display helpers that change at five mobile-first breakpoints (`sm` 36rem, `md` 48rem, `lg` 62rem, `xl` 75rem, `xxl` 87.5rem, in `rem` so they follow the reader's text size). The class names will be familiar; the code is our own, and uses CSS grid.
@@ -526,7 +539,7 @@ Every control is a native element, so the keyboard, focus and screen-reader beha
   - WCAG 2.2 checks for 320px reflow, target size, reduced motion, forced colors, click-only alternatives to dragging, non-text contrast and the accessibility tree;
   - a keyboard pass that tabs through every control and checks the focus ring is actually on screen and not hidden behind a floating button;
   - the same checks with every highlight color, every whole-page palette, the font choices, and states such as menus, suggestions and toasts showing;
-  - behavior tests for tabs, the menu, autocomplete, sortable tables, the contents drawer, the settings tab, header search, pagination and breadcrumbs, and a responsive grid test at phone, tablet and desktop widths;
+  - behavior tests for tabs, the menu, autocomplete, sortable tables, the contents drawer, the settings tab, header search, pagination, breadcrumbs and media, and a responsive grid test at phone, tablet and desktop widths;
   - an app test that serves the page, checks the manifest and icons and the service worker, and loads the page with the network off.
 
   `npm test` builds first; `npm publish` runs it automatically.

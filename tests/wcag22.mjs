@@ -634,6 +634,39 @@ await wait(200);
 (await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('a long breadcrumb wraps at 320px without sideways scrolling') : fail('the breadcrumb overflows at 320px');
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- media ----------------------------------------------------------------------------------------
+console.log('\nMedia');
+await open(1280);
+const md = await page.evaluate(() => {
+  const figs = [...document.querySelectorAll('section[aria-labelledby="media"] figure.media')];
+  const imgs = [...document.querySelectorAll('section[aria-labelledby="media"] figure.media img')];
+  return {
+    figs: figs.length,
+    named: imgs.every((i) => i.hasAttribute('alt') && i.alt.trim() !== ''),
+    sized: imgs.every((i) => i.hasAttribute('width') && i.hasAttribute('height')),
+    captioned: figs.every((f) => f.querySelector('figcaption')),
+    audioNamed: [...document.querySelectorAll('section[aria-labelledby="media"] audio')].every((a) => a.hasAttribute('controls') && a.getAttribute('aria-labelledby')),
+    square: (() => { const r = document.querySelector('.media--1x1 img').getBoundingClientRect(); return Math.abs(r.width - r.height) <= 1; })(),
+    wide: (() => { const r = document.querySelector('.media--16x9 img').getBoundingClientRect(); return Math.abs(r.width / r.height - 16 / 9) < 0.02; })(),
+  };
+});
+md.figs === 3 && md.named && md.sized && md.captioned && md.audioNamed ? pass('each figure has a caption, each image its alt, width and height, and the audio is named and has controls') : fail(`media markup: ${JSON.stringify(md)}`);
+md.square && md.wide ? pass('media--1x1 and media--16x9 hold their shape') : fail(`media shapes: ${JSON.stringify(md)}`);
+await page.setViewport({ width: 320, height: 700 });
+await wait(200);
+const mo = await page.evaluate(() => {
+  const fig = document.createElement('figure');
+  fig.className = 'media';
+  fig.innerHTML = '<video controls width="1920" height="1080"></video>';
+  document.querySelector('section[aria-labelledby="media"] .panel').append(fig);
+  const v = fig.querySelector('video').getBoundingClientRect();
+  const out = { page: document.documentElement.scrollWidth <= innerWidth + 1, video: v.right <= innerWidth };
+  fig.remove();
+  return out;
+});
+mo.page && mo.video ? pass('a wide image and a 1920px video shrink to fit at 320px without sideways scrolling') : fail(`media at 320px: ${JSON.stringify(mo)}`);
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

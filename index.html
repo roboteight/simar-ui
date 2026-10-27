@@ -98,6 +98,7 @@
         <li><a href="#typography">Typography</a></li>
         <li><a href="#quotes">Quotes</a></li>
         <li><a href="#blurbs">Text blurbs</a></li>
+        <li><a href="#media">Media</a></li>
         <li><a href="#layout">Layout and breakpoints</a></li>
         <li><a href="#code">Code</a></li>
         </ul>
@@ -461,6 +462,50 @@
               <p class="blurb__text">A few words.</p>
             </div>
           </div>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="media">
+      <h3 id="media">Media</h3>
+      <p class="note">Images, video and audio on the native elements. Put <code>media</code> on a <code>&lt;figure&gt;</code> and its picture scales down to fit, keeps its shape and gets the same rim as other surfaces. Give every image its <code>width</code> and <code>height</code> so the page does not jump as it loads, and an <code>alt</code> that says what it shows. Add <code>media--16x9</code>, <code>media--4x3</code> or <code>media--1x1</code> to crop to a fixed shape. Video and audio keep the browser's own controls, which a keyboard and screen reader can use; a recording also needs captions or a transcript.</p>
+
+      <fieldset class="panel">
+        <legend>Media</legend>
+        <div class="row">
+          <div class="col-12 col-md-7">
+            <figure class="media media--16x9">
+              <img src="docs/media/haddonfield-night.svg" alt="A house on a hill under a full moon, one window lit" width="1200" height="675" loading="lazy">
+              <figcaption>Haddonfield at night, 16:9.</figcaption>
+            </figure>
+          </div>
+          <div class="col-12 col-md-5">
+            <figure class="media media--1x1">
+              <img src="docs/media/haddonfield-night.svg" alt="The same house, cropped to a square" width="1200" height="675" loading="lazy">
+              <figcaption>Cropped to a square.</figcaption>
+            </figure>
+          </div>
+        </div>
+        <figure class="media">
+          <figcaption id="tone-cap">A 440 Hz test tone, two seconds long.</figcaption>
+          <audio controls src="docs/media/tone-a440.wav" aria-labelledby="tone-cap"></audio>
+          <details>
+            <summary>Transcript</summary>
+            <p>A single steady tone, the note A above middle C, that fades out after two seconds.</p>
+          </details>
+        </figure>
+        <script type="text/plain" data-example="HTML">
+          <figure class="media media--16x9">
+            <img src="poster.jpg" alt="Deborah Harry on stage under red light" width="1200" height="675" loading="lazy">
+            <figcaption>Blondie at CBGB, 1977.</figcaption>
+          </figure>
+
+          <figure class="media">
+            <video controls width="1280" height="720" poster="poster.jpg">
+              <source src="show.mp4" type="video/mp4">
+              <track kind="captions" src="show.en.vtt" srclang="en" label="English" default>
+            </video>
+          </figure>
         </script>
       </fieldset>
     </section>

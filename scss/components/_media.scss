@@ -1,0 +1,90 @@
+@use "../abstracts" as *;
+
+// Media: images, video and audio on native elements. Nothing here restyles a bare <img>: put .media on
+// a <figure> (or on the element itself) and it scales down to fit, keeps its shape and gets the rim
+// every other surface has. Always give an image its width and height so the page doesn't jump while
+// it loads, and an alt that says what the picture shows (alt="" when it is only decoration). Video and
+// audio keep the browser's own controls, which are keyboard operable and named; the library only
+// sizes and frames them. A recording also needs captions or a transcript (WCAG 1.2.1 to 1.2.5).
+//
+//   <figure class="media">
+//     <img src="poster.jpg" alt="A porch light on in a dark street" width="1200" height="675" loading="lazy">
+//     <figcaption>Haddonfield at night.</figcaption>
+//   </figure>
+.media {
+  margin: 0;
+  max-width: 100%;
+
+  // Media that follows other content keeps a gap from it.
+  &:not(:first-child) { margin-top: 1.25rem; }
+
+  img,
+  picture,
+  video,
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    box-shadow: 0 0 0 1px var(--hairline-strong);
+  }
+
+  // A <picture> is a wrapper; its <img> carries the frame.
+  picture { box-shadow: none; border-radius: 0; }
+  picture img { width: 100%; }
+
+  video { width: 100%; background: #000; }
+  audio { display: block; width: 100%; }
+
+  // A transcript under a recording: a plain <details>, with a focus ring and a 24px target.
+  summary {
+    display: list-item;
+    width: fit-content;
+    min-height: 1.5rem;
+    line-height: 1.5rem;
+    margin-top: 0.4rem;
+    border-radius: 6px;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  summary:focus-visible,
+  audio:focus-visible,
+  video:focus-visible { @include focus-ring(3px); }
+  details p { margin: 0.4rem 0 0; font-size: 0.9rem; line-height: 1.5; }
+
+  figcaption {
+    margin-top: 0.6rem;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  // Fix the shape and crop to fill it: media--16x9, media--4x3, media--1x1.
+  &--16x9 img, &--16x9 video { aspect-ratio: 16 / 9; }
+  &--4x3 img, &--4x3 video { aspect-ratio: 4 / 3; }
+  &--1x1 img, &--1x1 video { aspect-ratio: 1; }
+  &--16x9 img, &--16x9 video,
+  &--4x3 img, &--4x3 video,
+  &--1x1 img, &--1x1 video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  @include forced-colors {
+    img, video, svg { box-shadow: none; border: 1px solid CanvasText; }
+  }
+}
+
+// The same frame on a lone element, without a <figure>.
+img.media,
+video.media {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 1px var(--hairline-strong);
+
+  @include forced-colors { box-shadow: none; border: 1px solid CanvasText; }
+}

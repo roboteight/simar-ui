@@ -17,6 +17,7 @@ const FILES = [
   'docs/snippets.js',
   'docs/search.js',
   'docs/page.js',
+  'docs/media/haddonfield-night.svg',
   'docs/logo/simar-ui-mark.svg',
   'docs/logo/icon-32.png',
   'docs/logo/icon-192.png',
