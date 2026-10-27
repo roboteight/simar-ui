@@ -549,4 +549,4 @@ simar-ui is designed and directed by Chris Simari and built with AI assistance (
 
 ## License
 
-[MIT](LICENSE), free for any use. Icons are from [Lucide](https://lucide.dev) (ISC), see [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).
+Copyright &copy; 2026 [Chris Simari](https://chrissimari.com/projects/simar-ui). [MIT](LICENSE), free for any use. Icons are from [Lucide](https://lucide.dev) (ISC), see [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).

@@ -618,6 +618,12 @@ await open(1280);
 const pg = await page.evaluate(() => { const nav = document.querySelector('nav.pagination'); const links = [...nav.querySelectorAll('a.key')]; return { label: nav.getAttribute('aria-label'), current: nav.querySelectorAll('[aria-current="page"]').length, rels: [...nav.querySelectorAll('[rel]')].map((a) => a.rel).join(), namesHaveText: links.every((a) => { const name = (a.getAttribute('aria-label') ?? a.textContent).toLowerCase(); return name.includes(a.textContent.trim().toLowerCase()); }), gapHidden: nav.querySelector('.pagination__gap').getAttribute('aria-hidden') === 'true', list: nav.querySelector('ul')?.children.length }; });
 pg.label && pg.current === 1 && pg.rels === 'prev,next' && pg.namesHaveText && pg.gapHidden && pg.list === 7 ? pass('a labelled nav with one current page, prev and next, names that contain the visible text, and a hidden gap') : fail(`pagination: ${JSON.stringify(pg)}`);
 
+// ---- footer ---------------------------------------------------------------------------------------
+console.log('\nFooter');
+await open(1280);
+const foot = await page.evaluate(() => { const f = document.querySelector('footer.sitefoot'); const a = f?.querySelector('a[href]'); return { copy: f?.textContent.includes('\u00a9 2026 Chris Simari'), href: a?.href, name: a?.textContent.trim(), h: a?.getBoundingClientRect().height }; });
+foot.copy && foot.href === 'https://chrissimari.com/projects/simar-ui' && foot.name === 'simar-ui' && foot.h >= 24 ? pass('the footer has the copyright and links to chrissimari.com/projects/simar-ui (24px target)') : fail(`footer: ${JSON.stringify(foot)}`);
+
 // ---- fonts ---------------------------------------------------------------------------------------
 console.log('\nFont choices');
 await open(1280);

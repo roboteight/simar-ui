@@ -282,5 +282,19 @@ html:not([data-js="on"]) .needs-js { display: none; }
   font-size: 0.85rem;
 
   p { margin: 0; }
+
+  &__copy { margin-top: 0.75rem; }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-height: 1.5rem;
+    color: inherit;
+
+    .icon { width: 0.8rem; height: 0.8rem; filter: none; }
+    &:focus-visible { @include focus-ring(2px); border-radius: 4px; }
+  }
+
   @media print { padding-bottom: 1rem; }
 }
