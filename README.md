@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -411,6 +411,26 @@ An alert is a banner in the page with an icon, a title and some words, so the ki
 <button type="button" class="key" data-toast="Your changes are in." data-toast-variant="success">Save</button>
 <script>SimarUI.toast("Your changes are in.", { variant: "success", duration: 6000 });</script>
 ```
+
+#### App bars
+
+A bar that stays at the top or bottom of its scroll area: a native `<header>` or `<footer>` with `position: sticky`, so it needs no script and reads in order without CSS. At the top level of a page they are the banner and content-info landmarks; inside a `<section>` they are plain groups. The bars cover what scrolls beneath them, so the page gets `scroll-padding` and a focused control is never left hidden underneath (WCAG 2.2, Focus Not Obscured). On a narrow screen a bar wraps to a second row rather than pushing the page wider. This page's own header is an app bar. Token: `--appbar-height`.
+
+For a **collapsible mobile menu**, add `data-menu` to the bar and a `<nav class="appbar__nav" aria-label="…">` of links. Script adds a Menu key (a disclosure: `aria-expanded`, `aria-controls`) and the links fold behind it below the md breakpoint (`data-menu="lg"` picks another, `data-menu="always"` folds at every width, `data-menu-label` renames the key). Esc closes it and returns focus to the key, and choosing a link closes it. Without JavaScript there is no key and the links just wrap in the bar. Mark the current page with `aria-current="page"`; it is shown bold and underlined, not by color alone.
+
+<img src="docs/screenshots/appbars.png" alt="A scrolling box with a Setlist bar and a Share key at the top and a bar with Discard and Save setlist at the bottom" width="640">
+
+```html
+<header class="appbar">
+  <a class="appbar__brand" href="/">simar-ui</a>
+  <div class="appbar__actions"><span class="well"><button type="button" class="key">Share</button></span></div>
+</header>
+<footer class="appbar appbar--bottom"> … </footer>
+```
+
+A table can keep its heading row and totals in view too: put it in `table-wrap table-wrap--scroll` (height set by `--table-height`) and add `table--sticky`. The cells take a solid color, so rows never show through.
+
+<img src="docs/screenshots/sticky-table.png" alt="An orders table with its heading row and total pinned while the rows between scroll" width="640">
 
 #### Badge
 

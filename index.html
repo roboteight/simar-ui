@@ -62,8 +62,8 @@
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>
   </svg>
-  <header class="topbar">
-    <a class="topbar__brand" href="#top"><svg class="topbar__mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M9 13Q32 4 55 13L53 33Q51 49 32 60Q13 49 11 33Z" fill="currentColor"/><path d="M13 21L30 26M51 21L34 26" stroke="var(--page)" stroke-width="2.6" stroke-linecap="round" fill="none"/><path d="M15 28L28 30.5L26 34L16 32.5ZM49 28L36 30.5L38 34L48 32.5Z" fill="#36d27a"/><path d="M32 29L27.5 42H36.5Z" fill="none" stroke="var(--page)" stroke-width="1.8" stroke-linejoin="round"/><path d="M17 38Q23 46 29.5 47M47 38Q41 46 34.5 47" stroke="var(--page)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M21 49Q32 55 43 49" stroke="var(--page)" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M25 50.6V53M29 51.6V54.4M32 52V54.8M35 51.6V54.4M39 50.6V53" stroke="var(--page)" stroke-width="1.5" stroke-linecap="round"/></svg>simar-ui</a>
+  <header class="appbar">
+    <a class="appbar__brand" href="#top"><svg class="appbar__mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M9 13Q32 4 55 13L53 33Q51 49 32 60Q13 49 11 33Z" fill="currentColor"/><path d="M13 21L30 26M51 21L34 26" stroke="var(--page)" stroke-width="2.6" stroke-linecap="round" fill="none"/><path d="M15 28L28 30.5L26 34L16 32.5ZM49 28L36 30.5L38 34L48 32.5Z" fill="#36d27a"/><path d="M32 29L27.5 42H36.5Z" fill="none" stroke="var(--page)" stroke-width="1.8" stroke-linejoin="round"/><path d="M17 38Q23 46 29.5 47M47 38Q41 46 34.5 47" stroke="var(--page)" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M21 49Q32 55 43 49" stroke="var(--page)" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M25 50.6V53M29 51.6V54.4M32 52V54.8M35 51.6V54.4M39 50.6V53" stroke="var(--page)" stroke-width="1.5" stroke-linecap="round"/></svg>simar-ui</a>
     <search class="topbar__search needs-js" hidden>
       <label class="visually-hidden" for="site-search">Search the docs</label>
       <span class="topbar__field">
@@ -135,6 +135,7 @@
           <ul>
           <li><a href="#accordion">Accordion</a></li>
           <li><a href="#alerts">Alerts and toasts</a></li>
+          <li><a href="#appbars">App bars</a></li>
           <li><a href="#badges">Badge</a></li>
           <li><a href="#breadcrumbs">Breadcrumb</a></li>
           <li><a href="#key-groups">Button group</a></li>
@@ -1645,6 +1646,73 @@
         </script>
       </fieldset>
     </section>
+    <section aria-labelledby="appbars">
+      <h3 id="appbars">App bars</h3>
+      <p class="note">A bar that stays at the top or bottom of its scroll area: a native <code>&lt;header&gt;</code> or <code>&lt;footer&gt;</code> with <code>position: sticky</code>, so it needs no script and reads in order without CSS. At the top of a page they are the banner and footer landmarks; inside a <code>&lt;section&gt;</code> they are plain groups. The bars cover what scrolls beneath them, so the page gets <code>scroll-padding</code> and a focused control is never left hidden underneath (WCAG 2.2, Focus Not Obscured). This page's own header is one. Below, scroll the box (or focus it and use the arrow keys).</p>
+
+      <fieldset class="panel">
+        <legend>Top and bottom bars</legend>
+        <section class="demo-scroll" aria-label="App bar example" tabindex="0">
+          <header class="appbar">
+            <p class="appbar__title">Setlist</p>
+            <div class="appbar__actions"><span class="well"><button type="button" class="key">Share</button></span></div>
+          </header>
+          <div class="demo-scroll__body">
+            <p>Blitzkrieg Bop. Rock Rock Rock Rock. Sheena Is a Punk Rocker. Beat on the Brat.</p>
+            <p>Judy Is a Punk. I Wanna Be Sedated. Pet Sematary. Rockaway Beach.</p>
+            <p><a href="#appbars">A link, to tab to</a> while the bars hold their place.</p>
+            <p>The Kids Are Alright. Blitzkrieg Bop again, because it is the one everybody came for.</p>
+            <p>Teenage Lobotomy. Cretin Hop. Now I Wanna Sniff Some Glue. Commando.</p>
+            <p><a href="#appbars">Another link, near the end</a>.</p>
+            <p>Do You Remember Rock 'n' Roll Radio? We're a Happy Family. Gimme Gimme Shock Treatment.</p>
+          </div>
+          <footer class="appbar appbar--bottom">
+            <span>3 changes not saved</span>
+            <div class="appbar__actions"><span class="well"><button type="button" class="key">Discard</button></span><span class="well"><button type="button" class="key key--accent">Save setlist</button></span></div>
+          </footer>
+        </section>
+        <script type="text/plain" data-example="HTML">
+          <header class="appbar">
+            <a class="appbar__brand" href="/">simar-ui</a>
+            <div class="appbar__actions"><span class="well"><button type="button" class="key">Share</button></span></div>
+          </header>
+          <main> … </main>
+          <footer class="appbar appbar--bottom">
+            <span>3 changes not saved</span>
+            <div class="appbar__actions"><span class="well"><button type="button" class="key key--accent">Save setlist</button></span></div>
+          </footer>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Collapsible menu</legend>
+        <section class="demo-scroll demo-scroll--short" aria-label="Collapsible menu example" tabindex="0">
+          <header class="appbar" data-menu="always">
+            <a class="appbar__brand" href="#appbars">Mudd Club</a>
+            <nav class="appbar__nav" aria-label="Example menu">
+              <ul>
+                <li><a href="#appbars" aria-current="page">Tonight</a></li>
+                <li><a href="#appbars">Tickets</a></li>
+                <li><a href="#appbars">Directions</a></li>
+              </ul>
+            </nav>
+          </header>
+          <div class="demo-scroll__body"><p>Below the md breakpoint the links fold behind a Menu key. This box folds at every width so you can try it here: press Menu, then Esc.</p></div>
+        </section>
+        <script type="text/plain" data-example="HTML">
+          <header class="appbar" data-menu>  <!-- folds below md; data-menu="lg" or "always" change that -->
+            <a class="appbar__brand" href="/">Mudd Club</a>
+            <nav class="appbar__nav" aria-label="Main">
+              <ul>
+                <li><a href="/" aria-current="page">Tonight</a></li>
+                <li><a href="/tickets">Tickets</a></li>
+              </ul>
+            </nav>
+          </header>
+        </script>
+      </fieldset>
+    </section>
+
     <section aria-labelledby="badges">
       <h3 id="badges">Badge</h3>
       <p class="note">A small label for a status or a count. It always has words, or a number with hidden words after it, so the kind never depends on color alone; the dot is decoration. Use <code>badge--info</code>, <code>--success</code>, <code>--warning</code> or <code>--danger</code>, and <code>badge--count</code> for a number.</p>
@@ -2350,6 +2418,37 @@
               <caption id="cap">Recent orders</caption>
               <thead><tr><th scope="col" data-sort>Order</th><th scope="col" class="num" data-sort>Total</th></tr></thead>
               <tbody><tr><th scope="row">#1042</th><td class="num">$120.00</td></tr></tbody>
+            </table>
+          </div>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Sticky header and footer</legend>
+        <div class="table-wrap table-wrap--scroll" role="region" aria-labelledby="sticky-cap" tabindex="0" style="--table-height: 16rem">
+          <table class="table table--sticky">
+            <caption id="sticky-cap">More orders. The headings and the total stay in view while the rows scroll.</caption>
+            <thead><tr><th scope="col">Order</th><th scope="col">Customer</th><th scope="col" class="num">Total</th><th scope="col">Status</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">#1046</th><td>Darby Crash</td><td class="num">$75.00</td><td><span class="badge badge--success">Paid</span></td></tr>
+              <tr><th scope="row">#1047</th><td>Ellen Ripley</td><td class="num">$310.00</td><td><span class="badge badge--warning">Pending</span></td></tr>
+              <tr><th scope="row">#1048</th><td>Laurie Strode</td><td class="num">$22.00</td><td><span class="badge badge--success">Paid</span></td></tr>
+              <tr><th scope="row">#1049</th><td>Jason Voorhees</td><td class="num">$640.00</td><td><span class="badge badge--danger">Overdue</span></td></tr>
+              <tr><th scope="row">#1050</th><td>Joey Ramone</td><td class="num">$18.25</td><td><span class="badge badge--success">Paid</span></td></tr>
+              <tr><th scope="row">#1051</th><td>Deborah Harry</td><td class="num">$99.00</td><td><span class="badge badge--warning">Pending</span></td></tr>
+              <tr><th scope="row">#1052</th><td>Iggy Pop</td><td class="num">$410.00</td><td><span class="badge badge--success">Paid</span></td></tr>
+            </tbody>
+            <tfoot><tr><th scope="row" colspan="2">Total</th><td class="num">$1,674.25</td><td></td></tr></tfoot>
+          </table>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <!-- table-wrap--scroll gives the box a height (--table-height) and scrolls it; table--sticky pins the head and foot -->
+          <div class="table-wrap table-wrap--scroll" role="region" aria-labelledby="cap" tabindex="0">
+            <table class="table table--sticky">
+              <caption id="cap">Orders</caption>
+              <thead><tr><th scope="col">Order</th><th scope="col" class="num">Total</th></tr></thead>
+              <tbody> … many rows … </tbody>
+              <tfoot><tr><th scope="row">Total</th><td class="num">$1,674.25</td></tr></tfoot>
             </table>
           </div>
         </script>

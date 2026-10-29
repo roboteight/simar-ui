@@ -15,6 +15,14 @@
   box-shadow: ring(), 0 0 0 1px var(--hairline);
 
   &:focus-visible { @include focus-ring(3px); }
+
+  // A table that scrolls up and down inside its own box, so its header and footer can stay put (table--sticky).
+  // scroll-padding keeps a focused row clear of them.
+  &--scroll {
+    max-height: var(--table-height, 20rem);
+    overflow: auto;
+    scroll-padding-block: 3rem;
+  }
 }
 
 .table {
@@ -59,6 +67,30 @@
 
   &--striped tbody tr:nth-child(even) > * { background: color-mix(in srgb, var(--ink) 4%, transparent); }
   &--hover tbody tr:hover > * { background: color-mix(in srgb, var(--lit) 10%, transparent); }
+
+  // Sticky header and footer: the headings stay in view while the rows scroll. They need a box that scrolls
+  // up and down, so put the table in .table-wrap--scroll. The cells take a solid color (rows must not show
+  // through) and draw their rule with a shadow, since a collapsed border would scroll away.
+  &--sticky {
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--sheet-top);
+      border-bottom: 0;
+      box-shadow: inset 0 -2px 0 var(--hairline-strong);
+    }
+
+    tfoot th,
+    tfoot td {
+      position: sticky;
+      bottom: 0;
+      z-index: 1;
+      background: var(--sheet-top);
+      border-top: 0;
+      box-shadow: inset 0 2px 0 var(--hairline-strong);
+    }
+  }
 
   // Sortable headers: the script wraps the title in a button and keeps aria-sort up to date.
   &__sort {

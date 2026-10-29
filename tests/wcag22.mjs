@@ -577,7 +577,7 @@ const ac3 = await acNow();
 console.log('\nHeader and in-page search');
 for (const width of [1280, 375]) {
   await open(width);
-  const head = await page.evaluate(() => { const h = document.querySelector('header.topbar'); const input = document.querySelector('#site-search'); const r = h.getBoundingClientRect(); return { banner: getComputedStyle(h).position, search: !!input.closest('search'), label: !!document.querySelector('label[for="site-search"]'), groups: document.querySelectorAll('#site-index option').length, appearance: (() => { const sel = h.querySelector('select#appearance'); return sel && { opts: [...sel.options].map((o) => o.value).join(), value: sel.value, label: !!h.querySelector('label[for="appearance"]') }; })(), overflow: document.documentElement.scrollWidth > innerWidth + 1, h: r.height }; });
+  const head = await page.evaluate(() => { const h = document.querySelector('header.appbar'); const input = document.querySelector('#site-search'); const r = h.getBoundingClientRect(); return { banner: getComputedStyle(h).position, search: !!input.closest('search'), label: !!document.querySelector('label[for="site-search"]'), groups: document.querySelectorAll('#site-index option').length, appearance: (() => { const sel = h.querySelector('select#appearance'); return sel && { opts: [...sel.options].map((o) => o.value).join(), value: sel.value, label: !!h.querySelector('label[for="appearance"]') }; })(), overflow: document.documentElement.scrollWidth > innerWidth + 1, h: r.height }; });
   head.banner === 'sticky' && head.search && head.label && head.groups > 20 && head.appearance?.opts === 'auto,light,dark' && head.appearance.value === 'auto' && head.appearance.label && !head.overflow ? pass(`${width}px: a sticky header holds a labelled search (${head.groups} entries) and an Appearance dropdown (Auto, Light, Dark) that starts on Auto`) : fail(`${width}px header: ${JSON.stringify(head)}`);
 }
 await open(1280);
@@ -1068,6 +1068,89 @@ await open(320);
 await open(1280, '?js=off');
 const clOff = await page.evaluate((sel) => { const set = document.querySelector(sel); return { boxes: set.querySelectorAll('input[type="checkbox"]').length, all: !!set.querySelector('.checklist__all'), status: !!set.querySelector('.checklist__status') }; }, cl);
 clOff.boxes === 4 && !clOff.all && !clOff.status ? pass('with JavaScript off it is just the plain checkboxes (select all and the status need script, so they are not shown)') : fail(`check list without JavaScript: ${JSON.stringify(clOff)}`);
+await open(1280);
+
+// ---- app bars and sticky tables -------------------------------------------------------------------
+console.log('\nApp bars and sticky tables');
+await open(1280);
+const bars = await page.evaluate(() => {
+  const frame = document.querySelector('.demo-scroll');
+  const head = frame.querySelector('header.appbar'), foot = frame.querySelector('footer.appbar');
+  const at = (el) => { const r = el.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom) }; };
+  const out = { named: !!frame.getAttribute('aria-label'), focusable: frame.tabIndex === 0, scrolls: frame.scrollHeight > frame.clientHeight + 40 };
+  const f = at(frame);
+  out.start = { head: at(head).top - f.top, foot: f.bottom - at(foot).bottom };
+  frame.scrollTop = frame.scrollHeight;
+  out.end = { head: at(head).top - f.top, foot: f.bottom - at(foot).bottom };
+  frame.scrollTop = 0;
+  // landmarks: a bar inside a section is a plain group, so the page keeps one banner and one footer landmark
+  out.banners = document.querySelectorAll('header.appbar').length;
+  return out;
+});
+bars.named && bars.focusable && bars.scrolls ? pass('the example scrolls, is named, and can be focused to scroll with the keyboard') : fail(`app bar example: ${JSON.stringify(bars)}`);
+Math.abs(bars.start.head) <= 1 && Math.abs(bars.start.foot) <= 1 && Math.abs(bars.end.head) <= 1 && Math.abs(bars.end.foot) <= 1 ? pass('the top bar stays at the top and the bottom bar at the bottom, both before and after scrolling to the end') : fail(`app bars not sticky: ${JSON.stringify(bars)}`);
+const clear = [];
+for (const index of [0, 1]) {
+  const r = await page.evaluate((i) => {
+    const frame = document.querySelector('.demo-scroll');
+    frame.scrollTop = i === 0 ? frame.scrollHeight : 0;
+    const link = [...frame.querySelectorAll('.demo-scroll__body a')][i === 0 ? 0 : 1];
+    link.focus();
+    const l = link.getBoundingClientRect(), h = frame.querySelector('header.appbar').getBoundingClientRect(), f = frame.querySelector('footer.appbar').getBoundingClientRect();
+    return { top: Math.round(l.top - h.bottom), bottom: Math.round(f.top - l.bottom) };
+  }, index);
+  if (r.top < 0 || r.bottom < 0) clear.push(`link ${index + 1}: ${JSON.stringify(r)}`);
+}
+clear.length === 0 ? pass('a link focused from either direction is scrolled clear of both bars (Focus Not Obscured)') : fail(`focus hidden under a bar: ${clear.join('; ')}`);
+for (const scheme of ['light', 'dark']) {
+  await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: scheme }]);
+  const sticky = await page.evaluate(() => {
+    const wrap = document.querySelector('.table-wrap--scroll');
+    const th = wrap.querySelector('thead th'), tf = wrap.querySelector('tfoot th');
+    wrap.scrollTop = 60;
+    const w = wrap.getBoundingClientRect();
+    const solid = (el) => { const m = getComputedStyle(el).backgroundColor.match(/rgba?\(([^)]+)\)/)?.[1].split(',').map(Number); return !!m && (m.length === 3 || m[3] === 1); };
+    return { scrolls: wrap.scrollHeight > wrap.clientHeight + 20, head: Math.round(th.getBoundingClientRect().top - w.top), foot: Math.round(w.bottom - tf.getBoundingClientRect().bottom), solid: solid(th) && solid(tf) };
+  });
+  sticky.scrolls && Math.abs(sticky.head) <= 1 && Math.abs(sticky.foot) <= 1 && sticky.solid ? pass(`${scheme}: the table header and footer stay in view while rows scroll, on a solid color`) : fail(`sticky table (${scheme}): ${JSON.stringify(sticky)}`);
+}
+// the collapsible menu
+await open(1280);
+const mseq = async () => page.evaluate(() => {
+  const bar = document.querySelector('.demo-scroll--short .appbar');
+  const key = bar.querySelector('.appbar__menu .key'), nav = bar.querySelector('.appbar__nav');
+  return { key: !!key, name: key?.textContent.trim(), expanded: key?.getAttribute('aria-expanded'), controls: key?.getAttribute('aria-controls') === nav.id, navShown: getComputedStyle(nav).display !== 'none', focusOnKey: document.activeElement === key, named: !!nav.getAttribute('aria-label'), current: nav.querySelectorAll('[aria-current="page"]').length };
+});
+let m0 = await mseq();
+m0.key && m0.name === 'Menu' && m0.expanded === 'false' && m0.controls && !m0.navShown && m0.named && m0.current === 1 ? pass('the folded menu is a named Menu key (aria-expanded false, aria-controls the nav) with the links hidden from view and from the tab order') : fail(`menu start: ${JSON.stringify(m0)}`);
+await page.focus('.demo-scroll--short .appbar__menu .key');
+await page.keyboard.press('Enter');
+m0 = await mseq();
+m0.expanded === 'true' && m0.navShown ? pass('Enter on Menu opens it: aria-expanded true and the links show') : fail(`menu open: ${JSON.stringify(m0)}`);
+await page.keyboard.press('Tab');
+(await page.evaluate(() => document.activeElement.textContent.trim())) === 'Tonight' ? pass('Tab goes straight from the Menu key into the links') : fail('Tab from Menu did not reach the first link');
+await page.keyboard.press('Escape');
+m0 = await mseq();
+m0.expanded === 'false' && !m0.navShown && m0.focusOnKey ? pass('Esc closes the menu and puts focus back on the Menu key') : fail(`menu esc: ${JSON.stringify(m0)}`);
+// the default folds below md only: add a bar and look at it at both widths
+const inject = () => page.evaluate(() => {
+  document.querySelector('main').insertAdjacentHTML('beforeend', '<header class="appbar" id="probe-bar" data-menu style="position:static"><a class="appbar__brand" href="#">Probe</a><nav class="appbar__nav" aria-label="Probe"><ul><li><a href="#">One</a></li><li><a href="#">Two</a></li></ul></nav></header>');
+  window.SimarUI?.init?.();
+  const bar = document.querySelector('#probe-bar');
+  return { key: !!bar.querySelector('.appbar__menu .key') && getComputedStyle(bar.querySelector('.appbar__menu')).display !== 'none', nav: getComputedStyle(bar.querySelector('.appbar__nav')).display !== 'none' };
+});
+for (const [width, folded] of [[1280, false], [375, true]]) {
+  await open(width);
+  const r = await inject();
+  r.key === folded && r.nav === !folded ? pass(`${width}px: the default bar ${folded ? 'folds its links behind the Menu key' : 'shows its links inline, with no Menu key'}`) : fail(`probe bar at ${width}px: ${JSON.stringify(r)}`);
+}
+await open(1280, '?js=off');
+const noJs = await page.evaluate(() => { const nav = document.querySelector('.demo-scroll--short .appbar__nav'); return { shown: getComputedStyle(nav).display !== 'none', key: !!document.querySelector('.demo-scroll--short .appbar__menu') }; });
+noJs.shown && !noJs.key ? pass('with JavaScript off the links just show in the bar and there is no Menu key') : fail(`menu without JavaScript: ${JSON.stringify(noJs)}`);
+await open(1280);
+await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }]);
+await open(320);
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('the app bars and sticky table fit a 320px screen without sideways scrolling') : fail('app bars or the sticky table overflow at 320px');
 await open(1280);
 
 // ---- timeline -------------------------------------------------------------------------------------

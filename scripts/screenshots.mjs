@@ -76,6 +76,8 @@ await shoot('quotes', [await panel('Blockquote'), await panel('Pull quote')]);
 await shoot('blurbs', [await panel('Blurbs')]);
 await shoot('tabs', [await panel('Tabs')]);
 await shoot('alerts', [await panel('Alerts')]);
+await shoot('appbars', [await panel('Top and bottom bars')]);
+await shoot('sticky-table', [await panel('Sticky header and footer')]);
 await shoot('badges', [await panel('Badges')]);
 await shoot('table', [await panel('Table')]);
 await shoot('pagination', [await panel('Pagination')]);

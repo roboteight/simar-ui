@@ -1414,6 +1414,46 @@ const enhanceChecklists = (claim) => {
   }
 };
 
+// An app bar with a collapsible menu: data-menu on the bar, a <nav class="appbar__nav"> inside. Script adds a Menu
+// key that discloses the links (aria-expanded, aria-controls, the WAI-ARIA disclosure pattern); the stylesheet decides
+// when they fold (below md, or the breakpoint named in data-menu, or "always"). Esc closes the menu and returns focus
+// to the key; choosing a link closes it too. Without script the links just wrap in the bar.
+let appbarCount = 0;
+const enhanceAppBars = (claim) => {
+  for (const bar of claim('.appbar[data-menu]')) {
+    const nav = bar.querySelector('.appbar__nav');
+    if (!nav) continue;
+    nav.id ||= `simar-appbar-nav-${++appbarCount}`;
+    const well = document.createElement('span');
+    well.className = 'well appbar__menu';
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'key';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', nav.id);
+    toggle.innerHTML = '<svg class="icon icon--lead" aria-hidden="true"><use href="#i-list"/></svg>';
+    toggle.append(bar.dataset.menuLabel || 'Menu');
+    well.append(toggle);
+    // After the actions, else after the name, else first: so the key sits where the links would have started.
+    const anchor = bar.querySelector('.appbar__actions') ?? bar.querySelector('.appbar__brand, .appbar__title');
+    if (anchor) anchor.after(well); else bar.prepend(well);
+    const set = (open) => {
+      bar.toggleAttribute('data-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+    bar.classList.add('is-enhanced');
+    toggle.addEventListener('click', () => set(!bar.hasAttribute('data-open')));
+    nav.addEventListener('click', (e) => { if (e.target.closest('a')) set(false); });
+    bar.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || !bar.hasAttribute('data-open') || !toggle.offsetParent) return;
+      set(false);
+      toggle.focus();
+    });
+    // Folded or not is the stylesheet's call, so close whenever the width changes.
+    addEventListener('resize', () => { if (bar.hasAttribute('data-open') && !toggle.offsetParent) set(false); });
+  }
+};
+
 // ---- Tooltips --------------------------------------------------------------------------
 
 // data-tooltip="Text" on a button, link or radio key. The text becomes a popover shown on mouse
@@ -1599,6 +1639,7 @@ const init = (scope = document) => {
   enhanceCode(claim);
   enhanceChecks(claim);
   enhanceChecklists(claim);
+  enhanceAppBars(claim);
   enhanceTabs(claim);
   enhanceSideMenus(claim);
   enhanceEmbeds(claim);

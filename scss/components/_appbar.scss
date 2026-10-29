@@ -1,0 +1,150 @@
+@use "../abstracts" as *;
+
+// The same breakpoints as the layout (sm 36, md 48, lg 62, xl 75, xxl 87.5 rem).
+$bars: (sm: 36rem, md: 48rem, lg: 62rem, xl: 75rem, xxl: 87.5rem);
+
+// App bars: a bar that stays at the top or bottom of its scroll area. Native <header> and <footer> (or a <nav> with
+// a name) with position: sticky, so they need no script and still read in order without CSS. At the top level of a
+// page a <header> is the banner landmark and a <footer> the contentinfo one; inside a <section> or <article> they are
+// plain groups. Give a bar a name only if it is a <nav>.
+//
+//   <header class="appbar">
+//     <a class="appbar__brand" href="/">simar-ui</a>
+//     <div class="appbar__actions"> …keys… </div>
+//   </header>
+//   <footer class="appbar appbar--bottom"> … </footer>
+//
+// A collapsible menu: put a <nav class="appbar__nav"> with a list of links in the bar and add data-menu. Script adds a
+// Menu key (a disclosure: aria-expanded, aria-controls) and the links fold away below the md breakpoint (data-menu="lg"
+// for another one, data-menu="always" to fold at every width). Esc closes it and returns focus to the key. Without
+// script there is no key and the links simply wrap in the bar.
+//
+//   <header class="appbar" data-menu>
+//     <a class="appbar__brand" href="/">simar-ui</a>
+//     <nav class="appbar__nav" aria-label="Main"><ul><li><a href="/docs" aria-current="page">Docs</a></li>…</ul></nav>
+//   </header>
+//
+// Sticky bars cover what scrolls beneath them, so the root gets scroll-padding: following a link or tabbing to a
+// control never leaves it hidden under a bar (WCAG 2.2 Focus Not Obscured). Tokens: --appbar-height.
+.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  display: flex;
+  flex-wrap: wrap; // a narrow screen wraps the bar to a second row rather than pushing it wider
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  box-sizing: border-box;
+  min-height: var(--appbar-height, 3.5rem);
+  padding: max(0.5rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) 0.5rem max(1rem, env(safe-area-inset-left));
+  background: var(--page);
+  color: var(--ink);
+  box-shadow: 0 1px 0 var(--hairline-strong);
+
+  @supports (backdrop-filter: blur(1px)) {
+    background: color-mix(in srgb, var(--page) 88%, transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  &--bottom {
+    top: auto;
+    bottom: 0;
+    padding-block: 0.5rem max(0.5rem, env(safe-area-inset-bottom));
+    box-shadow: 0 -1px 0 var(--hairline-strong);
+  }
+
+  &__brand,
+  &__title {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--ink);
+    font: 700 1.05rem var(--font-heading);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  &__brand:focus-visible { @include focus-ring(2px); border-radius: 4px; }
+  &__mark { width: 1.75rem; height: 1.75rem; flex: none; }
+
+  // Pushes whatever follows to the far end.
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-inline-start: auto;
+  }
+
+  @media print { display: none; }
+}
+
+// Keep focus clear of a sticky bar when something scrolls it into view. :where() keeps this at the lowest
+// specificity, so a page can set its own scroll-padding.
+:where(:root:has(.appbar:not(.appbar--bottom))) { scroll-padding-top: calc(var(--appbar-height, 3.5rem) + 0.5rem); }
+:where(:root:has(.appbar--bottom)) { scroll-padding-bottom: calc(var(--appbar-height, 3.5rem) + 0.5rem); }
+
+// ---- Links and the collapsible menu -----------------------------------------------------------
+
+.appbar__nav {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--key-radius, var(--radius));
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+    &:focus-visible { @include focus-ring(2px); }
+    // The current page is bold and underlined, so it never relies on color alone.
+    &[aria-current="page"] { font-weight: 700; box-shadow: inset 0 -3px 0 var(--lit); }
+  }
+}
+
+// The Menu key is added by script; it only shows when the links are folded.
+.appbar__menu {
+  display: none;
+  margin-inline-start: auto;
+}
+
+.appbar__actions ~ .appbar__menu { margin-inline-start: 0; }
+
+@mixin folded {
+  .appbar__menu { display: inline-flex; }
+
+  .appbar__nav {
+    display: none;
+    flex: 1 1 100%;
+    order: 1; // after everything else, on a row of its own
+
+    ul { flex-direction: column; align-items: stretch; }
+  }
+
+  &[data-open] .appbar__nav { display: block; }
+}
+
+.appbar[data-menu="always"].is-enhanced { @include folded; }
+
+@each $name, $width in $bars {
+  .appbar[data-menu="#{$name}"].is-enhanced {
+    @media (max-width: #{$width - 0.02rem}) { @include folded; }
+  }
+}
+
+.appbar[data-menu=""].is-enhanced {
+  @media (max-width: #{map-get($bars, md) - 0.02rem}) { @include folded; }
+}

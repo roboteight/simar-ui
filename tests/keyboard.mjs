@@ -52,11 +52,13 @@ const indicator = async () => {
       covered = Math.max(covered, (w * h) / Math.max(1, r.width * r.height));
     }
     // Fully on screen with its margin: a plain screenshot is enough (the beyond-viewport mode is unreliable near the end of a long page).
-    const inView = r.top >= 14 && r.bottom + 14 <= innerHeight && r.left >= 14 && r.right + 14 <= innerWidth;
-    return { name, covered, inView, x: r.x + scrollX - 14, y: r.y + scrollY - 14, width: r.width + 28, height: r.height + 28 };
+    // The margin may run off the screen (a button at the edge): that is fine, the clip below is cut to the screen.
+    const inView = r.top >= 0 && r.bottom <= innerHeight && r.left >= 0 && r.right <= innerWidth;
+    return { name, covered, inView, x: r.x + scrollX - 14, y: r.y + scrollY - 14, width: r.width + 28, height: r.height + 28, edgeX: scrollX + innerWidth, edgeY: scrollY + innerHeight };
   });
   if (!target) return { ok: true, name: '(body)' };
-  const clip = { x: Math.max(0, target.x), y: Math.max(0, target.y), width: Math.min(target.width, 960), height: Math.min(target.height, 700) };
+  const x = Math.max(0, target.x), y = Math.max(0, target.y);
+  const clip = { x, y, width: Math.min(target.width, 960, target.inView ? target.edgeX - x : Infinity), height: Math.min(target.height, 700, target.inView ? target.edgeY - y : Infinity) };
   const png = PNG.sync.read(await page.screenshot({ clip, captureBeyondViewport: !target.inView }));
   let hits = 0;
   for (let i = 0; i < png.data.length; i += 4) {

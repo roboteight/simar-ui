@@ -299,3 +299,20 @@ html:not([data-js="on"]) .needs-js { display: none; }
   // The demos are positioned against this box, so the real viewport-based limits are relaxed here.
   .side-menu__panel { max-height: 14rem; }
 }
+
+// A box that scrolls, so a sticky bar can be shown holding its place inside the demo instead of sticking to the page.
+// It is a named <section> (a region) with tabindex so the keyboard can scroll it.
+.demo-scroll {
+  height: 18rem;
+  overflow: auto;
+  border-radius: var(--radius);
+  background: var(--sheet-top);
+  box-shadow: 0 0 0 1px var(--hairline);
+  scroll-padding-block: 4.5rem;
+  isolation: isolate; // the bars' z-index stays inside the box, so the floating buttons still sit above it
+
+  &--short { height: 12rem; }
+  &:focus-visible { @include focus-ring(3px); }
+  &__body { padding: 1rem; }
+  &__body p { margin: 0 0 1rem; }
+}

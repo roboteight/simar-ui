@@ -1625,6 +1625,44 @@
       refresh();
     }
   };
+  var appbarCount = 0;
+  var enhanceAppBars = (claim) => {
+    for (const bar of claim(".appbar[data-menu]")) {
+      const nav = bar.querySelector(".appbar__nav");
+      if (!nav) continue;
+      nav.id ||= `simar-appbar-nav-${++appbarCount}`;
+      const well = document.createElement("span");
+      well.className = "well appbar__menu";
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "key";
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-controls", nav.id);
+      toggle.innerHTML = '<svg class="icon icon--lead" aria-hidden="true"><use href="#i-list"/></svg>';
+      toggle.append(bar.dataset.menuLabel || "Menu");
+      well.append(toggle);
+      const anchor = bar.querySelector(".appbar__actions") ?? bar.querySelector(".appbar__brand, .appbar__title");
+      if (anchor) anchor.after(well);
+      else bar.prepend(well);
+      const set = (open) => {
+        bar.toggleAttribute("data-open", open);
+        toggle.setAttribute("aria-expanded", String(open));
+      };
+      bar.classList.add("is-enhanced");
+      toggle.addEventListener("click", () => set(!bar.hasAttribute("data-open")));
+      nav.addEventListener("click", (e) => {
+        if (e.target.closest("a")) set(false);
+      });
+      bar.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape" || !bar.hasAttribute("data-open") || !toggle.offsetParent) return;
+        set(false);
+        toggle.focus();
+      });
+      addEventListener("resize", () => {
+        if (bar.hasAttribute("data-open") && !toggle.offsetParent) set(false);
+      });
+    }
+  };
   var tipped = /* @__PURE__ */ new WeakSet();
   var tipCount = 0;
   var showing = null;
@@ -1770,6 +1808,7 @@
     enhanceCode(claim);
     enhanceChecks(claim);
     enhanceChecklists(claim);
+    enhanceAppBars(claim);
     enhanceTabs(claim);
     enhanceSideMenus(claim);
     enhanceEmbeds(claim);
