@@ -209,15 +209,16 @@
     // <simar-textarea label="Message" name="message" rows="5" maxlength="500">Starting text</simar-textarea>
     "simar-textarea": (node) => fieldShell(node, "textarea", (id, describedby) => `<textarea class="input" id="${id}"${controlAttrs(node)}${describedby}>${escText(node.textContent.trim())}</textarea>`),
     // <simar-select label="Size" name="size"><simar-option value="s">Small</simar-option>...</simar-select>
-    // multiple makes a list box; <simar-group label="Group"> makes an optgroup.
+    // multiple makes a list box; <simar-group label="Group"> makes an optgroup. picker with icon="sun" on the options
+    // draws a themed list with an icon beside each choice.
     "simar-select": (node) => {
       const options = (parent) => [...parent.children].map((child) => {
         if (child.tagName === "SIMAR-GROUP") return `<optgroup label="${esc(child.getAttribute("label") ?? "")}">${options(child)}</optgroup>`;
-        return `<option${attr(child, "value")}${flag(child, "selected")}${flag(child, "disabled")}>${escText(child.textContent.trim())}</option>`;
+        return `<option${attr(child, "value")}${flag(child, "selected")}${flag(child, "disabled")}${attr(child, "icon", "data-icon")}>${escText(child.textContent.trim())}</option>`;
       }).join("");
       const multiple = node.hasAttribute("multiple");
       return fieldShell(node, "select", (id, describedby) => {
-        const select = `<select class="input" id="${id}"${controlAttrs(node)}${describedby}>${options(node)}</select>`;
+        const select = `<select class="input" id="${id}"${controlAttrs(node)}${flag(node, "picker").replace("picker", "data-picker")}${describedby}>${options(node)}</select>`;
         return multiple ? select : `<span class="select">${select}${svgIcon("chevron-down", "select__icon")}</span>`;
       });
     },
@@ -1353,6 +1354,11 @@
       const label = select.id ? document.querySelector(`label[for="${select.id}"]`) : null;
       const options = [...select.options];
       const art = (option) => {
+        if (option.dataset.icon) {
+          const holder = document.createElement("template");
+          holder.innerHTML = icon2(option.dataset.icon);
+          return holder.content;
+        }
         const template = option.dataset.art && document.getElementById(option.dataset.art);
         return template ? template.content.cloneNode(true) : null;
       };

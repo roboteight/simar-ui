@@ -1140,7 +1140,8 @@ const enhanceTables = (claim) => {
 
 // Picker: a <select data-picker> whose list can show more than text, such as a moving spinner. The
 // select stays in the form and keeps the value; a select-only combobox (the ARIA pattern) is built
-// over it. An option points at a <template> with data-art, and that is drawn beside its words.
+// over it. An option points at a <template> with data-art, or names a library icon with data-icon, and that is
+// drawn beside its words (the icon is decoration: the words are the option's name).
 // Keys: Down/Up/Enter/Space open it; arrows, Home, End and letters move; Enter or Space picks;
 // Esc closes. Focus stays on the button and aria-activedescendant names the current option.
 let pickers = 0;
@@ -1150,6 +1151,12 @@ const enhancePickers = (claim) => {
     const label = select.id ? document.querySelector(`label[for="${select.id}"]`) : null;
     const options = [...select.options];
     const art = (option) => {
+      // data-icon="sun" draws that library icon beside the words; data-art points at a <template> instead.
+      if (option.dataset.icon) {
+        const holder = document.createElement('template');
+        holder.innerHTML = icon(option.dataset.icon);
+        return holder.content;
+      }
       const template = option.dataset.art && document.getElementById(option.dataset.art);
       return template ? template.content.cloneNode(true) : null;
     };

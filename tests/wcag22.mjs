@@ -1252,6 +1252,44 @@ const jumped = await page.evaluate(() => { const t = document.querySelector('sec
 jumped ? pass('with JavaScript off, the "Slide 3" link scrolls the row to slide 3') : fail('the jump link did not reach its slide without JavaScript');
 await open(1280);
 
+// ---- select with icons ----------------------------------------------------------------------------
+console.log('\nSelect with icons');
+await open(1280);
+const iconPick = await page.evaluate(() => {
+  const select = document.querySelector('#si-appearance');
+  const box = document.querySelector('.field:has(#si-appearance) .picker');
+  const button = box?.querySelector('[role="combobox"]');
+  return {
+    kept: select?.closest('.select')?.hidden === true,
+    button: !!button, haspopup: button?.getAttribute('aria-haspopup'), expanded: button?.getAttribute('aria-expanded'),
+    named: (button?.getAttribute('aria-labelledby') ?? '').split(' ').map((id) => document.getElementById(id)?.textContent.trim()).join(' ').startsWith('Appearance'),
+    shownText: button?.querySelector('.picker__text')?.textContent, shownIcon: !!button?.querySelector('.picker__art svg.icon'), decorative: button?.querySelector('.picker__art')?.getAttribute('aria-hidden') === 'true',
+    options: [...(box?.querySelectorAll('[role="option"]') ?? [])].map((o) => ({ name: o.querySelector('.picker__text')?.textContent, icon: !!o.querySelector('.picker__art svg'), selected: o.getAttribute('aria-selected') })),
+    value: select?.value,
+  };
+});
+iconPick.kept === true && iconPick.button && iconPick.haspopup === 'listbox' && iconPick.expanded === 'false' && iconPick.named ? pass('the icon select is a named combobox over the real <select> (kept in the form, hidden from view)') : fail(`icon select: ${JSON.stringify(iconPick)}`);
+iconPick.shownText === 'Auto' && iconPick.shownIcon && iconPick.decorative && iconPick.options.length === 3 && iconPick.options.every((o) => o.icon && o.name) && iconPick.options[0].selected === 'true' ? pass('each choice has an icon beside its words, the icon is hidden from screen readers, and the current one is selected') : fail(`icon select options: ${JSON.stringify(iconPick)}`);
+await page.focus('.field:has(#si-appearance) .picker__button');
+await page.keyboard.press('ArrowDown');
+await wait(150); // the popover's toggle event sets aria-expanded a moment after it opens
+const iconOpen = await page.evaluate(() => { const b = document.querySelector('.field:has(#si-appearance) .picker__button'); return { expanded: b.getAttribute('aria-expanded'), controls: !!document.getElementById(b.getAttribute('aria-controls') ?? ''), active: b.getAttribute('aria-activedescendant') && document.getElementById(b.getAttribute('aria-activedescendant'))?.textContent.trim() }; });
+iconOpen.expanded === 'true' && iconOpen.controls && iconOpen.active === 'Auto' ? pass('Down opens the list, aria-controls points at it and the current option is the active descendant') : fail(`icon select open: ${JSON.stringify(iconOpen)}`);
+await page.keyboard.press('ArrowDown');
+await page.keyboard.press('Enter');
+await wait(150);
+const iconPicked = await page.evaluate(() => ({ value: document.querySelector('#si-appearance').value, text: document.querySelector('.field:has(#si-appearance) .picker__button .picker__text').textContent, expanded: document.querySelector('.field:has(#si-appearance) .picker__button').getAttribute('aria-expanded'), focused: document.activeElement.classList.contains('picker__button') }));
+iconPicked.value === 'light' && iconPicked.text === 'Light' && iconPicked.expanded === 'false' && iconPicked.focused ? pass('arrow and Enter choose "Light": the select holds it, the button shows it, the list closes and focus stays on the button') : fail(`icon select pick: ${JSON.stringify(iconPicked)}`);
+await page.keyboard.press('ArrowDown');
+await wait(150);
+await page.keyboard.press('Escape');
+await wait(150);
+(await page.evaluate(() => document.querySelector('.field:has(#si-appearance) .picker__button').getAttribute('aria-expanded'))) === 'false' ? pass('Esc closes the list') : fail('Esc did not close the icon list');
+await open(1280, '?js=off');
+const iconPlain = await page.evaluate(() => { const s = document.querySelector('#si-appearance'); return { visible: s.offsetParent !== null, options: [...s.options].map((o) => o.textContent), picker: !!document.querySelector('.field:has(#si-appearance) .picker__button') }; });
+iconPlain.visible && iconPlain.options.join() === 'Auto,Light,Dark' && !iconPlain.picker ? pass('with JavaScript off it is the plain native select, every choice named by its words') : fail(`icon select without JavaScript: ${JSON.stringify(iconPlain)}`);
+await open(1280);
+
 // ---- timeline -------------------------------------------------------------------------------------
 console.log('\nTimeline');
 await open(1280);

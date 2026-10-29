@@ -4048,6 +4048,17 @@ input[type=file].input:disabled::file-selector-button {
   min-width: 2rem;
   justify-content: center;
 }
+.picker__art .icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--ink-soft);
+  filter: none;
+}
+@media (forced-colors: active) {
+  .picker__art .icon {
+    color: FieldText;
+  }
+}
 .picker__icon {
   flex: none;
   width: 1.1rem;

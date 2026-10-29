@@ -68,6 +68,7 @@ await shoot('accordion', [await section('accordion')], 4);
 await shoot('code', [await panel('Code block')]);
 for (const key of await page.$$('[data-pause]')) await key.click();   // freeze the motion for a steady frame
 await shoot('progress', [await panel('Progress')]);
+await shoot('select-icons', [await panel('Select with icons')]);
 await shoot('spinners', [await panel('Spinners')]);
 for (const key of await page.$$('[data-pause]')) await key.click();
 await shoot('meter', [await panel('Meter')]);

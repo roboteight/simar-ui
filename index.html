@@ -1647,6 +1647,38 @@
           </datalist>
         </script>
       </fieldset>
+
+      <fieldset class="panel">
+        <legend>Select with icons</legend>
+        <div class="field-grid">
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="si-appearance">Appearance</label></div>
+            <span class="select"><select class="input" id="si-appearance" name="appearance" data-picker><option value="auto" data-icon="monitor" selected>Auto</option><option value="light" data-icon="sun">Light</option><option value="dark" data-icon="moon">Dark</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
+          </div>
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="si-alert">Alert type</label></div>
+            <span class="select"><select class="input" id="si-alert" name="alert" data-picker><option value="info" data-icon="info" selected>Info</option><option value="success" data-icon="circle-check">Success</option><option value="warning" data-icon="triangle-alert">Warning</option><option value="danger" data-icon="circle-alert">Danger</option></select><svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
+          </div>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-select label="Appearance" name="appearance" picker>
+            <simar-option value="auto" icon="monitor" selected>Auto</simar-option>
+            <simar-option value="light" icon="sun">Light</simar-option>
+            <simar-option value="dark" icon="moon">Dark</simar-option>
+          </simar-select>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <!-- a native select; data-picker draws the list with an icon (any library icon name) beside each choice -->
+          <span class="select">
+            <select class="input" id="appearance" name="appearance" data-picker>
+              <option value="auto" data-icon="monitor" selected>Auto</option>
+              <option value="light" data-icon="sun">Light</option>
+              <option value="dark" data-icon="moon">Dark</option>
+            </select>
+            <svg class="icon select__icon" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+          </span>
+        </script>
+      </fieldset>
     </section>
     <section aria-labelledby="validation">
       <h3 id="validation">Validation</h3>

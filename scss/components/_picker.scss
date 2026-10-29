@@ -1,6 +1,6 @@
 @use "../abstracts" as *;
 
-// A select whose list can show moving artwork (a spinner). Built by the script over a real
+// A select whose list can show icons or moving artwork (a spinner). Built by the script over a real
 // <select data-picker>, which keeps the value; see enhancePickers.
 .picker {
   position: relative;
@@ -27,6 +27,16 @@
     flex: none;
     min-width: 2rem;
     justify-content: center;
+  }
+
+  // An option's icon (data-icon): decoration beside the words, so it takes the soft ink and no glow.
+  &__art .icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--ink-soft);
+    filter: none;
+
+    @include forced-colors { color: FieldText; }
   }
 
   &__icon {

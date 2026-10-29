@@ -387,6 +387,18 @@ Native `<select>`, so the list that opens is the browser's own: accessible, sear
 </simar-select>
 ```
 
+**With icons.** Add `data-picker` to the select and `data-icon="sun"` (any library icon) to its options, and the script draws a themed list with an icon beside each choice, as the select-only combobox from the WAI-ARIA Authoring Practices (Down, Up, Enter or Space open it; arrows, Home, End and letters move; Enter or Space picks; Esc closes). The native `<select>` stays in the form and keeps the value, and the icons are decoration: each option is still named by its words. Without JavaScript it is the plain native select, with no icons. On the tag, write `picker` on `<simar-select>` and `icon="sun"` on each `<simar-option>`.
+
+<img src="docs/screenshots/select-icons.png" alt="An Appearance select showing a sun icon beside Light, and an Alert type select" width="640">
+
+```html
+<simar-select label="Appearance" name="appearance" picker>
+  <simar-option value="auto" icon="monitor" selected>Auto</simar-option>
+  <simar-option value="light" icon="sun">Light</simar-option>
+  <simar-option value="dark" icon="moon">Dark</simar-option>
+</simar-select>
+```
+
 #### Validation
 
 Add `data-validate` to a form and the browser's pop-up bubbles are replaced with messages in the page: words and an icon under each field, linked with `aria-describedby`; a summary announced at the top; focus sent to the first problem; each error clears the moment the field is valid. The text is the field's `data-error`, or the browser's own message. Without JavaScript the browser's native validation still applies.
@@ -757,7 +769,7 @@ Every color and size is a CSS custom property, so you can restyle without touchi
 | `data-dismissible` | alert | Adds a close button |
 | `data-toast`, `data-toast-variant`, `data-duration` | button | Shows a toast when pressed; `SimarUI.toast(text, options)` does the same from script |
 | `popovertarget`, `.menu__list` | dropdown menu | A native popover; the script adds the menu roles and keys |
-| `select[data-picker]` | select | A list that can show moving artwork (see the spinner picker) |
+| `select[data-picker]`, `option[data-icon]` | select | A themed list that can show an icon (`data-icon`) or moving artwork (`data-art`, see the spinner picker) beside each choice |
 
 Haptics use the browser's Vibration API, so there is nothing to install. It works on Android browsers; iOS Safari doesn't support it and the calls are skipped. They are wired once for the whole page rather than per component: every button, summary and link drawn as a key clicks, radios, checkboxes and switches click when they change, selects tick, and range inputs (faders and knobs) tick as they move. `data-haptic` on any element changes or turns off everything inside it.
 
@@ -839,7 +851,7 @@ index.html  the demo and documentation page
 
 ## Roadmap
 
-Next: check list, sticky bars (top and bottom, and table headers and footers), carousel and photo gallery, an icon dropdown, a Material set (bottom navigation, top app bar, bottom sheet, chips, search bar, time picker), suggested flows, more chart types, avatar, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
+Next: a Material set (bottom navigation, top app bar, bottom sheet, chips, search bar, time picker), suggested flows, more chart types, avatar, skeleton loader, empty state, popover variants, rating, tree view, file dropzone. Also planned: a review of edge cases (right-to-left text, print, very long words, high zoom), a naming audit so every class and token follows one vocabulary, spacing and sizing utilities, fallbacks for older browsers, and a periodic check that each component still matches its spec.
 
 ## Contributing
 
