@@ -138,6 +138,7 @@
           <li><a href="#alerts">Alerts and toasts</a></li>
           <li><a href="#appbars">App bars</a></li>
           <li><a href="#badges">Badge</a></li>
+          <li><a href="#bottom-navs">Bottom navigation</a></li>
           <li><a href="#breadcrumbs">Breadcrumb</a></li>
           <li><a href="#key-groups">Button group</a></li>
           <li><a href="#buttons">Buttons</a></li>
@@ -1912,6 +1913,42 @@
         <script type="text/plain" data-example="HTML">
           <span class="badge badge--success">Paid</span>
           <button type="button" class="key">Inbox <span class="badge badge--count">3<span class="visually-hidden"> unread</span></span></button>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="bottom-navs">
+      <h3 id="bottom-navs">Bottom navigation</h3>
+      <p class="note">The three to five main places of an app, in a bar at the bottom of the screen. It is a native <code>&lt;nav&gt;</code> with its own label and a list of links, drawn as the same keys as pagination: the place you are on has <code>aria-current="page"</code> and stays latched. The words always show beside the icon, so the link's name is its visible text. It works without JavaScript. Add <code>bottom-nav--mobile</code> to show it only on small screens, where the app bar's links would be folded away.</p>
+
+      <fieldset class="panel">
+        <legend>Bottom navigation</legend>
+        <section class="demo-scroll demo-scroll--short" aria-label="Bottom navigation example" tabindex="0">
+          <div class="demo-scroll__body"><p>The bar sits at the bottom of this box while it scrolls. Tab to a key and press Enter to follow the link.</p><p>Nothing here needs a script.</p><p>It keeps the thumb's reach in mind: big targets, four places, no more.</p></div>
+          <nav class="bottom-nav" aria-label="Example places">
+            <ul class="bottom-nav__list">
+              <li><a class="key" href="#bottom-navs" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>Crew</a></li>
+              <li><a class="key" href="#bottom-navs"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Scan</a></li>
+              <li><a class="key" href="#bottom-navs"><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg>Decks</a></li>
+              <li><a class="key" href="#bottom-navs"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>Systems</a></li>
+            </ul>
+          </nav>
+        </section>
+        <script type="text/plain" data-example="HTML">
+          <nav class="bottom-nav" aria-label="Main">
+            <ul class="bottom-nav__list">
+              <li><a class="key" href="/crew" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>Crew</a></li>
+              <li><a class="key" href="/scan"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Scan</a></li>
+              <li><a class="key" href="/decks"><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg>Decks</a></li>
+              <li><a class="key" href="/systems"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>Systems</a></li>
+            </ul>
+          </nav>
+        </script>
+        <script type="text/plain" data-example="Tag">
+          <simar-bottom-nav label="Main">
+            <simar-link href="/crew" icon="eye" current>Crew</simar-link>
+            <simar-link href="/scan" icon="search">Scan</simar-link>
+          </simar-bottom-nav>
         </script>
       </fieldset>
     </section>

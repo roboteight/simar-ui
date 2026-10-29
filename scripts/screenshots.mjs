@@ -79,6 +79,7 @@ await shoot('tabs', [await panel('Tabs')]);
 await shoot('alerts', [await panel('Alerts')]);
 await shoot('appbars', [await panel('Top and bottom bars')]);
 await shoot('sticky-table', [await panel('Sticky header and footer')]);
+await shoot('bottom-nav', [await panel('Bottom navigation')]);
 await shoot('badges', [await panel('Badges')]);
 await shoot('table', [await panel('Table')]);
 await shoot('pagination', [await panel('Pagination')]);

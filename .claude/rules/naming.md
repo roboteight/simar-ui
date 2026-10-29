@@ -36,6 +36,7 @@ thing everywhere and a reader can guess the next name.
 | hairline, lip, wall, shade, tint | edges, light rims, extrusion sides, and the shadow and highlight mixers |
 | picker, suggest, menu, tabs, tooltip | list-style components; `suggest` is autocomplete suggestions |
 | quote, blurb, media, card, timeline, list, prose, lead, display | content blocks and type styles; `media` is a figure holding an image, video or audio; `card` is an article with media, body and footer; `timeline` is an ordered list of events or steps on a rail; `list` is a styled `<ul>`, `<ol>` or `<dl>` |
+| bottom-nav, appbar | a bar of main places at the screen bottom (`bottom-nav__list`, keys like pagination); a bar kept at the top or bottom of its scroll area |
 | fab, side-menu | a floating button fixed to a screen corner; an edge tab that opens a panel beside it (`side-menu__toggle`, `side-menu__panel`) |
 | container, row, col, d-*, gap-* | layout, named after Bootstrap's grid |
 

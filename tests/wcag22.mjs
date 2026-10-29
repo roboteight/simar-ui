@@ -1153,6 +1153,35 @@ await open(320);
 (await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('the app bars and sticky table fit a 320px screen without sideways scrolling') : fail('app bars or the sticky table overflow at 320px');
 await open(1280);
 
+// ---- bottom navigation ---------------------------------------------------------------------------------
+console.log('\nBottom navigation');
+await open(1280);
+const bn = await page.evaluate(() => {
+  const nav = document.querySelector('.demo-scroll nav.bottom-nav');
+  const links = [...nav.querySelectorAll('a')];
+  return {
+    label: !!nav.getAttribute('aria-label'), n: links.length, current: nav.querySelectorAll('[aria-current="page"]').length,
+    keys: links.every((a) => a.classList.contains('key')),
+    names: links.every((a) => a.textContent.trim().length > 1 && !a.hasAttribute('aria-label')),
+    icons: links.every((a) => a.querySelector('svg')?.getAttribute('aria-hidden') === 'true'),
+    sticky: getComputedStyle(nav).position === 'sticky',
+    tall: links.every((a) => a.getBoundingClientRect().height >= 44 && a.getBoundingClientRect().width >= 44),
+  };
+});
+bn.label && bn.n >= 3 && bn.n <= 5 && bn.current === 1 && bn.keys && bn.names && bn.icons && bn.sticky && bn.tall ? pass('a labelled nav of 3 to 5 key links, one current, named by their visible words, hidden icons, sticky, targets at least 44px') : fail(`bottom nav: ${JSON.stringify(bn)}`);
+await page.evaluate(() => { const b = document.createElement('div'); b.innerHTML = '<simar-bottom-nav label="Tag test" mobile><simar-link href="#a" icon="eye" current>One</simar-link><simar-link href="#b">Two</simar-link></simar-bottom-nav>'; document.body.append(b); window.SimarUI.init(b); });
+await wait(200);
+const bnTag = await page.evaluate(() => { const n = document.querySelector('nav[aria-label="Tag test"]'); return n && { cls: n.className, current: n.querySelectorAll('[aria-current="page"]').length, links: n.querySelectorAll('a.key').length }; });
+bnTag && bnTag.cls.includes('bottom-nav--mobile') && bnTag.current === 1 && bnTag.links === 2 ? pass('<simar-bottom-nav> expands to the same markup') : fail(`bottom nav tag: ${JSON.stringify(bnTag)}`);
+await page.evaluate(() => document.querySelector('nav[aria-label="Tag test"]')?.parentElement.remove());
+await page.focus('.demo-scroll nav.bottom-nav a[aria-current]');
+await page.keyboard.press('Tab');
+const bnFocus = await page.evaluate(() => { const a = document.activeElement; const r = a.getBoundingClientRect(); return a.closest('.bottom-nav') && getComputedStyle(a).outlineStyle !== 'none' && r.top < innerHeight && r.bottom > 0; });
+bnFocus ? pass('a focused bottom-navigation key shows a focus ring and is on screen') : fail('bottom navigation focus ring');
+await open(320);
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1 && [...document.querySelectorAll('.bottom-nav a')].every((a) => a.scrollWidth <= a.clientWidth + 1))) ? pass('bottom navigation fits a 320px screen, labels included') : fail('bottom navigation overflows at 320px');
+await open(1280);
+
 // ---- carousel and gallery -------------------------------------------------------------------------
 console.log('\nCarousel and gallery');
 await open(1280);

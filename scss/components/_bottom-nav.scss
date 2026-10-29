@@ -1,0 +1,77 @@
+@use "../abstracts" as *;
+
+// Bottom navigation: the three to five main places of an app, in a bar at the bottom of the screen where a thumb
+// reaches. A native <nav aria-label> holding a list of links, drawn as ordinary keys exactly like pagination; the page
+// you are on has aria-current="page" and is latched. Without script or newer CSS it is just a list of links. Each key
+// is an icon above its words: the words stay visible, so the link name is the visible text, and the icon is hidden.
+//
+//   <nav class="bottom-nav" aria-label="Main">
+//     <ul class="bottom-nav__list">
+//       <li><a class="key" href="/" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>Home</a></li>
+//       <li><a class="key" href="/search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Search</a></li>
+//     </ul>
+//   </nav>
+//
+// Add bottom-nav--mobile to show it only below the md breakpoint (wider screens use the app bar). Sticky, so it stays
+// put while the page scrolls; the root gets scroll-padding so a focused control is never left beneath it.
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 25;
+  box-sizing: border-box;
+  padding: 0.5rem max(0.5rem, env(safe-area-inset-right)) max(0.5rem, env(safe-area-inset-bottom)) max(0.5rem, env(safe-area-inset-left));
+  background: var(--page);
+  color: var(--ink);
+  box-shadow: 0 -1px 0 var(--hairline-strong);
+
+  @supports (backdrop-filter: blur(1px)) {
+    background: color-mix(in srgb, var(--page) 88%, transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  &__list {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li { flex: 1 1 0; min-width: 0; }
+
+    .key {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.125rem;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 3.5rem;
+      padding-inline: 0.25rem;
+      font-size: 0.8125rem;
+      line-height: 1.2;
+      text-align: center;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+
+      .icon { width: 1.25rem; height: 1.25rem; flex: none; }
+    }
+
+    // The place you are on.
+    .key[aria-current="page"] {
+      @include latched;
+      color: var(--lit-ink);
+      pointer-events: none;
+
+      @include forced-colors { background: Highlight; color: HighlightText; }
+    }
+  }
+
+  &--mobile {
+    @media (min-width: 48rem) { display: none; }
+  }
+
+  @media print { display: none; }
+}
+
+:where(:root:has(.bottom-nav)) { scroll-padding-bottom: 5rem; }

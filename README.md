@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -616,6 +616,28 @@ Four spinner styles, all SVG so they stay crisp on any background: `ticks` (defa
 <simar-meter label="Battery" value="85" low="20" high="50" optimum="100"></simar-meter>
 <simar-loader label="Uploading" value="64" max="100"></simar-loader>
 <simar-spinner label="Loading results" variant="ring"></simar-spinner>
+```
+
+#### Bottom navigation
+
+The three to five main places of an app, in a bar at the bottom of the screen where a thumb reaches. It is a native `<nav>` with its own label and a list of links, drawn as the same keys as pagination: the place you are on has `aria-current="page"` and stays latched. The words always show beside the icon, so the link's name is its visible text and the icon is hidden. It works without JavaScript. Add `bottom-nav--mobile` (or `mobile` on the tag) to show it only below the md breakpoint, where the app bar's links fold away.
+
+<img src="docs/screenshots/bottom-nav.png" alt="A bar of four keys, each with an icon above its words: Crew (current), Scan, Decks and Systems" width="640">
+
+```html
+<nav class="bottom-nav" aria-label="Main">
+  <ul class="bottom-nav__list">
+    <li><a class="key" href="/crew" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>Crew</a></li>
+    <li><a class="key" href="/scan"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Scan</a></li>
+  </ul>
+</nav>
+```
+
+```html
+<simar-bottom-nav label="Main">
+  <simar-link href="/crew" icon="eye" current>Crew</simar-link>
+  <simar-link href="/scan" icon="search">Scan</simar-link>
+</simar-bottom-nav>
 ```
 
 #### Pagination

@@ -182,6 +182,12 @@
       });
       return `<div${rootAttrs(node, "accordion")}>${items.join("")}</div>`;
     },
+    // <simar-bottom-nav label="Main"><simar-link href="/crew" icon="eye" current>Crew</simar-link> …</simar-bottom-nav>
+    // Three to five places; icon is the name of any library icon. mobile shows it only below the md breakpoint.
+    "simar-bottom-nav": (node) => {
+      const links = [...node.querySelectorAll("simar-link")].map((link) => `<li><a class="key"${attr(link, "href")}${link.hasAttribute("current") ? ' aria-current="page"' : ""}>${link.hasAttribute("icon") ? `<svg class="icon" aria-hidden="true"><use href="#i-${esc(link.getAttribute("icon"))}"/></svg>` : ""}${escText(link.textContent.trim())}</a></li>`).join("");
+      return `<nav${rootAttrs(node, `bottom-nav${node.hasAttribute("mobile") ? " bottom-nav--mobile" : ""}`)} aria-label="${esc(node.getAttribute("label") ?? "Main")}"><ul class="bottom-nav__list">${links}</ul></nav>`;
+    },
     // <simar-checklist label="Packing list" all="Select all" done="done"><simar-checkbox label="Passport" name="a"></simar-checkbox>…</simar-checklist>
     "simar-checklist": (node) => {
       const items = [...node.querySelectorAll("simar-checkbox")].map((box) => checkLike(box, false)).join("");
