@@ -1187,6 +1187,8 @@ const cState = (index = 0) => page.evaluate((i) => {
 const settle = () => wait(900);
 
 let cs = await cState(0);
+const allKeys = await page.evaluate(() => { const c = document.querySelector('section[aria-labelledby="carousels"] .carousel'); return [...c.querySelectorAll('.carousel__nav a, .carousel__bar > button')].every((n) => n.classList.contains('key')); });
+allKeys ? pass('the jump links, Previous and Next are all ordinary keys, like pagination') : fail('a carousel control is not drawn as a key');
 cs.keys.join() === 'Previous slide,Next slide' && cs.current === 0 && cs.status === '' ? pass('script adds named Previous and Next keys, marks slide 1 current, and starts with an empty status (nothing is announced on load)') : fail(`carousel start: ${JSON.stringify(cs)}`);
 await page.$eval('section[aria-labelledby="carousels"] .carousel [aria-label="Next slide"]', (b) => b.click());
 await settle();

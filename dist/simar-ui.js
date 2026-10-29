@@ -1665,11 +1665,13 @@
   };
   var enhanceCarousels = (claim) => {
     const calm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const key = (label, icon3, extra = "") => {
-      const well = document.createElement("span");
-      well.className = "well";
-      well.innerHTML = `<button type="button" class="key key--sq"${extra} aria-label="${label}"><svg class="icon" aria-hidden="true"><use href="#i-${icon3}"/></svg></button>`;
-      return well;
+    const key = (label, icon3) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "key key--sq";
+      button.setAttribute("aria-label", label);
+      button.innerHTML = `<svg class="icon" aria-hidden="true"><use href="#i-${icon3}"/></svg>`;
+      return button;
     };
     for (const root of claim(".carousel")) {
       const track = root.querySelector(".carousel__track");
@@ -1738,12 +1740,12 @@
       const next = key("Next slide", "chevron-right");
       bar.prepend(prev);
       bar.append(next);
-      prev.firstChild.addEventListener("click", () => go(target - 1));
-      next.firstChild.addEventListener("click", () => go(target + 1));
+      prev.addEventListener("click", () => go(target - 1));
+      next.addEventListener("click", () => go(target + 1));
       const ms = Number(root.dataset.autoplay);
       if (ms >= 3e3) {
         const play = key("Pause slides", "pause");
-        const button = play.firstChild;
+        const button = play;
         bar.append(play);
         let running = false;
         let inside = false;

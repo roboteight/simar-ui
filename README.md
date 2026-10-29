@@ -114,8 +114,8 @@ It follows the WAI-ARIA *Carousel* pattern: a region with `aria-roledescription=
   </div>
   <div class="carousel__bar">
     <nav class="carousel__nav" aria-label="Choose a slide"><ol>
-      <li><a href="#v1"><span class="visually-hidden">Slide </span>1</a></li>
-      <li><a href="#v2"><span class="visually-hidden">Slide </span>2</a></li>
+      <li><a class="key" href="#v1"><span class="visually-hidden">Slide </span>1</a></li>
+      <li><a class="key" href="#v2"><span class="visually-hidden">Slide </span>2</a></li>
     </ol></nav>
   </div>
 </section>
