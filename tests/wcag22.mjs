@@ -1182,6 +1182,58 @@ await open(320);
 (await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1 && [...document.querySelectorAll('.bottom-nav a')].every((a) => a.scrollWidth <= a.clientWidth + 1))) ? pass('bottom navigation fits a 320px screen, labels included') : fail('bottom navigation overflows at 320px');
 await open(1280);
 
+// ---- chips -----------------------------------------------------------------------------------------------
+console.log('\nChips');
+await open(1280);
+const chipInfo = await page.evaluate(() => {
+  const sec = document.querySelector('section[aria-labelledby="chips"]');
+  const [f, c, i] = [...sec.querySelectorAll('.chips')];
+  const named = (el) => !!(el.getAttribute('aria-label') || document.getElementById(el.getAttribute('aria-labelledby'))?.textContent.trim());
+  return {
+    f: f.getAttribute('role') === 'group' && named(f) && [...f.querySelectorAll('input')].every((x) => x.type === 'checkbox'),
+    c: c.getAttribute('role') === 'radiogroup' && named(c) && [...c.querySelectorAll('input')].every((x) => x.type === 'radio' && x.name === 'cc-watch'),
+    i: named(i) && [...i.querySelectorAll('.chip__remove')].every((b) => b.getAttribute('aria-label') === `Remove ${b.closest('.chip').querySelector('.chip__text').textContent.trim()}`),
+    keys: [...sec.querySelectorAll('.chip > .key')].every((k) => k.classList.contains('key')),
+    names: [...sec.querySelectorAll('.chip > input')].every((x) => x.labels[0].textContent.trim().length > 1),
+    iconsHidden: [...sec.querySelectorAll('.chip__remove svg')].every((v) => v.getAttribute('aria-hidden') === 'true'),
+    small: [...sec.querySelectorAll('.chip > .key, .chip__remove')].every((k) => { const r = k.getBoundingClientRect(); return r.width >= 24 && r.height >= 24; }),
+  };
+});
+Object.values(chipInfo).every(Boolean) ? pass('filter chips are checkboxes in a named group, choice chips are radios in a named radiogroup, input chips have a named list and "Remove <name>" keys, all drawn as keys, 24px or larger') : fail(`chips: ${JSON.stringify(chipInfo)}`);
+await page.$eval('section[aria-labelledby="chips"] .chips input[value="science"]', (x) => x.click());
+const chipsOn = await page.evaluate(() => {
+  const x = document.querySelector('section[aria-labelledby="chips"] input[value="science"]');
+  return { checked: x.checked, latched: getComputedStyle(x.nextElementSibling).transform !== 'none' };
+});
+chipsOn.checked && chipsOn.latched ? pass('pressing a filter chip turns it on and latches the key') : fail(`filter chip: ${JSON.stringify(chipsOn)}`);
+await page.$eval('section[aria-labelledby="chips"] input[value="third"]', (x) => x.click());
+const radioOn = await page.evaluate(() => [...document.querySelectorAll('input[name="cc-watch"]')].map((x) => x.checked).join());
+radioOn === 'false,false,true' ? pass('choosing a choice chip clears the other (native radios)') : fail(`choice chip: ${radioOn}`);
+await page.focus('section[aria-labelledby="chips"] .chip__remove');
+await page.keyboard.press('Enter');
+await wait(100);
+const rm = await page.evaluate(() => {
+  const sec = document.querySelector('section[aria-labelledby="chips"]');
+  const list = sec.querySelector('ul.chips');
+  return { left: list.querySelectorAll('.chip').length, status: list.nextElementSibling.textContent, focus: document.activeElement.getAttribute('aria-label') };
+});
+rm.left === 2 && rm.status === 'Ellen Ripley removed. 2 left.' && rm.focus === 'Remove Dwayne Hicks' ? pass('Remove takes the chip out, says "Ellen Ripley removed. 2 left." and moves focus to the next chip') : fail(`remove chip: ${JSON.stringify(rm)}`);
+await page.keyboard.press('Backspace');
+await page.keyboard.press('Delete');
+await wait(100);
+const rm2 = await page.evaluate(() => { const list = document.querySelector('section[aria-labelledby="chips"] ul.chips'); return { left: list.querySelectorAll('.chip').length, onList: document.activeElement === list }; });
+rm2.left === 0 && rm2.onList ? pass('Backspace and Delete remove too, and focus lands on the list when it is empty') : fail(`remove chips: ${JSON.stringify(rm2)}`);
+await page.evaluate(() => { const b = document.createElement('div'); b.innerHTML = '<simar-chips label="Tag test" type="choice" name="tt"><simar-chip value="a">A</simar-chip><simar-chip value="b" checked>B</simar-chip></simar-chips><simar-chips label="Tag input" type="input"><simar-chip>One</simar-chip></simar-chips>'; document.body.append(b); window.SimarUI.init(b); });
+await wait(200);
+const chipTag = await page.evaluate(() => { const r = document.querySelector('[aria-label="Tag test"]'); const i = document.querySelector('ul[aria-label="Tag input"]'); return r && i && r.getAttribute('role') === 'radiogroup' && r.querySelectorAll('input[type="radio"]').length === 2 && i.querySelector('.chip__remove').getAttribute('aria-label') === 'Remove One'; });
+chipTag ? pass('<simar-chips> expands to the same markup for choice and input') : fail('chips tag');
+await page.evaluate(() => { document.querySelector('[aria-label="Tag test"]').parentElement.remove(); });
+await open(320);
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('chips wrap and fit a 320px screen') : fail('chips overflow at 320px');
+await open(1280, '?js=off');
+(await page.evaluate(() => { const x = document.querySelector('section[aria-labelledby="chips"] input[value="engineering"]'); x.click(); return x.checked; })) ? pass('with JavaScript off, filter chips still toggle') : fail('chips without JavaScript');
+await open(1280);
+
 // ---- carousel and gallery -------------------------------------------------------------------------
 console.log('\nCarousel and gallery');
 await open(1280);

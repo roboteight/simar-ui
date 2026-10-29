@@ -143,6 +143,7 @@
           <li><a href="#key-groups">Button group</a></li>
           <li><a href="#buttons">Buttons</a></li>
           <li><a href="#charts">Charts</a></li>
+          <li><a href="#chips">Chips</a></li>
           <li><a href="#confirms">Confirmation dialog</a></li>
           <li><a href="#dialogs">Dialog</a></li>
           <li><a href="#menus">Dropdown menu</a></li>
@@ -2193,6 +2194,50 @@
         <script src="https://cdn.jsdelivr.net/npm/chartist@2/dist/chartist.min.js"><\/script>
         <script src="https://cdn.jsdelivr.net/gh/roboteight/simar-ui@1/dist/simar-ui-charts.min.js"><\/script>
       </script>
+    </section>
+
+    <section aria-labelledby="chips">
+      <h3 id="chips">Chips</h3>
+      <p class="note">Small keys that filter, choose or hold a value. <strong>Filter</strong> chips are native checkboxes (any number on) and <strong>choice</strong> chips are native radios (one on), so they submit, reset and work with no script, and a lit key means on. <strong>Input</strong> chips are values someone has entered, each with a Remove key: script takes the chip out, says so in a status line and moves focus to its neighbour; Delete or Backspace on the Remove key does the same. Without script, make the Remove key a submit button inside a form and the server drops the value. Give each group a name: <code>role="group"</code> for filters, <code>role="radiogroup"</code> for choices, an <code>aria-label</code> on the list for inputs.</p>
+
+      <fieldset class="panel">
+        <legend>Chips</legend>
+        <div class="field"><p class="field__label" id="chips-filter-l">Show crew</p>
+          <div class="chips" role="group" aria-labelledby="chips-filter-l">
+            <label class="chip"><input type="checkbox" name="cf-show" value="command" checked><span class="key">Command</span></label><label class="chip"><input type="checkbox" name="cf-show" value="engineering"><span class="key">Engineering</span></label><label class="chip"><input type="checkbox" name="cf-show" value="medical" checked><span class="key">Medical</span></label><label class="chip"><input type="checkbox" name="cf-show" value="science"><span class="key">Science</span></label>
+          </div></div>
+        <div class="field"><p class="field__label" id="chips-choice-l">Watch</p>
+          <div class="chips" role="radiogroup" aria-labelledby="chips-choice-l">
+            <label class="chip"><input type="radio" name="cc-watch" value="first"><span class="key">First</span></label><label class="chip"><input type="radio" name="cc-watch" value="second" checked><span class="key">Second</span></label><label class="chip"><input type="radio" name="cc-watch" value="third"><span class="key">Third</span></label>
+          </div></div>
+        <div class="field"><p class="field__label" id="chips-input-l">Send to</p>
+          <ul class="chips" aria-labelledby="chips-input-l" data-chips>
+            <li class="well chip chip--input"><span class="chip__text">Ellen Ripley</span><button type="button" class="key key--sq chip__remove" aria-label="Remove Ellen Ripley"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></li><li class="well chip chip--input"><span class="chip__text">Dwayne Hicks</span><button type="button" class="key key--sq chip__remove" aria-label="Remove Dwayne Hicks"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></li><li class="well chip chip--input"><span class="chip__text">Rebecca Jorden</span><button type="button" class="key key--sq chip__remove" aria-label="Remove Rebecca Jorden"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></li>
+          </ul></div>
+        <script type="text/plain" data-example="HTML">
+          <div class="chips" role="group" aria-label="Show crew">
+            <label class="chip"><input type="checkbox" name="show" value="medical" checked><span class="key">Medical</span></label>
+            <label class="chip"><input type="checkbox" name="show" value="science"><span class="key">Science</span></label>
+          </div>
+          <ul class="chips" aria-label="Send to" data-chips>
+            <li class="well chip chip--input"><span class="chip__text">Ellen Ripley</span>
+              <button type="button" class="key key--sq chip__remove" aria-label="Remove Ellen Ripley"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></li>
+          </ul>
+        </script>
+        <script type="text/plain" data-example="Tag">
+          <simar-chips label="Show crew" name="show">
+            <simar-chip value="medical" checked>Medical</simar-chip>
+            <simar-chip value="science">Science</simar-chip>
+          </simar-chips>
+          <simar-chips label="Watch" type="choice" name="watch">
+            <simar-chip value="first">First</simar-chip>
+            <simar-chip value="second" checked>Second</simar-chip>
+          </simar-chips>
+          <simar-chips label="Send to" type="input">
+            <simar-chip>Ellen Ripley</simar-chip>
+          </simar-chips>
+        </script>
+      </fieldset>
     </section>
 
     <section aria-labelledby="confirms">

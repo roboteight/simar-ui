@@ -194,6 +194,24 @@
       return `<fieldset${rootAttrs(node, "panel checklist")} data-checklist${attr(node, "all", "data-all")}${attr(node, "done", "data-done")}><legend>${esc(node.getAttribute("label") ?? "")}</legend><div class="check-list">${items}</div></fieldset>`;
     },
     // (before simar-checkbox, so its checkboxes are still tags when it builds)
+    // <simar-chips label="Show crew" type="filter" name="show"><simar-chip value="medical" checked>Medical</simar-chip> …</simar-chips>
+    // type is filter (checkboxes, the default), choice (radios, one name) or input (values with a Remove key).
+    "simar-chips": (node) => {
+      const type = node.getAttribute("type") ?? "filter";
+      const label = esc(node.getAttribute("label") ?? "");
+      const chips = [...node.querySelectorAll("simar-chip")];
+      if (type === "input") {
+        const items2 = chips.map((chip) => {
+          const text = chip.textContent.trim();
+          return `<li class="well chip chip--input"><span class="chip__text">${escText(text)}</span><button type="button" class="key key--sq chip__remove" aria-label="Remove ${esc(text)}"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></li>`;
+        }).join("");
+        return `<ul${rootAttrs(node, "chips")} aria-label="${label}" data-chips>${items2}</ul>`;
+      }
+      const radio = type === "choice";
+      const name = esc(node.getAttribute("name") ?? nextId("chips"));
+      const items = chips.map((chip) => `<label class="chip"><input type="${radio ? "radio" : "checkbox"}" name="${name}"${attr(chip, "value")}${flag(chip, "checked")}${flag(chip, "disabled")}><span class="key">${escText(chip.textContent.trim())}</span></label>`).join("");
+      return `<div${rootAttrs(node, "chips")} role="${radio ? "radiogroup" : "group"}" aria-label="${label}">${items}</div>`;
+    },
     // <simar-checkbox label="Send me the newsletter" name="news" checked>   (indeterminate for a mixed state)
     // <simar-switch label="Notifications" name="notify">
     "simar-checkbox": (node) => checkLike(node, false),
@@ -1591,6 +1609,42 @@
   var enhanceChecks = (claim) => {
     for (const box of claim('input[type="checkbox"][data-indeterminate]')) box.indeterminate = true;
   };
+  var enhanceChips = (claim) => {
+    for (const list of claim("[data-chips]")) {
+      const status = document.createElement("p");
+      status.className = "chips__status";
+      status.setAttribute("role", "status");
+      list.after(status);
+      const remove = (button) => {
+        const chip = button.closest(".chip");
+        if (!chip) return;
+        const text = chip.querySelector(".chip__text")?.textContent.trim() ?? "";
+        const next = chip.nextElementSibling ?? chip.previousElementSibling;
+        chip.remove();
+        list.dispatchEvent(new CustomEvent("chip:remove", { bubbles: true, detail: { text } }));
+        const left = list.querySelectorAll(".chip").length;
+        status.textContent = `${text} removed. ${left} left.`;
+        if (next) next.querySelector(".chip__remove")?.focus();
+        else {
+          list.tabIndex = -1;
+          list.focus();
+        }
+      };
+      list.addEventListener("click", (e) => {
+        const button = e.target.closest(".chip__remove");
+        if (!button || button.type === "submit") return;
+        e.preventDefault();
+        remove(button);
+      });
+      list.addEventListener("keydown", (e) => {
+        const button = e.target.closest?.(".chip__remove");
+        if (button && button.type !== "submit" && (e.key === "Delete" || e.key === "Backspace")) {
+          e.preventDefault();
+          remove(button);
+        }
+      });
+    }
+  };
   var checklistCount = 0;
   var enhanceChecklists = (claim) => {
     for (const set of claim("[data-checklist]")) {
@@ -1946,6 +2000,7 @@
     enhanceCode(claim);
     enhanceChecks(claim);
     enhanceChecklists(claim);
+    enhanceChips(claim);
     enhanceAppBars(claim);
     enhanceCarousels(claim);
     enhanceTabs(claim);

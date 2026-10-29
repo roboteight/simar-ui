@@ -236,6 +236,28 @@ const builders = {
   },
   // (before simar-checkbox, so its checkboxes are still tags when it builds)
 
+  // <simar-chips label="Show crew" type="filter" name="show"><simar-chip value="medical" checked>Medical</simar-chip> …</simar-chips>
+  // type is filter (checkboxes, the default), choice (radios, one name) or input (values with a Remove key).
+  'simar-chips': (node) => {
+    const type = node.getAttribute('type') ?? 'filter';
+    const label = esc(node.getAttribute('label') ?? '');
+    const chips = [...node.querySelectorAll('simar-chip')];
+    if (type === 'input') {
+      const items = chips.map((chip) => {
+        const text = chip.textContent.trim();
+        return `<li class="well chip chip--input"><span class="chip__text">${escText(text)}</span>`
+          + `<button type="button" class="key key--sq chip__remove" aria-label="Remove ${esc(text)}"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></li>`;
+      }).join('');
+      return `<ul${rootAttrs(node, 'chips')} aria-label="${label}" data-chips>${items}</ul>`;
+    }
+    const radio = type === 'choice';
+    const name = esc(node.getAttribute('name') ?? nextId('chips'));
+    const items = chips.map((chip) =>
+      `<label class="chip"><input type="${radio ? 'radio' : 'checkbox'}" name="${name}"${attr(chip, 'value')}${flag(chip, 'checked')}${flag(chip, 'disabled')}>`
+      + `<span class="key">${escText(chip.textContent.trim())}</span></label>`).join('');
+    return `<div${rootAttrs(node, 'chips')} role="${radio ? 'radiogroup' : 'group'}" aria-label="${label}">${items}</div>`;
+  },
+
   // <simar-checkbox label="Send me the newsletter" name="news" checked>   (indeterminate for a mixed state)
   // <simar-switch label="Notifications" name="notify">
   'simar-checkbox': (node) => checkLike(node, false),

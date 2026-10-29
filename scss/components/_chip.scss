@@ -1,0 +1,67 @@
+@use "../abstracts" as *;
+
+// Chips: small keys that filter, choose or hold a value. Three kinds, all native underneath and all ordinary keys:
+//
+//   Filter chips are checkboxes (any number on). Choice chips are radios (one on). Both are a label around a hidden
+//   input and a key, like a key group's radio items, so they work, submit and reset with no script.
+//   <div class="chips" role="group" aria-label="Show crew">
+//     <label class="chip"><input type="checkbox" name="show" value="medical"><span class="key">Medical</span></label>
+//     <label class="chip"><input type="checkbox" name="show" value="engineering" checked><span class="key">Engineering</span></label>
+//   </div>
+//   (for choice chips use role="radiogroup" and type="radio" with one name)
+//
+//   Input chips are values someone has entered, each with a Remove key. Script removes the chip, says so in a status
+//   line and moves focus to its neighbour. Without script, make the Remove key a submit button (name="remove" and the
+//   value) inside a form and the server drops it.
+//   <ul class="chips" aria-label="Recipients" data-chips>
+//     <li class="well chip chip--input"><span class="chip__text">Ellen Ripley</span>
+//       <button type="button" class="key key--sq chip__remove" aria-label="Remove Ellen Ripley"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></li>
+//   </ul>
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 0;
+  max-width: 100%;
+
+  &__status { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.875rem; }
+}
+
+.chip {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  cursor: pointer;
+
+  // The input stays focusable and checkable; the key is what you see.
+  > input { @include visually-hidden; }
+
+  > .key {
+    min-height: 2.5rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+
+  &--input {
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.25rem 0.25rem 0.75rem;
+    cursor: default;
+  }
+
+  &__text { min-width: 0; overflow-wrap: anywhere; color: var(--ink); }
+
+  &__remove.key {
+    flex: none;
+    width: 2rem;
+    min-width: 2rem;
+    min-height: 2rem;
+    font-size: 1rem;
+
+    .icon { width: 1rem; height: 1rem; }
+  }
+}

@@ -1373,6 +1373,40 @@ const enhanceChecks = (claim) => {
   for (const box of claim('input[type="checkbox"][data-indeterminate]')) box.indeterminate = true;
 };
 
+// Input chips (a list with data-chips): the Remove key takes the chip out of the page, says so in a status line, and
+// moves focus to the next chip's Remove key (else the previous one, else the list). A Remove key that is a submit
+// button is left to the form. Delete and Backspace on a focused Remove key do the same. Fires chip:remove.
+const enhanceChips = (claim) => {
+  for (const list of claim('[data-chips]')) {
+    const status = document.createElement('p');
+    status.className = 'chips__status';
+    status.setAttribute('role', 'status');
+    list.after(status);
+    const remove = (button) => {
+      const chip = button.closest('.chip');
+      if (!chip) return;
+      const text = chip.querySelector('.chip__text')?.textContent.trim() ?? '';
+      const next = chip.nextElementSibling ?? chip.previousElementSibling;
+      chip.remove();
+      list.dispatchEvent(new CustomEvent('chip:remove', { bubbles: true, detail: { text } }));
+      const left = list.querySelectorAll('.chip').length;
+      status.textContent = `${text} removed. ${left} left.`;
+      if (next) next.querySelector('.chip__remove')?.focus();
+      else { list.tabIndex = -1; list.focus(); }
+    };
+    list.addEventListener('click', (e) => {
+      const button = e.target.closest('.chip__remove');
+      if (!button || button.type === 'submit') return;
+      e.preventDefault();
+      remove(button);
+    });
+    list.addEventListener('keydown', (e) => {
+      const button = e.target.closest?.('.chip__remove');
+      if (button && button.type !== 'submit' && (e.key === 'Delete' || e.key === 'Backspace')) { e.preventDefault(); remove(button); }
+    });
+  }
+};
+
 // A check list: data-checklist on a fieldset of checkboxes. Script adds a "select all" box on top (checked when
 // every item is, mixed when some are, aria-controls the items; the WAI-ARIA "Checkbox (Mixed-State)" pattern) and
 // a polite status below ("2 of 4 done"). Disabled items are left out of the count and of select all. The select-all
@@ -1752,6 +1786,7 @@ const init = (scope = document) => {
   enhanceCode(claim);
   enhanceChecks(claim);
   enhanceChecklists(claim);
+  enhanceChips(claim);
   enhanceAppBars(claim);
   enhanceCarousels(claim);
   enhanceTabs(claim);

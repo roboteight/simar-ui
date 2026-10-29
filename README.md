@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -638,6 +638,27 @@ The three to five main places of an app, in a bar at the bottom of the screen wh
   <simar-link href="/crew" icon="eye" current>Crew</simar-link>
   <simar-link href="/scan" icon="search">Scan</simar-link>
 </simar-bottom-nav>
+```
+
+#### Chips
+
+Small keys that filter, choose or hold a value. **Filter** chips are native checkboxes (any number on) and **choice** chips are native radios (one on), so they submit, reset and work without JavaScript; a latched key means on. **Input** chips are values someone has entered, each with a Remove key: script takes the chip out, says so in a status line (`Ellen Ripley removed. 2 left.`), moves focus to its neighbour and fires `chip:remove`; Delete or Backspace on the Remove key does the same. Without script, make the Remove key a submit button in a form. Name each group: `role="group"` for filters, `role="radiogroup"` for choices, an `aria-label` on the list for inputs.
+
+<img src="docs/screenshots/chips.png" alt="Filter chips Command and Medical on, choice chips First, Second and Third, and input chips with Remove keys" width="640">
+
+```html
+<div class="chips" role="group" aria-label="Show crew">
+  <label class="chip"><input type="checkbox" name="show" value="medical" checked><span class="key">Medical</span></label>
+  <label class="chip"><input type="checkbox" name="show" value="science"><span class="key">Science</span></label>
+</div>
+```
+
+```html
+<simar-chips label="Watch" type="choice" name="watch">
+  <simar-chip value="first">First</simar-chip>
+  <simar-chip value="second" checked>Second</simar-chip>
+</simar-chips>
+<simar-chips label="Send to" type="input"><simar-chip>Ellen Ripley</simar-chip></simar-chips>
 ```
 
 #### Pagination
