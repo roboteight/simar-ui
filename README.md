@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -227,6 +227,19 @@ Headings, display type, a lead paragraph and running text. Use the classes anywh
 ```
 
 ### Forms
+
+#### Check list
+
+A fieldset of native checkboxes (the WAI-ARIA *Checkbox (Mixed-State)* pattern). Add `data-checklist` and script puts a **Select all** box on top, checked when every item is and mixed when only some are (it `aria-controls` the items), and a polite status line below ("2 of 4 done"). Disabled items are left out of the count and of select all, and the select-all box has no `name`, so it is never submitted. `data-all` sets its label and `data-done` the word after "x of y". Without JavaScript it is a plain group of checkboxes.
+
+<img src="docs/screenshots/checklist.png" alt="A packing list of four items with a mixed Select all box and the status 1 of 3 done" width="640">
+
+```html
+<simar-checklist label="Setlist" all="Check them all" done="rehearsed">
+  <simar-checkbox label="Blitzkrieg Bop" name="song" checked></simar-checkbox>
+  <simar-checkbox label="Sheena Is a Punk Rocker" name="song"></simar-checkbox>
+</simar-checklist>
+```
 
 #### Checks and radios
 

@@ -1366,6 +1366,54 @@ const enhanceChecks = (claim) => {
   for (const box of claim('input[type="checkbox"][data-indeterminate]')) box.indeterminate = true;
 };
 
+// A check list: data-checklist on a fieldset of checkboxes. Script adds a "select all" box on top (checked when
+// every item is, mixed when some are, aria-controls the items; the WAI-ARIA "Checkbox (Mixed-State)" pattern) and
+// a polite status below ("2 of 4 done"). Disabled items are left out of the count and of select all. The select-all
+// box has no name, so it is not submitted. data-all sets its label, data-done the word after "x of y".
+let checklistCount = 0;
+const enhanceChecklists = (claim) => {
+  for (const set of claim('[data-checklist]')) {
+    const n = ++checklistCount;
+    const items = () => [...set.querySelectorAll('input[type="checkbox"]')].filter((box) => box !== all && !box.disabled);
+    const all = document.createElement('input');
+    all.type = 'checkbox';
+    const row = document.createElement('label');
+    row.className = 'check checklist__all';
+    row.innerHTML = '<span class="well"><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text"></span>';
+    row.querySelector('.check__text').textContent = set.dataset.all || 'Select all';
+    row.querySelector('.well').prepend(all);
+    const status = document.createElement('p');
+    status.className = 'checklist__status';
+    status.setAttribute('role', 'status');
+    const legend = set.querySelector(':scope > legend');
+    legend ? legend.after(row) : set.prepend(row);
+    set.append(status);
+    items().forEach((box, i) => { box.id ||= `simar-checklist-${n}-${i + 1}`; });
+    all.setAttribute('aria-controls', items().map((box) => box.id).join(' '));
+
+    const refresh = () => {
+      const list = items();
+      const done = list.filter((box) => box.checked).length;
+      all.checked = list.length > 0 && done === list.length;
+      all.indeterminate = done > 0 && done < list.length;
+      all.disabled = list.length === 0;
+      status.textContent = `${done} of ${list.length} ${set.dataset.done || 'done'}`;
+    };
+    all.addEventListener('change', () => {
+      const on = all.checked;
+      for (const box of items()) {
+        if (box.checked === on) continue;
+        box.checked = on;
+        box.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      refresh();
+    });
+    set.addEventListener('change', (e) => { if (e.target !== all) refresh(); });
+    set.closest('form')?.addEventListener('reset', () => setTimeout(refresh));
+    refresh();
+  }
+};
+
 // ---- Tooltips --------------------------------------------------------------------------
 
 // data-tooltip="Text" on a button, link or radio key. The text becomes a popover shown on mouse
@@ -1550,6 +1598,7 @@ const init = (scope = document) => {
   enhanceDateRanges(claim);
   enhanceCode(claim);
   enhanceChecks(claim);
+  enhanceChecklists(claim);
   enhanceTabs(claim);
   enhanceSideMenus(claim);
   enhanceEmbeds(claim);

@@ -1,0 +1,27 @@
+@use "../abstracts" as *;
+
+// Check list: a fieldset of native checkboxes with a "select all" box on top and a "2 of 4 done" status below.
+// Pattern: WAI-ARIA APG "Checkbox (Mixed-State)". The select-all box is a native checkbox that is checked when every
+// item is, mixed (indeterminate) when some are, and aria-controls the items. The status is a polite live region.
+// Without script it is just a fieldset of checkboxes: the select-all box and the status are added by script.
+//
+//   <fieldset class="panel checklist" data-checklist>
+//     <legend>Packing list</legend>
+//     <div class="check-list"> …checkboxes… </div>
+//   </fieldset>
+//
+// Options: data-all="Select all" (the select-all label), data-done="done" (the word after "x of y").
+.checklist {
+  &__all {
+    padding-bottom: 0.9rem;
+    margin-bottom: 0.9rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  &__status {
+    margin: 0.9rem 0 0;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+  }
+}

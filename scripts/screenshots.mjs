@@ -60,6 +60,7 @@ await page.addStyleTag({ content: '.jsbar > .well, .themebar, .snippet:not([open
 await shoot('keys', [await panel('Keys'), await panel('Icon keys')]);
 await shoot('radios', [await panel('Mode'), await panel('Channel'), await panel('Align')]);
 await shoot('checks', [await panel('Checkboxes'), await panel('Switches')]);
+await shoot('checklist', [await panel('Packing list')]);
 await shoot('faders', [await panel('Faders'), await panel('Min and max')]);
 await shoot('knobs', [await panel('Output'), await panel('Options')]);
 await shoot('rotary', [await panel('Range')]);

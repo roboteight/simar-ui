@@ -117,6 +117,7 @@
         <li>
           <span class="toc__group">Forms</span>
           <ul>
+          <li><a href="#checklists">Check list</a></li>
           <li><a href="#checks">Checkboxes and switches</a></li>
           <li><a href="#datalist">Datalist and autocomplete</a></li>
           <li><a href="#dates">Date range</a></li>
@@ -966,6 +967,36 @@
           <simar-switch label="Offline mode" name="offline" disabled></simar-switch>
         </script>
       </fieldset>
+    </section>
+    <section aria-labelledby="checklists">
+      <h3 id="checklists">Check list</h3>
+      <p class="note">A fieldset of native checkboxes (the WAI-ARIA <em>Checkbox (Mixed-State)</em> pattern). Add <code>data-checklist</code> and script puts a <strong>Select all</strong> box on top, checked when every item is and mixed when only some are, and a status line below that a screen reader announces politely ("2 of 4 done"). Disabled items are left out of the count. Without script it is a plain group of checkboxes.</p>
+
+      <fieldset class="panel checklist" data-checklist>
+        <legend>Packing list</legend>
+        <div class="check-list">
+          <label class="check"><span class="well"><input type="checkbox" name="pack" value="passport" checked><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Passport</span></label>
+          <label class="check"><span class="well"><input type="checkbox" name="pack" value="charger"><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Phone charger</span></label>
+          <label class="check"><span class="well"><input type="checkbox" name="pack" value="boots"><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Boots</span></label>
+          <label class="check"><span class="well"><input type="checkbox" name="pack" value="tickets" disabled><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Tickets (not printed yet)</span></label>
+        </div>
+      </fieldset>
+      <script type="text/plain" data-example="Tag">
+        <simar-checklist label="Setlist" all="Check them all" done="rehearsed">
+          <simar-checkbox label="Blitzkrieg Bop" name="song" checked></simar-checkbox>
+          <simar-checkbox label="Rock Rock Rock Rock" name="song"></simar-checkbox>
+          <simar-checkbox label="Sheena Is a Punk Rocker" name="song"></simar-checkbox>
+        </simar-checklist>
+      </script>
+      <script type="text/plain" data-example="HTML">
+        <fieldset class="panel checklist" data-checklist data-all="Select all" data-done="done">
+          <legend>Packing list</legend>
+          <div class="check-list">
+            <label class="check"><span class="well"><input type="checkbox" name="pack" value="passport"><span class="key key--box">…</span></span><span class="check__text">Passport</span></label>
+            <!-- more checkboxes -->
+          </div>
+        </fieldset>
+      </script>
     </section>
     <section aria-labelledby="datalist">
       <h3 id="datalist">Datalist and autocomplete</h3>

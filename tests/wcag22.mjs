@@ -1017,6 +1017,59 @@ plain.svg === 0 && plain.tables ? pass('with JavaScript off each chart is just i
 await open(320);
 (await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('the charts fit a 320px screen without sideways scrolling') : fail('a chart overflows at 320px');
 
+// ---- stylesheet sanity ----------------------------------------------------------------------------
+console.log('\nStylesheet sanity');
+await open(1280);
+const leaked = await page.evaluate(() => {
+  const out = [];
+  for (const sheet of document.styleSheets) { try { for (const r of sheet.cssRules) if (/(^|[^-\w])(grad|tone|shade|tint)\(/.test(r.cssText)) out.push(r.cssText.slice(0, 80)); } catch { /* cross-origin sheet */ } }
+  return out;
+});
+leaked.length === 0 ? pass('no Sass function is left unevaluated in the compiled CSS (it once made the range handles see-through)') : fail(`Sass call left in CSS: ${leaked.join(' | ')}`);
+const thumbBg = await page.evaluate(() => getComputedStyle(document.querySelector('.range2 > .fader')).getPropertyValue('--thumb-bg'));
+/linear-gradient\(/.test(thumbBg) && !/(^|[^-\w])grad\(/.test(thumbBg) ? pass('the range handle background is a real gradient') : fail(`range handle background: ${thumbBg}`);
+
+// ---- check list -----------------------------------------------------------------------------------
+console.log('\nCheck list');
+await open(1280);
+const cl = 'section[aria-labelledby="checklists"] fieldset.checklist';
+const clState = () => page.evaluate((sel) => {
+  const set = document.querySelector(sel);
+  const all = set.querySelector('.checklist__all input');
+  const items = [...set.querySelectorAll('.check-list input')];
+  const ids = (all.getAttribute('aria-controls') ?? '').split(' ');
+  return {
+    legend: set.querySelector('legend')?.textContent,
+    allName: all.closest('label').textContent.trim(),
+    allNamed: !all.hasAttribute('name'),
+    controls: ids.length === items.filter((i) => !i.disabled).length && ids.every((id) => items.some((i) => i.id === id)),
+    checked: all.checked, mixed: all.indeterminate,
+    status: set.querySelector('.checklist__status')?.textContent,
+    live: set.querySelector('.checklist__status')?.getAttribute('role'),
+    boxes: items.map((i) => `${i.disabled ? 'x' : ''}${i.checked ? 1 : 0}`).join(','),
+  };
+}, cl);
+let c0 = await clState();
+c0.legend && c0.allName === 'Select all' && c0.allNamed && c0.controls && c0.live === 'status' ? pass('a named fieldset with a Select all box that is not submitted, aria-controls pointing at the items, and a status region') : fail(`check list markup: ${JSON.stringify(c0)}`);
+c0.mixed && !c0.checked && c0.status === '1 of 3 done' && c0.boxes === '1,0,0,x0' ? pass('with one of three items checked, select all is mixed and the status reads "1 of 3 done" (the disabled item is not counted)') : fail(`check list start: ${JSON.stringify(c0)}`);
+await page.focus(`${cl} .checklist__all input`);
+await page.keyboard.press('Space');
+c0 = await clState();
+c0.checked && !c0.mixed && c0.boxes === '1,1,1,x0' && c0.status === '3 of 3 done' ? pass('Space on a mixed select all checks every enabled item and leaves the disabled one alone') : fail(`check list select all: ${JSON.stringify(c0)}`);
+await page.keyboard.press('Space');
+c0 = await clState();
+!c0.checked && !c0.mixed && c0.boxes === '0,0,0,x0' && c0.status === '0 of 3 done' ? pass('Space again clears every enabled item') : fail(`check list clear: ${JSON.stringify(c0)}`);
+await page.$eval(`${cl} .check-list input[value="boots"]`, (i) => i.focus());
+await page.keyboard.press('Space');
+c0 = await clState();
+c0.mixed && c0.status === '1 of 3 done' ? pass('checking one item by keyboard makes select all mixed and updates the status') : fail(`check list one item: ${JSON.stringify(c0)}`);
+await open(320);
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('the check list fits a 320px screen without sideways scrolling') : fail('the check list overflows at 320px');
+await open(1280, '?js=off');
+const clOff = await page.evaluate((sel) => { const set = document.querySelector(sel); return { boxes: set.querySelectorAll('input[type="checkbox"]').length, all: !!set.querySelector('.checklist__all'), status: !!set.querySelector('.checklist__status') }; }, cl);
+clOff.boxes === 4 && !clOff.all && !clOff.status ? pass('with JavaScript off it is just the plain checkboxes (select all and the status need script, so they are not shown)') : fail(`check list without JavaScript: ${JSON.stringify(clOff)}`);
+await open(1280);
+
 // ---- timeline -------------------------------------------------------------------------------------
 console.log('\nTimeline');
 await open(1280);

@@ -218,6 +218,14 @@ const builders = {
     return `<div${rootAttrs(node, 'accordion')}>${items.join('')}</div>`;
   },
 
+  // <simar-checklist label="Packing list" all="Select all" done="done"><simar-checkbox label="Passport" name="a"></simar-checkbox>…</simar-checklist>
+  'simar-checklist': (node) => {
+    const items = [...node.querySelectorAll('simar-checkbox')].map((box) => checkLike(box, false)).join('');
+    return `<fieldset${rootAttrs(node, 'panel checklist')} data-checklist${attr(node, 'all', 'data-all')}${attr(node, 'done', 'data-done')}>`
+      + `<legend>${esc(node.getAttribute('label') ?? '')}</legend><div class="check-list">${items}</div></fieldset>`;
+  },
+  // (before simar-checkbox, so its checkboxes are still tags when it builds)
+
   // <simar-checkbox label="Send me the newsletter" name="news" checked>   (indeterminate for a mixed state)
   // <simar-switch label="Notifications" name="notify">
   'simar-checkbox': (node) => checkLike(node, false),
