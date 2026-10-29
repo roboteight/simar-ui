@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, breadcrumb, button group, buttons, charts (an optional add-on), confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -90,6 +90,35 @@ A self-contained block: an `<article>` with an optional image, a heading and wor
     <p class="card__text">A few words.</p>
   </div>
 </article>
+```
+
+#### Carousel and gallery
+
+A row of slides that scrolls sideways and snaps, built on plain HTML and CSS so it works without script: swipe it, focus it and use the arrow keys, or follow the numbered links (each points at a slide's `id`, so the browser scrolls to it). Script adds only the extras: Previous and Next keys (they wrap round), Home and End on the focused row (on a plain row they scroll the page, not the slides), `aria-current` on the link of the slide in view, and a polite "Slide 2 of 4" status that speaks only when the person moves.
+
+It follows the WAI-ARIA *Carousel* pattern: a region with `aria-roledescription="carousel"` and a name, a focusable named row, and each slide a group named "1 of 4". Use a `media` figure for each picture, with real alt text. Nothing moves by itself. `data-autoplay="4000"` (milliseconds, 3000 or more) turns on auto-play, and then there is always a Pause key (it reads "Play slides" once paused), it stops while the pointer or keyboard focus is inside, it never announces itself, and it does not start at all for visitors who asked for reduced motion (WCAG 2.2.2). Add `carousel--multi` for a gallery that shows one slide on a phone, two from sm and three from lg. Tokens: `--carousel-gap`, `--carousel-per`.
+
+<img src="docs/screenshots/carousel.png" alt="A carousel showing a house under a full moon, with the caption Haddonfield at night, and Previous, 1 to 4 and Next below" width="640">
+<img src="docs/screenshots/gallery.png" alt="A gallery showing two photos side by side, a house under a moon and a cabin by a lake, with Previous, 1 to 4 and Next below" width="640">
+
+```html
+<section class="carousel" aria-roledescription="carousel" aria-label="Venues">
+  <div class="carousel__track" tabindex="0" role="group" aria-label="Venue photos">
+    <div class="carousel__slide" id="v1" role="group" aria-roledescription="slide" aria-label="1 of 2">
+      <figure class="media media--16x9">
+        <img src="club.jpg" alt="A red awning over a club door" width="1200" height="675">
+        <figcaption>The club, before doors.</figcaption>
+      </figure>
+    </div>
+    <div class="carousel__slide" id="v2" role="group" aria-roledescription="slide" aria-label="2 of 2"> … </div>
+  </div>
+  <div class="carousel__bar">
+    <nav class="carousel__nav" aria-label="Choose a slide"><ol>
+      <li><a href="#v1"><span class="visually-hidden">Slide </span>1</a></li>
+      <li><a href="#v2"><span class="visually-hidden">Slide </span>2</a></li>
+    </ol></nav>
+  </div>
+</section>
 ```
 
 #### Code

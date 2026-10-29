@@ -1,0 +1,101 @@
+@use "../abstracts" as *;
+
+// Carousel and photo gallery: a row of slides that scrolls sideways and snaps, on plain HTML and CSS. It works with no
+// script: swipe, drag the scroll bar, or focus the row and use the arrow keys; and a list of links
+// ("1 2 3") jumps straight to a slide, because each link points at the slide's id. Script only adds a Previous and a
+// Next key, Home and End on the focused row, a polite "Slide 2 of 3" status, and the optional auto-play. Nothing moves by itself unless data-autoplay is
+// set, and then there is always a Pause key, it stops while the pointer or focus is inside, and it never starts for
+// someone who asked for reduced motion (WCAG 2.2.2).
+// Pattern: WAI-ARIA APG "Carousel": a region with aria-roledescription="carousel", each slide a group with
+// aria-roledescription="slide" named "1 of 3", the slides' row focusable so the keyboard can scroll it.
+//
+//   <section class="carousel" aria-roledescription="carousel" aria-label="Venues">
+//     <div class="carousel__track" tabindex="0" role="group" aria-label="Venue photos">
+//       <div class="carousel__slide" id="v1" role="group" aria-roledescription="slide" aria-label="1 of 3">
+//         <figure class="media media--16x9"><img src="…" alt="…" width="1200" height="675"><figcaption>…</figcaption></figure>
+//       </div>
+//       …
+//     </div>
+//     <div class="carousel__bar">
+//       <nav class="carousel__nav" aria-label="Choose a slide"><ol>
+//         <li><a href="#v1"><span class="visually-hidden">Slide </span>1</a></li> …
+//       </ol></nav>
+//     </div>
+//   </section>
+//
+// carousel--multi shows several slides at once (a gallery): 1 on a phone, 2 from sm, 3 from lg. Tokens: --carousel-gap
+// (space between slides), --carousel-per (slides in view).
+.carousel {
+  --_gap: var(--carousel-gap, 1rem);
+  --_per: var(--carousel-per, 1);
+
+  &--multi {
+    @media (min-width: 36rem) { --_per: var(--carousel-per, 2); }
+    @media (min-width: 62rem) { --_per: var(--carousel-per, 3); }
+  }
+
+  &__track {
+    display: flex;
+    gap: var(--_gap);
+    position: relative; // slides measure their offsets from here
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    border-radius: var(--media-radius, var(--radius-lg));
+
+    @media (prefers-reduced-motion: no-preference) { scroll-behavior: smooth; }
+    &:focus-visible { @include focus-ring(3px); }
+  }
+
+  &__slide {
+    flex: 0 0 calc((100% - (var(--_per) - 1) * var(--_gap)) / var(--_per));
+    min-width: 0;
+    scroll-snap-align: start;
+
+    .media { margin: 0; }
+  }
+
+  // The jump links, and the keys script adds around them.
+  &__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  &__nav ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    border-radius: var(--key-radius, var(--radius));
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+    &:focus-visible { @include focus-ring(2px); }
+
+    // The slide in view is bold with a bar under it, so it never relies on color alone.
+    &[aria-current="true"] {
+      font-weight: 800;
+      box-shadow: inset 0 -3px 0 var(--lit);
+
+      @media (forced-colors: active) { text-decoration: underline; text-underline-offset: 0.35em; }
+    }
+  }
+}

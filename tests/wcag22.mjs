@@ -43,7 +43,7 @@ console.log('\nReflow at 320px (a 1280px screen at 400% zoom)');
 await open(320);
 const reflow = await page.evaluate(() => {
   const limit = document.documentElement.clientWidth;
-  const scrollers = (n) => n.closest('pre, .ref-scroll, .table-wrap, .code__body, .snippet__tabs, .daterange__pop, .map__canvas'); // may scroll, or are clipped, on their own
+  const scrollers = (n) => n.closest('pre, .ref-scroll, .table-wrap, .code__body, .snippet__tabs, .daterange__pop, .map__canvas, .carousel__track'); // may scroll, or are clipped, on their own
   const wide = [...document.body.querySelectorAll('*')]
     .filter((n) => !n.closest('svg, [hidden], .needs-js:not(:root *)') && !scrollers(n) && n.getBoundingClientRect().width)
     .filter((n) => n.getBoundingClientRect().right > limit + 1)
@@ -1151,6 +1151,103 @@ await open(1280);
 await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }]);
 await open(320);
 (await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('the app bars and sticky table fit a 320px screen without sideways scrolling') : fail('app bars or the sticky table overflow at 320px');
+await open(1280);
+
+// ---- carousel and gallery -------------------------------------------------------------------------
+console.log('\nCarousel and gallery');
+await open(1280);
+const cInfo = await page.evaluate(() => [...document.querySelectorAll('section[aria-labelledby="carousels"] .carousel')].map((c) => {
+  const slides = [...c.querySelectorAll('.carousel__slide')];
+  const links = [...c.querySelectorAll('.carousel__nav a')];
+  const track = c.querySelector('.carousel__track');
+  return {
+    label: !!c.getAttribute('aria-label'), desc: c.getAttribute('aria-roledescription'),
+    track: track.tabIndex === 0 && track.getAttribute('role') === 'group' && !!track.getAttribute('aria-label'),
+    n: slides.length,
+    slides: slides.every((s, i) => s.getAttribute('role') === 'group' && s.getAttribute('aria-roledescription') === 'slide' && s.getAttribute('aria-label') === `${i + 1} of ${slides.length}`),
+    links: links.length === slides.length && links.every((a, i) => a.getAttribute('href') === `#${slides[i].id}` && a.textContent.trim() === `Slide ${i + 1}`),
+    alts: slides.every((s) => (s.querySelector('img')?.getAttribute('alt') ?? '').length > 10),
+  };
+}));
+cInfo.length === 3 && cInfo.every((c) => c.label && c.desc === 'carousel' && c.track && c.slides && c.links && c.alts) ? pass('three carousels, each a named carousel region with a focusable named row, slides named "1 of N", jump links that point at real slides, and alt text on every picture') : fail(`carousel markup: ${JSON.stringify(cInfo)}`);
+
+const cState = (index = 0) => page.evaluate((i) => {
+  const c = document.querySelectorAll('section[aria-labelledby="carousels"] .carousel')[i];
+  const track = c.querySelector('.carousel__track');
+  const slides = [...c.querySelectorAll('.carousel__slide')];
+  const at = slides.map((s) => Math.abs(s.offsetLeft - slides[0].offsetLeft - track.scrollLeft));
+  return {
+    shown: at.indexOf(Math.min(...at)),
+    current: [...c.querySelectorAll('.carousel__nav a')].findIndex((a) => a.getAttribute('aria-current') === 'true'),
+    status: c.querySelector('[role="status"]')?.textContent ?? null,
+    keys: [...c.querySelectorAll('.carousel__bar button')].map((b) => b.getAttribute('aria-label')),
+    visible: slides.filter((s) => { const r = s.getBoundingClientRect(), t = track.getBoundingClientRect(); return r.left >= t.left - 2 && r.right <= t.right + 2; }).length,
+  };
+}, index);
+const settle = () => wait(900);
+
+let cs = await cState(0);
+cs.keys.join() === 'Previous slide,Next slide' && cs.current === 0 && cs.status === '' ? pass('script adds named Previous and Next keys, marks slide 1 current, and starts with an empty status (nothing is announced on load)') : fail(`carousel start: ${JSON.stringify(cs)}`);
+await page.$eval('section[aria-labelledby="carousels"] .carousel [aria-label="Next slide"]', (b) => b.click());
+await settle();
+cs = await cState(0);
+cs.shown === 1 && cs.current === 1 && cs.status === 'Slide 2 of 4' ? pass('Next moves to slide 2, marks its link current and says "Slide 2 of 4"') : fail(`carousel next: ${JSON.stringify(cs)}`);
+await page.$eval('section[aria-labelledby="carousels"] .carousel [aria-label="Previous slide"]', (b) => b.click());
+await page.$eval('section[aria-labelledby="carousels"] .carousel [aria-label="Previous slide"]', (b) => b.click());
+await settle();
+cs = await cState(0);
+cs.shown === 3 && cs.current === 3 ? pass('Previous from the first slide wraps round to the last') : fail(`carousel wrap: ${JSON.stringify(cs)}`);
+await page.$eval('section[aria-labelledby="carousels"] .carousel .carousel__nav li:nth-child(1) a', (a) => a.click());
+await settle();
+cs = await cState(0);
+cs.shown === 0 && cs.current === 0 ? pass('a jump link goes to its slide') : fail(`carousel link: ${JSON.stringify(cs)}`);
+await page.focus('section[aria-labelledby="carousels"] .carousel .carousel__track');
+await page.keyboard.press('ArrowRight');
+await settle();
+cs = await cState(0);
+cs.shown === 1 && cs.current === 1 ? pass('with the row focused, the Right arrow key moves to the next slide and it snaps in place') : fail(`carousel arrow key: ${JSON.stringify(cs)}`);
+await page.keyboard.press('End');
+await settle();
+cs = await cState(0);
+cs.shown === 3 ? pass('End goes to the last slide (script adds Home and End, which only scroll the page on a plain row)') : fail(`carousel End: ${JSON.stringify(cs)}`);
+
+// the gallery shows 1, 2 or 3 slides by width
+const per = [];
+for (const [w, want] of [[375, 1], [700, 2], [1280, 3]]) { await open(w); per.push([w, want, (await cState(1)).visible]); }
+per.every(([, want, got]) => want === got) ? pass('the gallery shows 1 slide on a phone, 2 on a tablet and 3 on a desktop') : fail(`gallery slides in view: ${JSON.stringify(per)}`);
+await open(320);
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('the carousels fit a 320px screen without sideways page scrolling') : fail('a carousel overflows the page at 320px');
+
+// auto-play: off unless asked for, with a Pause key, and quiet under reduced motion
+await open(1280);
+await page.evaluate(() => document.querySelectorAll('section[aria-labelledby="carousels"] .carousel')[2].scrollIntoView({ block: 'center' }));
+await page.mouse.move(2, 2);
+const ap = await cState(2);
+ap.keys.includes('Pause slides') ? pass('the auto-play carousel has a Pause key (named "Pause slides") and is running') : fail(`auto-play keys: ${JSON.stringify(ap)}`);
+await wait(4800);
+const moved = [await cState(0), await cState(1), await cState(2)];
+moved[0].shown === 0 && moved[1].shown === 0 && moved[2].shown === 1 ? pass('after one interval only the auto-play carousel has moved on; the others stay put') : fail(`auto-play movement: ${JSON.stringify(moved.map((m) => m.shown))}`);
+moved[2].status === '' ? pass('auto-play does not announce itself in the live status') : fail(`auto-play announced: ${moved[2].status}`);
+await page.$eval('section[aria-labelledby="carousels"] .carousel [aria-label="Pause slides"]', (b) => b.click());
+const frozen = (await cState(2)).shown;
+await wait(4800);
+(await cState(2)).shown === frozen && (await cState(2)).keys.includes('Play slides') ? pass('Pause stops it and the key becomes "Play slides"') : fail('auto-play kept going after Pause');
+await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+await open(1280);
+const calmAp = await cState(2);
+await wait(4800);
+const calmAfter = await cState(2);
+calmAp.keys.includes('Play slides') && calmAfter.shown === 0 ? pass('with reduced motion asked for, auto-play does not start (the key reads "Play slides")') : fail(`auto-play under reduced motion: ${JSON.stringify([calmAp, calmAfter])}`);
+await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }]);
+
+// no script: the row, the slides and the jump links still work
+await open(1280, '?js=off');
+const bare = await page.evaluate(() => { const c = document.querySelector('section[aria-labelledby="carousels"] .carousel'); return { keys: c.querySelectorAll('.carousel__bar button').length, links: c.querySelectorAll('.carousel__nav a').length, scrolls: c.querySelector('.carousel__track').scrollWidth > c.querySelector('.carousel__track').clientWidth + 10 }; });
+bare.keys === 0 && bare.links === 4 && bare.scrolls ? pass('with JavaScript off there are no keys, but the row still scrolls and the four jump links are there') : fail(`carousel without JavaScript: ${JSON.stringify(bare)}`);
+await page.$eval('section[aria-labelledby="carousels"] .carousel .carousel__nav li:nth-child(3) a', (a) => a.click());
+await wait(900);
+const jumped = await page.evaluate(() => { const t = document.querySelector('section[aria-labelledby="carousels"] .carousel__track'); const s = t.querySelectorAll('.carousel__slide')[2]; return Math.abs(s.getBoundingClientRect().left - t.getBoundingClientRect().left) < 4; });
+jumped ? pass('with JavaScript off, the "Slide 3" link scrolls the row to slide 3') : fail('the jump link did not reach its slide without JavaScript');
 await open(1280);
 
 // ---- timeline -------------------------------------------------------------------------------------

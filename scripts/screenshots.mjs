@@ -83,6 +83,8 @@ await shoot('table', [await panel('Table')]);
 await shoot('pagination', [await panel('Pagination')]);
 await shoot('breadcrumb', [await panel('Breadcrumb')]);
 await shoot('media', [await panel('Media')]);
+await shoot('carousel', [await panel('Carousel')]);
+await shoot('gallery', [await panel('Photo gallery')]);
 await shoot('cards', [await panel('Cards')]);
 await shoot('button-group', [await panel('Button group')]);
 await shoot('theme-builder', [await panel('Theme builder')]);

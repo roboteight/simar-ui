@@ -102,6 +102,7 @@
           <span class="toc__group">Content</span>
           <ul>
           <li><a href="#cards">Card</a></li>
+          <li><a href="#carousels">Carousel and gallery</a></li>
           <li><a href="#code">Code</a></li>
           <li><a href="#dividers">Divider</a></li>
         <li><a href="#embeds">Embed</a></li>
@@ -501,6 +502,151 @@
               <p class="card__text">A few words.</p>
             </div>
           </article>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="carousels">
+      <h3 id="carousels">Carousel and gallery</h3>
+      <p class="note">A row of slides that scrolls sideways and snaps, on plain HTML and CSS, so it works without script: swipe it, focus it and use the arrow keys, or follow the numbered links (each points at a slide's <code>id</code>). Script adds Previous and Next keys, Home and End on the focused row, and a polite "Slide 2 of 4" status. It follows the WAI-ARIA <em>Carousel</em> pattern: a region with <code>aria-roledescription="carousel"</code> and each slide a group named "1 of 4". Nothing moves on its own unless you set <code>data-autoplay</code>; then there is a Pause key, it stops while the pointer or focus is inside, and it does not start at all for visitors who asked for reduced motion. Add <code>carousel--multi</code> for a gallery that shows several at once.</p>
+
+      <fieldset class="panel">
+        <legend>Carousel</legend>
+      <section class="carousel" aria-roledescription="carousel" aria-label="Venues">
+        <div class="carousel__track" tabindex="0" role="group" aria-label="Venue photos">
+        <div class="carousel__slide" id="venue-1" role="group" aria-roledescription="slide" aria-label="1 of 4">
+          <figure class="media media--16x9">
+            <img src="docs/media/haddonfield-night.svg" alt="A house on a hill under a full moon, one window lit" width="1200" height="675" loading="lazy">
+            <figcaption>Haddonfield at night.</figcaption>
+          </figure>
+        </div>
+        <div class="carousel__slide" id="venue-2" role="group" aria-roledescription="slide" aria-label="2 of 4">
+          <figure class="media media--16x9">
+            <img src="docs/media/camp-lake-dawn.svg" alt="A cabin by a still lake at dawn, mist low over the water" width="1200" height="675" loading="lazy">
+            <figcaption>Camp, at dawn.</figcaption>
+          </figure>
+        </div>
+        <div class="carousel__slide" id="venue-3" role="group" aria-roledescription="slide" aria-label="3 of 4">
+          <figure class="media media--16x9">
+            <img src="docs/media/ship-corridor.svg" alt="A long dark ship corridor with one red light over a sealed door" width="1200" height="675" loading="lazy">
+            <figcaption>The corridor, on alert.</figcaption>
+          </figure>
+        </div>
+        <div class="carousel__slide" id="venue-4" role="group" aria-roledescription="slide" aria-label="4 of 4">
+          <figure class="media media--16x9">
+            <img src="docs/media/club-awning.svg" alt="A red scalloped awning over a club door and a lit poster" width="1200" height="675" loading="lazy">
+            <figcaption>The club, before doors.</figcaption>
+          </figure>
+        </div>
+        </div>
+        <div class="carousel__bar">
+          <nav class="carousel__nav" aria-label="Choose a slide, venues"><ol>
+          <li><a href="#venue-1"><span class="visually-hidden">Slide </span>1</a></li>
+          <li><a href="#venue-2"><span class="visually-hidden">Slide </span>2</a></li>
+          <li><a href="#venue-3"><span class="visually-hidden">Slide </span>3</a></li>
+          <li><a href="#venue-4"><span class="visually-hidden">Slide </span>4</a></li>
+          </ol></nav>
+        </div>
+      </section>
+        <script type="text/plain" data-example="HTML">
+          <section class="carousel" aria-roledescription="carousel" aria-label="Venues">
+            <div class="carousel__track" tabindex="0" role="group" aria-label="Venue photos">
+              <div class="carousel__slide" id="v1" role="group" aria-roledescription="slide" aria-label="1 of 2">
+                <figure class="media media--16x9">
+                  <img src="club.jpg" alt="A red awning over a club door" width="1200" height="675">
+                  <figcaption>The club, before doors.</figcaption>
+                </figure>
+              </div>
+              <div class="carousel__slide" id="v2" role="group" aria-roledescription="slide" aria-label="2 of 2"> … </div>
+            </div>
+            <div class="carousel__bar">
+              <nav class="carousel__nav" aria-label="Choose a slide"><ol>
+                <li><a href="#v1"><span class="visually-hidden">Slide </span>1</a></li>
+                <li><a href="#v2"><span class="visually-hidden">Slide </span>2</a></li>
+              </ol></nav>
+            </div>
+          </section>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Photo gallery</legend>
+      <section class="carousel carousel--multi" aria-roledescription="carousel" aria-label="Gallery">
+        <div class="carousel__track" tabindex="0" role="group" aria-label="Gallery photos">
+        <div class="carousel__slide" id="gal-1" role="group" aria-roledescription="slide" aria-label="1 of 4">
+          <figure class="media media--16x9">
+            <img src="docs/media/haddonfield-night.svg" alt="A house on a hill under a full moon, one window lit" width="1200" height="675" loading="lazy">
+            <figcaption>Haddonfield at night.</figcaption>
+          </figure>
+        </div>
+        <div class="carousel__slide" id="gal-2" role="group" aria-roledescription="slide" aria-label="2 of 4">
+          <figure class="media media--16x9">
+            <img src="docs/media/camp-lake-dawn.svg" alt="A cabin by a still lake at dawn, mist low over the water" width="1200" height="675" loading="lazy">
+            <figcaption>Camp, at dawn.</figcaption>
+          </figure>
+        </div>
+        <div class="carousel__slide" id="gal-3" role="group" aria-roledescription="slide" aria-label="3 of 4">
+          <figure class="media media--16x9">
+            <img src="docs/media/ship-corridor.svg" alt="A long dark ship corridor with one red light over a sealed door" width="1200" height="675" loading="lazy">
+            <figcaption>The corridor, on alert.</figcaption>
+          </figure>
+        </div>
+        <div class="carousel__slide" id="gal-4" role="group" aria-roledescription="slide" aria-label="4 of 4">
+          <figure class="media media--16x9">
+            <img src="docs/media/club-awning.svg" alt="A red scalloped awning over a club door and a lit poster" width="1200" height="675" loading="lazy">
+            <figcaption>The club, before doors.</figcaption>
+          </figure>
+        </div>
+        </div>
+        <div class="carousel__bar">
+          <nav class="carousel__nav" aria-label="Choose a slide, gallery"><ol>
+          <li><a href="#gal-1"><span class="visually-hidden">Slide </span>1</a></li>
+          <li><a href="#gal-2"><span class="visually-hidden">Slide </span>2</a></li>
+          <li><a href="#gal-3"><span class="visually-hidden">Slide </span>3</a></li>
+          <li><a href="#gal-4"><span class="visually-hidden">Slide </span>4</a></li>
+          </ol></nav>
+        </div>
+      </section>
+        <script type="text/plain" data-example="HTML">
+          <!-- carousel--multi: one slide on a phone, two from sm, three from lg (--carousel-per sets it) -->
+          <section class="carousel carousel--multi" aria-roledescription="carousel" aria-label="Gallery"> … </section>
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Auto-play</legend>
+      <section class="carousel" aria-roledescription="carousel" aria-label="Rotating highlights" data-autoplay="4000">
+        <div class="carousel__track" tabindex="0" role="group" aria-label="Highlight photos">
+        <div class="carousel__slide" id="auto-1" role="group" aria-roledescription="slide" aria-label="1 of 3">
+          <figure class="media media--16x9">
+            <img src="docs/media/haddonfield-night.svg" alt="A house on a hill under a full moon, one window lit" width="1200" height="675" loading="lazy">
+            <figcaption>Haddonfield at night.</figcaption>
+          </figure>
+        </div>
+        <div class="carousel__slide" id="auto-2" role="group" aria-roledescription="slide" aria-label="2 of 3">
+          <figure class="media media--16x9">
+            <img src="docs/media/camp-lake-dawn.svg" alt="A cabin by a still lake at dawn, mist low over the water" width="1200" height="675" loading="lazy">
+            <figcaption>Camp, at dawn.</figcaption>
+          </figure>
+        </div>
+        <div class="carousel__slide" id="auto-3" role="group" aria-roledescription="slide" aria-label="3 of 3">
+          <figure class="media media--16x9">
+            <img src="docs/media/ship-corridor.svg" alt="A long dark ship corridor with one red light over a sealed door" width="1200" height="675" loading="lazy">
+            <figcaption>The corridor, on alert.</figcaption>
+          </figure>
+        </div>
+        </div>
+        <div class="carousel__bar">
+          <nav class="carousel__nav" aria-label="Choose a slide, rotating highlights"><ol>
+          <li><a href="#auto-1"><span class="visually-hidden">Slide </span>1</a></li>
+          <li><a href="#auto-2"><span class="visually-hidden">Slide </span>2</a></li>
+          <li><a href="#auto-3"><span class="visually-hidden">Slide </span>3</a></li>
+          </ol></nav>
+        </div>
+      </section>
+        <script type="text/plain" data-example="HTML">
+          <!-- off unless you ask: data-autoplay is the time per slide in milliseconds (3000 or more) -->
+          <section class="carousel" data-autoplay="4000" aria-roledescription="carousel" aria-label="Highlights"> … </section>
         </script>
       </fieldset>
     </section>

@@ -1454,6 +1454,109 @@ const enhanceAppBars = (claim) => {
   }
 };
 
+// A carousel or gallery (.carousel): the slides, the scrolling and the jump links all work without script. This adds
+// Previous and Next keys (they wrap around), a polite "Slide 2 of 3" status that speaks only when the person moves,
+// aria-current on the jump link of the slide in view, and, only if data-autoplay="5000" (milliseconds) is set, auto-
+// play with a Pause key. Auto-play stops while the pointer or focus is inside and never starts under reduced motion.
+// Pattern: WAI-ARIA APG "Carousel".
+const enhanceCarousels = (claim) => {
+  const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const key = (label, icon, extra = '') => {
+    const well = document.createElement('span');
+    well.className = 'well';
+    well.innerHTML = `<button type="button" class="key key--sq"${extra} aria-label="${label}"><svg class="icon" aria-hidden="true"><use href="#i-${icon}"/></svg></button>`;
+    return well;
+  };
+  for (const root of claim('.carousel')) {
+    const track = root.querySelector('.carousel__track');
+    const slides = [...root.querySelectorAll('.carousel__slide')];
+    if (!track || slides.length < 2) continue;
+    const links = [...root.querySelectorAll('.carousel__nav a')];
+    let bar = root.querySelector('.carousel__bar');
+    if (!bar) { bar = document.createElement('div'); bar.className = 'carousel__bar'; root.append(bar); }
+    const status = document.createElement('p');
+    status.className = 'visually-hidden';
+    status.setAttribute('role', 'status');
+    bar.after(status);
+
+    const left = (i) => slides[i].offsetLeft - slides[0].offsetLeft;
+    const nearest = () => {
+      const at = Math.abs(track.scrollLeft);
+      return slides.reduce((best, _, i) => (Math.abs(left(i) - at) < Math.abs(left(best) - at) ? i : best), 0);
+    };
+    let current = 0;
+    let speak = false; // only a person's own move is announced, never the auto-play
+    let timer;
+    const show = (i) => {
+      current = i;
+      slides.forEach((slide, k) => slide.toggleAttribute('data-active', k === i));
+      links.forEach((link, k) => (k === i ? link.setAttribute('aria-current', 'true') : link.removeAttribute('aria-current')));
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (speak) status.textContent = `Slide ${i + 1} of ${slides.length}`;
+        speak = false;
+      }, 250);
+    };
+    // Quick presses build on each other: they count from where the last one was heading, not from where the row is now.
+    let target = 0;
+    const go = (i, byPerson = true) => {
+      target = (i + slides.length) % slides.length;
+      speak = byPerson;
+      track.scrollTo({ left: left(target), behavior: calm() ? 'auto' : 'smooth' });
+    };
+    let frame;
+    let idle;
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => { const i = nearest(); if (i !== current) show(i); });
+      clearTimeout(idle);
+      idle = setTimeout(() => { target = nearest(); }, 150); // once it stops, drags and arrow keys count too
+    }, { passive: true });
+    // The arrow keys scroll a focused row on their own; Home and End only scroll up and down the page, so they are added.
+    track.addEventListener('keydown', (e) => {
+      speak = true;
+      if (e.key === 'Home' || e.key === 'End') { e.preventDefault(); go(e.key === 'Home' ? 0 : slides.length - 1); }
+    });
+    links.forEach((link, i) => link.addEventListener('click', (e) => { e.preventDefault(); go(i); }));
+
+    const prev = key('Previous slide', 'chevron-left');
+    const next = key('Next slide', 'chevron-right');
+    bar.prepend(prev);
+    bar.append(next);
+    prev.firstChild.addEventListener('click', () => go(target - 1));
+    next.firstChild.addEventListener('click', () => go(target + 1));
+
+    const ms = Number(root.dataset.autoplay);
+    if (ms >= 3000) {
+      const play = key('Pause slides', 'pause');
+      const button = play.firstChild;
+      bar.append(play);
+      let running = false;
+      let inside = false;
+      let chosen = !calm(); // the person's own choice: play (true) or pause (false)
+      const tick = () => go(target + 1, false);
+      const sync = () => {
+        const should = chosen && !inside;
+        if (should && !running) timer2 = setInterval(tick, ms);
+        if (!should && running) clearInterval(timer2);
+        running = should;
+        const use = button.querySelector('use');
+        button.setAttribute('aria-label', chosen ? 'Pause slides' : 'Play slides');
+        use.setAttribute('href', chosen ? '#i-pause' : '#i-play');
+      };
+      let timer2;
+      button.addEventListener('click', () => { chosen = !chosen; sync(); });
+      root.addEventListener('pointerenter', () => { inside = true; sync(); });
+      root.addEventListener('pointerleave', () => { inside = false; sync(); });
+      root.addEventListener('focusin', () => { inside = true; sync(); });
+      root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) { inside = false; sync(); } });
+      sync();
+    }
+    show(nearest());
+    status.textContent = '';
+  }
+};
+
 // ---- Tooltips --------------------------------------------------------------------------
 
 // data-tooltip="Text" on a button, link or radio key. The text becomes a popover shown on mouse
@@ -1640,6 +1743,7 @@ const init = (scope = document) => {
   enhanceChecks(claim);
   enhanceChecklists(claim);
   enhanceAppBars(claim);
+  enhanceCarousels(claim);
   enhanceTabs(claim);
   enhanceSideMenus(claim);
   enhanceEmbeds(claim);
