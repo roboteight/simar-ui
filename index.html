@@ -103,6 +103,7 @@
         <li>
           <span class="toc__group">Content</span>
           <ul>
+          <li><a href="#avatars">Avatar</a></li>
           <li><a href="#cards">Card</a></li>
           <li><a href="#carousels">Carousel and gallery</a></li>
           <li><a href="#code">Code</a></li>
@@ -900,6 +901,63 @@
             <blockquote><p>A short line worth setting apart.</p></blockquote>
             <figcaption><cite>Someone</cite></figcaption>
           </figure>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="avatars">
+      <h3 id="avatars">Avatar</h3>
+      <p class="note">A person or thing as a small round picture or initials. It is plain content with no role of its own. A photo is an <code>&lt;img&gt;</code>: its <code>alt</code> is the name when the avatar stands alone, and empty when the name is written beside it, so it is not read twice. Initials are text: the letters are hidden from assistive tech and the name is visually hidden text, so a screen reader says "Ellen Ripley", not "E R". Beside a visible name, hide the whole avatar with <code>aria-hidden="true"</code>. A link or button around one keeps a 24px or larger target and a focus ring. A group overlaps them and can end with a count that says how many more.</p>
+
+      <fieldset class="panel">
+        <legend>Avatar</legend>
+        <div class="well-row" id="avatar-sizes">
+          <span class="avatar avatar--sm"><span aria-hidden="true">DH</span><span class="visually-hidden">Dwayne Hicks</span></span>
+          <span class="avatar"><span aria-hidden="true">ER</span><span class="visually-hidden">Ellen Ripley</span></span>
+          <span class="avatar avatar--lg"><span aria-hidden="true">RJ</span><span class="visually-hidden">Rebecca Jorden</span></span>
+          <span class="avatar avatar--xl avatar--square"><span aria-hidden="true">AS</span><span class="visually-hidden">Ash</span></span>
+          <img class="avatar avatar--lg" src="docs/media/ship-corridor.svg" alt="The Nostromo's corridor" width="56" height="56">
+          <a class="avatar" href="#avatars"><span aria-hidden="true">JN</span><span class="visually-hidden">Jones, open profile</span></a>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-avatar name="Ellen Ripley"></simar-avatar>
+          <simar-avatar name="Rebecca Jorden" size="lg"></simar-avatar>
+          <simar-avatar name="Ash" size="xl" square></simar-avatar>
+          <!-- beside a visible name: hidden from assistive tech -->
+          <simar-avatar name="Dwayne Hicks" decorative></simar-avatar> Dwayne Hicks
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <!-- initials: the letters are hidden, the name is read -->
+          <span class="avatar">
+            <span aria-hidden="true">ER</span><span class="visually-hidden">Ellen Ripley</span>
+          </span>
+
+          <!-- a photo: alt is the name (empty if the name is written beside it) -->
+          <img class="avatar avatar--lg" src="ripley.jpg" alt="Ellen Ripley">
+        </script>
+      </fieldset>
+
+      <fieldset class="panel">
+        <legend>Avatar group</legend>
+        <ul class="avatar-group" role="list" aria-label="On watch" id="avatar-watch">
+          <li><span class="avatar"><span aria-hidden="true">ER</span><span class="visually-hidden">Ellen Ripley</span></span></li>
+          <li><span class="avatar"><span aria-hidden="true">DH</span><span class="visually-hidden">Dwayne Hicks</span></span></li>
+          <li><span class="avatar"><span aria-hidden="true">RJ</span><span class="visually-hidden">Rebecca Jorden</span></span></li>
+          <li><span class="avatar avatar--more"><span aria-hidden="true">+3</span><span class="visually-hidden">and 3 more</span></span></li>
+        </ul>
+        <script type="text/plain" data-example="Tag">
+          <simar-avatars label="On watch">
+            <simar-avatar name="Ellen Ripley"></simar-avatar>
+            <simar-avatar name="Dwayne Hicks"></simar-avatar>
+          </simar-avatars>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <ul class="avatar-group" role="list" aria-label="On watch">
+            <li><span class="avatar">…</span></li>
+            <li><span class="avatar avatar--more">
+              <span aria-hidden="true">+3</span><span class="visually-hidden">and 3 more</span>
+            </span></li>
+          </ul>
         </script>
       </fieldset>
     </section>

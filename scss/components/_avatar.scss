@@ -1,0 +1,88 @@
+@use "../abstracts" as *;
+
+// Avatar: a person or thing as a small round picture or initials. It is plain content, with no role of its own.
+//
+//   A photo is an <img>; alt is the name when the avatar stands alone, and empty (alt="") when the name is written
+//   next to it, so it is not read twice.
+//   <img class="avatar" src="ripley.jpg" alt="Ellen Ripley">
+//
+//   Initials are text. The initials are hidden from assistive tech and the name is visible-hidden text instead, so
+//   a screen reader says "Ellen Ripley", not "E R". Beside a visible name, hide the whole avatar (aria-hidden="true").
+//   <span class="avatar"><span aria-hidden="true">ER</span><span class="visually-hidden">Ellen Ripley</span></span>
+//
+// Sizes: avatar--sm, avatar--lg, avatar--xl. avatar--square rounds the corners instead. A link or button around it
+// keeps a 24px or larger target at every size and shows the focus ring.
+//
+// Group: a list of avatars that overlap, for people on a thing. The last item can say how many more.
+//   <ul class="avatar-group" role="list" aria-label="On watch">
+//     <li><span class="avatar">…</span></li>
+//     <li><span class="avatar avatar--more"><span aria-hidden="true">+3</span><span class="visually-hidden">and 3 more</span></span></li>
+//   </ul>
+// Tokens: --avatar-size (the diameter).
+.avatar {
+  --_size: var(--avatar-size, 2.5rem);
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--_size);
+  height: var(--_size);
+  overflow: hidden;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--lit) 18%, var(--sheet-top));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lit-ink) 55%, transparent);
+  color: var(--ink);
+  font-size: calc(var(--_size) * 0.38);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  vertical-align: middle;
+  object-fit: cover;
+  user-select: none;
+
+  &--sm { --_size: var(--avatar-size, 2rem); }
+  &--lg { --_size: var(--avatar-size, 3.5rem); }
+  &--xl { --_size: var(--avatar-size, 5rem); }
+
+  &--square { border-radius: var(--radius); }
+
+  // A count of those not shown: a quieter tint.
+  &--more { background: var(--sheet-bottom); }
+
+  @include forced-colors {
+    background: Canvas;
+    box-shadow: none;
+    border: 1px solid CanvasText;
+    color: CanvasText;
+  }
+}
+
+a.avatar,
+button.avatar {
+  cursor: pointer;
+  text-decoration: none;
+
+  &:focus-visible { @include focus-ring(2px); }
+}
+
+.avatar-group {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    display: flex;
+    position: relative;
+  }
+
+  // Each avatar overlaps the one before it, with a ring in the surface color to cut the edge.
+  > li + li { margin-inline-start: -0.35rem; }
+
+  .avatar { box-shadow: 0 0 0 2px var(--sheet-top), inset 0 0 0 1px color-mix(in srgb, var(--lit-ink) 55%, transparent); }
+
+  // The one that has focus comes to the front, so its ring is not cut by the next avatar.
+  > li:focus-within { z-index: 1; }
+
+  @include forced-colors { .avatar { box-shadow: none; } }
+}

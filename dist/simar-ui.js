@@ -169,6 +169,23 @@
       const variant = ["info", "success", "warning", "danger"].includes(node.getAttribute("variant")) ? ` badge--${node.getAttribute("variant")}` : "";
       return `<span${rootAttrs(node, `badge${variant}${node.hasAttribute("count") ? " badge--count" : ""}`)}>${node.innerHTML}</span>`;
     },
+    // <simar-avatars label="On watch"><simar-avatar name="Ellen Ripley"></simar-avatar> … </simar-avatars>
+    "simar-avatars": (node) => `<ul${rootAttrs(node, "avatar-group")} role="list" aria-label="${esc(node.getAttribute("label") ?? "")}">${[...node.children].map((child) => `<li>${child.outerHTML}</li>`).join("")}</ul>`,
+    // (before simar-avatar, so its avatars are still tags when it builds)
+    // <simar-avatar name="Ellen Ripley" initials="ER" size="lg" src="ripley.jpg" square decorative></simar-avatar>
+    // A photo (src) or initials (they default to the first letters of the name). decorative hides it from assistive tech,
+    // for when the name is written next to it.
+    "simar-avatar": (node) => {
+      const name = node.getAttribute("name") ?? "";
+      const size = ["sm", "lg", "xl"].includes(node.getAttribute("size")) ? ` avatar--${node.getAttribute("size")}` : "";
+      const classes = `avatar${size}${node.hasAttribute("square") ? " avatar--square" : ""}`;
+      const decorative = node.hasAttribute("decorative");
+      if (node.hasAttribute("src")) {
+        return `<img${rootAttrs(node, classes)} src="${esc(node.getAttribute("src"))}" alt="${decorative ? "" : esc(name)}">`;
+      }
+      const initials = node.getAttribute("initials") ?? name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
+      return `<span${rootAttrs(node, classes)}${decorative ? ' aria-hidden="true"' : ""}><span aria-hidden="true">${esc(initials)}</span>${decorative ? "" : `<span class="visually-hidden">${esc(name)}</span>`}</span>`;
+    },
     // <simar-accordion name="faq"><simar-item title="What is it?" open>Answer…</simar-item></simar-accordion>
     // Items open one at a time (sharing `name`) unless `multiple` is set.
     "simar-accordion": (node) => {

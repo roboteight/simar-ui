@@ -70,11 +70,26 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, swipe list, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, search bar, select, time picker, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, speed dial, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** avatar, card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, swipe list, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, search bar, select, time picker, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, speed dial, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
 ### Content
+
+#### Avatar
+
+A person or thing as a small round picture or initials. It is plain content with no role of its own. A photo is an `<img>`: its `alt` is the name when the avatar stands alone, and empty when the name is written beside it, so it is not read twice. Initials are text: the letters are hidden from assistive tech and the name is visually hidden text, so a screen reader says "Ellen Ripley", not "E R". Beside a visible name, hide the whole avatar with `aria-hidden="true"`. Sizes are `avatar--sm`, `avatar--lg` and `avatar--xl`; `avatar--square` rounds the corners instead; a link or button around one keeps a 24px or larger target and a focus ring. A group (`avatar-group`) is a named list that overlaps the avatars and can end with a count that says how many more. Tags: `<simar-avatar>` and `<simar-avatars>`.
+
+<img src="docs/screenshots/avatars.png" alt="Avatars in four sizes, a photo and a link, and a group of three overlapping avatars with a plus three count" width="420">
+
+```html
+<span class="avatar"><span aria-hidden="true">ER</span><span class="visually-hidden">Ellen Ripley</span></span>
+
+<ul class="avatar-group" role="list" aria-label="On watch">
+  <li><span class="avatar">…</span></li>
+  <li><span class="avatar avatar--more"><span aria-hidden="true">+3</span><span class="visually-hidden">and 3 more</span></span></li>
+</ul>
+```
 
 #### Card
 

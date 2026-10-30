@@ -7,7 +7,7 @@
   width: 10rem;
 }
 
-// Knobs: an extruded metal cap in a round well, with a rotating knurled ring and index mark.
+// Knobs: a cap in a round well, with a rotating ring and index mark. The metal, knurl and shadow come from tokens.
 // Without JS the native range input shows. With JS (.is-enhanced) the input is hidden
 // visually but stays focusable, so the keyboard and screen readers still drive it.
 .knob-row {

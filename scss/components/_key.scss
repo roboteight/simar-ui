@@ -20,7 +20,7 @@
   @include forced-colors { box-shadow: none; }
 }
 
-// The key: a raised cap with a bevelled edge, extruded by a solid side wall.
+// The key: a cap whose edge, side wall, travel and shadow all come from the style's tokens (--bevel, --travel, --cap-*).
 // Used on <button>, <summary>, and the <span> after a hidden radio.
 .key {
   position: relative;

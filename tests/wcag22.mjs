@@ -1032,6 +1032,33 @@ await page.keyboard.press('Escape');
 await wait(100);
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- avatar ---------------------------------------------------------------------------------------
+console.log('\nAvatar');
+await open(1280);
+const av1 = await page.evaluate(() => {
+  const sec = document.querySelector('section[aria-labelledby="avatars"]');
+  const sizes = [...sec.querySelectorAll('#avatar-sizes .avatar')].map((a) => { const r = a.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; });
+  const initials = sec.querySelector('#avatar-sizes .avatar:nth-child(2)');
+  const link = sec.querySelector('a.avatar'), img = sec.querySelector('img.avatar');
+  const group = document.getElementById('avatar-watch');
+  return {
+    sizes, round: getComputedStyle(initials).borderTopLeftRadius, hiddenInitials: initials.querySelector('[aria-hidden="true"]').textContent, name: initials.textContent.replace('ER', '').trim(),
+    linkBox: (() => { const r = link.getBoundingClientRect(); return r.width >= 24 && r.height >= 24; })(), imgAlt: img.getAttribute('alt'),
+    group: group.getAttribute('aria-label'), role: group.getAttribute('role'), items: group.querySelectorAll('li').length, more: group.querySelector('.avatar--more .visually-hidden').textContent,
+    overlap: (() => { const l = [...group.querySelectorAll('li')]; return l[1].getBoundingClientRect().left < l[0].getBoundingClientRect().right; })(),
+  };
+});
+av1.sizes[0][0] === 32 && av1.sizes[1][0] === 40 && av1.sizes[2][0] === 56 && av1.sizes[3][0] === 80 && av1.sizes.every(([w, h]) => w === h) ? pass('avatars come in four sizes (32, 40, 56 and 80px) and are always square boxes') : fail(`avatar sizes: ${JSON.stringify(av1.sizes)}`);
+av1.hiddenInitials === 'ER' && av1.name === 'Ellen Ripley' ? pass('initials are hidden from assistive tech and the name is visually hidden text') : fail(`avatar name: ${JSON.stringify(av1)}`);
+av1.imgAlt && av1.linkBox ? pass('a photo avatar has alt text and an avatar link is 24px or larger') : fail(`avatar img/link: ${JSON.stringify(av1)}`);
+av1.group === 'On watch' && av1.role === 'list' && av1.items === 4 && av1.more === 'and 3 more' && av1.overlap ? pass('an avatar group is a named list, the avatars overlap and the last says how many more') : fail(`avatar group: ${JSON.stringify(av1)}`);
+await page.focus('a.avatar');
+const avFocus = await page.evaluate(() => { const s = getComputedStyle(document.querySelector('a.avatar')); return s.outlineStyle !== 'none' || /rgb/.test(s.boxShadow); });
+avFocus ? pass('an avatar link shows a focus ring') : fail('avatar link focus ring');
+await page.setViewport({ width: 320, height: 700 });
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('avatars fit a 320px screen') : fail('avatars overflow at 320px');
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- swipe list -----------------------------------------------------------------------------------
 console.log('\nSwipe list');
 await open(390);
@@ -1871,6 +1898,7 @@ expect('each swipe-list row has a button "Actions for ..." that reports collapse
 expect('a closed swipe-list row keeps its Archive and Delete out of the tree', nodes.find((n) => n.role === 'button' && /^(Archive|Delete)$/.test(n.name ?? '')) ? null : { role: 'none' }, Boolean);
 expect('filter chips are checkboxes in a named group', find('checkbox', 'Command'), (n) => typeof n.checked === 'boolean');
 expect('the closed bottom sheet is not in the tree', nodes.find((n) => n.role === 'dialog' && n.name === 'Share setlist') ? null : { role: 'none' }, Boolean);
+expect('an initials avatar is read as the person\'s name, not the letters', find('StaticText', 'Ellen Ripley') ?? nodes.find((n) => /Ellen Ripley/.test(n.name ?? '') && !/ER/.test(n.name ?? '')), Boolean);
 const unnamed = nodes.filter((n) => ['button', 'slider', 'radio', 'checkbox', 'combobox', 'textbox', 'spinbutton'].includes(n.role) && !(n.name ?? '').trim());
 unnamed.length ? fail(`${unnamed.length} control(s) with no name: ${unnamed.slice(0, 4).map((n) => n.role).join(', ')}`) : pass('no control is nameless');
 

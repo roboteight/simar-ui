@@ -34,7 +34,7 @@
   --radius-lg: 4px;    // surfaces: panels, cards, dialogs, menus, tables
   --depth: 1;          // strength of every soft shadow (0 is none)
   --fade: 100%;        // strength of every gradient (0% is a flat color)
-  --travel: 1px;       // how far a cap is extruded above its well
+  --travel: 1px;       // how far a cap rises above its well (0 is flat)
   --bevel: 1px;        // the light and dark rim on a cap
   --cap-drop: 1px;     // the soft shadow under a cap
   --cap-blur: 2px;
