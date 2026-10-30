@@ -180,6 +180,14 @@ await wait(500);
 await page.screenshot({ path: path.join(out, 'confirm-dialog.png'), clip: await page.evaluate(() => { const r = document.querySelector('#confirm-delete').getBoundingClientRect(); return { x: r.x + scrollX - 30, y: r.y + scrollY - 30, width: r.width + 60, height: r.height + 60 }; }) });
 console.log('  confirm-dialog.png');
 await page.keyboard.press('Escape');
+// the swipe list, one row open
+await page.evaluate(() => document.querySelector('#crew-swipe').scrollIntoView({ block: 'center' }));
+await page.click('#crew-swipe > li:nth-child(2) .swipe-list__toggle');
+await wait(400);
+await page.screenshot({ path: path.join(out, 'swipe-list.png'), clip: await page.evaluate(() => { const r = document.querySelector('#crew-swipe').getBoundingClientRect(); return { x: r.x + scrollX - 20, y: r.y + scrollY - 20, width: r.width + 40, height: r.height + 40 }; }) });
+console.log('  swipe-list.png');
+await page.keyboard.press('Escape');
+await wait(200);
 // the speed dial, open
 await page.evaluate(() => document.querySelector('#dial-end').scrollIntoView({ block: 'center' }));
 await page.click('#dial-end summary');

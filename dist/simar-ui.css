@@ -6803,6 +6803,127 @@ hr.divider {
   margin: 0;
 }
 
+.swipe-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.swipe-list__item {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--hairline-strong);
+}
+.swipe-list__item:first-child {
+  border-top: 0;
+}
+@media (forced-colors: active) {
+  .swipe-list__item {
+    border-top-color: CanvasText;
+  }
+}
+.swipe-list__main {
+  display: grid;
+  flex: 1 1 10rem;
+  min-width: 0;
+  gap: 0.1rem;
+}
+.swipe-list__text {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.swipe-list__hint {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+.swipe-list__actions {
+  display: flex;
+  flex: none;
+  gap: 0.5rem;
+}
+.swipe-list.is-enhanced .swipe-list__item {
+  flex-wrap: nowrap;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.swipe-list.is-enhanced .swipe-list__main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1 1 auto;
+  align-self: stretch;
+  padding: 0.5rem 0.25rem 0.5rem 0.75rem;
+  background: var(--sheet-bottom);
+  transform: translateX(var(--swipe-x, 0px));
+  touch-action: pan-y;
+  transition: transform 180ms ease-out;
+}
+.swipe-list.is-enhanced .swipe-list__main.is-dragging {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .swipe-list.is-enhanced .swipe-list__main {
+    transition: none;
+  }
+}
+.swipe-list.is-enhanced .swipe-list__label {
+  display: grid;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 0.1rem;
+}
+.swipe-list.is-enhanced .swipe-list__actions {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  align-items: center;
+  padding-inline: 0.5rem;
+  visibility: hidden;
+  transition: visibility 0s 180ms;
+}
+.swipe-list.is-enhanced .swipe-list__item.is-open .swipe-list__actions, .swipe-list.is-enhanced .swipe-list__item.is-dragging .swipe-list__actions {
+  visibility: visible;
+  transition: none;
+}
+.swipe-list__toggle {
+  display: none;
+  flex: none;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--input-radius, var(--radius));
+  background: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.swipe-list__toggle:hover {
+  color: var(--ink);
+}
+.swipe-list__toggle:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 0;
+}
+.swipe-list__toggle .icon {
+  filter: none;
+}
+@media (forced-colors: active) {
+  .swipe-list__toggle {
+    color: ButtonText;
+  }
+}
+.swipe-list.is-enhanced .swipe-list__toggle {
+  display: grid;
+}
+
 .fab {
   position: fixed;
   z-index: 20;

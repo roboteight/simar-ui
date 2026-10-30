@@ -1032,6 +1032,64 @@ await page.keyboard.press('Escape');
 await wait(100);
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- swipe list -----------------------------------------------------------------------------------
+console.log('\nSwipe list');
+await open(390);
+await page.$eval('#crew-swipe', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+const sw1 = await page.evaluate(() => {
+  const item = document.querySelector('#crew-swipe .swipe-list__item'), t = item.querySelector('.swipe-list__toggle'), a = item.querySelector('.swipe-list__actions'), r = t.getBoundingClientRect();
+  return { name: t.getAttribute('aria-label'), expanded: t.getAttribute('aria-expanded'), controls: t.getAttribute('aria-controls') === a.id, size: r.width >= 24 && r.height >= 24, hidden: getComputedStyle(a).visibility === 'hidden', group: a.getAttribute('aria-label'), rows: document.querySelectorAll('#crew-swipe > li').length };
+});
+sw1.name === 'Actions for Ellen Ripley' && sw1.expanded === 'false' && sw1.controls && sw1.size && sw1.group === 'Actions for Ellen Ripley' ? pass('each row has a named "Actions for ..." key (24px or larger) that is a disclosure for its actions') : fail(`swipe list: ${JSON.stringify(sw1)}`);
+sw1.hidden ? pass('closed, the actions are hidden, so out of the tab order') : fail('swipe actions are visible while closed');
+await page.focus('#crew-swipe .swipe-list__item .swipe-list__toggle');
+await page.keyboard.press('Enter');
+await wait(300);
+const sw2 = await page.evaluate(() => { const item = document.querySelector('#crew-swipe .swipe-list__item'); const a = item.querySelector('.swipe-list__actions'); return { open: item.classList.contains('is-open'), expanded: item.querySelector('.swipe-list__toggle').getAttribute('aria-expanded'), visible: getComputedStyle(a).visibility === 'visible', shifted: item.querySelector('.swipe-list__main').getBoundingClientRect().right <= item.getBoundingClientRect().right - a.offsetWidth + 2 }; });
+sw2.open && sw2.expanded === 'true' && sw2.visible && sw2.shifted ? pass('Enter on the key opens the row: the row slides aside and the actions show') : fail(`swipe open: ${JSON.stringify(sw2)}`);
+await page.keyboard.press('Tab');
+(await page.evaluate(() => document.activeElement.textContent.trim())) === 'Archive' ? pass('Tab goes from the key to the first action') : fail('swipe Tab order');
+await page.keyboard.press('Escape');
+await wait(250);
+const sw3 = await page.evaluate(() => ({ open: document.querySelector('#crew-swipe .swipe-list__item').classList.contains('is-open'), back: document.activeElement.classList.contains('swipe-list__toggle') }));
+!sw3.open && sw3.back ? pass('Esc closes the row and returns focus to its key') : fail(`swipe Esc: ${JSON.stringify(sw3)}`);
+// A swipe, sent as touch pointer events (a real finger is not verified).
+const swipe = (selector, dx) => page.evaluate(async (selector, dx) => {
+  const main = document.querySelector(selector), r = main.getBoundingClientRect(), y = r.top + r.height / 2, x0 = r.left + r.width / 2;
+  const fire = (type, x) => main.dispatchEvent(new PointerEvent(type, { pointerId: 7, pointerType: 'touch', isPrimary: true, bubbles: true, cancelable: true, clientX: x, clientY: y }));
+  fire('pointerdown', x0);
+  for (let i = 1; i <= 6; i++) fire('pointermove', x0 + (dx * i) / 6);
+  fire('pointerup', x0 + dx);
+}, selector, dx);
+await swipe('#crew-swipe > li:nth-child(2) .swipe-list__main', -200);
+await wait(300);
+const sw4 = await page.evaluate(() => ({ open: document.querySelector('#crew-swipe > li:nth-child(2)').classList.contains('is-open'), expanded: document.querySelector('#crew-swipe > li:nth-child(2) .swipe-list__toggle').getAttribute('aria-expanded') }));
+sw4.open && sw4.expanded === 'true' ? pass('a leftward touch swipe opens the row and the key reports it') : fail(`swipe touch: ${JSON.stringify(sw4)}`);
+await swipe('#crew-swipe > li:nth-child(3) .swipe-list__main', -200);
+await wait(300);
+const sw5 = await page.evaluate(() => [...document.querySelectorAll('#crew-swipe > li')].map((li) => li.classList.contains('is-open')).join());
+sw5 === 'false,false,true' ? pass('only one row is open at a time') : fail(`swipe one at a time: ${sw5}`);
+await swipe('#crew-swipe > li:nth-child(3) .swipe-list__main', 200);
+await wait(300);
+(await page.$eval('#crew-swipe > li:nth-child(3)', (li) => !li.classList.contains('is-open'))) ? pass('swiping back closes it') : fail('swipe back');
+await swipe('#crew-swipe > li:nth-child(1) .swipe-list__main', -20);
+await wait(300);
+(await page.$eval('#crew-swipe > li:nth-child(1)', (li) => !li.classList.contains('is-open'))) ? pass('a short swipe snaps back shut') : fail('short swipe');
+await page.click('#crew-swipe > li:nth-child(1) .swipe-list__toggle');
+await wait(300);
+await page.click('#crew-swipe > li:nth-child(1) .swipe-list__actions button');
+await wait(300);
+(await page.$eval('#crew-swipe > li:nth-child(1)', (li) => !li.classList.contains('is-open'))) ? pass('choosing an action closes the row') : fail('swipe action');
+await page.setViewport({ width: 320, height: 700 });
+await page.$eval('#crew-swipe', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.click('#crew-swipe > li:nth-child(2) .swipe-list__toggle');
+await wait(300);
+const sw6 = await page.evaluate(() => { const a = document.querySelector('#crew-swipe > li:nth-child(2) .swipe-list__actions').getBoundingClientRect(), box = document.querySelector('#crew-swipe').getBoundingClientRect(); return { fits: a.left >= box.left - 1 && a.right <= box.right + 1, page: document.documentElement.scrollWidth <= innerWidth + 1, keys: [...document.querySelectorAll('#crew-swipe > li:nth-child(2) .swipe-list__actions .key')].every((k) => { const b = k.getBoundingClientRect(); return b.width >= 24 && b.height >= 24; }) }; });
+sw6.fits && sw6.page && sw6.keys ? pass('the open row fits a 320px screen and its actions stay 24px or larger') : fail(`swipe 320px: ${JSON.stringify(sw6)}`);
+await page.keyboard.press('Escape');
+await open(1280);
+await page.evaluate(() => { document.documentElement.dataset.js = 'on'; });
+
 // ---- design tokens --------------------------------------------------------------------------------
 console.log('\nDesign tokens');
 await open(1280);
@@ -1802,6 +1860,17 @@ expect('calendar toggle is a named button, collapsed', find('button', 'Choose da
 expect('accordion item is a button that reports expanded', find(/disclosure|button/i, /What is simar-ui/), (n) => typeof n.expanded === 'boolean');
 expect('date fields are named', find('Date', 'Check in') && find('Date', 'Check out'), Boolean);
 expect('the dialog is closed, so not in the tree', nodes.find((n) => n.role === 'dialog' && n.name === 'Output settings') ? null : { role: 'none' }, Boolean);
+// The components added most recently: roles, names and states as the tree reports them (a screen reader pass is still needed).
+expect('the search bar is a "Crew" search landmark holding a search box named "Search the crew"', find('search', 'Crew') && find('searchbox', 'Search the crew'), Boolean);
+expect('the search bar\'s Clear key is a named button', find('button', 'Clear search'));
+expect('the time picker\'s clock key is a named button, collapsed', find('button', 'Choose time'), (n) => n.expanded === false);
+expect('a closed time picker keeps its hour and minute choices out of the tree', nodes.find((n) => n.role === 'radio' && /^(AM|PM)$/.test(n.name ?? '')) ? null : { role: 'none' }, Boolean);
+expect('the speed dial\'s key is a disclosure named "Add", collapsed', find(/disclosure|button/i, 'Add'), (n) => n.expanded === false);
+expect('a closed speed dial keeps its actions out of the tree', nodes.find((n) => n.name === 'Upload') ? null : { role: 'none' }, Boolean);
+expect('each swipe-list row has a button "Actions for ..." that reports collapsed', find('button', 'Actions for Ellen Ripley'), (n) => n.expanded === false);
+expect('a closed swipe-list row keeps its Archive and Delete out of the tree', nodes.find((n) => n.role === 'button' && /^(Archive|Delete)$/.test(n.name ?? '')) ? null : { role: 'none' }, Boolean);
+expect('filter chips are checkboxes in a named group', find('checkbox', 'Command'), (n) => typeof n.checked === 'boolean');
+expect('the closed bottom sheet is not in the tree', nodes.find((n) => n.role === 'dialog' && n.name === 'Share setlist') ? null : { role: 'none' }, Boolean);
 const unnamed = nodes.filter((n) => ['button', 'slider', 'radio', 'checkbox', 'combobox', 'textbox', 'spinbutton'].includes(n.role) && !(n.name ?? '').trim());
 unnamed.length ? fail(`${unnamed.length} control(s) with no name: ${unnamed.slice(0, 4).map((n) => n.role).join(', ')}`) : pass('no control is nameless');
 

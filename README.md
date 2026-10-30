@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, search bar, select, time picker, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, speed dial, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, swipe list, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, search bar, select, time picker, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, speed dial, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -200,6 +200,27 @@ A `<blockquote>` in a `<figure class="quote">`, with who said it in the `<figcap
   <blockquote><p>Buy the ticket, take the ride.</p></blockquote>
   <figcaption><cite>Hunter S. Thompson</cite>, Fear and Loathing in Las Vegas</figcaption>
 </figure>
+```
+
+#### Swipe list
+
+Rows with actions, such as Archive and Delete. Without the script the actions are ordinary keys on each row, so everything works. With the script they sit behind the row and there are three ways to reach them: swipe left (touch and pen only, so a mouse can still select text and the page still scrolls up and down), press the "Actions for ..." key at the end of the row, or use Enter or Space on that key. Dragging is never the only way. Closed actions are out of the tab order. Esc closes the open row and returns focus to its key, choosing an action closes it, and only one row is open at a time.
+
+<img src="docs/screenshots/swipe-list.png" alt="A list of three crew rows; the second has slid aside to show Archive and Delete keys" width="420">
+
+```html
+<ul class="swipe-list" role="list" data-swipe-list>
+  <li class="swipe-list__item">
+    <div class="swipe-list__main">
+      <span class="swipe-list__text">Ellen Ripley</span>
+      <span class="swipe-list__hint">Warrant officer, Nostromo</span>
+    </div>
+    <div class="swipe-list__actions" role="group" aria-label="Actions for Ellen Ripley">
+      <span class="well"><button type="button" class="key">Archive</button></span>
+      <span class="well"><button type="button" class="key key--danger">Delete</button></span>
+    </div>
+  </li>
+</ul>
 ```
 
 #### Text blurbs
@@ -887,16 +908,16 @@ Haptics use the browser's Vibration API, so there is nothing to install. It work
 
 Every control is a native element, so the keyboard, focus and screen-reader behavior comes from the browser, and the styling sits on top.
 
-- **Keyboard:** everything is reachable and operable. Knobs and faders respond to the arrow keys, Home and End; the calendar has full arrow, Page Up/Down, Home and End navigation; Esc closes dialogs and the calendar.
+- **Keyboard:** everything is reachable and operable. Knobs and faders respond to the arrow keys, Home and End; the calendar has full arrow, Page Up/Down, Home and End navigation; Esc closes dialogs, the bottom sheet, the calendar, the time picker, the speed dial and an open swipe-list row (and returns focus to the key that opened it); the time picker's hours, minutes and AM or PM are native radio groups, so arrows move inside a group and Tab moves between groups.
 - **Names:** a knob or fader is its `<input>` with a real `<label>`; icon-only keys need an `aria-label` (the tags take a `label` attribute).
 - **Focus:** every stop shows a ring, in both themes, and is never hidden behind the floating buttons.
 - **Color:** text meets WCAG AA (4.5:1) in light and dark and in every highlight preset, including on the gradient key caps and the dark readout screens. The preloader's fill and lit tick meet 3:1 against what's behind them.
-- **No dragging required (WCAG 2.5.7):** a click on a knob's ring, the groove of a two-handle range, or the arc of a rotary range sets the value; stepped knobs also jump when you click a label.
+- **No dragging or swiping required (WCAG 2.5.7, 2.5.1):** a click on a knob's ring, the groove of a two-handle range, or the arc of a rotary range sets the value; stepped knobs also jump when you click a label. A swipe-list row's actions open with a swipe (touch and pen only) or with its "Actions for ..." key; the bottom sheet's handle is decorative and closes by key, Esc or the backdrop; the carousel has Previous, Next and jump links.
 - **Reflow and target size:** no sideways scrolling down to 320px wide; every target is at least 24 by 24px.
 - **Motion and contrast modes:** `prefers-reduced-motion` turns transitions and animation off (the preloader shows a still "busy" state). In `forced-colors` (Windows High Contrast) the controls drop their gradients and use only system colors, so the user's own theme decides.
 - **Tooltips (WCAG 1.4.13):** dismissible with Esc, hoverable, persistent, shown on keyboard focus, linked with `aria-describedby`, and kept on screen at the page edge.
 - **Code blocks:** line numbers are skipped by screen readers, can't be selected, and aren't copied; the block can be scrolled by keyboard.
-- **ARIA patterns:** native elements first. Where none exists the component follows the WAI-ARIA Authoring Practices exactly: tabs (arrows, Home, End), menu button (arrows, letters, Esc, Tab), editable combobox for autocomplete (`aria-activedescendant`, a live count of suggestions) and select-only combobox for the picker. Alerts use `role="status"`, and errors `role="alert"`.
+- **ARIA patterns:** native elements first. Where none exists the component follows the WAI-ARIA Authoring Practices exactly: tabs (arrows, Home, End), menu button (arrows, letters, Esc, Tab), editable combobox for autocomplete (`aria-activedescendant`, a live count of suggestions) and select-only combobox for the picker. Alerts use `role="status"`, and errors `role="alert"`. Native disclosures (`<details>`) cover the accordion and the speed dial, and the swipe list's row key is a disclosure button (`aria-expanded`, `aria-controls`); the search bar is the native `<search>` landmark around a `type="search"` field; the time picker keeps the native `type="time"` field and adds a popover dialog of native radios. Closed popovers, dialogs, speed dials and swipe-list actions are out of the accessibility tree and the tab order.
 - **Disabled controls** are held to 4.5:1 too, even though WCAG exempts them, so they stay readable in every theme.
 - **Toasts (WCAG 2.2.1):** announced in a polite live region, paused while hovered or focused, dismissible by button or Esc.
 - **Standard:** the target is WCAG 2.2 AA, 100%, which covers what the ADA, Section 508 and the DOJ's WCAG 2.1 AA rule point to. We say "tested against WCAG 2.2 AA", not "ADA compliant": that is a legal judgment this project can't make.
@@ -905,9 +926,9 @@ Every control is a native element, so the keyboard, focus and screen-reader beha
 
 - **While you build:** after the page is enhanced, `src/audit.js` checks for controls with no accessible name, unnamed dialogs, and scrolling code blocks that keyboard users can't reach. Each problem is logged (`[simar-ui] accessibility: ...`), marked with `data-a11y-issue`, and outlined in dashed red on localhost, `file:` pages, or with `?a11y` in the URL. Call `SimarUI.audit()` to run it again.
 - **Before you ship:** `npm run test:a11y` runs, in both light and dark:
-  - the [axe](https://github.com/dequelabs/axe-core) engine, with every rule on, over the demo in each state (JS on and off, calendar open, dialog open);
+  - the [axe](https://github.com/dequelabs/axe-core) engine, with every rule on, over the demo in each state (JS on and off, calendar open, dialog and confirmation open, bottom sheet, time picker, speed dial and a swipe-list row open);
   - a contrast check across every gradient and highlight preset (axe can't do gradients);
-  - WCAG 2.2 checks for 320px reflow, target size, reduced motion, forced colors, click-only alternatives to dragging, non-text contrast and the accessibility tree;
+  - WCAG 2.2 checks for 320px reflow, target size, reduced motion, forced colors, click-only alternatives to dragging, non-text contrast and the accessibility tree (roles, names and states of the search bar, time picker, speed dial, swipe list, chips and bottom sheet included);
   - a keyboard pass that tabs through every control and checks the focus ring is actually on screen and not hidden behind a floating button;
   - the same checks with every highlight color, every whole-page palette, the font choices, and states such as menus, suggestions and toasts showing;
   - behavior tests for tabs, the menu, autocomplete, sortable tables, the contents drawer, the settings tab, header search, pagination, breadcrumbs, media, cards and button groups, and a responsive grid test at phone, tablet and desktop widths;
@@ -917,7 +938,7 @@ Every control is a native element, so the keyboard, focus and screen-reader beha
 - **The tests can fail.** `SABOTAGE=1 node tests/keyboard.mjs` strips the focus rings and the run must exit non-zero.
 - **If a check fails, fix the page. Do not switch the rule off.**
 
-What automation can't cover, and you should test by hand: what real screen readers (VoiceOver, NVDA, TalkBack) actually announce (Chrome's automation interface can't show `aria-valuetext`, so the stepped knobs' labels in particular need a listen), touch and switch access, and Safari and Firefox.
+What automation can't cover, and you should test by hand: a real finger on the swipe list (the test sends touch pointer events from the browser), what real screen readers (VoiceOver, NVDA, TalkBack) actually announce (Chrome's automation interface can't show `aria-valuetext`, so the stepped knobs' labels in particular need a listen), touch and switch access, and Safari and Firefox.
 
 ## Offline and installable
 

@@ -206,6 +206,15 @@ const suite = async (theme) => {
   await page.keyboard.press('Escape');
   await wait(200);
 
+  // swipe list, one row open
+  await page.evaluate(() => document.querySelector('#crew-swipe').scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.click('#crew-swipe > li:nth-child(1) .swipe-list__toggle');
+  await wait(300);
+  add(await run(`${t}, swipe list row open`));
+  total += await gradientContrast(`${t}, swipe list row open`);
+  await page.keyboard.press('Escape');
+  await wait(200);
+
   // a tooltip showing (keyboard focus on an icon key)
   await page.evaluate(() => document.querySelector('#tooltip-demo button[data-tooltip="Settings"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
   await page.keyboard.press('Tab');

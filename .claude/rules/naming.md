@@ -39,6 +39,7 @@ thing everywhere and a reader can guess the next name.
 | picker, suggest, menu, tabs, tooltip | list-style components; `suggest` is autocomplete suggestions |
 | quote, blurb, media, card, timeline, list, prose, lead, display | content blocks and type styles; `media` is a figure holding an image, video or audio; `card` is an article with media, body and footer; `timeline` is an ordered list of events or steps on a rail; `list` is a styled `<ul>`, `<ol>` or `<dl>` |
 | bottom-nav, appbar | a bar of main places at the screen bottom (`bottom-nav__list`, keys like pagination); a bar kept at the top or bottom of its scroll area |
+| swipe-list | rows whose actions a swipe, or the row's Actions key, reveals (`swipe-list__main`, `swipe-list__actions`, `swipe-list__toggle`) |
 | chip | a small key that filters (checkbox), chooses (radio) or holds a value with a Remove key (`chip--input`, `chip__remove`) |
 | speed-dial | a floating button that opens a short list of actions (`speed-dial__list`; a native `details`) |
 | fab, side-menu | a floating button fixed to a screen corner; an edge tab that opens a panel beside it (`side-menu__toggle`, `side-menu__panel`) |

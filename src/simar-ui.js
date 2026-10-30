@@ -412,6 +412,112 @@ const enhanceSpeedDials = (claim) => {
   }
 };
 
+// ---- Swipe list ------------------------------------------------------------------------
+
+// Rows with actions behind them (.swipe-list with data-swipe-list). Without script the actions are ordinary keys on
+// each row. The script slides the row over them and adds three ways in: a swipe (touch and pen only, so a mouse can
+// still select text and vertical scrolling stays the browser's), the "Actions for ..." key at the row's end (a
+// disclosure, so Enter and Space work), and that same key by touch. Dragging is never the only way. Esc closes the
+// open row and returns focus to its key; choosing an action, tapping elsewhere, or focus leaving closes it; only one
+// row is open at a time. Closed actions are visibility:hidden, so they are not tabbable.
+let swipeLists = 0;
+const enhanceSwipeLists = (claim) => {
+  for (const list of claim('[data-swipe-list]')) {
+    const index = swipeLists++;
+    const items = [...list.querySelectorAll(':scope > .swipe-list__item')];
+    list.classList.add('is-enhanced');
+    const set = (item, open) => {
+      const main = item.querySelector('.swipe-list__main');
+      const sign = getComputedStyle(item).direction === 'rtl' ? 1 : -1;
+      item.classList.toggle('is-open', open);
+      item.querySelector('.swipe-list__toggle').setAttribute('aria-expanded', String(open));
+      main.style.setProperty('--swipe-x', open ? `${sign * item.querySelector('.swipe-list__actions').offsetWidth}px` : '0px');
+    };
+    const closeAll = (except) => { for (const other of items) if (other !== except && other.classList.contains('is-open')) set(other, false); };
+
+    items.forEach((item, n) => {
+      const main = item.querySelector('.swipe-list__main');
+      const actions = item.querySelector('.swipe-list__actions');
+      if (!main || !actions) return;
+      actions.id ||= `swipe-list-${index}-${n}`;
+      const name = item.querySelector('.swipe-list__text')?.textContent.trim() ?? '';
+
+      const label = el('div', 'swipe-list__label');
+      label.append(...main.childNodes);
+      main.append(label);
+      const toggle = el('button', 'swipe-list__toggle', main);
+      toggle.type = 'button';
+      toggle.setAttribute('aria-label', `Actions for ${name}`);
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-controls', actions.id);
+      toggle.innerHTML = icon('ellipsis');
+      toggle.addEventListener('click', () => { const open = !item.classList.contains('is-open'); closeAll(item); set(item, open); });
+
+      let start = null;
+      let swallow = false;
+      const settle = (x) => {
+        main.classList.remove('is-dragging');
+        item.classList.remove('is-dragging');
+        const width = actions.offsetWidth;
+        set(item, Math.abs(x) >= width / 2);
+      };
+      main.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' || !e.isPrimary) return;
+        closeAll(item);
+        const sign = getComputedStyle(item).direction === 'rtl' ? 1 : -1;
+        start = { id: e.pointerId, x: e.clientX, y: e.clientY, base: item.classList.contains('is-open') ? sign * actions.offsetWidth : 0, sign, moved: false, now: 0 };
+      });
+      main.addEventListener('pointermove', (e) => {
+        if (!start || e.pointerId !== start.id) return;
+        const dx = e.clientX - start.x;
+        if (!start.moved) {
+          if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(e.clientY - start.y)) return;
+          start.moved = true;
+          main.classList.add('is-dragging');
+          item.classList.add('is-dragging');
+          main.setPointerCapture?.(e.pointerId);
+        }
+        const width = actions.offsetWidth;
+        // Dragging toward the actions (left in a left-to-right page), never past them or the other way.
+        start.now = start.sign < 0 ? Math.min(0, Math.max(-width, start.base + dx)) : Math.max(0, Math.min(width, start.base + dx));
+        main.style.setProperty('--swipe-x', `${start.now}px`);
+      });
+      const finish = () => {
+        if (!start) return;
+        const done = start;
+        start = null;
+        if (!done.moved) return;
+        swallow = true; // a swipe that ends on a key must not also press it
+        setTimeout(() => { swallow = false; });
+        settle(done.now);
+      };
+      main.addEventListener('pointerup', finish);
+      main.addEventListener('pointercancel', finish);
+      main.addEventListener('click', (e) => { if (swallow) { e.preventDefault(); e.stopPropagation(); } }, true);
+    });
+
+    list.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const item = e.target.closest('.swipe-list__item.is-open');
+      if (!item) return;
+      e.preventDefault();
+      e.stopPropagation();
+      set(item, false);
+      item.querySelector('.swipe-list__toggle').focus();
+    });
+    list.addEventListener('click', (e) => {
+      const item = e.target.closest('.swipe-list__item');
+      if (item && e.target.closest('.swipe-list__actions a, .swipe-list__actions button')) set(item, false);
+    });
+    list.addEventListener('focusout', (e) => {
+      const item = e.target.closest('.swipe-list__item.is-open');
+      if (item && e.relatedTarget && !item.contains(e.relatedTarget)) set(item, false);
+    });
+    document.addEventListener('pointerdown', (e) => { if (!list.contains(e.target)) closeAll(); });
+    addEventListener('resize', () => { for (const item of items) if (item.classList.contains('is-open')) set(item, true); });
+  }
+};
+
 // ---- Side menu -------------------------------------------------------------------------
 
 // A tab on the screen edge that opens a panel beside it (a disclosure, not a modal). The tab carries
@@ -1962,6 +2068,7 @@ const init = (scope = document) => {
   enhanceCarousels(claim);
   enhanceTabs(claim);
   enhanceSpeedDials(claim);
+  enhanceSwipeLists(claim);
   enhanceSideMenus(claim);
   enhanceEmbeds(claim);
   enhanceMenus(claim);

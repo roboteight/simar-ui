@@ -61,6 +61,7 @@
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></symbol>
+    <symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" /></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>
   </svg>
   <header class="appbar">
@@ -111,6 +112,7 @@
           <li><a href="#lists">Lists</a></li>
           <li><a href="#media">Media</a></li>
           <li><a href="#quotes">Quotes</a></li>
+          <li><a href="#swipe-lists">Swipe list</a></li>
           <li><a href="#blurbs">Text blurbs</a></li>
           <li><a href="#timelines">Timeline</a></li>
           <li><a href="#typography">Typography</a></li>
@@ -898,6 +900,53 @@
             <blockquote><p>A short line worth setting apart.</p></blockquote>
             <figcaption><cite>Someone</cite></figcaption>
           </figure>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="swipe-lists">
+      <h3 id="swipe-lists">Swipe list</h3>
+      <p class="note">Rows with actions, such as Archive and Delete. Without script the actions are ordinary keys on each row, so everything works. With script they sit behind the row and there are three ways to reach them: swipe left (touch and pen only, so a mouse can still select text and the page still scrolls up and down), press the "Actions for ..." key at the end of the row, or use Enter or Space on that key. Dragging is never the only way. Closed actions are out of the tab order. Esc closes the open row and returns focus to its key, choosing an action closes it, and only one row is open at a time.</p>
+
+      <fieldset class="panel">
+        <legend>Swipe list</legend>
+        <ul class="swipe-list" role="list" data-swipe-list id="crew-swipe">
+            <li class="swipe-list__item">
+              <div class="swipe-list__main"><span class="swipe-list__text">Ellen Ripley</span><span class="swipe-list__hint">Warrant officer, Nostromo</span></div>
+              <div class="swipe-list__actions" role="group" aria-label="Actions for Ellen Ripley">
+                <span class="well"><button type="button" class="key">Archive</button></span>
+                <span class="well"><button type="button" class="key key--danger">Delete</button></span>
+              </div>
+            </li>
+            <li class="swipe-list__item">
+              <div class="swipe-list__main"><span class="swipe-list__text">Dwayne Hicks</span><span class="swipe-list__hint">Corporal, colonial marines</span></div>
+              <div class="swipe-list__actions" role="group" aria-label="Actions for Dwayne Hicks">
+                <span class="well"><button type="button" class="key">Archive</button></span>
+                <span class="well"><button type="button" class="key key--danger">Delete</button></span>
+              </div>
+            </li>
+            <li class="swipe-list__item">
+              <div class="swipe-list__main"><span class="swipe-list__text">Rebecca Jorden</span><span class="swipe-list__hint">Colony survivor</span></div>
+              <div class="swipe-list__actions" role="group" aria-label="Actions for Rebecca Jorden">
+                <span class="well"><button type="button" class="key">Archive</button></span>
+                <span class="well"><button type="button" class="key key--danger">Delete</button></span>
+              </div>
+            </li>
+        </ul>
+        <script type="text/plain" data-example="HTML">
+          <ul class="swipe-list" role="list" data-swipe-list>
+            <li class="swipe-list__item">
+              <div class="swipe-list__main">
+                <span class="swipe-list__text">Ellen Ripley</span>
+                <span class="swipe-list__hint">Warrant officer, Nostromo</span>
+              </div>
+              <!-- the name of the group says whose actions these are -->
+              <div class="swipe-list__actions" role="group" aria-label="Actions for Ellen Ripley">
+                <span class="well"><button type="button" class="key">Archive</button></span>
+                <span class="well"><button type="button" class="key key--danger">Delete</button></span>
+              </div>
+            </li>
+          </ul>
         </script>
       </fieldset>
     </section>

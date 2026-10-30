@@ -1,0 +1,129 @@
+@use "../abstracts" as *;
+
+// Swipe list: rows with actions (Archive, Delete) that a touch swipe reveals. Without the script the actions are
+// ordinary keys shown on each row, so everything works. With the script the actions sit behind the row and three
+// ways reveal them: a swipe left (touch and pen only, so a mouse can still select text and the page still scrolls
+// up and down), the "Actions for ..." key at the end of the row (a disclosure: aria-expanded, aria-controls), or
+// Enter and Space on that key. Dragging is never the only way. Hidden actions are out of the tab order. Esc closes
+// the open row and returns focus to its key; choosing an action closes it; only one row is open at a time.
+//
+//   <ul class="swipe-list" role="list" data-swipe-list>
+//     <li class="swipe-list__item">
+//       <div class="swipe-list__main"><span class="swipe-list__text">Ellen Ripley</span><span class="swipe-list__hint">Warrant officer</span></div>
+//       <div class="swipe-list__actions" role="group" aria-label="Actions for Ellen Ripley">
+//         <span class="well"><button type="button" class="key">Archive</button></span>
+//         <span class="well"><button type="button" class="key key--danger">Delete</button></span>
+//       </div>
+//     </li>
+//   </ul>
+.swipe-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--hairline-strong);
+
+    &:first-child { border-top: 0; }
+
+    @include forced-colors { border-top-color: CanvasText; }
+  }
+
+  &__main {
+    display: grid;
+    flex: 1 1 10rem;
+    min-width: 0;
+    gap: 0.1rem;
+  }
+
+  &__text { font-weight: 600; overflow-wrap: anywhere; }
+
+  &__hint { color: var(--ink-soft); font-size: 0.85rem; }
+
+  &__actions {
+    display: flex;
+    flex: none;
+    gap: 0.5rem;
+  }
+
+  // Enhanced: the row is a sliding layer over the actions.
+  &.is-enhanced &__item {
+    flex-wrap: nowrap;
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  &.is-enhanced &__main {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1 1 auto;
+    align-self: stretch;
+    padding: 0.5rem 0.25rem 0.5rem 0.75rem;
+    background: var(--sheet-bottom);
+    transform: translateX(var(--swipe-x, 0px));
+    touch-action: pan-y; // vertical scrolling stays the browser's; the swipe is ours
+    transition: transform 180ms ease-out;
+
+    &.is-dragging { transition: none; }
+
+    @include reduced-motion { transition: none; }
+  }
+
+  &.is-enhanced &__label {
+    display: grid;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 0.1rem;
+  }
+
+  &.is-enhanced &__actions {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    align-items: center;
+    padding-inline: 0.5rem;
+    visibility: hidden; // closed: out of the tab order and the accessibility tree
+    transition: visibility 0s 180ms;
+  }
+
+  &.is-enhanced &__item.is-open &__actions,
+  &.is-enhanced &__item.is-dragging &__actions {
+    visibility: visible;
+    transition: none;
+  }
+
+  &__toggle {
+    display: none; // needs the script
+    flex: none;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    padding: 0;
+    border: 0;
+    border-radius: var(--input-radius, var(--radius));
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+
+    &:hover { color: var(--ink); }
+
+    &:focus-visible { @include focus-ring(0); }
+
+    .icon { filter: none; }
+
+    @include forced-colors { color: ButtonText; }
+  }
+
+  &.is-enhanced &__toggle { display: grid; }
+}
