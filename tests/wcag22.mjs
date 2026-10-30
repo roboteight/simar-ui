@@ -913,6 +913,33 @@ await page.keyboard.press('Escape');
 await wait(250);
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- search bar -----------------------------------------------------------------------------------
+console.log('\nSearch bar');
+await open(1280);
+await page.$eval('#crew-q', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+const sb1 = await page.evaluate(() => {
+  const bar = document.querySelector('section[aria-labelledby="searchbars"] .searchbar'), input = bar.querySelector('input'), clear = bar.querySelector('[data-clear]');
+  const box = (n) => { const r = n.getBoundingClientRect(); return r.width >= 24 && r.height >= 24; };
+  return { tag: bar.tagName, label: bar.getAttribute('aria-label'), field: document.querySelector('label[for="crew-q"]')?.textContent.trim(), type: input.type, submit: bar.querySelector('button[type="submit"]')?.textContent.trim(), shown: !clear.hidden, clearName: clear.getAttribute('aria-label'), clearBox: box(clear), submitBox: box(bar.querySelector('button[type="submit"]')) };
+});
+sb1.tag === 'SEARCH' && sb1.label && sb1.field && sb1.type === 'search' && sb1.submit === 'Search' ? pass('a search landmark with a named field of type search and a Search submit key') : fail(`search bar: ${JSON.stringify(sb1)}`);
+sb1.shown && sb1.clearName === 'Clear search' && sb1.clearBox && sb1.submitBox ? pass('Clear shows while there is text, is named, and both keys are 24px or larger') : fail(`search clear: ${JSON.stringify(sb1)}`);
+await page.focus('#crew-q');
+await page.keyboard.press('Tab');
+const sbTab = await page.evaluate(() => document.activeElement.getAttribute('data-clear') !== null);
+sbTab ? pass('Tab goes from the field to the Clear key') : fail('search: Tab order');
+await page.keyboard.press('Enter');
+const sb2 = await page.evaluate(() => ({ value: document.getElementById('crew-q').value, focus: document.activeElement.id, hidden: document.querySelector('#crew-q ~ [data-clear]').hidden }));
+sb2.value === '' && sb2.focus === 'crew-q' && sb2.hidden ? pass('Clear empties the field, hides itself and returns focus to the field') : fail(`search cleared: ${JSON.stringify(sb2)}`);
+await page.keyboard.type('Dallas');
+await page.keyboard.press('Escape');
+const sb3 = await page.evaluate(() => ({ value: document.getElementById('crew-q').value, focus: document.activeElement.id }));
+sb3.value === '' && sb3.focus === 'crew-q' ? pass('Esc clears typed text and keeps focus in the field') : fail(`search Esc: ${JSON.stringify(sb3)}`);
+await page.setViewport({ width: 320, height: 700 });
+const sb4 = await page.evaluate(() => { const bar = document.querySelector('section[aria-labelledby="searchbars"] .searchbar'), r = bar.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth && document.documentElement.scrollWidth <= innerWidth + 1; });
+sb4 ? pass('the search bar fits a 320px screen') : fail('search bar overflows at 320px');
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- design tokens --------------------------------------------------------------------------------
 console.log('\nDesign tokens');
 await open(1280);

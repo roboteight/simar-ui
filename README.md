@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, search bar, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -372,6 +372,26 @@ Knobs: drag up or right, hold Shift for fine control, double-click to reset, use
 <simar-fader label="Quality" min="1" max="5" step="1" value="3" marks></simar-fader>
 <simar-range label="Price" min="0" max="500" step="5" low="120" high="340" prefix="$"></simar-range>
 <simar-knob label="Volume" max="11" step="1" value="7" ticks="12"></simar-knob>
+```
+
+#### Search bar
+
+The native `<search>` landmark around a form with one `type="search"` input, a leading icon and a Search key (a submit button), so it submits and works with no script. The script adds a Clear key that shows once there is text: it empties the field, fires the `input` event so a filter or suggestions update, fires `search:clear`, and returns focus to the field; Esc in the field does the same. Name the landmark with `aria-label` and keep a real label on the field, because a placeholder is not a name. Tag: `<simar-search>`.
+
+<img src="docs/screenshots/searchbar.png" alt="A search bar with a magnifier icon, the text Ripley, a Clear key and a green Search key" width="420">
+
+```html
+<search class="searchbar" aria-label="Crew">
+  <form action="/crew">
+    <label class="visually-hidden" for="crew-q">Search the crew</label>
+    <span class="searchbar__field">
+      <svg class="icon searchbar__icon" aria-hidden="true"><use href="#i-search"/></svg>
+      <input class="input" id="crew-q" name="q" type="search" placeholder="Name or role" enterkeyhint="search">
+      <button type="button" class="searchbar__clear" aria-label="Clear search" aria-controls="crew-q" data-clear hidden>…</button>
+    </span>
+    <span class="well"><button class="key key--accent" type="submit">Search</button></span>
+  </form>
+</search>
 ```
 
 #### Select

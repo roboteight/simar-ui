@@ -1407,6 +1407,33 @@ const enhanceChips = (claim) => {
   }
 };
 
+// Search bar (.searchbar around a type="search" input): adds the Clear key's behavior. The key shows while there is
+// text, empties the field, fires the input event so listeners (a filter, the suggestions) update, and returns focus to
+// the field. Esc in the field clears it too (the Clear key, not the browser, so every browser behaves alike). Submit
+// is the form's own, so it works without the script. Fires search:clear.
+const enhanceSearchbars = (claim) => {
+  for (const bar of claim('.searchbar')) {
+    const input = bar.querySelector('input[type="search"]');
+    const clear = bar.querySelector('[data-clear]');
+    if (!input || !clear) continue;
+    const sync = () => { clear.hidden = input.value === ''; };
+    const empty = () => {
+      input.value = '';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      bar.dispatchEvent(new CustomEvent('search:clear', { bubbles: true }));
+      input.focus();
+    };
+    bar.classList.add('is-enhanced');
+    sync();
+    input.addEventListener('input', sync);
+    input.form?.addEventListener('reset', () => setTimeout(sync));
+    clear.addEventListener('click', empty);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && input.value !== '' && !e.defaultPrevented) { e.preventDefault(); e.stopPropagation(); empty(); }
+    });
+  }
+};
+
 // A check list: data-checklist on a fieldset of checkboxes. Script adds a "select all" box on top (checked when
 // every item is, mixed when some are, aria-controls the items; the WAI-ARIA "Checkbox (Mixed-State)" pattern) and
 // a polite status below ("2 of 4 done"). Disabled items are left out of the count and of select all. The select-all
@@ -1787,6 +1814,7 @@ const init = (scope = document) => {
   enhanceChecks(claim);
   enhanceChecklists(claim);
   enhanceChips(claim);
+  enhanceSearchbars(claim);
   enhanceAppBars(claim);
   enhanceCarousels(claim);
   enhanceTabs(claim);

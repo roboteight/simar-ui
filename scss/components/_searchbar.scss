@@ -1,0 +1,87 @@
+@use "../abstracts" as *;
+
+// Search bar: the native <search> landmark around a form with one type="search" input, a leading icon and a
+// Search key (a submit button), so it submits and works with no script. The script adds a Clear key that shows
+// once there is text (it empties the field and returns focus to it); without the script the browser's own clear
+// control stays. Name the landmark with aria-label (or let the hidden label name the field).
+//
+//   <search class="searchbar" aria-label="Crew">
+//     <form action="/crew">
+//       <label class="visually-hidden" for="crew-q">Search the crew</label>
+//       <span class="searchbar__field">
+//         <svg class="icon searchbar__icon" aria-hidden="true"><use href="#i-search"/></svg>
+//         <input class="input" id="crew-q" name="q" type="search" placeholder="Search the crew" enterkeyhint="search">
+//         <button type="button" class="searchbar__clear" aria-label="Clear search" aria-controls="crew-q" data-clear hidden>…</button>
+//       </span>
+//       <span class="well"><button class="key key--accent" type="submit">Search</button></span>
+//     </form>
+//   </search>
+.searchbar {
+  display: block;
+
+  form {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  &__field {
+    position: relative;
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+
+    .input { padding-left: 2.6rem; padding-right: 0.85rem; }
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: 0.85rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: -0.55rem;
+    color: var(--ink-soft);
+    pointer-events: none;
+    filter: none;
+  }
+
+  // Once the script has added the Clear key, hide the browser's own so there is only one.
+  &.is-enhanced &__field .input {
+    padding-right: 3rem;
+
+    &::-webkit-search-cancel-button { appearance: none; display: none; }
+  }
+
+  &__clear {
+    position: absolute;
+    top: 50%;
+    right: 0.35rem;
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-top: -1.2rem;
+    padding: 0;
+    border: 0;
+    border-radius: var(--input-radius, var(--radius));
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+
+    &[hidden] { display: none; }
+
+    &:hover { color: var(--ink); }
+
+    &:focus-visible { @include focus-ring(0); }
+
+    .icon { filter: none; }
+
+    @include forced-colors { color: ButtonText; }
+  }
+
+  .well { flex: none; }
+
+  @media print { display: none; }
+}

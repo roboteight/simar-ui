@@ -5728,6 +5728,86 @@ th[aria-sort=descending] .table__sort::after {
   height: 1rem;
 }
 
+.searchbar {
+  display: block;
+}
+.searchbar form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+}
+.searchbar__field {
+  position: relative;
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.searchbar__field .input {
+  padding-left: 2.6rem;
+  padding-right: 0.85rem;
+}
+.searchbar__icon {
+  position: absolute;
+  top: 50%;
+  left: 0.85rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: -0.55rem;
+  color: var(--ink-soft);
+  pointer-events: none;
+  filter: none;
+}
+.searchbar.is-enhanced .searchbar__field .input {
+  padding-right: 3rem;
+}
+.searchbar.is-enhanced .searchbar__field .input::-webkit-search-cancel-button {
+  appearance: none;
+  display: none;
+}
+.searchbar__clear {
+  position: absolute;
+  top: 50%;
+  right: 0.35rem;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-top: -1.2rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--input-radius, var(--radius));
+  background: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.searchbar__clear[hidden] {
+  display: none;
+}
+.searchbar__clear:hover {
+  color: var(--ink);
+}
+.searchbar__clear:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 0;
+}
+.searchbar__clear .icon {
+  filter: none;
+}
+@media (forced-colors: active) {
+  .searchbar__clear {
+    color: ButtonText;
+  }
+}
+.searchbar .well {
+  flex: none;
+}
+@media print {
+  .searchbar {
+    display: none;
+  }
+}
+
 .pagination__list {
   display: flex;
   flex-wrap: wrap;

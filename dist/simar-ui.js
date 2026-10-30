@@ -212,6 +212,14 @@
       const items = chips.map((chip) => `<label class="chip"><input type="${radio ? "radio" : "checkbox"}" name="${name}"${attr(chip, "value")}${flag(chip, "checked")}${flag(chip, "disabled")}><span class="key">${escText(chip.textContent.trim())}</span></label>`).join("");
       return `<div${rootAttrs(node, "chips")} role="${radio ? "radiogroup" : "group"}" aria-label="${label}">${items}</div>`;
     },
+    // <simar-search label="Search the crew" name="q" action="/crew" placeholder="Name or role" value="" button="Search"></simar-search>
+    // A search bar: the native <search> landmark and form, with a Search key. The script adds the Clear key.
+    "simar-search": (node) => {
+      const id = node.getAttribute("id") ?? nextId("search");
+      const label = esc(node.getAttribute("label") ?? "Search");
+      const action = node.hasAttribute("action") ? ` action="${esc(node.getAttribute("action"))}"` : "";
+      return `<search${rootAttrs(node, "searchbar")} aria-label="${label}"><form${action}${attr(node, "method")}><label class="visually-hidden" for="${esc(id)}">${label}</label><span class="searchbar__field">${svgIcon("search", "searchbar__icon")}<input class="input" id="${esc(id)}" name="${esc(node.getAttribute("name") ?? "q")}" type="search"${attr(node, "placeholder")}${attr(node, "value")}${flag(node, "required")} enterkeyhint="search" autocomplete="off"><button type="button" class="searchbar__clear" aria-label="Clear search" aria-controls="${esc(id)}" data-clear hidden>${svgIcon("x")}</button></span><span class="well"><button class="key key--accent" type="submit">${esc(node.getAttribute("button") ?? "Search")}</button></span></form></search>`;
+    },
     // <simar-checkbox label="Send me the newsletter" name="news" checked>   (indeterminate for a mixed state)
     // <simar-switch label="Notifications" name="notify">
     "simar-checkbox": (node) => checkLike(node, false),
@@ -1645,6 +1653,34 @@
       });
     }
   };
+  var enhanceSearchbars = (claim) => {
+    for (const bar of claim(".searchbar")) {
+      const input = bar.querySelector('input[type="search"]');
+      const clear = bar.querySelector("[data-clear]");
+      if (!input || !clear) continue;
+      const sync = () => {
+        clear.hidden = input.value === "";
+      };
+      const empty = () => {
+        input.value = "";
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        bar.dispatchEvent(new CustomEvent("search:clear", { bubbles: true }));
+        input.focus();
+      };
+      bar.classList.add("is-enhanced");
+      sync();
+      input.addEventListener("input", sync);
+      input.form?.addEventListener("reset", () => setTimeout(sync));
+      clear.addEventListener("click", empty);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && input.value !== "" && !e.defaultPrevented) {
+          e.preventDefault();
+          e.stopPropagation();
+          empty();
+        }
+      });
+    }
+  };
   var checklistCount = 0;
   var enhanceChecklists = (claim) => {
     for (const set of claim("[data-checklist]")) {
@@ -2001,6 +2037,7 @@
     enhanceChecks(claim);
     enhanceChecklists(claim);
     enhanceChips(claim);
+    enhanceSearchbars(claim);
     enhanceAppBars(claim);
     enhanceCarousels(claim);
     enhanceTabs(claim);

@@ -127,6 +127,7 @@
           <li><a href="#knobs">Knobs</a></li>
           <li><a href="#radios">Radio buttons</a></li>
           <li><a href="#ranges">Range pickers</a></li>
+          <li><a href="#searchbars">Search bar</a></li>
           <li><a href="#selects">Select</a></li>
           <li><a href="#validation">Validation</a></li>
           </ul>
@@ -1602,6 +1603,50 @@
         </script>
       </fieldset>
         </section>
+    <section aria-labelledby="searchbars">
+      <h3 id="searchbars">Search bar</h3>
+      <p class="note">The native <code>&lt;search&gt;</code> landmark around a form with one <code>type="search"</code> input, a leading icon and a Search key, so it submits and works with no script. Script adds a Clear key that shows once there is text: it empties the field, tells listeners with the <code>input</code> event and returns focus to the field, and Esc does the same. Name the landmark with <code>aria-label</code>, and keep a real label on the field (hidden here, because the placeholder is not a name).</p>
+
+      <fieldset class="panel">
+        <legend>Search bar</legend>
+        <search class="searchbar" aria-label="Crew">
+          <form action="#searchbars" onsubmit="return false">
+            <label class="visually-hidden" for="crew-q">Search the crew</label>
+            <span class="searchbar__field">
+              <svg class="icon searchbar__icon" aria-hidden="true"><use href="#i-search"/></svg>
+              <input class="input" id="crew-q" name="q" type="search" placeholder="Name or role" value="Ripley" enterkeyhint="search" autocomplete="off">
+              <button type="button" class="searchbar__clear" aria-label="Clear search" aria-controls="crew-q" data-clear hidden><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+            </span>
+            <span class="well"><button class="key key--accent" type="submit">Search</button></span>
+          </form>
+        </search>
+        <script type="text/plain" data-example="Tag">
+          <simar-search label="Search the crew" name="q" action="/crew" placeholder="Name or role"></simar-search>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <search class="searchbar" aria-label="Crew">
+            <form action="/crew">
+              <label class="visually-hidden" for="crew-q">Search the crew</label>
+              <span class="searchbar__field">
+                <svg class="icon searchbar__icon" aria-hidden="true"><use href="#i-search"/></svg>
+                <input class="input" id="crew-q" name="q" type="search" placeholder="Name or role" enterkeyhint="search">
+                <!-- the script shows this once there is text -->
+                <button type="button" class="searchbar__clear" aria-label="Clear search" aria-controls="crew-q" data-clear hidden>
+                  <svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>
+                </button>
+              </span>
+              <span class="well"><button class="key key--accent" type="submit">Search</button></span>
+            </form>
+          </search>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const bar = document.querySelector('.searchbar');
+          // Fires when the Clear key (or Esc) empties the field
+          bar.addEventListener('search:clear', () => console.log('cleared'));
+        </script>
+      </fieldset>
+    </section>
+
     <section aria-labelledby="selects">
       <h3 id="selects">Select</h3>
       <p class="note">Native <code>&lt;select&gt;</code>, so the list that opens is the browser's own: accessible, searchable by typing, and following the theme. Wrap a single select to get the chevron; a multiple select is a list box.</p>
