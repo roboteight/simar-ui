@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -551,6 +551,23 @@ A short question and two actions, for something that is hard to undo or that sen
       <button class="key" value="cancel" autofocus>Cancel</button>
       <button class="key key--danger" value="deleted">Delete draft</button>
     </footer>
+  </form>
+</dialog>
+```
+
+#### Bottom sheet
+
+The dialog docked to the bottom edge: full width on a phone, a centred column from the md breakpoint up (`sheet--bottom` on the same native modal `<dialog>`). Esc, a click on the backdrop and the Close key all close it, focus returns to the key that opened it, and it scrolls inside when it is taller than the screen. The grab handle is a decorative mark: nothing drags, so every way to close it is a key or Esc.
+
+<img src="docs/screenshots/bottom-sheet.png" alt="A bottom sheet titled Share setlist with an email field, Cancel and Share keys" width="320">
+
+```html
+<button type="button" command="show-modal" commandfor="share">Share</button>
+
+<dialog id="share" class="sheet sheet--bottom" aria-labelledby="share-title">
+  <form method="dialog">
+    <h3 id="share-title">Share setlist</h3>
+    <button value="cancel" aria-label="Close">Close</button>
   </form>
 </dialog>
 ```

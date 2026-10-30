@@ -179,6 +179,16 @@ await wait(500);
 await page.screenshot({ path: path.join(out, 'confirm-dialog.png'), clip: await page.evaluate(() => { const r = document.querySelector('#confirm-delete').getBoundingClientRect(); return { x: r.x + scrollX - 30, y: r.y + scrollY - 30, width: r.width + 60, height: r.height + 60 }; }) });
 console.log('  confirm-dialog.png');
 await page.keyboard.press('Escape');
+// the bottom sheet (phone width, whole screen)
+await page.setViewport({ width: 420, height: 560, deviceScaleFactor: 2 });
+await page.evaluate(() => document.querySelector('[commandfor="share-sheet"]').scrollIntoView({ block: 'center' }));
+await page.click('[commandfor="share-sheet"]');
+await wait(500);
+await page.screenshot({ path: path.join(out, 'bottom-sheet.png') });
+console.log('  bottom-sheet.png');
+await page.keyboard.press('Escape');
+await wait(300);
+await page.setViewport({ width: 860, height: 900, deviceScaleFactor: 2 });
 
 // highlight colours
 console.log('Themes page');

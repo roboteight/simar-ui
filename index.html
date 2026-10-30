@@ -138,6 +138,7 @@
           <li><a href="#alerts">Alerts and toasts</a></li>
           <li><a href="#appbars">App bars</a></li>
           <li><a href="#badges">Badge</a></li>
+          <li><a href="#bottom-sheets">Bottom sheet</a></li>
           <li><a href="#bottom-navs">Bottom navigation</a></li>
           <li><a href="#breadcrumbs">Breadcrumb</a></li>
           <li><a href="#key-groups">Button group</a></li>
@@ -2368,6 +2369,46 @@
       });
 
       dialog.showModal();
+      </script>
+    </section>
+
+    <section aria-labelledby="bottom-sheets">
+      <h3 id="bottom-sheets">Bottom sheet</h3>
+      <p class="note">The dialog docked to the bottom edge: full width on a phone, a centred column from the md breakpoint up. It is the same native modal <code>&lt;dialog&gt;</code> with <code>sheet--bottom</code> added, so Esc, a click on the backdrop and the Close key all close it, and it scrolls inside when it is taller than the screen. The grab handle is a decorative mark: nothing drags, so every way to close it is a key or Esc.</p>
+
+      <div class="well-row">
+        <span class="well"><button type="button" class="key" command="show-modal" commandfor="share-sheet" data-dialog-open="share-sheet">Share setlist</button></span>
+        <output class="lcd" for="share-sheet">closed</output>
+      </div>
+
+      <dialog id="share-sheet" class="sheet sheet--bottom" aria-labelledby="share-sheet-title">
+        <form method="dialog">
+          <header class="sheet__head">
+            <h3 id="share-sheet-title">Share setlist</h3>
+            <span class="well"><button class="key key--sq" value="cancel" aria-label="Close" formnovalidate><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></span>
+          </header>
+
+          <div class="field">
+            <div class="field__head"><label class="field__label" for="share-to">Send to</label></div>
+            <input class="input" id="share-to" name="to" type="email" autocomplete="email" value="joey@chrissimari.com">
+          </div>
+
+          <footer class="sheet__actions">
+            <span class="well"><button class="key" value="cancel" formnovalidate>Cancel</button></span>
+            <span class="well"><button class="key key--accent" value="share">Share</button></span>
+          </footer>
+        </form>
+      </dialog>
+
+      <script type="text/plain" data-example="HTML">
+      <button type="button" command="show-modal" commandfor="share">Share</button>
+
+      <dialog id="share" class="sheet sheet--bottom" aria-labelledby="share-title">
+        <form method="dialog">
+          <h3 id="share-title">Share setlist</h3>
+          <button value="cancel" aria-label="Close">Close</button>
+        </form>
+      </dialog>
       </script>
     </section>
 

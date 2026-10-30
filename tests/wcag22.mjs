@@ -878,6 +878,41 @@ await page.keyboard.press('Escape');
 await wait(250);
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- bottom sheet ---------------------------------------------------------------------------------
+console.log('\nBottom sheet');
+const sheetUi = async (width) => {
+  await page.setViewport({ width, height: 700 });
+  await page.$eval('[data-dialog-open="share-sheet"]', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.click('[data-dialog-open="share-sheet"]');
+  await wait(450);
+  return page.evaluate(() => {
+    const d = document.getElementById('share-sheet'), r = d.getBoundingClientRect();
+    const name = document.getElementById(d.getAttribute('aria-labelledby'));
+    return { open: d.open, named: !!name && name.textContent.trim().length > 0, left: r.left, right: r.right, bottom: r.bottom, top: r.top, vw: innerWidth, vh: innerHeight, page: document.documentElement.scrollWidth <= innerWidth + 1, inside: d.contains(document.activeElement) };
+  });
+};
+await open(1280);
+const bs1 = await sheetUi(390);
+bs1.open && bs1.named && bs1.inside ? pass('the bottom sheet is a modal dialog named by its title, with focus inside') : fail(`bottom sheet: ${JSON.stringify(bs1)}`);
+Math.abs(bs1.bottom - bs1.vh) <= 1 && bs1.left <= 0 && bs1.right >= bs1.vw && bs1.page ? pass('on a phone it is docked to the bottom edge at full width') : fail(`bottom sheet phone: ${JSON.stringify(bs1)}`);
+await page.keyboard.press('Escape');
+await wait(300);
+const bsEsc = await page.evaluate(() => ({ open: document.getElementById('share-sheet').open, how: document.querySelector('output[for="share-sheet"]').value, back: document.activeElement.getAttribute('data-dialog-open') }));
+!bsEsc.open && bsEsc.how === 'dismissed' && bsEsc.back === 'share-sheet' ? pass('Esc closes it and focus returns to the key that opened it') : fail(`bottom sheet Esc: ${JSON.stringify(bsEsc)}`);
+await sheetUi(390);
+await page.click('#share-sheet button[aria-label="Close"]');
+await wait(300);
+(await page.$eval('output[for="share-sheet"]', (o) => o.value)) === 'cancel' ? pass('the Close key closes it') : fail('bottom sheet Close key');
+const bs2 = await sheetUi(1280);
+bs2.bottom >= bs2.vh - 1 && bs2.left > 100 && bs2.right < bs2.vw - 100 ? pass('from the md breakpoint up it is a centred column on the bottom edge') : fail(`bottom sheet desktop: ${JSON.stringify(bs2)}`);
+await page.keyboard.press('Escape');
+await wait(250);
+const bs3 = await sheetUi(320);
+bs3.left >= 0 && bs3.right <= bs3.vw && bs3.page ? pass('it fits a 320px screen') : fail(`bottom sheet 320px: ${JSON.stringify(bs3)}`);
+await page.keyboard.press('Escape');
+await wait(250);
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- design tokens --------------------------------------------------------------------------------
 console.log('\nDesign tokens');
 await open(1280);

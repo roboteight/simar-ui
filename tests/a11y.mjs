@@ -179,6 +179,15 @@ const suite = async (theme) => {
   await page.keyboard.press('Escape');
   await wait(300);
 
+  // bottom sheet open
+  await page.evaluate(() => document.querySelector('[commandfor="share-sheet"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.click('[commandfor="share-sheet"]');
+  await wait(450);
+  add(await run(`${t}, bottom sheet open`));
+  total += await gradientContrast(`${t}, bottom sheet open`);
+  await page.keyboard.press('Escape');
+  await wait(300);
+
   // a tooltip showing (keyboard focus on an icon key)
   await page.evaluate(() => document.querySelector('#tooltip-demo button[data-tooltip="Settings"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
   await page.keyboard.press('Tab');

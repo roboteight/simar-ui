@@ -21,7 +21,7 @@ thing everywhere and a reader can guess the next name.
 
 | Word | Means |
 |---|---|
-| panel | a grouped area that holds controls (fieldset); `sheet` is a floating panel (dialog) |
+| panel | a grouped area that holds controls (fieldset); `sheet` is a floating panel (dialog); `sheet--bottom` docks it to the screen bottom |
 | well | the socket a key or control sits in (recessed in the styles that have depth) |
 | key / cap | a pressable control; the `cap` is its raised top (`--cap-*`); a `key-group` is keys joined in one well |
 | latch | a key held down in its selected state (`--latch-*`) |
