@@ -180,6 +180,14 @@ await wait(500);
 await page.screenshot({ path: path.join(out, 'confirm-dialog.png'), clip: await page.evaluate(() => { const r = document.querySelector('#confirm-delete').getBoundingClientRect(); return { x: r.x + scrollX - 30, y: r.y + scrollY - 30, width: r.width + 60, height: r.height + 60 }; }) });
 console.log('  confirm-dialog.png');
 await page.keyboard.press('Escape');
+// the speed dial, open
+await page.evaluate(() => document.querySelector('#dial-end').scrollIntoView({ block: 'center' }));
+await page.click('#dial-end summary');
+await wait(400);
+await page.screenshot({ path: path.join(out, 'speed-dial.png'), clip: await page.evaluate(() => { const r = document.querySelector('section[aria-labelledby="speed-dials"] .fixed-preview').getBoundingClientRect(); return { x: r.x + scrollX, y: r.y + scrollY, width: r.width, height: r.height }; }) });
+console.log('  speed-dial.png');
+await page.keyboard.press('Escape');
+await wait(200);
 // the time picker, open
 await page.evaluate(() => document.querySelector('#tp-call').scrollIntoView({ block: 'start' }));
 await page.click('#tp-call ~ .timepicker__button');

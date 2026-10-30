@@ -197,6 +197,15 @@ const suite = async (theme) => {
   await page.keyboard.press('Escape');
   await wait(300);
 
+  // speed dial open
+  await page.evaluate(() => document.querySelector('#dial-end').scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.click('#dial-end summary');
+  await wait(300);
+  add(await run(`${t}, speed dial open`));
+  total += await gradientContrast(`${t}, speed dial open`);
+  await page.keyboard.press('Escape');
+  await wait(200);
+
   // a tooltip showing (keyboard focus on an icon key)
   await page.evaluate(() => document.querySelector('#tooltip-demo button[data-tooltip="Settings"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
   await page.keyboard.press('Tab');

@@ -991,6 +991,47 @@ await page.keyboard.press('Escape');
 await wait(250);
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- speed dial -----------------------------------------------------------------------------------
+console.log('\nSpeed dial');
+await open(1280);
+await page.$eval('#dial-end', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+const sd1 = await page.evaluate(() => {
+  const d = document.getElementById('dial-end'), sum = d.querySelector('summary'), r = sum.getBoundingClientRect();
+  return { tag: d.tagName, open: d.open, name: sum.getAttribute('aria-label'), size: r.width >= 24 && r.height >= 24, listShown: d.querySelector('.speed-dial__list').checkVisibility(), other: document.getElementById('dial-start').querySelector('summary').textContent.trim() };
+});
+sd1.tag === 'DETAILS' && !sd1.open && sd1.name === 'Add' && sd1.size && !sd1.listShown && sd1.other === 'Share' ? pass('a speed dial is a native details: closed it hides its actions, the round key is named and 24px or larger, an extended one is named by its text') : fail(`speed dial: ${JSON.stringify(sd1)}`);
+await page.focus('#dial-end summary');
+await page.keyboard.press('Enter');
+await wait(150);
+const sd2 = await page.evaluate(() => { const d = document.getElementById('dial-end'); const keys = [...d.querySelectorAll('.speed-dial__list .key')]; const box = document.querySelector('section[aria-labelledby="speed-dials"] .fixed-preview').getBoundingClientRect(); const sum = d.querySelector('summary').getBoundingClientRect(); return { open: d.open, count: keys.length, named: keys.every((k) => k.textContent.trim().length > 0), size: keys.every((k) => { const b = k.getBoundingClientRect(); return b.width >= 24 && b.height >= 24; }), above: keys.every((k) => k.getBoundingClientRect().bottom <= sum.top + 1), inside: keys.every((k) => { const b = k.getBoundingClientRect(); return b.top >= box.top && b.bottom <= box.bottom; }) }; });
+sd2.open && sd2.count === 3 && sd2.named && sd2.size && sd2.above && sd2.inside ? pass('Enter opens it: three labelled actions, 24px or larger, lined up above the key') : fail(`speed dial open: ${JSON.stringify(sd2)}`);
+await page.keyboard.press('Tab');
+const sd3 = await page.evaluate(() => document.activeElement.textContent.trim());
+sd3 === 'Event' || sd3 === 'Upload' ? pass('Tab goes from the key into the actions') : fail(`speed dial Tab: ${sd3}`);
+await page.keyboard.press('Escape');
+await wait(100);
+const sd4 = await page.evaluate(() => ({ open: document.getElementById('dial-end').open, back: document.activeElement === document.querySelector('#dial-end summary') }));
+!sd4.open && sd4.back ? pass('Esc closes it and returns focus to the key') : fail(`speed dial Esc: ${JSON.stringify(sd4)}`);
+await page.click('#dial-end summary');
+await wait(100);
+await page.mouse.click(20, 20);
+await wait(100);
+(await page.$eval('#dial-end', (d) => !d.open)) ? pass('a click outside closes it') : fail('speed dial outside click');
+await page.click('#dial-start summary');
+await wait(100);
+await page.click('#dial-start .speed-dial__list button');
+await wait(100);
+(await page.$eval('#dial-start', (d) => !d.open)) ? pass('choosing an action closes it') : fail('speed dial action');
+await page.setViewport({ width: 320, height: 700 });
+await page.$eval('#dial-end', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.click('#dial-end summary');
+await wait(150);
+const sd5 = await page.evaluate(() => { const box = document.querySelector('section[aria-labelledby="speed-dials"] .fixed-preview').getBoundingClientRect(); return { fits: [...document.querySelectorAll('#dial-end .speed-dial__list .key')].every((k) => { const b = k.getBoundingClientRect(); return b.left >= box.left && b.right <= box.right; }), page: document.documentElement.scrollWidth <= innerWidth + 1 }; });
+sd5.fits && sd5.page ? pass('the open speed dial fits a 320px screen') : fail(`speed dial 320px: ${JSON.stringify(sd5)}`);
+await page.keyboard.press('Escape');
+await wait(100);
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- design tokens --------------------------------------------------------------------------------
 console.log('\nDesign tokens');
 await open(1280);

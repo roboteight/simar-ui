@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, search bar, select, time picker, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, search bar, select, time picker, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, speed dial, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -625,6 +625,24 @@ A key fixed to a corner of the screen, reachable from anywhere on the page. Put 
 
 ```html
 <span class="well fab"><button type="button" class="key key--accent">Compose</button></span>
+```
+
+#### Speed dial
+
+A floating button that opens a short list of related actions. It is a native `<details>` with the key as its summary, so it opens and closes with no script (Enter, Space or a click). The actions are ordinary keys, links or buttons, with a visible label, and the first is nearest the key. The script adds Esc (closes and returns focus to the key), closing on a click or Tab outside, and closing after an action is chosen. Opening turns the plus into an x. `fab--start` and `fab--top` change the corner and the way it opens. A round one needs an `aria-label`.
+
+<img src="docs/screenshots/speed-dial.png" alt="A round green plus key with three labelled keys, Upload, Link and Event, stacked above it" width="420">
+
+```html
+<details class="well fab speed-dial">
+  <summary class="key key--accent key--round" aria-label="Add">
+    <svg class="icon icon--turn" aria-hidden="true"><use href="#i-plus"/></svg>
+  </summary>
+  <ul class="speed-dial__list">
+    <li><span class="well"><a class="key" href="/upload">Upload</a></span></li>
+    <li><span class="well"><button type="button" class="key">Copy link</button></span></li>
+  </ul>
+</details>
 ```
 
 #### Map

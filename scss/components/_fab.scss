@@ -45,3 +45,63 @@
 
 // Room at the bottom of a page that has a floating button.
 .fab-space { padding-block-end: 5rem; }
+
+// Speed dial: a floating button that opens a short list of related actions. It is a native <details> (the summary
+// is the key), so it opens and closes with no script: Enter or Space on the key, a click. Put it on the same
+// element as .well and .fab. The actions are ordinary keys (links or buttons) with a visible label, in a list; the
+// first is nearest the key. The script adds Esc (closes and returns focus to the key), a click or Tab outside
+// (closes) and closing after an action is chosen. Opening turns the plus into an x; fab--start and fab--top
+// change which way the list lines up and opens.
+//
+//   <details class="well fab speed-dial">
+//     <summary class="key key--accent key--round" aria-label="Add"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+//     <ul class="speed-dial__list">
+//       <li><span class="well"><a class="key" href="#photo"><svg class="icon icon--lead" aria-hidden="true">…</svg>Photo</a></span></li>
+//     </ul>
+//   </details>
+.speed-dial {
+  > summary {
+    list-style: none;
+
+    &::-webkit-details-marker { display: none; }
+
+    &::marker { content: ""; }
+
+    // Round, like fab--round: the speed dial's key is the toggle.
+    &.key--round {
+      width: var(--fab-size, 3.5rem);
+      min-height: var(--fab-size, 3.5rem);
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    .icon { transition: transform 180ms ease-out; }
+
+    @include reduced-motion { .icon { transition: none; } }
+  }
+
+  &[open] > summary .icon--turn { transform: rotate(45deg); }
+
+  &__list {
+    position: absolute;
+    inset-block-end: calc(100% + 0.5rem);
+    inset-inline-end: 0;
+    display: flex;
+    flex-direction: column-reverse; // the first action is nearest the key
+    align-items: flex-end;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    .well { display: flex; }
+  }
+
+  &.fab--start &__list { inset-inline-end: auto; inset-inline-start: 0; align-items: flex-start; }
+
+  &.fab--top &__list {
+    inset-block-end: auto;
+    inset-block-start: calc(100% + 0.5rem);
+    flex-direction: column;
+  }
+}

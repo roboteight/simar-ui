@@ -152,6 +152,7 @@
           <li><a href="#dialogs">Dialog</a></li>
           <li><a href="#menus">Dropdown menu</a></li>
         <li><a href="#fabs">Floating button</a></li>
+        <li><a href="#speed-dials">Speed dial</a></li>
         <li><a href="#maps">Map</a></li>
           <li><a href="#meters">Meter</a></li>
           <li><a href="#pagination">Pagination</a></li>
@@ -2554,6 +2555,46 @@
 
           <!-- room at the bottom of the page -->
           <main class="fab-space">…</main>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="speed-dials">
+      <h3 id="speed-dials">Speed dial</h3>
+      <p class="note">A floating button that opens a short list of related actions. It is a native <code>&lt;details&gt;</code> with the key as its summary, so it opens and closes with no script (Enter, Space or a click). The actions are ordinary keys, links or buttons, with a visible label, and the first is nearest the key. Script adds Esc (closes and returns focus to the key), closing on a click or Tab outside, and closing after an action is chosen. Opening turns the plus into an x. <code>fab--start</code> and <code>fab--top</code> change the corner and the way it opens. A round one needs an <code>aria-label</code>.</p>
+
+      <fieldset class="panel">
+        <legend>Speed dial</legend>
+        <div class="fixed-preview" role="group" aria-label="Preview of speed dials">
+          <details class="well fab speed-dial" id="dial-end">
+            <summary class="key key--accent key--round" aria-label="Add"><svg class="icon icon--turn" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+            <ul class="speed-dial__list">
+              <li><span class="well"><a class="key" href="#speed-dials"><svg class="icon icon--lead" aria-hidden="true"><use href="#i-upload"/></svg>Upload</a></span></li>
+              <li><span class="well"><a class="key" href="#speed-dials"><svg class="icon icon--lead" aria-hidden="true"><use href="#i-link"/></svg>Link</a></span></li>
+              <li><span class="well"><a class="key" href="#speed-dials"><svg class="icon icon--lead" aria-hidden="true"><use href="#i-calendar"/></svg>Event</a></span></li>
+            </ul>
+          </details>
+          <details class="well fab fab--start speed-dial" id="dial-start">
+            <summary class="key"><svg class="icon icon--lead icon--turn" aria-hidden="true"><use href="#i-plus"/></svg>Share</summary>
+            <ul class="speed-dial__list">
+              <li><span class="well"><button type="button" class="key"><svg class="icon icon--lead" aria-hidden="true"><use href="#i-copy"/></svg>Copy</button></span></li>
+              <li><span class="well"><button type="button" class="key"><svg class="icon icon--lead" aria-hidden="true"><use href="#i-link"/></svg>Link</button></span></li>
+            </ul>
+          </details>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <details class="well fab speed-dial">
+            <summary class="key key--accent key--round" aria-label="Add">
+              <svg class="icon icon--turn" aria-hidden="true"><use href="#i-plus"/></svg>
+            </summary>
+            <ul class="speed-dial__list">
+              <!-- the first action is nearest the key -->
+              <li><span class="well"><a class="key" href="/upload">
+                <svg class="icon icon--lead" aria-hidden="true">…</svg>Upload
+              </a></span></li>
+              <li><span class="well"><button type="button" class="key">Copy link</button></span></li>
+            </ul>
+          </details>
         </script>
       </fieldset>
     </section>

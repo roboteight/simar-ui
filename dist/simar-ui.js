@@ -670,6 +670,32 @@
       frame.addEventListener("blur", sync);
     }
   };
+  var enhanceSpeedDials = (claim) => {
+    for (const dial of claim(".speed-dial")) {
+      const toggle = dial.querySelector(":scope > summary");
+      if (!toggle) continue;
+      const close = (refocus) => {
+        if (!dial.open) return;
+        dial.open = false;
+        if (refocus) toggle.focus();
+      };
+      dial.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape" || !dial.open) return;
+        e.preventDefault();
+        e.stopPropagation();
+        close(true);
+      });
+      dial.addEventListener("click", (e) => {
+        if (e.target.closest(".speed-dial__list a, .speed-dial__list button")) close(false);
+      });
+      dial.addEventListener("focusout", (e) => {
+        if (e.relatedTarget && !dial.contains(e.relatedTarget)) close(false);
+      });
+      document.addEventListener("pointerdown", (e) => {
+        if (!dial.contains(e.target)) close(false);
+      });
+    }
+  };
   var enhanceSideMenus = (claim) => {
     for (const menu of claim("[data-side-menu]")) {
       const toggle = menu.querySelector(".side-menu__toggle");
@@ -2148,6 +2174,7 @@
     enhanceAppBars(claim);
     enhanceCarousels(claim);
     enhanceTabs(claim);
+    enhanceSpeedDials(claim);
     enhanceSideMenus(claim);
     enhanceEmbeds(claim);
     enhanceMenus(claim);
