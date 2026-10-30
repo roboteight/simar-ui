@@ -1,0 +1,27 @@
+@use "../abstracts" as *;
+
+// Empty state: what a list, search or page says when there is nothing to show, and what to do next. A heading (pick the
+// level that fits the page), a sentence, and one action. The icon is decoration (aria-hidden). Say what is empty and
+// why, and give a way forward ("Add a crew member", not "OK").
+//
+//   <div class="empty">
+//     <svg class="icon empty__icon" aria-hidden="true"><use href="#i-search"/></svg>
+//     <h4 class="empty__title">No crew found</h4>
+//     <p class="empty__text">Nobody matches "Kane". Try a shorter name, or clear the search.</p>
+//     <span class="well"><button type="button" class="key">Clear search</button></span>
+//   </div>
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  text-align: center;
+
+  &__icon { width: 2.5rem; height: 2.5rem; color: var(--ink-soft); filter: none; }
+
+  &__title { margin: 0; font-size: 1.1rem; }
+
+  &__text { margin: 0 0 0.5rem; color: var(--ink-soft); line-height: 1.5; }
+}

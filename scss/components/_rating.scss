@@ -1,0 +1,64 @@
+@use "../abstracts" as *;
+
+// Rating: a row of stars that picks a score. Native radios in a fieldset with a legend, so the arrow keys move the
+// choice, the value submits and it works with no script. Each star's name is its own words ("3 stars"), a filled star
+// differs from an empty one by shape (solid or outline), not only color, and the choice is also written beside the
+// stars. rating-display is the read-only version: hidden stars and the score as visible words.
+//
+//   <fieldset class="rating">
+//     <legend class="rating__legend">Rate this watch</legend>
+//     <div class="rating__stars">
+//       <label class="rating__star"><input type="radio" name="rate" value="1"><span class="visually-hidden">1 star</span><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></label>
+//       … up to 5
+//     </div>
+//   </fieldset>
+//
+//   <p class="rating-display"><span class="rating-display__stars" aria-hidden="true">…five svg.icon, .is-on for each filled one…</span> 4 of 5</p>
+.rating {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  &__legend { padding: 0; margin-bottom: 0.4rem; color: var(--ink-soft); @include label-caps(0.75rem); }
+
+  &__stars { display: inline-flex; gap: 0.125rem; }
+
+  &__star {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius);
+    color: var(--ink-soft);
+    cursor: pointer;
+
+    > input { @include visually-hidden; }
+
+    .icon { width: 1.5rem; height: 1.5rem; fill: none; filter: none; }
+
+    // Filled: this star is chosen, or a later one is, so everything up to the choice is solid.
+    &:has(input:checked) .icon,
+    &:has(~ .rating__star input:checked) .icon { fill: currentColor; color: var(--lit-ink); }
+
+    &:has(input:focus-visible) { @include focus-ring(1px); }
+
+    @include forced-colors { color: ButtonText; &:has(input:checked) .icon, &:has(~ .rating__star input:checked) .icon { color: Highlight; } }
+  }
+}
+
+.rating + .rating-display { margin-top: 0.75rem; }
+
+.rating-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+
+  &__stars { display: inline-flex; gap: 0.125rem; color: var(--ink-soft); }
+
+  .icon { width: 1.1rem; height: 1.1rem; fill: none; filter: none; }
+
+  .icon.is-on { fill: currentColor; color: var(--lit-ink); }
+}

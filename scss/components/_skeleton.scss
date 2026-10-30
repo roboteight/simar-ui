@@ -1,0 +1,43 @@
+@use "../abstracts" as *;
+
+// Skeleton: grey shapes that stand where content will be while it loads. The wrapper is a polite status with words
+// for assistive tech ("Loading the crew"); the shapes are decoration (aria-hidden), so nothing is read twice. When the
+// content arrives, swap the wrapper for the real thing (or remove aria-busy and the shapes). The shimmer stops under
+// prefers-reduced-motion and the shapes get a plain outline in forced-colors.
+//
+//   <div class="skeleton" role="status">
+//     <span class="visually-hidden">Loading the crew</span>
+//     <div class="skeleton__row" aria-hidden="true">
+//       <span class="skeleton__shape skeleton__shape--avatar"></span>
+//       <div class="skeleton__lines"><span class="skeleton__shape"></span><span class="skeleton__shape skeleton__shape--short"></span></div>
+//     </div>
+//   </div>
+.skeleton {
+  display: grid;
+  gap: 0.75rem;
+
+  &__row { display: flex; align-items: center; gap: 0.75rem; }
+
+  &__lines { display: grid; flex: 1 1 auto; gap: 0.5rem; min-width: 0; }
+
+  &__shape {
+    display: block;
+    height: 0.85rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--hairline-strong) 25%, color-mix(in srgb, var(--hairline-strong) 40%, transparent) 50%, var(--hairline-strong) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.4s linear infinite;
+
+    &--short { width: 60%; }
+    &--avatar { flex: none; width: 2.5rem; height: 2.5rem; border-radius: 50%; }
+    &--block { height: 6rem; border-radius: var(--radius); }
+
+    @include reduced-motion { animation: none; }
+    @include forced-colors { background: none; border: 1px solid GrayText; animation: none; }
+  }
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}

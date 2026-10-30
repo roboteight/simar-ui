@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** avatar, card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, swipe list, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, search bar, select, time picker, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, speed dial, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** avatar, card, carousel and gallery, code, divider, empty state, embed, layout and breakpoints, lists, media, quotes, refreshable list, skeleton, steps, swipe list, text blurbs, tile list, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, rating, search bar, select, time picker, validation, wizard. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, speed dial, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -215,6 +215,79 @@ A `<blockquote>` in a `<figure class="quote">`, with who said it in the `<figcap
   <blockquote><p>Buy the ticket, take the ride.</p></blockquote>
   <figcaption><cite>Hunter S. Thompson</cite>, Fear and Loathing in Las Vegas</figcaption>
 </figure>
+```
+
+#### Tile list
+
+Rows with a leading avatar or icon, a title with a line of detail, and a trailing action or note. It is a plain `<ul>`. The leading avatar is hidden from assistive tech because the name is written beside it, the title can be a link, and the trailing action is an ordinary key whose `aria-label` says what it does and to whom. A short note (a time, a count) can stand in for the key with `tile__meta`.
+
+<img src="docs/screenshots/tiles.png" alt="Three crew rows, each with a round avatar, a name, a line of detail and a share key or a time" width="420">
+
+```html
+<ul class="tile-list" role="list">
+  <li class="tile">
+    <span class="avatar" aria-hidden="true">ER</span>
+    <div class="tile__body"><a class="tile__title" href="/crew/ripley">Ellen Ripley</a><span class="tile__text">Warrant officer, Nostromo</span></div>
+    <span class="well tile__action"><button type="button" class="key key--sq" aria-label="Share Ellen Ripley">…</button></span>
+  </li>
+</ul>
+```
+
+#### Skeleton
+
+Grey shapes that stand where content will be while it loads. The wrapper is a polite `role="status"` with words for assistive tech ("Loading the crew"); the shapes are decoration (`aria-hidden`), so nothing is read twice. Swap the wrapper for the real content when it arrives. The shimmer stops under `prefers-reduced-motion`, and in forced colors the shapes get a plain outline.
+
+<img src="docs/screenshots/skeleton.png" alt="Two rows of a grey circle and two grey bars, and a grey block below" width="420">
+
+```html
+<div class="skeleton" role="status">
+  <span class="visually-hidden">Loading the crew</span>
+  <div class="skeleton__row" aria-hidden="true">
+    <span class="skeleton__shape skeleton__shape--avatar"></span>
+    <div class="skeleton__lines"><span class="skeleton__shape"></span><span class="skeleton__shape skeleton__shape--short"></span></div>
+  </div>
+</div>
+```
+
+#### Empty state
+
+What a list, search or page says when there is nothing to show, and what to do next: a heading (pick the level that fits the page), a sentence and one action. The icon is decoration. Say what is empty and why, and give a way forward ("Clear search", not "OK").
+
+<img src="docs/screenshots/empty-state.png" alt="A magnifier icon, the heading No crew found, a sentence and a Clear search key" width="420">
+
+```html
+<div class="empty">
+  <svg class="icon empty__icon" aria-hidden="true"><use href="#i-search"/></svg>
+  <h4 class="empty__title">No crew found</h4>
+  <p class="empty__text">Nobody matches "Kane". Try a shorter name, or clear the search.</p>
+  <span class="well"><button type="button" class="key">Clear search</button></span>
+</div>
+```
+
+#### Steps
+
+Where you are in a short sequence. An ordered list, one item per step: done (a check), current (`aria-current="step"`) and upcoming (an outline). State is a shape and a word, never color alone: each mark is a check, a filled number or an outlined number, and a visually hidden ", completed" or ", current step" follows the name. On a narrow screen the list stacks. The wizard builds this list for itself.
+
+<img src="docs/screenshots/steps.png" alt="Three steps: Cart with a check, Shipping with a filled 2, Payment with an outlined 3" width="420">
+
+```html
+<ol class="steps" aria-label="Checkout">
+  <li class="steps__item is-done"><span class="steps__mark" aria-hidden="true">…check</span><span class="steps__label">Cart<span class="visually-hidden">, completed</span></span></li>
+  <li class="steps__item is-current" aria-current="step"><span class="steps__mark" aria-hidden="true">2</span><span class="steps__label">Shipping<span class="visually-hidden">, current step</span></span></li>
+</ol>
+```
+
+#### Refreshable list
+
+A scrolling list that can be refreshed by pulling it down from the top on a touch screen, or, always, by its visible Refresh key, which is the real control: the pull is only a convenience and nothing needs it. While it works the status says "Refreshing..." and the body is `aria-busy`; afterwards the status says what happened. The page does the loading: listen for `refresh` on the element, call `event.detail.wait()` if it will finish later, then `event.detail.done("message")` (or `done()` for "Updated at ..."). Without the script the bar is hidden and the content is just a list.
+
+<img src="docs/screenshots/refresh.png" alt="A Refresh key and a status line above a scrolling list of crew" width="420">
+
+```html
+<div class="refresh" data-refresh>
+  <div class="refresh__bar"><p class="refresh__status" role="status"></p><span class="well"><button type="button" class="key" data-refresh-key>Refresh</button></span></div>
+  <div class="refresh__body" tabindex="0" role="region" aria-label="Crew on watch">…the list…</div>
+</div>
 ```
 
 #### Swipe list
@@ -465,6 +538,35 @@ A native `<input type="time">` stays the real field, so typing, `step`, `min`, `
 <div class="timepicker" data-timepicker data-hour12="true">
   <input class="input" id="call" name="call" type="time">
 </div>
+```
+
+#### Rating
+
+A row of stars that picks a score. They are native radios in a fieldset with a legend, so the arrow keys move the choice, the value submits and it works with no script. Each star is named in words ("3 stars"), a filled star differs from an empty one by shape, not only color, and a read-only `rating-display` writes the score out ("4 of 5") beside hidden stars.
+
+<img src="docs/screenshots/rating.png" alt="Five stars with the first three solid, and the line 4 of 5 beside four solid stars" width="420">
+
+```html
+<fieldset class="rating">
+  <legend class="rating__legend">Rate this watch</legend>
+  <div class="rating__stars">
+    <label class="rating__star"><input type="radio" name="rate" value="1"><span class="visually-hidden">1 star</span><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></label>
+    <!-- up to 5 -->
+  </div>
+</fieldset>
+```
+
+#### Wizard
+
+A form split into steps. Without the script it is one long form with every step showing and the usual submit key. With the script it shows one step at a time under a list of steps (done, current, upcoming), adds Back and Next keys, and moves focus to the new step's heading so it is announced. Next checks the current step's fields first, with the browser's own messages, and Enter inside a field does the same instead of submitting early. The last step keeps the form's own submit key. Fires `wizard:step`.
+
+<img src="docs/screenshots/wizard.png" alt="A three-step list with Crew current, a Name field and a Next key" width="420">
+
+```html
+<form data-wizard data-label="Send a manifest">
+  <fieldset class="wizard__step"><legend>Crew</legend> … </fieldset>
+  <fieldset class="wizard__step"><legend>Review and send</legend> <button type="submit">Send manifest</button></fieldset>
+</form>
 ```
 
 #### Validation

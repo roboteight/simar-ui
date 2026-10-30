@@ -40,7 +40,7 @@ const indicator = async () => {
   const target = await page.evaluate(() => {
     const el = document.activeElement;
     if (!el || el === document.body) return null;
-    const box = el.closest('.well, .knob, .rknob, .field, .code__body, .snippet, .day, .accordion__item, .card') ?? el;
+    const box = el.closest('.well, .knob, .rknob, .field, .code__body, .snippet, .day, .accordion__item, .card, .rating__star') ?? el;
     const r = box.getBoundingClientRect();
     const name = `${el.tagName.toLowerCase()}${el.name ? `[name=${el.name}]` : el.id ? `#${el.id}` : ''}${el.className ? '.' + String(el.className).split(' ')[0] : ''}`;
     // WCAG 2.4.11: the floating toggle must not hide what has focus.

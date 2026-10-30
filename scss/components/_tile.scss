@@ -1,0 +1,52 @@
+@use "../abstracts" as *;
+
+// Tile list: rows with a leading avatar or icon, a title with a line of detail, and a trailing action or note. It is a
+// plain <ul>; each tile is an <li>. The leading part is decorative when the name is written beside it (aria-hidden), the
+// title can be a link, and the trailing action is an ordinary key whose aria-label says what it does and to whom.
+//
+//   <ul class="tile-list" role="list">
+//     <li class="tile">
+//       <span class="avatar" aria-hidden="true">ER</span>
+//       <div class="tile__body"><a class="tile__title" href="#ripley">Ellen Ripley</a><span class="tile__text">Warrant officer</span></div>
+//       <span class="well tile__action"><button type="button" class="key key--sq" aria-label="Share Ellen Ripley">…</button></span>
+//     </li>
+//   </ul>
+// A trailing note instead of a key: <span class="tile__meta">12:40</span>.
+.tile-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tile {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--hairline-strong);
+
+  &:first-child { border-top: 0; }
+
+  // Without a leading part, the body starts the row.
+  &:not(:has(> .avatar, > .tile__lead)) { grid-template-columns: minmax(0, 1fr) auto; }
+
+  &__lead { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; color: var(--ink-soft); }
+
+  &__body { display: grid; min-width: 0; gap: 0.1rem; }
+
+  &__title {
+    color: var(--ink);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    text-decoration: none;
+
+    &:is(a) { @include link; }
+  }
+
+  &__text { color: var(--ink-soft); font-size: 0.85rem; overflow-wrap: anywhere; }
+
+  &__meta { color: var(--ink-soft); font-size: 0.8rem; white-space: nowrap; }
+
+  @include forced-colors { border-top-color: CanvasText; }
+}

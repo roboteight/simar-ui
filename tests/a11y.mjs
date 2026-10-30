@@ -215,6 +215,16 @@ const suite = async (theme) => {
   await page.keyboard.press('Escape');
   await wait(200);
 
+  // wizard on its second step
+  await page.evaluate(() => document.querySelector('#manifest-wizard').scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.type('#wz-name', 'Ellen Ripley');
+  await page.click('#manifest-wizard [data-next]');
+  await wait(200);
+  add(await run(`${t}, wizard on step 2`));
+  total += await gradientContrast(`${t}, wizard on step 2`);
+  await page.click('#manifest-wizard [data-back]');
+  await page.$eval('#wz-name', (n) => { n.value = ''; });
+
   // a tooltip showing (keyboard focus on an icon key)
   await page.evaluate(() => document.querySelector('#tooltip-demo button[data-tooltip="Settings"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
   await page.keyboard.press('Tab');

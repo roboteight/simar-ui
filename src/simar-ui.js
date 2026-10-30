@@ -518,6 +518,133 @@ const enhanceSwipeLists = (claim) => {
   }
 };
 
+// ---- Wizard and refresh ----------------------------------------------------------------
+
+// A wizard is a form with data-wizard whose direct children are <fieldset class="wizard__step"> panels, each with a
+// <legend> that names it. Without script every step shows and the form submits as one long form. The script builds the
+// steps list (done, current, upcoming), shows one step at a time, adds Back and Next keys, and moves focus to the new
+// step's legend so it is announced. Next checks the current step's fields first (the native messages), and Enter inside
+// a field does the same instead of submitting early. The last step keeps the form's own submit key. Fires wizard:step.
+let wizards = 0;
+const enhanceWizards = (claim) => {
+  for (const form of claim('[data-wizard]')) {
+    const steps = [...form.querySelectorAll(':scope > .wizard__step')];
+    if (steps.length < 2) continue;
+    wizards++;
+    let current = 0;
+    form.classList.add('is-enhanced');
+    const list = el('ol', 'steps');
+    list.setAttribute('aria-label', form.dataset.label || 'Steps');
+    steps[0].before(list);
+    const names = steps.map((step) => step.querySelector(':scope > legend')?.textContent.trim() ?? '');
+    const items = names.map((name) => {
+      const item = el('li', 'steps__item', list);
+      item.innerHTML = '<span class="steps__mark" aria-hidden="true"></span><span class="steps__label"></span>';
+      item.querySelector('.steps__label').textContent = name;
+      return item;
+    });
+    const nav = el('div', 'wizard__nav', form);
+    nav.innerHTML = '<span class="well" data-back-well><button type="button" class="key" data-back>Back</button></span>'
+      + '<p class="wizard__status"></p><span class="well" data-next-well><button type="button" class="key key--accent" data-next>Next</button></span>';
+    const status = nav.querySelector('.wizard__status');
+    const hint = (text) => { const span = el('span', 'visually-hidden'); span.textContent = text; return span; };
+
+    const show = (n, focus) => {
+      current = n;
+      steps.forEach((step, i) => { step.hidden = i !== n; });
+      items.forEach((item, i) => {
+        const mark = item.querySelector('.steps__mark');
+        const label = item.querySelector('.steps__label');
+        label.querySelector('.visually-hidden')?.remove();
+        item.classList.toggle('is-done', i < n);
+        item.classList.toggle('is-current', i === n);
+        if (i === n) item.setAttribute('aria-current', 'step'); else item.removeAttribute('aria-current');
+        mark.innerHTML = i < n ? icon('check') : String(i + 1);
+        if (i < n) label.append(hint(', completed'));
+        if (i === n) label.append(hint(', current step'));
+      });
+      status.textContent = `Step ${n + 1} of ${steps.length}`;
+      nav.querySelector('[data-back-well]').hidden = n === 0;
+      nav.querySelector('[data-next-well]').hidden = n === steps.length - 1;
+      if (focus) {
+        const legend = steps[n].querySelector(':scope > legend');
+        if (legend) { legend.tabIndex = -1; legend.focus(); }
+      }
+      form.dispatchEvent(new CustomEvent('wizard:step', { bubbles: true, detail: { step: n, name: names[n] } }));
+    };
+    const next = () => {
+      for (const field of steps[current].querySelectorAll('input, select, textarea')) {
+        if (!field.checkValidity()) { field.reportValidity(); return; }
+      }
+      if (current < steps.length - 1) show(current + 1, true);
+    };
+    nav.querySelector('[data-next]').addEventListener('click', next);
+    nav.querySelector('[data-back]').addEventListener('click', () => { if (current > 0) show(current - 1, true); });
+    // Enter in a field is an early submit before the last step: it goes to the next step instead, and no other submit
+    // handler (the page's own) hears about it.
+    form.addEventListener('submit', (e) => {
+      if (current >= steps.length - 1) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      next();
+    }, true);
+    show(0, false);
+  }
+};
+
+// A refreshable list (data-refresh): the visible Refresh key (data-refresh-key) is the real control; pulling the body
+// down from the top on a touch screen does the same and is only a convenience. The page does the loading: listen for
+// "refresh" on the element, call event.detail.wait() if it will finish later, then event.detail.done("message") (or
+// done() for "Updated at ..."). While it works the status says "Refreshing..." and the body is aria-busy. A press during
+// a refresh is ignored. Without script the bar is hidden and the content is just a list.
+const enhanceRefresh = (claim) => {
+  for (const root of claim('[data-refresh]')) {
+    const key = root.querySelector('[data-refresh-key]');
+    const body = root.querySelector('.refresh__body');
+    const status = root.querySelector('.refresh__status');
+    if (!key || !body || !status) continue;
+    root.classList.add('is-enhanced');
+    let busy = false;
+    const finish = (message) => {
+      busy = false;
+      body.removeAttribute('aria-busy');
+      status.textContent = message || `Updated at ${new Date().toLocaleTimeString(document.documentElement.lang || undefined, { hour: 'numeric', minute: '2-digit' })}`;
+    };
+    const start = () => {
+      if (busy) return;
+      busy = true;
+      body.setAttribute('aria-busy', 'true');
+      status.textContent = 'Refreshing...';
+      let waiting = false;
+      root.dispatchEvent(new CustomEvent('refresh', { bubbles: true, detail: { wait: () => { waiting = true; }, done: finish } }));
+      if (!waiting) finish();
+    };
+    key.addEventListener('click', start);
+
+    let from = null;
+    let pull = 0;
+    const settle = () => { body.classList.remove('is-pulling'); body.style.setProperty('--pull', '0px'); };
+    body.addEventListener('touchstart', (e) => { from = body.scrollTop === 0 && e.touches.length === 1 ? e.touches[0].clientY : null; pull = 0; }, { passive: true });
+    body.addEventListener('touchmove', (e) => {
+      if (from === null) return;
+      const dy = e.touches[0].clientY - from;
+      if (dy <= 0 || body.scrollTop > 0) { from = null; settle(); return; }
+      pull = Math.min(dy * 0.5, 72);
+      body.classList.add('is-pulling');
+      body.style.setProperty('--pull', `${pull}px`);
+    }, { passive: true });
+    const release = () => {
+      const pulled = pull;
+      from = null;
+      pull = 0;
+      settle();
+      if (pulled >= 56) start();
+    };
+    body.addEventListener('touchend', release);
+    body.addEventListener('touchcancel', release);
+  }
+};
+
 // ---- Side menu -------------------------------------------------------------------------
 
 // A tab on the screen edge that opens a panel beside it (a disclosure, not a modal). The tab carries
@@ -2069,6 +2196,8 @@ const init = (scope = document) => {
   enhanceTabs(claim);
   enhanceSpeedDials(claim);
   enhanceSwipeLists(claim);
+  enhanceWizards(claim);
+  enhanceRefresh(claim);
   enhanceSideMenus(claim);
   enhanceEmbeds(claim);
   enhanceMenus(claim);

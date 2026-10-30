@@ -1059,6 +1059,112 @@ await page.setViewport({ width: 320, height: 700 });
 (await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('avatars fit a 320px screen') : fail('avatars overflow at 320px');
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- tile list, skeleton, empty state ---------------------------------------------------------------
+console.log('\nTile list, skeleton and empty state');
+await open(1280);
+const tl = await page.evaluate(() => {
+  const list = document.getElementById('crew-tiles'), tiles = [...list.querySelectorAll('.tile')];
+  const keys = [...list.querySelectorAll('.key')].map((k) => { const r = k.getBoundingClientRect(); return r.width >= 24 && r.height >= 24 && k.getAttribute('aria-label'); });
+  const sk = document.getElementById('crew-skeleton'), em = document.getElementById('crew-empty');
+  return {
+    role: list.getAttribute('role'), count: tiles.length, leadHidden: tiles.every((t) => t.querySelector('.avatar').getAttribute('aria-hidden') === 'true'), keys,
+    cols: getComputedStyle(tiles[0]).gridTemplateColumns.split(' ').length, link: !!tiles[0].querySelector('a.tile__title[href]'),
+    skRole: sk.getAttribute('role'), skText: sk.querySelector('.visually-hidden').textContent, skShapesHidden: [...sk.querySelectorAll('.skeleton__row, .skeleton__shape--block')].every((n) => n.getAttribute('aria-hidden') === 'true'),
+    emTitle: em.querySelector('.empty__title').tagName, emIconHidden: em.querySelector('.empty__icon').getAttribute('aria-hidden') === 'true', emKey: (() => { const r = em.querySelector('.key').getBoundingClientRect(); return r.width >= 24 && r.height >= 24; })(),
+  };
+});
+tl.role === 'list' && tl.count === 3 && tl.leadHidden && tl.link && tl.keys.length === 2 && tl.keys.every(Boolean) ? pass('tiles are a list: the avatar is hidden beside its written name, the title is a link, and each trailing key is named and 24px or larger') : fail(`tiles: ${JSON.stringify(tl)}`);
+tl.skRole === 'status' && /Loading/.test(tl.skText) && tl.skShapesHidden ? pass('a skeleton is a status with words for assistive tech, and its shapes are hidden') : fail(`skeleton: ${JSON.stringify(tl)}`);
+tl.emTitle === 'H4' && tl.emIconHidden && tl.emKey ? pass('an empty state has a heading, a hidden icon and an action that is 24px or larger') : fail(`empty state: ${JSON.stringify(tl)}`);
+await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+const skMotion = await page.$eval('#crew-skeleton .skeleton__shape', (n) => getComputedStyle(n).animationName);
+skMotion === 'none' ? pass('the skeleton shimmer stops under reduced motion') : fail(`skeleton animation: ${skMotion}`);
+await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }]);
+const skMove = await page.$eval('#crew-skeleton .skeleton__shape', (n) => getComputedStyle(n).animationName);
+skMove === 'skeleton-shimmer' ? pass('and it shimmers otherwise') : fail(`skeleton animation default: ${skMove}`);
+await page.setViewport({ width: 320, height: 700 });
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('tiles, skeleton and empty state fit a 320px screen') : fail('tiles/skeleton/empty overflow at 320px');
+await page.setViewport({ width: 1280, height: 800 });
+
+// ---- rating, steps, wizard, refreshable list ---------------------------------------------------------
+console.log('\nRating, steps, wizard and refreshable list');
+await open(1280);
+await page.$eval('#watch-rating', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+const rt1 = await page.evaluate(() => {
+  const g = document.getElementById('watch-rating'), radios = [...g.querySelectorAll('input[type="radio"]')];
+  const names = radios.map((r) => r.closest('label').textContent.trim());
+  const sizes = [...g.querySelectorAll('.rating__star')].every((l) => { const r = l.getBoundingClientRect(); return r.width >= 24 && r.height >= 24; });
+  const fill = [...g.querySelectorAll('.rating__star .icon')].map((i) => getComputedStyle(i).fill !== 'none');
+  const shown = document.getElementById('rating-shown');
+  return { tag: g.tagName, legend: g.querySelector('legend').textContent, names, sizes, fill, checked: radios.findIndex((r) => r.checked), shownText: shown.textContent.trim(), shownHidden: shown.querySelector('.rating-display__stars').getAttribute('aria-hidden') };
+});
+rt1.tag === 'FIELDSET' && rt1.legend && rt1.names.join() === '1 star,2 stars,3 stars,4 stars,5 stars' && rt1.sizes ? pass('a rating is a fieldset of five radios, each named in words ("3 stars"), 24px or larger') : fail(`rating: ${JSON.stringify(rt1)}`);
+rt1.fill.join() === 'true,true,true,false,false' ? pass('the stars up to the choice are solid and the rest are outlines (shape, not only color)') : fail(`rating fill: ${rt1.fill}`);
+rt1.shownText === '4 of 5' && rt1.shownHidden === 'true' ? pass('the read-only rating writes the score in words and hides its stars') : fail(`rating display: ${JSON.stringify(rt1)}`);
+await page.focus('#watch-rating input:checked');
+await page.keyboard.press('ArrowRight');
+const rt2 = await page.evaluate(() => ({ v: document.querySelector('#watch-rating input:checked').value, fill: [...document.querySelectorAll('#watch-rating .icon')].filter((i) => getComputedStyle(i).fill !== 'none').length }));
+rt2.v === '4' && rt2.fill === 4 ? pass('an arrow key moves the rating to 4 stars and fills four') : fail(`rating arrow: ${JSON.stringify(rt2)}`);
+const st1 = await page.evaluate(() => { const o = document.getElementById('static-steps'), items = [...o.querySelectorAll('.steps__item')]; return { tag: o.tagName, name: o.getAttribute('aria-label'), current: items.filter((i) => i.getAttribute('aria-current') === 'step').length, hidden: items.map((i) => i.querySelector('.visually-hidden')?.textContent ?? ''), marks: items.every((i) => i.querySelector('.steps__mark').getAttribute('aria-hidden') === 'true') }; });
+st1.tag === 'OL' && st1.name && st1.current === 1 && st1.hidden.join('|') === ', completed|, current step|' && st1.marks ? pass('steps are a named ordered list: one current step, and done and current are said in words, with the marks hidden') : fail(`steps: ${JSON.stringify(st1)}`);
+
+// the wizard
+await page.$eval('#manifest-wizard', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+const wz1 = await page.evaluate(() => { const f = document.getElementById('manifest-wizard'); const steps = [...f.querySelectorAll('.wizard__step')]; return { shown: steps.map((x) => !x.hidden).join(), list: f.querySelectorAll('.steps__item').length, current: f.querySelector('.steps__item[aria-current="step"] .steps__label').textContent, back: f.querySelector('[data-back-well]').hidden, status: f.querySelector('.wizard__status').textContent }; });
+wz1.shown === 'true,false,false' && wz1.list === 3 && wz1.current.startsWith('Crew') && wz1.back && wz1.status === 'Step 1 of 3' ? pass('the wizard shows one step under a list of three, Back is hidden on the first, and the status says "Step 1 of 3"') : fail(`wizard start: ${JSON.stringify(wz1)}`);
+await page.click('#manifest-wizard [data-next]');
+const wz2 = await page.evaluate(() => ({ stayed: !document.querySelector('#manifest-wizard .wizard__step').hidden, invalid: document.activeElement.id }));
+wz2.stayed && wz2.invalid === 'wz-name' ? pass('Next will not move on while a required field is empty, and focus goes to that field') : fail(`wizard validation: ${JSON.stringify(wz2)}`);
+await page.type('#wz-name', 'Ellen Ripley');
+await page.keyboard.press('Enter');
+await wait(100);
+const wz3 = await page.evaluate(() => { const f = document.getElementById('manifest-wizard'); return { shown: [...f.querySelectorAll('.wizard__step')].map((x) => !x.hidden).join(), focus: document.activeElement.tagName + ':' + document.activeElement.textContent, current: f.querySelector('.steps__item[aria-current="step"] .steps__label').textContent, done: f.querySelector('.steps__item.is-done .steps__label').textContent, done_mark: f.querySelector('.steps__item.is-done .steps__mark svg') !== null, submitted: document.getElementById('manifest-done').textContent }; });
+wz3.shown === 'false,true,false' && wz3.focus === 'LEGEND:Cargo' && wz3.current.startsWith('Cargo') && wz3.done.includes('completed') && wz3.done_mark && wz3.submitted === '' ? pass('Enter in a field goes to the next step (it does not submit), focus lands on the new step\'s heading, and the first step reads "completed"') : fail(`wizard next: ${JSON.stringify(wz3)}`);
+await page.click('#manifest-wizard [data-back]');
+(await page.evaluate(() => document.activeElement.textContent)) === 'Crew' ? pass('Back returns to the first step and focuses its heading') : fail('wizard back');
+await page.click('#manifest-wizard [data-next]');
+await page.click('#manifest-wizard [data-next]');
+const wz4 = await page.evaluate(() => { const f = document.getElementById('manifest-wizard'); return { next: f.querySelector('[data-next-well]').hidden, status: f.querySelector('.wizard__status').textContent }; });
+wz4.next && wz4.status === 'Step 3 of 3' ? pass('on the last step Next gives way to the form\'s own submit key') : fail(`wizard end: ${JSON.stringify(wz4)}`);
+await page.click('#manifest-wizard button[type="submit"]');
+(await page.$eval('#manifest-done', (n) => n.textContent)) === 'Manifest sent to Mother.' ? pass('the submit key sends the form') : fail('wizard submit');
+await page.setViewport({ width: 320, height: 700 });
+const wz5 = await page.evaluate(() => ({ page: document.documentElement.scrollWidth <= innerWidth + 1, cols: getComputedStyle(document.querySelector('#manifest-wizard .steps')).gridAutoFlow }));
+wz5.page && wz5.cols === 'row' ? pass('the wizard fits 320px and its steps stack') : fail(`wizard 320px: ${JSON.stringify(wz5)}`);
+await page.setViewport({ width: 1280, height: 800 });
+
+// refresh
+await page.$eval('#watch-refresh', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+const rf1 = await page.evaluate(() => { const r = document.getElementById('watch-refresh'), k = r.querySelector('[data-refresh-key]'), b = k.getBoundingClientRect(), body = r.querySelector('.refresh__body'); return { shown: getComputedStyle(r.querySelector('.refresh__bar')).display !== 'none', size: b.width >= 24 && b.height >= 24, region: body.getAttribute('aria-label'), tab: body.tabIndex, live: r.querySelector('.refresh__status').getAttribute('role') }; });
+rf1.shown && rf1.size && rf1.region && rf1.tab === 0 && rf1.live === 'status' ? pass('the refresh bar shows a Refresh key (24px or larger) and a status; the scrolling list is a named, focusable region') : fail(`refresh: ${JSON.stringify(rf1)}`);
+await page.$eval('#watch-refresh', (r) => { window.__refreshes = 0; r.addEventListener('refresh', (e) => { window.__refreshes++; e.detail.wait(); window.__done = e.detail.done; }); });
+await page.click('#watch-refresh [data-refresh-key]');
+const rf2 = await page.evaluate(() => ({ n: window.__refreshes, status: document.querySelector('#watch-refresh .refresh__status').textContent, busy: document.querySelector('#watch-refresh .refresh__body').getAttribute('aria-busy') }));
+rf2.n === 1 && rf2.status === 'Refreshing...' && rf2.busy === 'true' ? pass('the Refresh key fires "refresh", says "Refreshing..." and marks the list busy') : fail(`refresh start: ${JSON.stringify(rf2)}`);
+await page.click('#watch-refresh [data-refresh-key]');
+(await page.evaluate(() => window.__refreshes)) === 1 ? pass('a press while it is working is ignored') : fail('refresh double press');
+await page.evaluate(() => window.__done('3 on watch'));
+const rf3 = await page.evaluate(() => ({ status: document.querySelector('#watch-refresh .refresh__status').textContent, busy: document.querySelector('#watch-refresh .refresh__body').hasAttribute('aria-busy') }));
+rf3.status === '3 on watch' && !rf3.busy ? pass('done() clears the busy state and writes the result in the status') : fail(`refresh done: ${JSON.stringify(rf3)}`);
+// A pull from the top, sent as touch events (a real finger is not verified).
+const pull = (dy) => page.evaluate((dy) => {
+  const body = document.querySelector('#watch-refresh .refresh__body'); body.scrollTop = 0;
+  const r = body.getBoundingClientRect(), x = r.left + 40, y0 = r.top + 20;
+  const touch = (y) => new Touch({ identifier: 1, target: body, clientX: x, clientY: y });
+  const fire = (type, y) => body.dispatchEvent(new TouchEvent(type, { touches: type === 'touchend' ? [] : [touch(y)], changedTouches: [touch(y)], bubbles: true, cancelable: true }));
+  fire('touchstart', y0); for (let i = 1; i <= 6; i++) fire('touchmove', y0 + (dy * i) / 6); fire('touchend', y0 + dy);
+}, dy);
+await page.evaluate(() => { window.__refreshes = 0; });
+await pull(40);
+(await page.evaluate(() => window.__refreshes)) === 0 ? pass('a short pull does nothing') : fail('refresh short pull');
+await pull(200);
+(await page.evaluate(() => window.__refreshes)) === 1 ? pass('a long pull from the top does the same as the key') : fail('refresh long pull');
+await page.evaluate(() => window.__done());
+(await page.$eval('#watch-refresh .refresh__status', (n) => n.textContent)).startsWith('Updated at') ? pass('with no message, done() writes "Updated at ..."') : fail('refresh default message');
+await page.setViewport({ width: 320, height: 700 });
+(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)) ? pass('the refreshable list fits a 320px screen') : fail('refresh overflow at 320px');
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- swipe list -----------------------------------------------------------------------------------
 console.log('\nSwipe list');
 await open(390);
@@ -1899,6 +2005,8 @@ expect('a closed swipe-list row keeps its Archive and Delete out of the tree', n
 expect('filter chips are checkboxes in a named group', find('checkbox', 'Command'), (n) => typeof n.checked === 'boolean');
 expect('the closed bottom sheet is not in the tree', nodes.find((n) => n.role === 'dialog' && n.name === 'Share setlist') ? null : { role: 'none' }, Boolean);
 expect('an initials avatar is read as the person\'s name, not the letters', find('StaticText', 'Ellen Ripley') ?? nodes.find((n) => /Ellen Ripley/.test(n.name ?? '') && !/ER/.test(n.name ?? '')), Boolean);
+expect('rating stars are radios named in words ("3 stars")', find('radio', '3 stars'), (n) => n.checked === true);
+expect('the refresh key is a named button', find('button', 'Refresh'));
 const unnamed = nodes.filter((n) => ['button', 'slider', 'radio', 'checkbox', 'combobox', 'textbox', 'spinbutton'].includes(n.role) && !(n.name ?? '').trim());
 unnamed.length ? fail(`${unnamed.length} control(s) with no name: ${unnamed.slice(0, 4).map((n) => n.role).join(', ')}`) : pass('no control is nameless');
 

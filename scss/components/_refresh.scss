@@ -1,0 +1,36 @@
+@use "../abstracts" as *;
+
+// Refresh: a scrolling list that can be refreshed by pulling it down from the top on a touch screen (script only) or,
+// always, by its visible Refresh key, which is the real control. The pull is a convenience: nothing needs it. While it
+// works the status says "Refreshing" and the body is aria-busy; afterwards the status says what happened. The page does
+// the loading: listen for the "refresh" event on the element (see the script). Without the script the bar is hidden
+// and the content is just a list.
+//
+//   <div class="refresh" data-refresh>
+//     <div class="refresh__bar">
+//       <p class="refresh__status" role="status"></p>
+//       <span class="well"><button type="button" class="key" data-refresh-key>Refresh</button></span>
+//     </div>
+//     <div class="refresh__body" tabindex="0" aria-label="Crew on watch">…the list…</div>
+//   </div>
+.refresh {
+  &__bar { display: none; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.5rem; }
+
+  &.is-enhanced &__bar { display: flex; }
+
+  &__status { margin: 0; color: var(--ink-soft); font-size: 0.85rem; }
+
+  &__body {
+    max-height: 14rem;
+    overflow: auto;
+    overscroll-behavior-y: contain;
+    transform: translateY(var(--pull, 0px));
+    transition: transform 180ms ease-out;
+
+    &:focus-visible { @include focus-ring(2px); }
+
+    &.is-pulling { transition: none; }
+
+    @include reduced-motion { transition: none; }
+  }
+}

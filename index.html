@@ -62,6 +62,7 @@
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></symbol>
     <symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" /></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>
   </svg>
   <header class="appbar">
@@ -108,12 +109,17 @@
           <li><a href="#carousels">Carousel and gallery</a></li>
           <li><a href="#code">Code</a></li>
           <li><a href="#dividers">Divider</a></li>
+          <li><a href="#empties">Empty state</a></li>
         <li><a href="#embeds">Embed</a></li>
         <li><a href="#layout">Layout and breakpoints</a></li>
           <li><a href="#lists">Lists</a></li>
           <li><a href="#media">Media</a></li>
           <li><a href="#quotes">Quotes</a></li>
+          <li><a href="#refreshes">Refreshable list</a></li>
+          <li><a href="#skeletons">Skeleton</a></li>
           <li><a href="#swipe-lists">Swipe list</a></li>
+          <li><a href="#tiles">Tile list</a></li>
+          <li><a href="#steps">Steps</a></li>
           <li><a href="#blurbs">Text blurbs</a></li>
           <li><a href="#timelines">Timeline</a></li>
           <li><a href="#typography">Typography</a></li>
@@ -130,11 +136,13 @@
           <li><a href="#input-group">Input group</a></li>
           <li><a href="#knobs">Knobs</a></li>
           <li><a href="#radios">Radio buttons</a></li>
+          <li><a href="#ratings">Rating</a></li>
           <li><a href="#ranges">Range pickers</a></li>
           <li><a href="#searchbars">Search bar</a></li>
           <li><a href="#selects">Select</a></li>
           <li><a href="#timepickers">Time picker</a></li>
           <li><a href="#validation">Validation</a></li>
+          <li><a href="#wizards">Wizard</a></li>
           </ul>
         </li>
         <li>
@@ -958,6 +966,156 @@
               <span aria-hidden="true">+3</span><span class="visually-hidden">and 3 more</span>
             </span></li>
           </ul>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="tiles">
+      <h3 id="tiles">Tile list</h3>
+      <p class="note">Rows with a leading avatar or icon, a title with a line of detail, and a trailing action or note. It is a plain <code>&lt;ul&gt;</code>. The leading avatar is hidden from assistive tech because the name is written beside it, the title can be a link, and the trailing action is an ordinary key whose <code>aria-label</code> says what it does and to whom. A short note (a time, a count) can stand in for the key with <code>tile__meta</code>.</p>
+
+      <fieldset class="panel">
+        <legend>Tile list</legend>
+        <ul class="tile-list" role="list" id="crew-tiles">
+          <li class="tile">
+            <span class="avatar" aria-hidden="true">ER</span>
+            <div class="tile__body"><a class="tile__title" href="#tiles">Ellen Ripley</a><span class="tile__text">Warrant officer, Nostromo</span></div>
+            <span class="well tile__action"><button type="button" class="key key--sq" aria-label="Share Ellen Ripley"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg></button></span>
+          </li>
+          <li class="tile">
+            <span class="avatar" aria-hidden="true">DH</span>
+            <div class="tile__body"><a class="tile__title" href="#tiles">Dwayne Hicks</a><span class="tile__text">Corporal, colonial marines</span></div>
+            <span class="well tile__action"><button type="button" class="key key--sq" aria-label="Share Dwayne Hicks"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg></button></span>
+          </li>
+          <li class="tile">
+            <span class="avatar" aria-hidden="true">RJ</span>
+            <div class="tile__body"><a class="tile__title" href="#tiles">Rebecca Jorden</a><span class="tile__text">Colony survivor</span></div>
+            <span class="tile__meta">12:40</span>
+          </li>
+        </ul>
+        <script type="text/plain" data-example="HTML">
+          <ul class="tile-list" role="list">
+            <li class="tile">
+              <!-- the name is written beside it, so the avatar is hidden -->
+              <span class="avatar" aria-hidden="true">ER</span>
+              <div class="tile__body">
+                <a class="tile__title" href="/crew/ripley">Ellen Ripley</a>
+                <span class="tile__text">Warrant officer, Nostromo</span>
+              </div>
+              <span class="well tile__action">
+                <button type="button" class="key key--sq" aria-label="Share Ellen Ripley">…</button>
+              </span>
+            </li>
+          </ul>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="skeletons">
+      <h3 id="skeletons">Skeleton</h3>
+      <p class="note">Grey shapes that stand where content will be while it loads. The wrapper is a polite <code>role="status"</code> with words for assistive tech ("Loading the crew"); the shapes are decoration (<code>aria-hidden</code>), so nothing is read twice. Swap the wrapper for the real content when it arrives. The shimmer stops under <code>prefers-reduced-motion</code>, and in forced colors the shapes get a plain outline.</p>
+
+      <fieldset class="panel">
+        <legend>Skeleton</legend>
+        <div class="skeleton" role="status" id="crew-skeleton">
+          <span class="visually-hidden">Loading the crew</span>
+          <div class="skeleton__row" aria-hidden="true"><span class="skeleton__shape skeleton__shape--avatar"></span><div class="skeleton__lines"><span class="skeleton__shape"></span><span class="skeleton__shape skeleton__shape--short"></span></div></div>
+          <div class="skeleton__row" aria-hidden="true"><span class="skeleton__shape skeleton__shape--avatar"></span><div class="skeleton__lines"><span class="skeleton__shape"></span><span class="skeleton__shape skeleton__shape--short"></span></div></div>
+          <span class="skeleton__shape skeleton__shape--block" aria-hidden="true"></span>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <div class="skeleton" role="status">
+            <span class="visually-hidden">Loading the crew</span>
+            <div class="skeleton__row" aria-hidden="true">
+              <span class="skeleton__shape skeleton__shape--avatar"></span>
+              <div class="skeleton__lines">
+                <span class="skeleton__shape"></span>
+                <span class="skeleton__shape skeleton__shape--short"></span>
+              </div>
+            </div>
+          </div>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="empties">
+      <h3 id="empties">Empty state</h3>
+      <p class="note">What a list, search or page says when there is nothing to show, and what to do next: a heading (pick the level that fits the page), a sentence and one action. The icon is decoration. Say what is empty and why, and give a way forward ("Clear search", not "OK").</p>
+
+      <fieldset class="panel">
+        <legend>Empty state</legend>
+        <div class="empty" id="crew-empty">
+          <svg class="icon empty__icon" aria-hidden="true"><use href="#i-search"/></svg>
+          <h4 class="empty__title">No crew found</h4>
+          <p class="empty__text">Nobody matches "Kane". Try a shorter name, or clear the search.</p>
+          <span class="well"><button type="button" class="key">Clear search</button></span>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <div class="empty">
+            <svg class="icon empty__icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <h4 class="empty__title">No crew found</h4>
+            <p class="empty__text">Nobody matches "Kane". Try a shorter name, or clear the search.</p>
+            <span class="well"><button type="button" class="key">Clear search</button></span>
+          </div>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="steps">
+      <h3 id="steps">Steps</h3>
+      <p class="note">Where you are in a short sequence. It is an ordered list, one item per step: done (a check), current (<code>aria-current="step"</code>) and upcoming (an outline). State is a shape and a word, never color alone: each mark is a check, a filled number or an outlined number, and a visually hidden ", completed" or ", current step" follows the name. On a narrow screen the list stacks. The wizard builds this list for itself.</p>
+
+      <fieldset class="panel">
+        <legend>Steps</legend>
+        <ol class="steps" aria-label="Checkout" id="static-steps">
+          <li class="steps__item is-done"><span class="steps__mark" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span><span class="steps__label">Cart<span class="visually-hidden">, completed</span></span></li>
+          <li class="steps__item is-current" aria-current="step"><span class="steps__mark" aria-hidden="true">2</span><span class="steps__label">Shipping<span class="visually-hidden">, current step</span></span></li>
+          <li class="steps__item"><span class="steps__mark" aria-hidden="true">3</span><span class="steps__label">Payment</span></li>
+        </ol>
+        <script type="text/plain" data-example="HTML">
+          <ol class="steps" aria-label="Checkout">
+            <li class="steps__item is-done">
+              <span class="steps__mark" aria-hidden="true"><svg class="icon">…check</svg></span>
+              <span class="steps__label">Cart<span class="visually-hidden">, completed</span></span>
+            </li>
+            <li class="steps__item is-current" aria-current="step">
+              <span class="steps__mark" aria-hidden="true">2</span>
+              <span class="steps__label">Shipping<span class="visually-hidden">, current step</span></span>
+            </li>
+            <li class="steps__item"><span class="steps__mark" aria-hidden="true">3</span><span class="steps__label">Payment</span></li>
+          </ol>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="refreshes">
+      <h3 id="refreshes">Refreshable list</h3>
+      <p class="note">A scrolling list that can be refreshed by pulling it down from the top on a touch screen, or, always, by its visible Refresh key, which is the real control: the pull is only a convenience and nothing needs it. While it works the status says "Refreshing..." and the body is <code>aria-busy</code>; afterwards the status says what happened. The page does the loading: listen for <code>refresh</code> on the element. Without script the bar is hidden and the content is just a list.</p>
+
+      <fieldset class="panel">
+        <legend>Refreshable list</legend>
+        <div class="refresh" data-refresh id="watch-refresh">
+          <div class="refresh__bar">
+            <p class="refresh__status" role="status"></p>
+            <span class="well"><button type="button" class="key" data-refresh-key>Refresh</button></span>
+          </div>
+          <div class="refresh__body" tabindex="0" role="region" aria-label="Crew on watch"><ul class="tile-list" role="list"><li class="tile"><span class="avatar" aria-hidden="true">ER</span><div class="tile__body"><span class="tile__title">Ellen Ripley</span><span class="tile__text">On watch</span></div></li><li class="tile"><span class="avatar" aria-hidden="true">DH</span><div class="tile__body"><span class="tile__title">Dwayne Hicks</span><span class="tile__text">On watch</span></div></li><li class="tile"><span class="avatar" aria-hidden="true">RJ</span><div class="tile__body"><span class="tile__title">Rebecca Jorden</span><span class="tile__text">Resting</span></div></li><li class="tile"><span class="avatar" aria-hidden="true">AS</span><div class="tile__body"><span class="tile__title">Ash</span><span class="tile__text">On watch</span></div></li><li class="tile"><span class="avatar" aria-hidden="true">JN</span><div class="tile__body"><span class="tile__title">Jones</span><span class="tile__text">Resting</span></div></li><li class="tile"><span class="avatar" aria-hidden="true">LB</span><div class="tile__body"><span class="tile__title">Lambert</span><span class="tile__text">On watch</span></div></li></ul></div>
+        </div>
+        <script type="text/plain" data-example="HTML">
+          <div class="refresh" data-refresh>
+            <div class="refresh__bar">
+              <p class="refresh__status" role="status"></p>
+              <span class="well"><button type="button" class="key" data-refresh-key>Refresh</button></span>
+            </div>
+            <div class="refresh__body" tabindex="0" role="region" aria-label="Crew on watch">…the list…</div>
+          </div>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          document.querySelector('[data-refresh]').addEventListener('refresh', async (e) => {
+            e.detail.wait();                          // we will finish later
+            const crew = await loadCrew();
+            e.detail.done(crew.length + ' on watch'); // or e.detail.done() for "Updated at ..."
+          });
         </script>
       </fieldset>
     </section>
@@ -1865,6 +2023,84 @@
           const call = document.getElementById('call');
           // The picker fires input and change, like typing in the field does
           call.addEventListener('change', () => console.log(call.value)); // "19:30"
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="ratings">
+      <h3 id="ratings">Rating</h3>
+      <p class="note">A row of stars that picks a score. They are native radios in a fieldset with a legend, so the arrow keys move the choice, the value submits and it works with no script. Each star is named in words ("3 stars"), a filled star differs from an empty one by shape, not only color, and a read-only <code>rating-display</code> writes the score out ("4 of 5") beside hidden stars.</p>
+
+      <fieldset class="panel">
+        <legend>Rating</legend>
+        <fieldset class="rating" id="watch-rating">
+          <legend class="rating__legend">Rate this watch</legend>
+          <div class="rating__stars"><label class="rating__star"><input type="radio" name="watch-rating" value="1"><span class="visually-hidden">1 star</span><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></label><label class="rating__star"><input type="radio" name="watch-rating" value="2"><span class="visually-hidden">2 stars</span><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></label><label class="rating__star"><input type="radio" name="watch-rating" value="3" checked><span class="visually-hidden">3 stars</span><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></label><label class="rating__star"><input type="radio" name="watch-rating" value="4"><span class="visually-hidden">4 stars</span><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></label><label class="rating__star"><input type="radio" name="watch-rating" value="5"><span class="visually-hidden">5 stars</span><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></label></div>
+        </fieldset>
+        <p class="rating-display" id="rating-shown"><span class="rating-display__stars" aria-hidden="true"><svg class="icon is-on" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon is-on" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon is-on" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon is-on" aria-hidden="true"><use href="#i-star"/></svg><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg></span> 4 of 5</p>
+        <script type="text/plain" data-example="HTML">
+          <fieldset class="rating">
+            <legend class="rating__legend">Rate this watch</legend>
+            <div class="rating__stars">
+              <label class="rating__star">
+                <input type="radio" name="rate" value="1"><span class="visually-hidden">1 star</span>
+                <svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>
+              </label>
+              <!-- … up to 5 -->
+            </div>
+          </fieldset>
+
+          <!-- read-only: hidden stars and the score in words -->
+          <p class="rating-display">
+            <span class="rating-display__stars" aria-hidden="true">…</span> 4 of 5
+          </p>
+        </script>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="wizards">
+      <h3 id="wizards">Wizard</h3>
+      <p class="note">A form split into steps. Without script it is one long form with every step showing and the usual submit key. With script it shows one step at a time under a list of steps (done, current, upcoming), adds Back and Next keys, and moves focus to the new step's heading so it is announced. Next checks the current step's fields first, with the browser's own messages, and Enter inside a field does the same instead of submitting early. The last step keeps the form's own submit key.</p>
+
+      <fieldset class="panel">
+        <legend>Wizard</legend>
+        <form class="wizard" data-wizard data-label="Send a manifest" id="manifest-wizard" onsubmit="event.preventDefault(); document.getElementById('manifest-done').textContent = 'Manifest sent to Mother.';">
+          <fieldset class="wizard__step">
+            <legend>Crew</legend>
+            <div class="field">
+              <div class="field__head"><label class="field__label" for="wz-name">Name</label><span class="field__flag">Required</span></div>
+              <input class="input" id="wz-name" name="name" type="text" required autocomplete="off">
+            </div>
+          </fieldset>
+          <fieldset class="wizard__step">
+            <legend>Cargo</legend>
+            <div class="field">
+              <div class="field__head"><label class="field__label" for="wz-tons">Tons of ore</label></div>
+              <input class="input" id="wz-tons" name="tons" type="number" min="1" max="20000000" value="20000000">
+            </div>
+          </fieldset>
+          <fieldset class="wizard__step">
+            <legend>Review and send</legend>
+            <p>Check the crew and cargo, then send the manifest.</p>
+            <span class="well"><button type="submit" class="key key--accent">Send manifest</button></span>
+            <p id="manifest-done" role="status"></p>
+          </fieldset>
+        </form>
+        <script type="text/plain" data-example="HTML">
+          <form data-wizard data-label="Send a manifest">
+            <fieldset class="wizard__step">
+              <legend>Crew</legend>
+              <label for="name">Name</label> <input id="name" required>
+            </fieldset>
+            <fieldset class="wizard__step">
+              <legend>Review and send</legend>
+              <button type="submit">Send manifest</button>
+            </fieldset>
+          </form>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          // Fires each time the step changes
+          document.querySelector('[data-wizard]').addEventListener('wizard:step', (e) => console.log(e.detail)); // { step: 1, name: "Cargo" }
         </script>
       </fieldset>
     </section>
