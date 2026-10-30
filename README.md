@@ -70,7 +70,7 @@ Open `index.html` for the live demo: a contents list that floats on the left (be
 
 ## What's inside
 
-**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, search bar, select, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
+**Content:** card, carousel and gallery, code, divider, embed, layout and breakpoints, lists, media, quotes, text blurbs, timeline, typography. **Forms:** check list, checkboxes and switches, datalist and autocomplete, date range, form control, input group, knobs, radio buttons, range pickers, search bar, select, time picker, validation. **Components:** accordion, alerts and toasts, app bars, badge, bottom navigation, bottom sheet, breadcrumb, button group, buttons, charts (an optional add-on), chips, confirmation dialog, dialog, dropdown menu, floating button, map (an optional add-on), meter, pagination, progress, side menu, spinners, table, tabs, tooltips. **Customize:** design tokens, styles, themes, fonts, highlight colors, configuration.
 
 The demo page, its contents list and this README share one order: Getting started, then Customize, then Content, Forms and Components, each of those three alphabetical (a few close relatives, such as Button group beside Buttons, happen to fall together).
 
@@ -417,6 +417,18 @@ Native `<select>`, so the list that opens is the browser's own: accessible, sear
   <simar-option value="light" icon="sun">Light</simar-option>
   <simar-option value="dark" icon="moon">Dark</simar-option>
 </simar-select>
+```
+
+#### Time picker
+
+A native `<input type="time">` stays the real field, so typing, `step`, `min`, `max` and forms work with no script. The script adds a clock key that opens a popover of choices: hours, minutes and, on a 12-hour clock, AM or PM. Every choice is a native radio drawn as a key (arrow keys move inside a group, Tab moves between groups), the radios sit outside any form so they never submit, and a choice writes the field at once and fires `input` and `change`. Esc or a click outside closes it and focus returns to the clock key. Minutes step by 5 unless you set `data-minute-step` (or a whole-minute `step`); a typed minute off the step is kept as a choice. The clock follows the page language, or set `data-hour12="true|false"`. Seconds are not offered. Tag: `<simar-input type="time" picker>`.
+
+<img src="docs/screenshots/timepicker.png" alt="A time field showing 7:30 PM with its popover of hour, minute and AM or PM keys" width="420">
+
+```html
+<div class="timepicker" data-timepicker data-hour12="true">
+  <input class="input" id="call" name="call" type="time">
+</div>
 ```
 
 #### Validation

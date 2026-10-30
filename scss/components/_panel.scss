@@ -3,8 +3,8 @@
 // A fieldset that groups controls.
 .panel {
   min-width: 0; // a <fieldset> otherwise refuses to shrink below its widest content
-  margin: 0 0 1.25rem;
-  padding: 1rem 1.25rem 1.25rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem 1rem;
   border: 0;
   border-radius: var(--panel-radius, var(--radius-lg));
   background: grad(var(--surface-top), var(--surface-bottom));

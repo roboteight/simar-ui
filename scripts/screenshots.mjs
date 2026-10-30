@@ -180,6 +180,14 @@ await wait(500);
 await page.screenshot({ path: path.join(out, 'confirm-dialog.png'), clip: await page.evaluate(() => { const r = document.querySelector('#confirm-delete').getBoundingClientRect(); return { x: r.x + scrollX - 30, y: r.y + scrollY - 30, width: r.width + 60, height: r.height + 60 }; }) });
 console.log('  confirm-dialog.png');
 await page.keyboard.press('Escape');
+// the time picker, open
+await page.evaluate(() => document.querySelector('#tp-call').scrollIntoView({ block: 'start' }));
+await page.click('#tp-call ~ .timepicker__button');
+await wait(500);
+await page.screenshot({ path: path.join(out, 'timepicker.png'), clip: await page.evaluate(() => { const a = document.querySelector('#tp-call').getBoundingClientRect(), r = document.querySelector('#tp-call ~ .timepicker__pop').getBoundingClientRect(); return { x: Math.max(0, a.x + scrollX - 20), y: Math.max(0, a.y + scrollY - 20), width: Math.max(a.width, r.width) + 40, height: r.bottom - a.y + 40 }; }) });
+console.log('  timepicker.png');
+await page.keyboard.press('Escape');
+await wait(300);
 // the bottom sheet (phone width, whole screen)
 await page.setViewport({ width: 420, height: 560, deviceScaleFactor: 2 });
 await page.evaluate(() => document.querySelector('[commandfor="share-sheet"]').scrollIntoView({ block: 'center' }));

@@ -289,6 +289,10 @@ const builders = {
       : '';
     return fieldShell(node, 'input', (id, describedby) => {
       const input = `<input class="input" id="${id}"${controlAttrs(node)}${listId ? ` list="${listId}"` : ''}${node.hasAttribute('suggest') ? ' data-autocomplete' : ''}${describedby}>${datalist}`;
+      // type="time" with picker adds the clock key and the popover of choices (minute-step and hour12 pass through).
+      if (node.getAttribute('type') === 'time' && node.hasAttribute('picker')) {
+        return `<div class="timepicker" data-timepicker${attr(node, 'minute-step', 'data-minute-step')}${attr(node, 'hour12', 'data-hour12')}>${input}</div>`;
+      }
       return password
         ? `<span class="input-reveal">${input}<button type="button" class="input-reveal__button" aria-label="Show password" aria-pressed="false" aria-controls="${id}" data-reveal>${
           svgIcon('eye')}</button></span>`

@@ -670,6 +670,122 @@ const enhanceDateRanges = (claim) => {
   }
 };
 
+// Time picker (.timepicker with data-timepicker around an input type="time"): the native input stays the source of
+// truth and the script adds a clock key that opens a popover of native radio keys for the hour, the minute and, on a
+// 12-hour clock, AM or PM. A choice writes the input at once (HH:MM) and fires input and change; typing in the field
+// updates the choices. The radios have no form owner (form="timepicker-none") so they never submit. Minutes step by
+// data-minute-step (default 5, or the input's step when it is a whole number of minutes); a typed minute that is off
+// the step is kept as an extra choice. data-hour12="true|false" overrides the language's clock. Seconds are not offered.
+let timePickers = 0;
+const enhanceTimePickers = (claim) => {
+  for (const root of claim('[data-timepicker]')) {
+    const input = root.querySelector('input[type="time"]');
+    if (!input) continue;
+    const index = timePickers++;
+    const lang = document.documentElement.lang || undefined;
+    const hour12 = root.dataset.hour12 ? root.dataset.hour12 === 'true' : new Intl.DateTimeFormat(lang, { hour: 'numeric' }).resolvedOptions().hour12 === true;
+    const stepAttr = num(input.step, 0) / 60;
+    const step = Math.max(1, Math.round(num(root.dataset.minuteStep, Number.isInteger(stepAttr) && stepAttr >= 1 ? stepAttr : 5)));
+
+    root.classList.add('is-enhanced');
+    const toggle = el('button', 'timepicker__button', root);
+    toggle.type = 'button';
+    toggle.setAttribute('aria-label', 'Choose time');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.dataset.tooltip = 'Choose time';
+    toggle.innerHTML = icon('clock');
+
+    const pop = el('div', 'timepicker__pop', root);
+    pop.id = `timepicker-${index}`;
+    pop.setAttribute('popover', '');
+    pop.setAttribute('role', 'dialog');
+    pop.setAttribute('aria-label', 'Choose time');
+    toggle.setAttribute('popovertarget', pop.id);
+
+    const group = (name, legend, choices, two = false) => `<fieldset class="timepicker__group"><legend>${legend}</legend>
+      <div class="timepicker__grid${two ? ' timepicker__grid--two' : ''}">${choices.map(([value, text]) =>
+    `<label class="well"><input type="radio" form="timepicker-none" name="timepicker-${index}-${name}" value="${value}"><span class="key">${text}</span></label>`).join('')}</div></fieldset>`;
+    const hours = hour12 ? Array.from({ length: 12 }, (_, i) => [i + 1, i + 1]) : Array.from({ length: 24 }, (_, i) => [i, pad(i)]);
+    const minutesFor = (m) => {
+      const list = new Set(Array.from({ length: Math.ceil(60 / step) }, (_, i) => i * step));
+      if (m !== null) list.add(m);
+      return [...list].sort((a, b) => a - b).map((n) => [n, pad(n)]);
+    };
+    const parts = () => {
+      const [h, m] = input.value.split(':').map(Number);
+      return input.value && !Number.isNaN(h) ? { h, m } : { h: null, m: null };
+    };
+
+    let shown = null;
+    const build = () => {
+      const { m } = parts();
+      shown = m;
+      pop.innerHTML = group('hour', 'Hour', hours) + group('minute', 'Minute', minutesFor(m))
+        + (hour12 ? group('period', 'AM or PM', [['am', 'AM'], ['pm', 'PM']], true) : '')
+        + '<div class="timepicker__foot"><span class="well"><button type="button" class="key" data-clear>Clear</button></span>'
+        + '<span class="well"><button type="button" class="key key--accent" data-done>Done</button></span></div>';
+    };
+    const radios = (name) => [...pop.querySelectorAll(`input[name="timepicker-${index}-${name}"]`)];
+    const sync = () => {
+      const { h, m } = parts();
+      if (m !== shown && m !== null && !radios('minute').some((r) => +r.value === m)) build();
+      const hourValue = h === null ? null : hour12 ? (h % 12 || 12) : h;
+      for (const r of radios('hour')) r.checked = hourValue !== null && +r.value === hourValue;
+      for (const r of radios('minute')) r.checked = m !== null && +r.value === m;
+      for (const r of radios('period')) r.checked = h !== null && r.value === (h >= 12 ? 'pm' : 'am');
+    };
+    const write = (value) => {
+      if (input.value === value) return;
+      input.value = value;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+    const choose = () => {
+      const hour = radios('hour').find((r) => r.checked);
+      const minute = radios('minute').find((r) => r.checked);
+      const period = radios('period').find((r) => r.checked);
+      const old = parts();
+      // A first choice fills in the rest (minute 00, AM, or the hour from the clock's start) so the value is always whole.
+      let h = hour ? +hour.value : old.h === null ? null : (hour12 ? old.h % 12 || 12 : old.h);
+      const m = minute ? +minute.value : old.m ?? 0;
+      if (h === null) h = hour12 ? 12 : 0;
+      if (hour12) {
+        const pm = period ? period.value === 'pm' : old.h !== null && old.h >= 12;
+        h = (h % 12) + (pm ? 12 : 0);
+      }
+      write(`${pad(h)}:${pad(m)}`);
+      sync();
+    };
+    pop.addEventListener('change', (e) => { if (e.target.matches('input[type="radio"]')) choose(); });
+    pop.addEventListener('click', (e) => {
+      const button = e.target.closest('button');
+      if (!button) return;
+      if ('clear' in button.dataset) { write(''); sync(); } else if ('done' in button.dataset) pop.hidePopover();
+    });
+    input.addEventListener('input', sync);
+
+    const place = () => {
+      if (!pop.matches(':popover-open')) return;
+      const anchor = root.getBoundingClientRect();
+      const size = pop.getBoundingClientRect();
+      pop.style.top = `${Math.max(8, Math.min(anchor.bottom + 8, innerHeight - size.height - 8))}px`;
+      pop.style.left = `${Math.max(8, Math.min(anchor.left, innerWidth - size.width - 8))}px`;
+    };
+    pop.addEventListener('toggle', (e) => {
+      toggle.setAttribute('aria-expanded', String(e.newState === 'open'));
+      if (e.newState !== 'open') return;
+      sync();
+      place();
+      (pop.querySelector('input:checked') ?? pop.querySelector('input'))?.focus({ preventScroll: true });
+    });
+    addEventListener('scroll', place, { passive: true });
+    addEventListener('resize', place);
+
+    build();
+    sync();
+  }
+};
+
 // ---- Code ------------------------------------------------------------------------------
 
 // The Clipboard API needs a secure context and permission; fall back to a hidden textarea and
@@ -1810,6 +1926,7 @@ const init = (scope = document) => {
   enhanceKnobs(claim);
   enhanceDialogs(claim);
   enhanceDateRanges(claim);
+  enhanceTimePickers(claim);
   enhanceCode(claim);
   enhanceChecks(claim);
   enhanceChecklists(claim);

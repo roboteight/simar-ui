@@ -188,6 +188,15 @@ const suite = async (theme) => {
   await page.keyboard.press('Escape');
   await wait(300);
 
+  // time picker open
+  await page.evaluate(() => document.querySelector('#tp-call').scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await page.click('#tp-call ~ .timepicker__button');
+  await wait(400);
+  add(await run(`${t}, time picker open`));
+  total += await gradientContrast(`${t}, time picker open`);
+  await page.keyboard.press('Escape');
+  await wait(300);
+
   // a tooltip showing (keyboard focus on an icon key)
   await page.evaluate(() => document.querySelector('#tooltip-demo button[data-tooltip="Settings"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
   await page.keyboard.press('Tab');

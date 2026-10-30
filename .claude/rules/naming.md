@@ -35,6 +35,7 @@ thing everywhere and a reader can guess the next name.
 | input / field / form | text-like controls, a labelled control with its hint and error, and the form |
 | hairline, lip, wall, shade, tint | edges, light rims, extrusion sides, and the shadow and highlight mixers |
 | searchbar | the native `<search>` landmark with a search field, a Clear key and a Search key (`searchbar__field`, `searchbar__clear`) |
+| timepicker | a time field with a clock key that opens a popover of hour, minute and AM or PM keys (`timepicker__button`, `timepicker__pop`) |
 | picker, suggest, menu, tabs, tooltip | list-style components; `suggest` is autocomplete suggestions |
 | quote, blurb, media, card, timeline, list, prose, lead, display | content blocks and type styles; `media` is a figure holding an image, video or audio; `card` is an article with media, body and footer; `timeline` is an ordered list of events or steps on a rail; `list` is a styled `<ul>`, `<ol>` or `<dl>` |
 | bottom-nav, appbar | a bar of main places at the screen bottom (`bottom-nav__list`, keys like pagination); a bar kept at the top or bottom of its scroll area |

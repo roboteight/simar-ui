@@ -1,6 +1,6 @@
 (() => {
   // src/icons.svg
-  var icons_default = '<svg xmlns="http://www.w3.org/2000/svg" hidden>\n  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10" /><path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></symbol>\n  <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>\n  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></symbol>\n  <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></symbol>\n  <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>\n  <symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>\n  <symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01" /><path d="M3 18h.01" /><path d="M3 6h.01" /><path d="M8 12h13" /><path d="M8 18h13" /><path d="M8 6h13" /></symbol>\n  <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></symbol>\n  <symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></symbol>\n  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></symbol>\n  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M15 12H3" /><path d="M17 19H3" /></symbol>\n  <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M17 12H7" /><path d="M19 19H5" /></symbol>\n  <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M21 12H9" /><path d="M21 19H7" /></symbol>\n  <symbol id="i-align-justify" viewBox="0 0 24 24"><path d="M3 5h18" /><path d="M3 12h18" /><path d="M3 19h18" /></symbol>\n  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>\n  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol>\n  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></symbol>\n  <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></symbol>\n  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>\n  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>\n  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></symbol>\n  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>\n  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" /><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" /><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" /><path d="m2 2 20 20" /></symbol>\n  <symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" /></symbol>\n  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="M12 5v14" /></symbol>\n  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>\n  <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></symbol>\n  <symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6" /></symbol>\n  <symbol id="i-locate-fixed" viewBox="0 0 24 24"><line x1="2" x2="5" y1="12" y2="12" /><line x1="19" x2="22" y1="12" y2="12" /><line x1="12" x2="12" y1="2" y2="5" /><line x1="12" x2="12" y1="19" y2="22" /><circle cx="12" cy="12" r="7" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" x2="12" y1="8" y2="12" /><line x1="12" x2="12.01" y1="16" y2="16" /></symbol>\n  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m17 8-5-5-5 5" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></symbol>\n  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></symbol>\n  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>\n  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>\n  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>\n</svg>\n';
+  var icons_default = '<svg xmlns="http://www.w3.org/2000/svg" hidden>\n  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10" /><path d="M18.4 6.6a9 9 0 1 1-12.77.04" /></symbol>\n  <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>\n  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></symbol>\n  <symbol id="i-skip-back" viewBox="0 0 24 24"><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" /><path d="M3 20V4" /></symbol>\n  <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M21 4v16" /><path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>\n  <symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>\n  <symbol id="i-list" viewBox="0 0 24 24"><path d="M3 12h.01" /><path d="M3 18h.01" /><path d="M3 6h.01" /><path d="M8 12h13" /><path d="M8 18h13" /><path d="M8 6h13" /></symbol>\n  <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></symbol>\n  <symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></symbol>\n  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></symbol>\n  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M15 12H3" /><path d="M17 19H3" /></symbol>\n  <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M17 12H7" /><path d="M19 19H5" /></symbol>\n  <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M21 5H3" /><path d="M21 12H9" /><path d="M21 19H7" /></symbol>\n  <symbol id="i-align-justify" viewBox="0 0 24 24"><path d="M3 5h18" /><path d="M3 12h18" /><path d="M3 19h18" /></symbol>\n  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>\n  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol>\n  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /></symbol>\n  <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></symbol>\n  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>\n  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>\n  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></symbol>\n  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>\n  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" /><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" /><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" /><path d="m2 2 20 20" /></symbol>\n  <symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34" /><circle cx="11" cy="11" r="8" /></symbol>\n  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="M12 5v14" /></symbol>\n  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>\n  <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></symbol>\n  <symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6" /></symbol>\n  <symbol id="i-locate-fixed" viewBox="0 0 24 24"><line x1="2" x2="5" y1="12" y2="12" /><line x1="19" x2="22" y1="12" y2="12" /><line x1="12" x2="12" y1="2" y2="5" /><line x1="12" x2="12" y1="19" y2="22" /><circle cx="12" cy="12" r="7" /><circle cx="12" cy="12" r="3" /></symbol>\n  <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" x2="12" y1="8" y2="12" /><line x1="12" x2="12.01" y1="16" y2="16" /></symbol>\n  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m17 8-5-5-5 5" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></symbol>\n  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></symbol>\n  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>\n  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>\n  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></symbol>\n  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>\n</svg>\n';
 
   // src/tags.js
   var esc = (text) => String(text).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -235,6 +235,9 @@
       const datalist = listId ? `<datalist id="${listId}">${options.map((o) => `<option value="${esc(o.getAttribute("value") ?? o.textContent.trim())}"${o.getAttribute("label") ? ` label="${esc(o.getAttribute("label"))}"` : ""}></option>`).join("")}</datalist>` : "";
       return fieldShell(node, "input", (id, describedby) => {
         const input = `<input class="input" id="${id}"${controlAttrs(node)}${listId ? ` list="${listId}"` : ""}${node.hasAttribute("suggest") ? " data-autocomplete" : ""}${describedby}>${datalist}`;
+        if (node.getAttribute("type") === "time" && node.hasAttribute("picker")) {
+          return `<div class="timepicker" data-timepicker${attr(node, "minute-step", "data-minute-step")}${attr(node, "hour12", "data-hour12")}>${input}</div>`;
+        }
         return password ? `<span class="input-reveal">${input}<button type="button" class="input-reveal__button" aria-label="Show password" aria-pressed="false" aria-controls="${id}" data-reveal>${svgIcon("eye")}</button></span>` : input;
       });
     },
@@ -922,6 +925,109 @@
       addEventListener("resize", place);
       summary.value = describe();
       render();
+    }
+  };
+  var timePickers = 0;
+  var enhanceTimePickers = (claim) => {
+    for (const root of claim("[data-timepicker]")) {
+      const input = root.querySelector('input[type="time"]');
+      if (!input) continue;
+      const index = timePickers++;
+      const lang = document.documentElement.lang || void 0;
+      const hour12 = root.dataset.hour12 ? root.dataset.hour12 === "true" : new Intl.DateTimeFormat(lang, { hour: "numeric" }).resolvedOptions().hour12 === true;
+      const stepAttr = num(input.step, 0) / 60;
+      const step = Math.max(1, Math.round(num(root.dataset.minuteStep, Number.isInteger(stepAttr) && stepAttr >= 1 ? stepAttr : 5)));
+      root.classList.add("is-enhanced");
+      const toggle = el("button", "timepicker__button", root);
+      toggle.type = "button";
+      toggle.setAttribute("aria-label", "Choose time");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.dataset.tooltip = "Choose time";
+      toggle.innerHTML = icon2("clock");
+      const pop = el("div", "timepicker__pop", root);
+      pop.id = `timepicker-${index}`;
+      pop.setAttribute("popover", "");
+      pop.setAttribute("role", "dialog");
+      pop.setAttribute("aria-label", "Choose time");
+      toggle.setAttribute("popovertarget", pop.id);
+      const group = (name, legend, choices, two = false) => `<fieldset class="timepicker__group"><legend>${legend}</legend>
+      <div class="timepicker__grid${two ? " timepicker__grid--two" : ""}">${choices.map(([value, text]) => `<label class="well"><input type="radio" form="timepicker-none" name="timepicker-${index}-${name}" value="${value}"><span class="key">${text}</span></label>`).join("")}</div></fieldset>`;
+      const hours = hour12 ? Array.from({ length: 12 }, (_, i) => [i + 1, i + 1]) : Array.from({ length: 24 }, (_, i) => [i, pad(i)]);
+      const minutesFor = (m) => {
+        const list = new Set(Array.from({ length: Math.ceil(60 / step) }, (_, i) => i * step));
+        if (m !== null) list.add(m);
+        return [...list].sort((a, b) => a - b).map((n) => [n, pad(n)]);
+      };
+      const parts = () => {
+        const [h, m] = input.value.split(":").map(Number);
+        return input.value && !Number.isNaN(h) ? { h, m } : { h: null, m: null };
+      };
+      let shown = null;
+      const build = () => {
+        const { m } = parts();
+        shown = m;
+        pop.innerHTML = group("hour", "Hour", hours) + group("minute", "Minute", minutesFor(m)) + (hour12 ? group("period", "AM or PM", [["am", "AM"], ["pm", "PM"]], true) : "") + '<div class="timepicker__foot"><span class="well"><button type="button" class="key" data-clear>Clear</button></span><span class="well"><button type="button" class="key key--accent" data-done>Done</button></span></div>';
+      };
+      const radios = (name) => [...pop.querySelectorAll(`input[name="timepicker-${index}-${name}"]`)];
+      const sync = () => {
+        const { h, m } = parts();
+        if (m !== shown && m !== null && !radios("minute").some((r) => +r.value === m)) build();
+        const hourValue = h === null ? null : hour12 ? h % 12 || 12 : h;
+        for (const r of radios("hour")) r.checked = hourValue !== null && +r.value === hourValue;
+        for (const r of radios("minute")) r.checked = m !== null && +r.value === m;
+        for (const r of radios("period")) r.checked = h !== null && r.value === (h >= 12 ? "pm" : "am");
+      };
+      const write = (value) => {
+        if (input.value === value) return;
+        input.value = value;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      };
+      const choose = () => {
+        const hour = radios("hour").find((r) => r.checked);
+        const minute = radios("minute").find((r) => r.checked);
+        const period = radios("period").find((r) => r.checked);
+        const old = parts();
+        let h = hour ? +hour.value : old.h === null ? null : hour12 ? old.h % 12 || 12 : old.h;
+        const m = minute ? +minute.value : old.m ?? 0;
+        if (h === null) h = hour12 ? 12 : 0;
+        if (hour12) {
+          const pm = period ? period.value === "pm" : old.h !== null && old.h >= 12;
+          h = h % 12 + (pm ? 12 : 0);
+        }
+        write(`${pad(h)}:${pad(m)}`);
+        sync();
+      };
+      pop.addEventListener("change", (e) => {
+        if (e.target.matches('input[type="radio"]')) choose();
+      });
+      pop.addEventListener("click", (e) => {
+        const button = e.target.closest("button");
+        if (!button) return;
+        if ("clear" in button.dataset) {
+          write("");
+          sync();
+        } else if ("done" in button.dataset) pop.hidePopover();
+      });
+      input.addEventListener("input", sync);
+      const place = () => {
+        if (!pop.matches(":popover-open")) return;
+        const anchor = root.getBoundingClientRect();
+        const size = pop.getBoundingClientRect();
+        pop.style.top = `${Math.max(8, Math.min(anchor.bottom + 8, innerHeight - size.height - 8))}px`;
+        pop.style.left = `${Math.max(8, Math.min(anchor.left, innerWidth - size.width - 8))}px`;
+      };
+      pop.addEventListener("toggle", (e) => {
+        toggle.setAttribute("aria-expanded", String(e.newState === "open"));
+        if (e.newState !== "open") return;
+        sync();
+        place();
+        (pop.querySelector("input:checked") ?? pop.querySelector("input"))?.focus({ preventScroll: true });
+      });
+      addEventListener("scroll", place, { passive: true });
+      addEventListener("resize", place);
+      build();
+      sync();
     }
   };
   var copyText = async (text) => {
@@ -2033,6 +2139,7 @@
     enhanceKnobs(claim);
     enhanceDialogs(claim);
     enhanceDateRanges(claim);
+    enhanceTimePickers(claim);
     enhanceCode(claim);
     enhanceChecks(claim);
     enhanceChecklists(claim);

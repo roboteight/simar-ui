@@ -60,6 +60,7 @@
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>
   </svg>
   <header class="appbar">
@@ -129,6 +130,7 @@
           <li><a href="#ranges">Range pickers</a></li>
           <li><a href="#searchbars">Search bar</a></li>
           <li><a href="#selects">Select</a></li>
+          <li><a href="#timepickers">Time picker</a></li>
           <li><a href="#validation">Validation</a></li>
           </ul>
         </li>
@@ -1728,6 +1730,37 @@
         </script>
       </fieldset>
     </section>
+    <section aria-labelledby="timepickers">
+      <h3 id="timepickers">Time picker</h3>
+      <p class="note">A native <code>&lt;input type="time"&gt;</code> stays the real field, so typing, <code>step</code>, <code>min</code>, <code>max</code> and forms work with no script. Script adds a clock key that opens a popover of choices: hours, minutes and, on a 12-hour clock, AM or PM. Every choice is a native radio drawn as a key, so the arrow keys move inside a group and Tab moves between groups; a choice writes the field at once. Esc or a click outside closes it and focus returns to the clock key. Minutes step by 5 unless you set <code>data-minute-step</code> (or a whole-minute <code>step</code>); a typed minute off the step is kept as a choice. The clock follows the page language, or set <code>data-hour12</code>. Seconds are not offered.</p>
+
+      <fieldset class="panel">
+        <legend>Time picker</legend>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="tp-call">Call time</label></div>
+          <div class="timepicker" data-timepicker data-hour12="true"><input class="input" id="tp-call" name="call" type="time" value="19:30"></div>
+        </div>
+        <div class="field">
+          <div class="field__head"><label class="field__label" for="tp-24">Watch change (24-hour)</label></div>
+          <div class="timepicker" data-timepicker data-hour12="false" data-minute-step="15"><input class="input" id="tp-24" name="watch" type="time"></div>
+        </div>
+        <script type="text/plain" data-example="Tag">
+          <simar-input label="Call time" type="time" name="call" picker hour12="true"></simar-input>
+          <simar-input label="Watch change" type="time" name="watch" picker hour12="false" minute-step="15"></simar-input>
+        </script>
+        <script type="text/plain" data-example="HTML">
+          <div class="timepicker" data-timepicker data-hour12="true">
+            <input class="input" id="call" name="call" type="time">
+          </div>
+        </script>
+        <script type="text/plain" data-example="JavaScript">
+          const call = document.getElementById('call');
+          // The picker fires input and change, like typing in the field does
+          call.addEventListener('change', () => console.log(call.value)); // "19:30"
+        </script>
+      </fieldset>
+    </section>
+
     <section aria-labelledby="validation">
       <h3 id="validation">Validation</h3>
       <p class="note">Add <code>data-validate</code> to a form and the browser's pop-up bubbles are replaced with messages in the page: words and an icon under each field, linked with <code>aria-describedby</code>, a summary announced at the top, and focus sent to the first problem. Try submitting this one empty.</p>

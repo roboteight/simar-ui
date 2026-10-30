@@ -1,0 +1,105 @@
+@use "../abstracts" as *;
+
+// Time picker: a native <input type="time"> stays the real field (typing, step, min, max, forms, no script).
+// Script adds a clock key beside it that opens a popover of choices: hours, minutes and, on a 12-hour clock, AM or PM.
+// Each choice is a native radio drawn as a key, so the arrow keys move inside a group and Tab moves between groups.
+// The popover is a native `popover` (Esc and a click outside close it, focus returns to the clock key).
+//
+//   <div class="timepicker" data-timepicker>
+//     <input class="input" id="start" name="start" type="time">
+//   </div>
+.timepicker {
+  position: relative;
+
+  &.is-enhanced .input { padding-right: 3rem; }
+  &.is-enhanced input::-webkit-calendar-picker-indicator { display: none; }
+
+  &__button {
+    position: absolute;
+    top: 50%;
+    right: 0.35rem;
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-top: -1.2rem;
+    padding: 0;
+    border: 0;
+    border-radius: var(--input-radius, var(--radius));
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+
+    &:hover { color: var(--ink); }
+
+    &:focus-visible { @include focus-ring(0); }
+
+    .icon { filter: none; }
+
+    @include forced-colors { color: ButtonText; }
+  }
+
+  // Fixed to the viewport and placed under the field by script.
+  &__pop {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    padding: 1rem;
+    width: min(22rem, calc(100vw - 16px));
+    max-height: calc(100vh - 16px);
+    overflow: auto;
+    @include surface(var(--sheet-radius, var(--radius-lg)), 0 24px 50px -12px shade(0.35));
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 150ms ease-out, transform 150ms ease-out, overlay 150ms allow-discrete, display 150ms allow-discrete;
+
+    &:popover-open { opacity: 1; transform: none; }
+
+    @starting-style {
+      &:popover-open {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+    }
+
+    @include reduced-motion { transition: none; }
+  }
+
+  &__group {
+    min-width: 0;
+    margin: 0 0 0.75rem;
+    padding: 0;
+    border: 0;
+
+    legend {
+      padding: 0;
+      margin-bottom: 0.4rem;
+      color: var(--ink-soft);
+      @include label-caps(0.75rem);
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.25rem;
+
+    .well { display: flex; }
+
+    .key {
+      min-width: 0;
+      width: 100%;
+      min-height: 2.5rem;
+      padding: 0;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  &__grid--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  &__foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+}

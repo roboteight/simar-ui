@@ -6,7 +6,7 @@
 // still focusable and checkable.
 .well {
   display: inline-flex;
-  padding: 5px;
+  padding: 4px;
   border-radius: var(--well-radius, var(--radius));
   background: grad(var(--well-top), var(--well-bottom));
   @include well-shadow;
@@ -26,12 +26,12 @@
   position: relative;
   display: inline-grid;
   place-items: center;
-  min-width: 5.5rem;
-  min-height: 3rem;
-  padding: 0 1.4rem;
+  min-width: 4.25rem;
+  min-height: 2.5rem;
+  padding: 0 1rem;
   border: 0;
   border-radius: var(--key-radius, var(--radius));
-  font: 600 0.95rem/1 inherit;
+  font: 600 0.9rem/1 inherit;
   font-family: inherit;
   letter-spacing: 0.02em;
   color: var(--ink);
@@ -137,10 +137,10 @@
 
   // Small keys (numbers, icons) have no room for the LED, so the label itself lights up.
   &--sq {
-    min-width: 3rem;
-    width: 3rem;
+    min-width: 2.5rem;
+    width: 2.5rem;
     padding: 0;
-    font-size: 1.1rem;
+    font-size: 1rem;
 
     &::after { display: none; }
 

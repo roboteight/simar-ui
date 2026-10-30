@@ -940,6 +940,57 @@ const sb4 = await page.evaluate(() => { const bar = document.querySelector('sect
 sb4 ? pass('the search bar fits a 320px screen') : fail('search bar overflows at 320px');
 await page.setViewport({ width: 1280, height: 800 });
 
+// ---- time picker ----------------------------------------------------------------------------------
+console.log('\nTime picker');
+await open(1280);
+await page.$eval('#tp-call', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+const tp1 = await page.evaluate(() => {
+  const root = document.getElementById('tp-call').closest('.timepicker'), key = root.querySelector('.timepicker__button'), pop = root.querySelector('.timepicker__pop');
+  const r = key.getBoundingClientRect();
+  return { type: document.getElementById('tp-call').type, name: key.getAttribute('aria-label'), expanded: key.getAttribute('aria-expanded'), controls: key.getAttribute('popovertarget') === pop.id, size: r.width >= 24 && r.height >= 24, role: pop.getAttribute('role'), groups: [...pop.querySelectorAll('fieldset')].map((f) => f.querySelector('legend').textContent), orphans: [...pop.querySelectorAll('input')].every((i) => !i.form) };
+});
+tp1.type === 'time' && tp1.name === 'Choose time' && tp1.expanded === 'false' && tp1.controls && tp1.size && tp1.role === 'dialog' ? pass('the native time field stays; the clock key is named, 24px or larger, and opens a popover dialog') : fail(`time picker: ${JSON.stringify(tp1)}`);
+tp1.groups.join() === 'Hour,Minute,AM or PM' && tp1.orphans ? pass('hour, minute and AM or PM are native radio groups named by legends, outside any form so they never submit') : fail(`time groups: ${JSON.stringify(tp1)}`);
+await page.click('#tp-call ~ .timepicker__button');
+await wait(300);
+const tp2 = await page.evaluate(() => ({ focus: document.activeElement.name, value: document.activeElement.value, checked: document.activeElement.checked, expanded: document.querySelector('#tp-call ~ .timepicker__button').getAttribute('aria-expanded'), minute: document.querySelector('#tp-call ~ .timepicker__pop input[name$="minute"]:checked')?.value, period: document.querySelector('#tp-call ~ .timepicker__pop input[name$="period"]:checked')?.value }));
+/hour$/.test(tp2.focus) && tp2.value === '7' && tp2.checked && tp2.expanded === 'true' && tp2.minute === '30' && tp2.period === 'pm' ? pass('opening shows the current time (7, 30, PM) and puts focus on the chosen hour') : fail(`time open: ${JSON.stringify(tp2)}`);
+await page.keyboard.press('ArrowRight');
+await wait(50);
+const tp3 = await page.evaluate(() => document.getElementById('tp-call').value);
+tp3 === '20:30' ? pass('an arrow key moves to the next hour and writes the field at once (20:30)') : fail(`time arrow: ${tp3}`);
+await page.keyboard.press('Tab');
+await page.keyboard.press('ArrowDown');
+await wait(50);
+const tp4 = await page.evaluate(() => ({ value: document.getElementById('tp-call').value, name: document.activeElement.name }));
+/minute$/.test(tp4.name) && /^20:\d\d$/.test(tp4.value) && tp4.value !== '20:30' ? pass('Tab reaches the minutes group, and an arrow changes the minute') : fail(`time minute: ${JSON.stringify(tp4)}`);
+await page.keyboard.press('Escape');
+await wait(300);
+const tp5 = await page.evaluate(() => ({ open: document.querySelector('#tp-call ~ .timepicker__pop').matches(':popover-open'), back: document.activeElement.classList.contains('timepicker__button') }));
+!tp5.open && tp5.back ? pass('Esc closes it and focus returns to the clock key') : fail(`time Esc: ${JSON.stringify(tp5)}`);
+await page.$eval('#tp-call', (n) => { n.value = '07:07'; n.dispatchEvent(new Event('input', { bubbles: true })); });
+await page.click('#tp-call ~ .timepicker__button');
+await wait(300);
+const tp6 = await page.evaluate(() => ({ minute: document.querySelector('#tp-call ~ .timepicker__pop input[name$="minute"]:checked')?.value, period: document.querySelector('#tp-call ~ .timepicker__pop input[name$="period"]:checked')?.value }));
+tp6.minute === '7' && tp6.period === 'am' ? pass('a typed time (07:07) is shown in the choices, with its off-step minute kept') : fail(`time typed: ${JSON.stringify(tp6)}`);
+await page.click('#tp-call ~ .timepicker__pop [data-clear]');
+const tp7 = await page.evaluate(() => document.getElementById('tp-call').value);
+tp7 === '' ? pass('Clear empties the field') : fail(`time clear: ${tp7}`);
+await page.keyboard.press('Escape');
+await wait(250);
+await page.$eval('#tp-24', (n) => n.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.click('#tp-24 ~ .timepicker__button');
+await wait(300);
+const tp8 = await page.evaluate(() => { const p = document.querySelector('#tp-24 ~ .timepicker__pop'); return { hours: p.querySelectorAll('input[name$="hour"]').length, minutes: p.querySelectorAll('input[name$="minute"]').length, period: p.querySelectorAll('input[name$="period"]').length }; });
+tp8.hours === 24 && tp8.minutes === 4 && tp8.period === 0 ? pass('a 24-hour picker offers 24 hours, minutes by 15 and no AM or PM') : fail(`time 24h: ${JSON.stringify(tp8)}`);
+await page.setViewport({ width: 320, height: 700 });
+await wait(150);
+const tp9 = await page.evaluate(() => { const r = document.querySelector('#tp-24 ~ .timepicker__pop').getBoundingClientRect(); return { fits: r.left >= 0 && r.right <= innerWidth, page: document.documentElement.scrollWidth <= innerWidth + 1, key: [...document.querySelectorAll('#tp-24 ~ .timepicker__pop .key')].every((k) => { const b = k.getBoundingClientRect(); return b.width >= 24 && b.height >= 24; }) }; });
+tp9.fits && tp9.page && tp9.key ? pass('the picker fits a 320px screen and its keys stay 24px or larger') : fail(`time 320px: ${JSON.stringify(tp9)}`);
+await page.keyboard.press('Escape');
+await wait(250);
+await page.setViewport({ width: 1280, height: 800 });
+
 // ---- design tokens --------------------------------------------------------------------------------
 console.log('\nDesign tokens');
 await open(1280);
