@@ -26,6 +26,7 @@ const FILES = [
   'docs/media/lv-426-surface.svg',
   'docs/media/hypersleep-bay.svg',
   'docs/media/ship-corridor.svg',
+  'docs/media/ripley-portrait.svg',
   'docs/media/nostromo-exterior.svg',
   'docs/logo/simar-ui-mark.svg',
   'docs/logo/icon-32.png',
