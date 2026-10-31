@@ -54,7 +54,7 @@ reflow.pageOverflow > 1 ? fail(`page scrolls sideways by ${reflow.pageOverflow}p
 reflow.wide.length ? fail(`content wider than the screen: ${reflow.wide.join('; ')}`) : pass('nothing wider than the screen');
 await page.evaluate(axeSource);
 const axe320 = await page.evaluate(() => axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] }));
-axe320.violations.length ? fail(`axe at 320px: ${axe320.violations.map((v) => v.id).join(', ')}`) : pass('axe is clean at 320px');
+axe320.violations.length ? fail(`axe at 320px: ${axe320.violations.map((v) => `${v.id} (${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join('; ')})`).join(', ')}`) : pass('axe is clean at 320px');
 
 // ---- 2.5.8 Target size -------------------------------------------------------------------
 console.log('\nTarget size (minimum 24x24 CSS px)');
@@ -318,12 +318,12 @@ v.fields.length === 4 && v.fields.every((f) => f.visible && f.text && f.hasIcon)
 v.focused === 'name' ? pass('focus goes to the first problem') : fail(`focus went to "${v.focused}"`);
 v.fields.find((f) => f.name === 'email')?.text === 'Enter an email like name@chrissimari.com' ? pass('uses the author\'s own message when there is one') : fail('custom message not used');
 
-await page.type('#v-name', 'Darby');
+await page.type('#v-name', 'Ellen');
 const cleared = await page.evaluate(() => ({ invalid: document.querySelector('#v-name').getAttribute('aria-invalid'), summary: document.querySelector('#signup .form__summary').textContent }));
 cleared.invalid === null ? pass('an error clears as soon as the field is valid') : fail('the error stayed after fixing the field');
 /3 fields/.test(cleared.summary) ? pass('and the summary count follows') : fail(`summary after fixing one: "${cleared.summary}"`);
 
-await page.type('#v-email', 'darby@chrissimari.com');
+await page.type('#v-email', 'ripley@chrissimari.com');
 await page.type('#v-age', '36');
 await page.focus('input[name="terms"]');
 await page.keyboard.press('Space');
@@ -1562,7 +1562,7 @@ const rm = await page.evaluate(() => {
   const list = sec.querySelector('ul.chips');
   return { left: list.querySelectorAll('.chip').length, status: list.nextElementSibling.textContent, focus: document.activeElement.getAttribute('aria-label') };
 });
-rm.left === 2 && rm.status === 'Ellen Ripley removed. 2 left.' && rm.focus === 'Remove Dwayne Hicks' ? pass('Remove takes the chip out, says "Ellen Ripley removed. 2 left." and moves focus to the next chip') : fail(`remove chip: ${JSON.stringify(rm)}`);
+rm.left === 2 && rm.status === 'Ellen Ripley removed. 2 left.' && rm.focus === 'Remove Dallas' ? pass('Remove takes the chip out, says "Ellen Ripley removed. 2 left." and moves focus to the next chip') : fail(`remove chip: ${JSON.stringify(rm)}`);
 await page.keyboard.press('Backspace');
 await page.keyboard.press('Delete');
 await wait(100);
@@ -1903,7 +1903,7 @@ const zoomAfter = await page.evaluate(() => { const m = document.querySelector('
 zoomAfter.z === zoomBefore.z + 1 && zoomAfter.lat > zoomBefore.lat && /Zoom level/.test(zoomAfter.said) ? pass('the zoom and pan keys move the map without dragging, and the new zoom level is announced') : fail(`map keys: ${JSON.stringify({ zoomBefore, zoomAfter })}`);
 await page.click('figure.map .map__places li:nth-child(2) button');
 await wait(500);
-const mapShown = await page.evaluate(() => ({ popup: !!document.querySelector('figure.map .leaflet-popup'), onPin: document.activeElement.classList.contains('map__pin') && document.activeElement.getAttribute('aria-label') === "Max's Kansas City" }));
+const mapShown = await page.evaluate(() => ({ popup: !!document.querySelector('figure.map .leaflet-popup'), onPin: document.activeElement.classList.contains('map__pin') && document.activeElement.getAttribute('aria-label') === 'Bray Studios' }));
 mapShown.popup && mapShown.onPin ? pass('Show on map opens the place and puts focus on its pin') : fail(`show on map: ${JSON.stringify(mapShown)}`);
 await page.keyboard.press('Escape');
 await wait(250);
@@ -2003,7 +2003,7 @@ expect('a closed speed dial keeps its actions out of the tree', nodes.find((n) =
 expect('each swipe-list row has a button "Actions for ..." that reports collapsed', find('button', 'Actions for Ellen Ripley'), (n) => n.expanded === false);
 expect('a closed swipe-list row keeps its Archive and Delete out of the tree', nodes.find((n) => n.role === 'button' && /^(Archive|Delete)$/.test(n.name ?? '')) ? null : { role: 'none' }, Boolean);
 expect('filter chips are checkboxes in a named group', find('checkbox', 'Command'), (n) => typeof n.checked === 'boolean');
-expect('the closed bottom sheet is not in the tree', nodes.find((n) => n.role === 'dialog' && n.name === 'Share setlist') ? null : { role: 'none' }, Boolean);
+expect('the closed bottom sheet is not in the tree', nodes.find((n) => n.role === 'dialog' && n.name === 'Share manifest') ? null : { role: 'none' }, Boolean);
 expect('an initials avatar is read as the person\'s name, not the letters', find('StaticText', 'Ellen Ripley') ?? nodes.find((n) => /Ellen Ripley/.test(n.name ?? '') && !/ER/.test(n.name ?? '')), Boolean);
 expect('rating stars are radios named in words ("3 stars")', find('radio', '3 stars'), (n) => n.checked === true);
 expect('the refresh key is a named button', find('button', 'Refresh'));

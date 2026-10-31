@@ -83,10 +83,10 @@
         place.pin = pin;
       }
       const showAll = () => {
-        if (places.length > 1) map.fitBounds(L.latLngBounds(places.map((p) => [p.lat, p.lng])), { padding: [48, 48], animate: !quiet });
+        const reserve = (figure.querySelector(".map__controls")?.offsetWidth ?? 0) + 12;
+        if (places.length > 1) map.fitBounds(L.latLngBounds(places.map((p) => [p.lat, p.lng])), { paddingTopLeft: [48, 48], paddingBottomRight: [48 + reserve, 48], animate: !quiet });
         else if (places.length === 1) map.setView([places[0].lat, places[0].lng], Number(figure.dataset.zoom) || 15, { animate: !quiet });
       };
-      if (places.length > 1 && !figure.dataset.lat) showAll();
       const wanted = (figure.dataset.controls || "zoom pan reset").split(/\s+/);
       const controls = el("div", "map__controls", frame);
       const said = () => {
@@ -132,6 +132,7 @@
           button.addEventListener("click", () => map.panBy(delta(), { animate: !quiet }));
         }
       }
+      if (places.length > 1 && !figure.dataset.lat) showAll();
       for (const place of places) {
         const actions = place.li.querySelector(".map__place-actions") ?? el("div", "map__place-actions", place.li);
         const button = el("button", "key", actions);

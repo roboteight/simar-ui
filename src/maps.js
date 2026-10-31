@@ -99,10 +99,11 @@
       place.pin = pin;
     }
     const showAll = () => {
-      if (places.length > 1) map.fitBounds(L.latLngBounds(places.map((p) => [p.lat, p.lng])), { padding: [48, 48], animate: !quiet });
+      // Keep the pins clear of the zoom and pan keys, which sit in the right-hand column of the map.
+      const reserve = (figure.querySelector('.map__controls')?.offsetWidth ?? 0) + 12;
+      if (places.length > 1) map.fitBounds(L.latLngBounds(places.map((p) => [p.lat, p.lng])), { paddingTopLeft: [48, 48], paddingBottomRight: [48 + reserve, 48], animate: !quiet });
       else if (places.length === 1) map.setView([places[0].lat, places[0].lng], Number(figure.dataset.zoom) || 15, { animate: !quiet });
     };
-    if (places.length > 1 && !figure.dataset.lat) showAll();
 
     // Our own controls: zoom, pan and show-all, all real buttons.
     const wanted = (figure.dataset.controls || 'zoom pan reset').split(/\s+/);
@@ -142,6 +143,9 @@
         button.addEventListener('click', () => map.panBy(delta(), { animate: !quiet }));
       }
     }
+
+    // Fit the places now that the controls exist, so the pins can be kept clear of them.
+    if (places.length > 1 && !figure.dataset.lat) showAll();
 
     // Each place in the list gets a button that shows it on the map (and puts focus on its pin).
     for (const place of places) {

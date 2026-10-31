@@ -101,7 +101,7 @@ A self-contained block: an `<article>` with an optional image, a heading and wor
 <article class="card">
   <img class="card__media" src="poster.jpg" alt="" width="1200" height="675" loading="lazy">
   <div class="card__body">
-    <h4 class="card__title"><a class="card__link" href="/laurie">Laurie Strode</a></h4>
+    <h4 class="card__title"><a class="card__link" href="/ripley">Ellen Ripley</a></h4>
     <p class="card__text">A few words.</p>
   </div>
 </article>
@@ -113,16 +113,16 @@ A row of slides that scrolls sideways and snaps, built on plain HTML and CSS so 
 
 It follows the WAI-ARIA *Carousel* pattern: a region with `aria-roledescription="carousel"` and a name, a focusable named row, and each slide a group named "1 of 4". Use a `media` figure for each picture, with real alt text. Nothing moves by itself. `data-autoplay="4000"` (milliseconds, 3000 or more) turns on auto-play, and then there is always a Pause key (it reads "Play slides" once paused), it stops while the pointer or keyboard focus is inside, it never announces itself, and it does not start at all for visitors who asked for reduced motion (WCAG 2.2.2). Add `carousel--multi` for a gallery that shows one slide on a phone, two from sm and three from lg. Tokens: `--carousel-gap`, `--carousel-per`.
 
-<img src="docs/screenshots/carousel.png" alt="A carousel showing a house under a full moon, with the caption Haddonfield at night, and Previous, 1 to 4 and Next below" width="640">
+<img src="docs/screenshots/carousel.png" alt="A carousel showing a house under a full moon, with the caption LV-426 at night, and Previous, 1 to 4 and Next below" width="640">
 <img src="docs/screenshots/gallery.png" alt="A gallery showing two photos side by side, a house under a moon and a cabin by a lake, with Previous, 1 to 4 and Next below" width="640">
 
 ```html
-<section class="carousel" aria-roledescription="carousel" aria-label="Venues">
-  <div class="carousel__track" tabindex="0" role="group" aria-label="Venue photos">
+<section class="carousel" aria-roledescription="carousel" aria-label="Decks">
+  <div class="carousel__track" tabindex="0" role="group" aria-label="Deck photos">
     <div class="carousel__slide" id="v1" role="group" aria-roledescription="slide" aria-label="1 of 2">
       <figure class="media media--16x9">
-        <img src="club.jpg" alt="A red awning over a club door" width="1200" height="675">
-        <figcaption>The club, before doors.</figcaption>
+        <img src="nostromo.jpg" alt="The Nostromo against the stars" width="1200" height="675">
+        <figcaption>The Nostromo, outbound.</figcaption>
       </figure>
     </div>
     <div class="carousel__slide" id="v2" role="group" aria-roledescription="slide" aria-label="2 of 2"> … </div>
@@ -160,7 +160,7 @@ A responsive frame for content you don't control the size of: an `<iframe>` (a m
 
 ```html
 <div class="embed embed--4x3">
-  <iframe src="https://example.com/player" title="Ramones at CBGB, 1977" loading="lazy"></iframe>
+  <iframe src="https://example.com/player" title="The Nostromo, outbound" loading="lazy"></iframe>
 </div>
 ```
 
@@ -184,11 +184,11 @@ Responsive behavior borrowed from [Bootstrap](https://getbootstrap.com/docs/5.3/
 Native `<ul>`, `<ol>` and `<dl>`, styled. A bare list is left to the browser, so add `list`. The markers take the theme's highlight color and nested lists indent. A description list puts each term beside its detail (`list--stacked` puts the detail underneath, and on a phone they stack). `list--divided` draws a line between items, like a list group. `list--plain` drops the markers; give a plain or divided list `role="list"`, because Safari with VoiceOver stops announcing a list once its markers are gone. Tokens: `--list-gap`, `--list-marker`.
 
 ```html
-<ul class="list"><li>Joey Ramone</li><li>Dee Dee Ramone</li></ul>
+<ul class="list"><li>Dallas</li><li>Lambert</li></ul>
 
-<ul class="list list--divided" role="list"><li>Ellen Ripley</li><li>Laurie Strode</li></ul>
+<ul class="list list--divided" role="list"><li>Ellen Ripley</li><li>Dallas</li></ul>
 
-<dl class="list"><dt>Band</dt><dd>Black Flag</dd><dt>Singer</dt><dd>Henry Rollins</dd></dl>
+<dl class="list"><dt>Ship</dt><dd>Nostromo</dd><dt>Captain</dt><dd>Dallas</dd></dl>
 ```
 
 #### Media
@@ -199,8 +199,8 @@ Images, video and audio on the native elements. Put `media` on a `<figure>` and 
 
 ```html
 <figure class="media media--16x9">
-  <img src="poster.jpg" alt="Deborah Harry on stage under red light" width="1200" height="675" loading="lazy">
-  <figcaption>Blondie at CBGB, 1977.</figcaption>
+  <img src="poster.jpg" alt="Ellen Ripley in the airlock under red emergency light" width="1200" height="675" loading="lazy">
+  <figcaption>Ripley, aboard the Nostromo.</figcaption>
 </figure>
 ```
 
@@ -212,8 +212,8 @@ A `<blockquote>` in a `<figure class="quote">`, with who said it in the `<figcap
 
 ```html
 <figure class="quote">
-  <blockquote><p>Buy the ticket, take the ride.</p></blockquote>
-  <figcaption><cite>Hunter S. Thompson</cite>, Fear and Loathing in Las Vegas</figcaption>
+  <blockquote><p>In space, no one can hear you scream.</p></blockquote>
+  <figcaption><cite>Alien</cite>, 1979</figcaption>
 </figure>
 ```
 
@@ -373,9 +373,9 @@ A fieldset of native checkboxes (the WAI-ARIA *Checkbox (Mixed-State)* pattern).
 <img src="docs/screenshots/checklist.png" alt="A packing list of four items with a mixed Select all box and the status 1 of 3 done" width="640">
 
 ```html
-<simar-checklist label="Setlist" all="Check them all" done="rehearsed">
-  <simar-checkbox label="Blitzkrieg Bop" name="song" checked></simar-checkbox>
-  <simar-checkbox label="Sheena Is a Punk Rocker" name="song"></simar-checkbox>
+<simar-checklist label="Pre-launch checks" all="Check them all" done="checked">
+  <simar-checkbox label="Seal the airlock" name="check" checked></simar-checkbox>
+  <simar-checkbox label="Plot a course for Earth" name="check"></simar-checkbox>
 </simar-checklist>
 ```
 
@@ -629,7 +629,7 @@ A bar that stays at the top or bottom of its scroll area: a native `<header>` or
 
 For a **collapsible mobile menu**, add `data-menu` to the bar and a `<nav class="appbar__nav" aria-label="…">` of links. Script adds a Menu key (a disclosure: `aria-expanded`, `aria-controls`) and the links fold behind it below the md breakpoint (`data-menu="lg"` picks another, `data-menu="always"` folds at every width, `data-menu-label` renames the key). Esc closes it and returns focus to the key, and choosing a link closes it. Without JavaScript there is no key and the links just wrap in the bar. Mark the current page with `aria-current="page"`; it is shown bold and underlined, not by color alone.
 
-<img src="docs/screenshots/appbars.png" alt="A scrolling box with a Setlist bar and a Share key at the top and a bar with Discard and Save setlist at the bottom" width="640">
+<img src="docs/screenshots/appbars.png" alt="A scrolling box with a Manifest bar and a Share key at the top and a bar with Discard and Save manifest at the bottom" width="640">
 
 ```html
 <header class="appbar">
@@ -687,14 +687,14 @@ A few related keys joined edge to edge in one well. Give the group a `role` and 
 
 A chart is a figure whose data is a native `<table>`. The table is the accessible version, so it works with no script and no chart library. With the optional charts add-on (`dist/simar-ui-charts.min.js`) it is drawn as a **line, bar, pie or donut** chart in SVG by [Chartist](https://chartist.dev) (MIT; load it first, it is not bundled), styled with our theme tokens so it follows light, dark, palettes and styles. The chart is an image named by its title and described by a short summary (`data-summary` to write your own). Each series has its own color, a dash pattern and a legend entry, so color is never the only clue, and the table moves into a "Data table" disclosure that opens from the keyboard. The eight series colors (`--chart-1` to `--chart-8`) are in the theme file and are tested at 3:1 against the panel in light and dark.
 
-<img src="docs/screenshots/charts.png" alt="A line chart of two bands' rehearsals per month, a bar chart of records sold and a donut chart of practice hours, each with a legend" width="640">
+<img src="docs/screenshots/charts.png" alt="A line chart of two ships' watch hours per month, a bar chart of ore processed and a donut chart of watch hours, each with a legend" width="640">
 
 ```html
 <figure class="chart" data-chart="line">
-  <figcaption class="chart__title">Rehearsals per month</figcaption>
+  <figcaption class="chart__title">Watch hours per month</figcaption>
   <table class="table">
-    <caption class="visually-hidden">Rehearsals per month, by band</caption>
-    <thead><tr><th scope="col">Month</th><th scope="col">Ramones</th><th scope="col">Blondie</th></tr></thead>
+    <caption class="visually-hidden">Watch hours per month, by ship</caption>
+    <thead><tr><th scope="col">Month</th><th scope="col">Nostromo</th><th scope="col">Narcissus</th></tr></thead>
     <tbody>
       <tr><th scope="row">Jan</th><td>12</td><td>8</td></tr>
       <tr><th scope="row">Feb</th><td>14</td><td>11</td></tr>
@@ -729,14 +729,14 @@ A short question and two actions, for something that is hard to undo or that sen
 
 The dialog docked to the bottom edge: full width on a phone, a centred column from the md breakpoint up (`sheet--bottom` on the same native modal `<dialog>`). Esc, a click on the backdrop and the Close key all close it, focus returns to the key that opened it, and it scrolls inside when it is taller than the screen. The grab handle is a decorative mark: nothing drags, so every way to close it is a key or Esc.
 
-<img src="docs/screenshots/bottom-sheet.png" alt="A bottom sheet titled Share setlist with an email field, Cancel and Share keys" width="320">
+<img src="docs/screenshots/bottom-sheet.png" alt="A bottom sheet titled Share manifest with an email field, Cancel and Share keys" width="320">
 
 ```html
 <button type="button" command="show-modal" commandfor="share">Share</button>
 
 <dialog id="share" class="sheet sheet--bottom" aria-labelledby="share-title">
   <form method="dialog">
-    <h3 id="share-title">Share setlist</h3>
+    <h3 id="share-title">Share manifest</h3>
     <button value="cancel" aria-label="Close">Close</button>
   </form>
 </dialog>
@@ -789,13 +789,13 @@ A map whose data is a list of places. The list is the accessible version and wor
 
 ```html
 <figure class="map" data-map data-zoom="14">
-  <figcaption class="map__title">Venues</figcaption>
+  <figcaption class="map__title">Studios</figcaption>
   <ul class="map__places list list--divided" role="list">
-    <li data-lat="40.7254" data-lng="-73.9915">
-      <h4 class="map__place-name">CBGB</h4>
-      <p class="map__place-text">A club on the Bowery.</p>
+    <li data-lat="51.4075" data-lng="-0.4615">
+      <h4 class="map__place-name">Shepperton Studios</h4>
+      <p class="map__place-text">A film studio in Surrey.</p>
       <div class="map__place-actions">
-        <a href="https://www.openstreetmap.org/?mlat=40.7254&amp;mlon=-73.9915#map=17/40.7254/-73.9915">Open in OpenStreetMap</a>
+        <a href="https://www.openstreetmap.org/?mlat=51.4075&amp;mlon=-0.4615#map=17/51.4075/-0.4615">Open in OpenStreetMap</a>
       </div>
     </li>
   </ul>
