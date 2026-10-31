@@ -47,6 +47,7 @@ thing everywhere and a reader can guess the next name.
 | rating | a row of star radios that picks a score; `rating-display` shows one (`rating__star`) |
 | steps / wizard | an ordered list of where you are in a sequence (`steps__item`, `is-done`, `is-current`); a form split into steps, one at a time (`wizard__step`, `wizard__nav`). Not `stepper`, which is the number field with plus and minus |
 | refresh | a list refreshed by its Refresh key or a pull from the top (`refresh__bar`, `refresh__body`) |
+| settings words | Theme is the whole-page palette, Appearance is light, dark or auto (it follows the device), Style is shape and depth, Highlight is the lit color, Font is the type choice. The option that means no override is always "Default" ("Default (flat)" for Style, since flat is the default style); "Auto" is only for Appearance |
 | chip | a small key that filters (checkbox), chooses (radio) or holds a value with a Remove key (`chip--input`, `chip__remove`) |
 | speed-dial | a floating button that opens a short list of actions (`speed-dial__list`; a native `details`) |
 | fab, side-menu | a floating button fixed to a screen corner; an edge tab that opens a panel beside it (`side-menu__toggle`, `side-menu__panel`) |
