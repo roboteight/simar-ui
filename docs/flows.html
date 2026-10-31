@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>simar-ui suggested flows</title>
+  <meta name="description" content="Four complete flows built from simar-ui components: sign-in, checkout, onboarding, and empty and error pages. Each works without JavaScript.">
+  <link rel="icon" href="logo/simar-ui-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../dist/simar-ui.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+  <main id="flows-main">
+    <h1>Suggested flows</h1>
+    <p class="note">Four common journeys, assembled only from simar-ui components. Each one is plain HTML first: it works with no script, submits as a normal form, and the script only adds the steps and messages. Copy the markup and change the words. <a href="../index.html">Back to the components</a>.</p>
+
+    <nav aria-label="Flows">
+      <ul class="list list--plain" role="list">
+        <li><a href="#signin">Sign in</a></li>
+        <li><a href="#checkout">Checkout</a></li>
+        <li><a href="#onboarding">Onboarding</a></li>
+        <li><a href="#empty-error">Empty and error pages</a></li>
+      </ul>
+    </nav>
+
+    <section aria-labelledby="signin">
+      <h2 id="signin">Sign in</h2>
+      <p class="note">Two fields, a password you can reveal, and one clear way forward. A failed attempt is an alert that is read out as it appears, and it says what to fix without saying which of the two was wrong. The link to reset a password sits next to the field it is about. <strong>Components:</strong> form control, input group (password reveal), switch, buttons, alert, validation.</p>
+
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <fieldset class="panel">
+            <legend>Sign in</legend>
+            <form class="form" id="signin-form" data-validate action="#signin" onsubmit="event.preventDefault(); if (!this.checkValidity()) return; document.getElementById('signin-alert').hidden = false; document.getElementById('signin-alert').scrollIntoView({ block: 'nearest' });">
+              <div class="alert alert--danger" id="signin-alert" role="alert" hidden>
+                <svg class="icon alert__icon" aria-hidden="true"><use href="#i-circle-alert"/></svg>
+                <div class="alert__body"><p class="alert__title">We couldn't sign you in</p><p class="alert__text">The email or password doesn't match. Check them and try again, or reset your password.</p></div>
+              </div>
+              <div class="field">
+                <div class="field__head"><label class="field__label" for="si-email">Email</label><span class="field__flag">Required</span></div>
+                <input class="input" id="si-email" name="email" type="email" autocomplete="username" required data-error="Enter your email, like ripley@chrissimari.com">
+              </div>
+              <div class="field">
+                <div class="field__head"><label class="field__label" for="si-pass">Password</label><span class="field__flag">Required</span></div>
+                <span class="input-reveal"><input class="input" id="si-pass" name="password" type="password" autocomplete="current-password" required data-error="Enter your password"><button type="button" class="input-reveal__button" aria-label="Show password" aria-pressed="false" aria-controls="si-pass" data-reveal><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg></button></span>
+                <p class="field__hint"><a href="#signin">Forgot your password?</a></p>
+              </div>
+              <label class="check"><span class="well"><input type="checkbox" name="remember"><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Keep me signed in on this device</span></label>
+              <div class="well-row">
+                <span class="well"><button type="submit" class="key key--accent">Sign in</button></span>
+              </div>
+            </form>
+          </fieldset>
+        </div>
+        <div class="col-12 col-md-6">
+          <p>Notes for your own version:</p>
+          <ul class="list">
+            <li>Name each field with a visible label, never only a placeholder.</li>
+            <li>Set <code>autocomplete</code> (<code>username</code>, <code>current-password</code>) so password managers and browsers can fill it.</li>
+            <li>Keep the alert in the page from the start and reveal it, so it is announced when it appears.</li>
+            <li>Offer the password reveal as a real button with <code>aria-pressed</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="checkout">
+      <h2 id="checkout">Checkout</h2>
+      <p class="note">A wizard in four steps: cart, shipping, payment and review. Without script it is one long form with every step showing. With script it shows one step at a time, checks each before moving on, and moves focus to the new step's heading. <strong>Components:</strong> wizard, steps, tile list, form control, number stepper, buttons, status message.</p>
+
+      <fieldset class="panel">
+        <legend>Checkout</legend>
+        <form class="wizard" id="checkout-form" data-wizard data-label="Checkout" action="#checkout" onsubmit="event.preventDefault(); document.getElementById('checkout-done').textContent = 'Order placed. A receipt is on its way to ripley@chrissimari.com.';">
+          <fieldset class="wizard__step">
+            <legend>Cart</legend>
+            <ul class="tile-list" role="list">
+              <li class="tile"><span class="avatar avatar--square" aria-hidden="true">FJ</span><div class="tile__body"><span class="tile__title">Flight jacket</span><span class="tile__text">Size M, olive</span></div><span class="tile__meta">$120.00</span></li>
+              <li class="tile"><span class="avatar avatar--square" aria-hidden="true">NC</span><div class="tile__body"><span class="tile__title">Nostromo crew cap</span><span class="tile__text">One size</span></div><span class="tile__meta">$24.00</span></li>
+            </ul>
+            <p><strong>Total: $144.00</strong></p>
+          </fieldset>
+          <fieldset class="wizard__step">
+            <legend>Shipping</legend>
+            <div class="field">
+              <div class="field__head"><label class="field__label" for="co-name">Full name</label><span class="field__flag">Required</span></div>
+              <input class="input" id="co-name" name="name" type="text" autocomplete="name" required data-error="Enter the name on the parcel">
+            </div>
+            <div class="field">
+              <div class="field__head"><label class="field__label" for="co-addr">Street address</label><span class="field__flag">Required</span></div>
+              <input class="input" id="co-addr" name="address" type="text" autocomplete="street-address" required data-error="Enter your street address">
+            </div>
+            <div class="field">
+              <div class="field__head"><label class="field__label" for="co-zip">Postcode</label><span class="field__flag">Required</span></div>
+              <input class="input" id="co-zip" name="postcode" type="text" autocomplete="postal-code" required data-error="Enter your postcode">
+            </div>
+          </fieldset>
+          <fieldset class="wizard__step">
+            <legend>Payment</legend>
+            <div class="field">
+              <div class="field__head"><label class="field__label" for="co-card">Card number</label><span class="field__flag">Required</span></div>
+              <input class="input" id="co-card" name="card" type="text" inputmode="numeric" autocomplete="cc-number" required pattern="[0-9 ]{13,23}" data-error="Enter the 16 digits on the front of the card">
+            </div>
+            <div class="field">
+              <div class="field__head"><label class="field__label" for="co-exp">Expiry</label><span class="field__flag">Required</span></div>
+              <input class="input" id="co-exp" name="expiry" type="text" inputmode="numeric" autocomplete="cc-exp" required placeholder="MM / YY" data-error="Enter the month and year, like 08 / 27">
+            </div>
+          </fieldset>
+          <fieldset class="wizard__step">
+            <legend>Review and place the order</legend>
+            <p>Two items, $144.00, shipped to the address you gave. You can come back to any step before you place the order.</p>
+            <span class="well"><button type="submit" class="key key--accent">Place order</button></span>
+            <p id="checkout-done" role="status"></p>
+          </fieldset>
+        </form>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="onboarding">
+      <h2 id="onboarding">Onboarding</h2>
+      <p class="note">A short welcome that says how long it takes, asks one thing at a time, and lets people skip. It never blocks: "Skip for now" is a real link. <strong>Components:</strong> steps, chips, check list, buttons.</p>
+
+      <fieldset class="panel">
+        <legend>Welcome aboard</legend>
+        <ol class="steps" aria-label="Setup, three short steps">
+          <li class="steps__item is-current" aria-current="step"><span class="steps__mark" aria-hidden="true">1</span><span class="steps__label">Your role<span class="visually-hidden">, current step</span></span></li>
+          <li class="steps__item"><span class="steps__mark" aria-hidden="true">2</span><span class="steps__label">Your first tasks</span></li>
+          <li class="steps__item"><span class="steps__mark" aria-hidden="true">3</span><span class="steps__label">Notifications</span></li>
+        </ol>
+        <h3>Welcome, Ripley. What do you do on the Nostromo?</h3>
+        <p>This takes about a minute. You can change any of it later.</p>
+        <div class="chips" role="radiogroup" aria-label="Your role">
+          <label class="chip"><input type="radio" name="role" value="command"><span class="key">Command</span></label>
+          <label class="chip"><input type="radio" name="role" value="engineering" checked><span class="key">Engineering</span></label>
+          <label class="chip"><input type="radio" name="role" value="science"><span class="key">Science</span></label>
+          <label class="chip"><input type="radio" name="role" value="medical"><span class="key">Medical</span></label>
+        </div>
+        <fieldset class="panel checklist" data-checklist data-all="Select all" data-done="done">
+          <legend>Pick your first tasks</legend>
+          <div class="check-list">
+            <label class="check"><span class="well"><input type="checkbox" name="task" value="airlock" checked><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Seal the airlock</span></label>
+            <label class="check"><span class="well"><input type="checkbox" name="task" value="pods"><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Check the hypersleep pods</span></label>
+            <label class="check"><span class="well"><input type="checkbox" name="task" value="course"><span class="key key--box"><svg class="icon icon--check" aria-hidden="true"><use href="#i-check"/></svg><svg class="icon icon--minus" aria-hidden="true"><use href="#i-minus"/></svg></span></span><span class="check__text">Plot a course for Earth</span></label>
+          </div>
+        </fieldset>
+        <div class="well-row">
+          <span class="well"><button type="button" class="key key--accent">Continue</button></span>
+          <a href="#onboarding">Skip for now</a>
+        </div>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="empty-error">
+      <h2 id="empty-error">Empty and error pages</h2>
+      <p class="note">What a page says when there is nothing here or something went wrong. Each one says what happened in plain words, whose fault it is only if it helps, and gives one way forward. On a real page the title is the page's <code>h1</code>. <strong>Components:</strong> empty state, alert, buttons.</p>
+
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <fieldset class="panel">
+            <legend>Not found (404)</legend>
+            <div class="empty">
+              <svg class="icon empty__icon" aria-hidden="true"><use href="#i-search"/></svg>
+              <h3 class="empty__title">We can't find that page</h3>
+              <p class="empty__text">The link may be old, or the address may have a typo. Try the crew list instead.</p>
+              <span class="well"><a class="key" href="#empty-error">Go to the crew list</a></span>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-12 col-md-6">
+          <fieldset class="panel">
+            <legend>Something went wrong (500)</legend>
+            <div class="empty">
+              <svg class="icon empty__icon" aria-hidden="true"><use href="#i-triangle-alert"/></svg>
+              <h3 class="empty__title">Something went wrong on our side</h3>
+              <p class="empty__text">Your work is safe. Try again in a minute. If it keeps happening, tell us the time it happened.</p>
+              <span class="well"><button type="button" class="key key--accent">Try again</button></span>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-12 col-md-6">
+          <fieldset class="panel">
+            <legend>Offline</legend>
+            <div class="empty">
+              <svg class="icon empty__icon" aria-hidden="true"><use href="#i-circle-alert"/></svg>
+              <h3 class="empty__title">You're offline</h3>
+              <p class="empty__text">Pages you have already opened still work. We'll reconnect when the network is back.</p>
+              <span class="well"><button type="button" class="key">Check again</button></span>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-12 col-md-6">
+          <fieldset class="panel">
+            <legend>No results</legend>
+            <div class="empty">
+              <svg class="icon empty__icon" aria-hidden="true"><use href="#i-search"/></svg>
+              <h3 class="empty__title">No crew match "Kane"</h3>
+              <p class="empty__text">Try a shorter name, or clear the filters.</p>
+              <span class="well"><button type="button" class="key">Clear filters</button></span>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="../dist/simar-ui.js"></script>
+</body>
+</html>

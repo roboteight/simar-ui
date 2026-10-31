@@ -8,7 +8,7 @@ Build queue, in order. One component at a time; check in between. Standing rules
 4. [x] Icon dropdown: `data-icon` on the options of a `data-picker` select (Appearance with monitor/sun/moon, Alert type with the alert icons); plain native select without JS.
 5. [x] Mobile UI set (Material/Android and iOS-style patterns), each working without JS where it can: bottom navigation, chips, bottom sheet, search bar, time picker, speed dial, swipe list, avatar and avatar group, tile list, skeleton, empty state, rating, steps and wizard (the stepper name stays with the number field), refreshable list. Segmented control is the button group; the snackbar with an action key is still open (toasts have no action key yet).
 6. [x] Alien content pass: names, captions, alt text, quotes, charts, timeline, map and images now come from the film (Nostromo, Mother, LV-426, Ripley, Dallas, Kane, Ash, Lambert, Parker, Brett, Jones). The Volume, Reverb, Tone and Band control labels stay, because they name what a control does.
-7. [ ] Suggested flows (sign-in, checkout, onboarding, empty and error pages) and the components they need.
+7. [x] Suggested flows: `docs/flows.html` (sign in, checkout, onboarding, empty and error pages), tested in `tests/flows.mjs`. Components they needed (wizard, steps, empty state, tile list) were built in step 5.
 8. [ ] Copy pass: unify default option labels ("Default", "Theme default", "Flat (default)", "Auto") and the Theme/Appearance/Style words, then read all explanatory text for one voice.
 9. [ ] Other browsers LAST (Chris, 2026-10-29: get it right in Chrome first, then patch): run the puppeteer tests (keyboard, axe, WCAG 2.2) against Firefox, then Edge; fix what differs.
 

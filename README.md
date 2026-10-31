@@ -936,6 +936,10 @@ Add `data-tooltip="Text"` to a button, link or radio key. It shows on mouse hove
 
 Keep the `aria-label` in the markup: a tooltip needs JavaScript, a label doesn't. The library warns if a control's only name is its tooltip.
 
+## Suggested flows
+
+[`docs/flows.html`](docs/flows.html) puts the components together into four common journeys: **sign in** (a password you can reveal, a failed attempt as an alert), **checkout** (a wizard in four steps with a steps list), **onboarding** (a welcome that asks one thing at a time and can be skipped) and **empty and error pages** (not found, something went wrong, offline, no results). Each one is plain HTML first: it works with no script and submits as a normal form, and the script adds the steps and messages. `tests/flows.mjs` runs axe over the page in light and dark, at desktop and 320px, with JavaScript on and off, and drives the sign-in and checkout flows.
+
 ## Themes
 
 All of the styling is a theme: the components describe structure and read their colors, fonts and shapes from tokens, so a new look is a change to values and never to the components. Color lives in one file in `scss/themes/` (`_default.scss`): the design tokens for light and dark, the highlight presets (`data-lit`, including the Material palette), the color of each button variant (`key--primary`, `--secondary`, `--success`, `--danger`, `--warning`, `--info`, `--light`, `--dark`) and whole-page palettes (`data-palette="indigo"`, `teal`, `rose`, `amber`, `forest`, `ocean`), which retint every surface and bring their own highlight and button colors. Shape and depth live in `scss/themes/_styles.scss` (see [Styles and design tokens](#styles-and-design-tokens)), so a style, a palette and a highlight combine freely.
