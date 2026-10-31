@@ -7337,6 +7337,13 @@ hr.divider {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
+.wizard__step:focus {
+  outline: none;
+}
+.wizard__step:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
 .wizard__nav {
   display: flex;
   justify-content: space-between;

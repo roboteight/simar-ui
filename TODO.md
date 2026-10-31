@@ -10,7 +10,7 @@ Build queue, in order. One component at a time; check in between. Standing rules
 6. [x] Alien content pass: names, captions, alt text, quotes, charts, timeline, map and images now come from the film (Nostromo, Mother, LV-426, Ripley, Dallas, Kane, Ash, Lambert, Parker, Brett, Jones). The Volume, Reverb, Tone and Band control labels stay, because they name what a control does.
 7. [x] Suggested flows: `docs/flows.html` (sign in, checkout, onboarding, empty and error pages), tested in `tests/flows.mjs`. Components they needed (wizard, steps, empty state, tile list) were built in step 5.
 8. [x] Copy pass: the "no override" option is "Default" everywhere ("Default (flat)" for Style), Auto stays only for Appearance, "our own" became "part of the map", and the settings words are in the glossary.
-9. [ ] Other browsers LAST (Chris, 2026-10-29: get it right in Chrome first, then patch): run the puppeteer tests (keyboard, axe, WCAG 2.2) against Firefox, then Edge; fix what differs.
+9. [x] Other browsers: Edge 142 passes the full suite; Firefox 159 and WebKit 26.0 pass the smoke test (`npm run test:firefox`, `npm run test:webkit`). Left: Safari itself (needs "Allow remote automation" turned on in its Developer settings), and a hand check on real devices.
 
 ## Naming items to audit before the next major version
 
@@ -18,4 +18,4 @@ See `.claude/rules/naming.md`: `sheet`, `day`/`cal`/`daterange`, `check`/`switch
 
 ## Not verified
 
-Screen readers, real touch devices, Firefox and Safari.
+Screen readers, real touch devices, and Safari itself (Firefox, Edge and Safari's WebKit engine are tested; see the README).

@@ -1054,12 +1054,15 @@ Every control is a native element, so the keyboard, focus and screen-reader beha
   - the same checks with every highlight color, every whole-page palette, the font choices, and states such as menus, suggestions and toasts showing;
   - behavior tests for tabs, the menu, autocomplete, sortable tables, the contents drawer, the settings tab, header search, pagination, breadcrumbs, media, cards and button groups, and a responsive grid test at phone, tablet and desktop widths;
   - an app test that serves the page, checks the manifest and icons and the service worker, and loads the page with the network off.
+  - a flows test (`tests/flows.mjs`) that runs axe over the suggested flows and drives the sign-in and checkout journeys.
+
+  `npm run test:firefox` and `npm run test:webkit` run the cross-browser smoke test (`tests/browsers.mjs`); they are not part of `npm test` because they need Firefox installed and Playwright's WebKit (`PLAYWRIGHT_DIR`).
 
   `npm test` builds first; `npm publish` runs it automatically.
 - **The tests can fail.** `SABOTAGE=1 node tests/keyboard.mjs` strips the focus rings and the run must exit non-zero.
 - **If a check fails, fix the page. Do not switch the rule off.**
 
-What automation can't cover, and you should test by hand: a real finger on the swipe list (the test sends touch pointer events from the browser), what real screen readers (VoiceOver, NVDA, TalkBack) actually announce (Chrome's automation interface can't show `aria-valuetext`, so the stepped knobs' labels in particular need a listen), touch and switch access, and Safari and Firefox.
+What automation can't cover, and you should test by hand: a real finger on the swipe list (the test sends touch pointer events from the browser), what real screen readers (VoiceOver, NVDA, TalkBack) actually announce (Chrome's automation interface can't show `aria-valuetext`, so the stepped knobs' labels in particular need a listen), touch and switch access, and Safari itself. Firefox and Safari's engine (WebKit) get the axe run and the key behaviors by keyboard (see Browser support); they do not get the full suite.
 
 ## Offline and installable
 
@@ -1077,7 +1080,16 @@ In Windows High Contrast the controls use system colors:
 
 ## Browser support
 
-Recent evergreen browsers. simar-ui uses modern CSS (`color-mix()`, `:has()`, `@property`, the Popover API) and degrades where it can: no animated key fades without `@property`, no `command` invokers in older browsers (a small fallback opens dialogs). It has been tested in Chrome; Firefox and Safari are not yet tested.
+Recent evergreen browsers. simar-ui uses modern CSS (`color-mix()`, `:has()`, `@property`, the Popover API) and degrades where it can: no animated key fades without `@property`, no `command` invokers in older browsers (a small fallback opens dialogs). Where it has been tested (2026-10-30):
+
+| Browser | What ran | Result |
+|---|---|---|
+| Chrome | the full suite (`npm test`: axe, contrast, WCAG 2.2, keyboard and focus rings in light and dark, the flows) | passes |
+| Edge 142 | the full suite (`CHROME_PATH="/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge" npm run test:a11y`) | passes |
+| Firefox 159 | the smoke test (`npm run test:firefox`): axe on the demo and the flows, light and dark, phone and desktop, the script blocked; the dialog, bottom sheet, speed dial, time picker, swipe list, search bar and wizard by keyboard; Tab order and focus rings; reflow at 320px | passes |
+| WebKit 26.0 (the engine inside Safari, in Playwright's build) | the same smoke test (`npm run test:webkit`) | passes. This engine has no `command` invokers, so the small `data-dialog-open` fallback opens the dialogs |
+
+The smoke test is not the whole suite: the full suite leans on Chrome's automation (pixel focus checks, the accessibility tree), so Firefox and WebKit get the axe run and the key behaviors instead. **Not tested:** Safari itself (Playwright's WebKit is the same engine, not the browser; automating Safari needs "Allow remote automation" switched on in its Developer settings), older versions of any of these, and real touch devices.
 
 ## Build
 

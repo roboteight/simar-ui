@@ -9,7 +9,8 @@
 // library has fallbacks for them. Safari itself (not just WebKit) still needs a hand check.
 
 import { createRequire } from 'node:module';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync, statSync } from 'node:fs';
+import { createServer } from 'node:http';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 
@@ -17,7 +18,16 @@ const which = process.env.BROWSER ?? 'firefox';
 const require = createRequire(import.meta.url);
 const axeSource = readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const site = (file) => pathToFileURL(path.join(root, file)).href;
+// Serve the folder over HTTP, as a real site is (some engines restrict file: pages, which is not what visitors see).
+const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.wav': 'audio/wav' };
+const server = createServer((req, res) => {
+  const file = path.join(root, decodeURIComponent(new URL(req.url, 'http://x').pathname));
+  if (!file.startsWith(root) || !existsSync(file) || statSync(file).isDirectory()) { res.writeHead(404); res.end(); return; }
+  res.writeHead(200, { 'content-type': types[path.extname(file)] ?? 'application/octet-stream' });
+  res.end(readFileSync(file));
+});
+await new Promise((r) => server.listen(0, '127.0.0.1', r));
+const site = (file) => `http://127.0.0.1:${server.address().port}/${file}`;
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // ---- the adapter: one small surface over Puppeteer and Playwright ----------------------------------
@@ -96,22 +106,23 @@ check(jsOn === 'on', 'the script ran and set data-js="on"', `data-js is ${jsOn}`
 
 // ---- behaviors ---------------------------------------------------------------------------------------
 section('Behavior');
-const sel = (s) => document.querySelector(s);
+// A showing tooltip takes the first Esc by design (WCAG 1.4.13), so a dialog may need a second one.
+const escape = async (isClosed) => { for (let i = 0; i < 2; i++) { await b.press('Escape'); await wait(350); if (await b.eval(isClosed)) return; } };
+// Opened from the keyboard: on macOS Safari a mouse click does not focus a button, so there is nothing to return focus to.
 await b.eval(() => document.querySelector('[data-dialog-open="settings"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
-await b.click('[data-dialog-open="settings"]');
+await b.focus('[data-dialog-open="settings"]');
+await b.press('Enter');
 await wait(400);
 check(await b.eval(() => document.getElementById('settings').open), 'the dialog opens as a modal', 'the dialog did not open');
 check(await b.eval(() => document.getElementById('settings').contains(document.activeElement)), 'focus moves inside the dialog', 'focus did not move into the dialog');
-await b.press('Escape');
-await wait(300);
+await escape(() => !document.getElementById('settings').open);
 check(await b.eval(() => !document.getElementById('settings').open && document.activeElement.getAttribute('data-dialog-open') === 'settings'), 'Esc closes it and focus returns to the key that opened it', 'dialog Esc/focus return failed');
 
 await b.eval(() => document.querySelector('[data-dialog-open="share-sheet"]').scrollIntoView({ block: 'center', behavior: 'instant' }));
 await b.click('[data-dialog-open="share-sheet"]');
 await wait(450);
 check(await b.eval(() => { const d = document.getElementById('share-sheet'), r = d.getBoundingClientRect(); return d.open && Math.abs(r.bottom - innerHeight) <= 1; }), 'the bottom sheet opens docked to the bottom edge', 'bottom sheet not docked');
-await b.press('Escape');
-await wait(300);
+await escape(() => !document.getElementById('share-sheet').open);
 
 await b.eval(() => document.getElementById('dial-end').scrollIntoView({ block: 'center', behavior: 'instant' }));
 await b.focus('#dial-end summary');
@@ -151,7 +162,7 @@ await b.click('#wz-name');
 await b.type('Ellen Ripley');
 await b.press('Enter');
 await wait(150);
-check(await b.eval(() => document.activeElement.tagName === 'LEGEND' && document.getElementById('manifest-done').textContent === ''), 'Enter goes to the next step (no early submit) and focuses its heading', 'wizard Enter/focus failed');
+check(await b.eval(() => ['LEGEND', 'FIELDSET'].includes(document.activeElement.tagName) && document.getElementById('manifest-done').textContent === ''), 'Enter goes to the next step (no early submit) and focus lands on its heading or group', 'wizard Enter/focus failed');
 
 // ---- keyboard and focus -------------------------------------------------------------------------------
 section('Keyboard');
@@ -187,5 +198,6 @@ const real = errors.filter((e) => !/Failed to load resource|favicon|manifest|ser
 check(real.length === 0, 'no script errors', `console errors: ${real.slice(0, 5).join(' | ')}`);
 
 await browser.close();
+server.close();
 console.log(failures ? `\n✗ ${failures} ${which} check(s) failed` : `\n✓ ${which} checks passed`);
 process.exit(failures ? 1 : 0);

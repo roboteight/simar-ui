@@ -62,6 +62,10 @@
 
   &__step > legend:focus-visible { @include focus-ring(2px); }
 
+  &__step:focus { outline: none; }
+
+  &__step:focus-visible { @include focus-ring(2px); }
+
   &__nav { display: flex; justify-content: space-between; gap: 0.75rem; }
 
   &__status { margin: 0; color: var(--ink-soft); font-size: 0.85rem; }

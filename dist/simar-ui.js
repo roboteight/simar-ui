@@ -874,6 +874,10 @@
             legend.tabIndex = -1;
             legend.focus();
           }
+          if (document.activeElement !== legend) {
+            steps[n].tabIndex = -1;
+            steps[n].focus();
+          }
         }
         form.dispatchEvent(new CustomEvent("wizard:step", { bubbles: true, detail: { step: n, name: names[n] } }));
       };

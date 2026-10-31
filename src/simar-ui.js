@@ -569,6 +569,8 @@ const enhanceWizards = (claim) => {
       if (focus) {
         const legend = steps[n].querySelector(':scope > legend');
         if (legend) { legend.tabIndex = -1; legend.focus(); }
+        // Some browsers (Firefox) will not focus a legend; the step's fieldset is announced with the same name.
+        if (document.activeElement !== legend) { steps[n].tabIndex = -1; steps[n].focus(); }
       }
       form.dispatchEvent(new CustomEvent('wizard:step', { bubbles: true, detail: { step: n, name: names[n] } }));
     };
